@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 — Card image support
+
+### Added
+- `src/utils/images.js` — `cardImage()` helper that resolves image filenames to full URLs (works with both GitHub Pages and Capacitor base paths)
+- `image` field on card data model — optional filename string, cards without images render normally
+- Image rendering in LessonFlow LEARN_CARD phase (full-width, rounded, lazy-loaded)
+- Image rendering in LibraryPage expanded card view
+- `public/images/cards/` folder for card image assets
+
+### Changed
+- All 5 placeholder concepts now have `image` filenames ready for asset drop-in
+- Bumped version to 0.2.0
+
 ## 0.1.0 — Initial AI Safety scaffold
 
 Transformed the Chronos history-learning app into an AI Safety learning app.
