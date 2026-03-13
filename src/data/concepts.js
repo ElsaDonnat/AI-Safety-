@@ -82,13 +82,22 @@ const CORE_CONCEPTS = [
 export const ALL_CONCEPTS = [...CORE_CONCEPTS];
 export const CORE_CONCEPT_COUNT = CORE_CONCEPTS.length;
 
-export const CATEGORY_CONFIG = {
-    technical: { label: 'Technical', color: '#0D9488' },
-    alignment: { label: 'Alignment', color: '#7C3AED' },
-    policy: { label: 'Policy', color: '#2563EB' },
-    ethics: { label: 'Ethics', color: '#059669' },
-    risks: { label: 'Risks', color: '#DC2626' },
-};
+// ─── Categories ─────────────────────────────────────────────
+// Edit this array to add, remove, or reorder categories.
+// Each concept's `category` field should match one of these IDs.
+export const CATEGORIES = [
+    { id: 'technical', label: 'Technical', color: '#0D9488', icon: 'gear' },
+    { id: 'alignment', label: 'Alignment', color: '#7C3AED', icon: 'compass' },
+    { id: 'policy', label: 'Policy', color: '#2563EB', icon: 'building' },
+    { id: 'ethics', label: 'Ethics', color: '#059669', icon: 'heart' },
+    { id: 'risks', label: 'Risks', color: '#DC2626', icon: 'warning' },
+];
+
+// Derived lookup — components use this for quick access by ID.
+// Do NOT edit this directly; edit CATEGORIES above instead.
+export const CATEGORY_CONFIG = Object.fromEntries(
+    CATEGORIES.map(cat => [cat.id, cat])
+);
 
 export function getConceptById(id) {
     return ALL_CONCEPTS.find(c => c.id === id) || null;

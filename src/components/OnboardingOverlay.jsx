@@ -18,7 +18,7 @@ export default function OnboardingOverlay({ step, dispatch }) {
                         Welcome to AI Safety
                     </h1>
                     <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--color-ink-secondary)' }}>
-                        Learn about AI safety, alignment, and governance through interactive lessons.
+                        Learn about AI safety through interactive lessons.
                         Each lesson teaches you key concepts, then you practice and build mastery over time.
                     </p>
                     <Button className="w-full" onClick={() => dispatch({ type: 'SET_ONBOARDING_STEP', step: 'topic_overview' })}>

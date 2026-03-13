@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { TOPICS, LESSONS, getLessonsByTopic } from '../data/lessons';
-import { CATEGORY_CONFIG } from '../data/concepts';
 import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';

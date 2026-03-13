@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { ALL_CONCEPTS, CATEGORY_CONFIG } from '../data/concepts';
+import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag } from '../components/shared';
 
@@ -99,17 +99,17 @@ export default function LibraryPage() {
 
             {/* Category filter chips */}
             <div className="flex flex-wrap gap-2 mb-4">
-                {Object.entries(CATEGORY_CONFIG).map(([key, config]) => (
+                {CATEGORIES.map(cat => (
                     <button
-                        key={key}
-                        onClick={() => setCategoryFilter(categoryFilter === key ? null : key)}
+                        key={cat.id}
+                        onClick={() => setCategoryFilter(categoryFilter === cat.id ? null : cat.id)}
                         className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
                         style={{
-                            backgroundColor: categoryFilter === key ? config.color : 'rgba(var(--color-ink-rgb), 0.06)',
-                            color: categoryFilter === key ? '#fff' : 'var(--color-ink-muted)',
+                            backgroundColor: categoryFilter === cat.id ? cat.color : 'rgba(var(--color-ink-rgb), 0.06)',
+                            color: categoryFilter === cat.id ? '#fff' : 'var(--color-ink-muted)',
                         }}
                     >
-                        {config.label}
+                        {cat.label}
                     </button>
                 ))}
             </div>
