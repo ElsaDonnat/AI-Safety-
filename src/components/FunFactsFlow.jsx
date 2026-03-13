@@ -118,7 +118,7 @@ export default function FunFactsFlow({ onExit }) {
                     Related to
                 </p>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: 'rgba(139, 65, 87, 0.06)' }}>
+                    style={{ backgroundColor: 'rgba(30, 58, 95, 0.06)' }}>
                     <CategoryTag category={event.category} />
                     <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
                         {event.title}

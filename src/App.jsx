@@ -50,21 +50,17 @@ export default function App() {
   const lastSessionLengthRef = useRef(state.studySessions?.length || 0);
 
   // ─── "Welcome Back" modal for returning users ─────
-  const [showWelcomeBack, setShowWelcomeBack] = useState(false);
-  const [daysAway, setDaysAway] = useState(0);
-
-  useEffect(() => {
-    if (!state.lastActiveDate) return;
+  const [welcomeBackData] = useState(() => {
+    if (!state.lastActiveDate) return null;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const last = new Date(state.lastActiveDate);
     last.setHours(0, 0, 0, 0);
     const diffDays = Math.floor((today - last) / (1000 * 60 * 60 * 24));
-    if (diffDays >= 2) {
-      setDaysAway(diffDays);
-      setShowWelcomeBack(true);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    return diffDays >= 2 ? diffDays : null;
+  });
+  const [showWelcomeBack, setShowWelcomeBack] = useState(welcomeBackData !== null);
+  const daysAway = welcomeBackData || 0;
 
   // Achievement checker — runs on state changes
   useAchievementChecker();

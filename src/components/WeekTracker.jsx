@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { shareText } from '../services/share';
-import StreakFlame, { FLAME_COUNT_COLORS } from './StreakFlame';
+import StreakFlame from './StreakFlame';
+import { FLAME_COUNT_COLORS } from '../utils/streakColors';
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
@@ -118,7 +119,7 @@ export default function WeekTracker({ onClose }) {
 
                 {/* Header with streak */}
                 <div className="px-5 pt-5 pb-3 text-center"
-                    style={{ background: 'linear-gradient(to bottom, rgba(139, 65, 87, 0.06), transparent)' }}>
+                    style={{ background: 'linear-gradient(to bottom, rgba(30, 58, 95, 0.06), transparent)' }}>
                     <div className="flex items-center justify-center gap-3 mb-2">
                         <StreakFlame status={streakStatus} size={32} />
                         <span className="text-3xl font-bold" style={{ color: streakStatus === 'inactive' ? '#A8A29E' : 'var(--color-burgundy)' }}>
@@ -175,7 +176,7 @@ export default function WeekTracker({ onClose }) {
                 {/* Stats grid */}
                 <div className="px-5 pb-3">
                     <div className="grid grid-cols-3 gap-2">
-                        <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(139, 65, 87, 0.05)' }}>
+                        <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(30, 58, 95, 0.05)' }}>
                             <div className="text-lg font-bold" style={{ color: 'var(--color-burgundy)' }}>
                                 {stats.totalSessions}
                             </div>
@@ -183,13 +184,13 @@ export default function WeekTracker({ onClose }) {
                                 {stats.totalSessions === 1 ? 'session' : 'sessions'}
                             </div>
                         </div>
-                        <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(139, 65, 87, 0.05)' }}>
+                        <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(30, 58, 95, 0.05)' }}>
                             <div className="text-lg font-bold" style={{ color: 'var(--color-burgundy)' }}>
                                 {stats.totalQuestions}
                             </div>
                             <div className="text-[10px]" style={{ color: 'var(--color-ink-muted)' }}>questions</div>
                         </div>
-                        <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(139, 65, 87, 0.05)' }}>
+                        <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(30, 58, 95, 0.05)' }}>
                             <div className="text-lg font-bold" style={{ color: 'var(--color-burgundy)' }}>
                                 {formatTime(stats.totalSeconds)}
                             </div>
@@ -210,7 +211,7 @@ export default function WeekTracker({ onClose }) {
                             </div>
                             <div className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>total earned</div>
                         </div>
-                        <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(139, 65, 87, 0.05)' }}>
+                        <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(30, 58, 95, 0.05)' }}>
                             <div className="flex items-center gap-1.5">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -262,7 +263,7 @@ export default function WeekTracker({ onClose }) {
                                 await shareText({ title: 'AI Safety', text: lines.join('\n') });
                             }}
                             className="w-full flex items-center justify-center gap-2 mb-2 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
-                            style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(139, 65, 87, 0.08)' }}
+                            style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(30, 58, 95, 0.08)' }}
                         >
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
