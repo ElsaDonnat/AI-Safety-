@@ -1,5 +1,5 @@
 import { useApp } from '../../context/AppContext';
-import { ALL_EVENTS } from '../../data/events';
+import { ALL_CONCEPTS } from '../../data/concepts';
 import * as feedback from '../../services/feedback';
 
 const NAV_ITEMS = [
@@ -14,17 +14,14 @@ const NAV_ITEMS = [
         ),
     },
     {
-        id: 'timeline',
-        label: 'Timeline',
+        id: 'library',
+        label: 'Library',
         icon: (active) => (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="2" x2="12" y2="22" />
-                <circle cx="12" cy="6" r="2" fill={active ? 'currentColor' : 'none'} />
-                <circle cx="12" cy="12" r="2" fill={active ? 'currentColor' : 'none'} />
-                <circle cx="12" cy="18" r="2" fill={active ? 'currentColor' : 'none'} />
-                <line x1="14" y1="6" x2="20" y2="6" />
-                <line x1="4" y1="12" x2="10" y2="12" />
-                <line x1="14" y1="18" x2="20" y2="18" />
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
             </svg>
         ),
     },
@@ -52,9 +49,9 @@ const NAV_ITEMS = [
 
 export default function Sidebar({ activeTab, onTabChange }) {
     const { state } = useApp();
-    const learnedCount = state.seenEvents?.length || 0;
-    const totalEvents = ALL_EVENTS.length;
-    const progressPct = totalEvents > 0 ? Math.round((learnedCount / totalEvents) * 100) : 0;
+    const learnedCount = state.seenCards?.length || 0;
+    const totalConcepts = ALL_CONCEPTS.length;
+    const progressPct = totalConcepts > 0 ? Math.round((learnedCount / totalConcepts) * 100) : 0;
 
     return (
         <aside className="sidebar">
@@ -79,7 +76,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
             <div className="sidebar-progress">
                 <div className="sidebar-progress-label">
                     <span>Progress</span>
-                    <span>{learnedCount}/{totalEvents}</span>
+                    <span>{learnedCount}/{totalConcepts}</span>
                 </div>
                 <div className="sidebar-progress-bar">
                     <div
@@ -90,7 +87,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
                 <p className="sidebar-progress-text">
                     {learnedCount === 0
                         ? 'Start your first lesson'
-                        : `${progressPct}% of events discovered`
+                        : `${progressPct}% of concepts discovered`
                     }
                 </p>
             </div>

@@ -1,19 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { CORE_EVENT_COUNT } from './events';
-import { LESSONS, ALL_LEVEL2_LESSONS } from './lessons';
+import { CORE_CONCEPT_COUNT } from './concepts';
+import { LESSONS } from './lessons';
 
-const LEVEL1_COUNT = LESSONS.length;           // 21
-const TOTAL_LESSON_COUNT = LEVEL1_COUNT + ALL_LEVEL2_LESSONS.length; // 21 + 28 = 49
+const TOTAL_LESSON_COUNT = LESSONS.length;
 
 export const ACHIEVEMENTS = [
     // ─── Learning ───
     {
         id: 'first-lesson',
-        title: 'First Steps',
+        title: 'First Insight',
         description: 'Complete your first lesson',
-        hint: 'Complete any lesson from the Learn tab to take your first steps into history.',
-        emoji: '\uD83D\uDC63',
+        hint: 'Complete any lesson from the Learn tab to take your first steps into AI safety.',
+        emoji: '\uD83D\uDCA1',
         category: 'learning',
         check: (state) => Object.keys(state.completedLessons).length >= 1,
         progress: (state) => ({ current: Object.keys(state.completedLessons).length, target: 1 }),
@@ -38,25 +37,22 @@ export const ACHIEVEMENTS = [
     },
     {
         id: 'all-lessons',
-        title: 'Historian',
-        description: 'Complete all Level 1 lessons',
-        hint: 'Finish all 21 core lessons in the main learning path (Level 1) to earn this achievement.',
+        title: 'Safety Scholar',
+        description: 'Complete all lessons',
+        hint: 'Finish all lessons in the learning path to earn this achievement.',
         emoji: '\uD83C\uDFDB\uFE0F',
         category: 'learning',
-        check: (state) => {
-            const l1 = Object.keys(state.completedLessons).filter(k => k.startsWith('lesson-')).length;
-            return l1 >= LEVEL1_COUNT;
-        },
-        progress: (state) => {
-            const l1 = Object.keys(state.completedLessons).filter(k => k.startsWith('lesson-')).length;
-            return { current: Math.min(l1, LEVEL1_COUNT), target: LEVEL1_COUNT };
-        },
+        check: (state) => Object.keys(state.completedLessons).length >= TOTAL_LESSON_COUNT,
+        progress: (state) => ({
+            current: Math.min(Object.keys(state.completedLessons).length, TOTAL_LESSON_COUNT),
+            target: TOTAL_LESSON_COUNT,
+        }),
     },
     {
-        id: 'all-levels',
-        title: 'Grand Historian',
-        description: 'Complete every lesson across both levels',
-        hint: 'Finish all Level 1 core lessons and every Level 2 chapter to earn this prestigious achievement.',
+        id: 'ai-safety-expert',
+        title: 'AI Safety Expert',
+        description: 'Complete every lesson and master all concepts',
+        hint: 'Finish all lessons and achieve high mastery across every concept.',
         emoji: '\uD83D\uDC51',
         category: 'learning',
         check: (state) => Object.keys(state.completedLessons).length >= TOTAL_LESSON_COUNT,
@@ -124,46 +120,46 @@ export const ACHIEVEMENTS = [
     // ─── Discovery ───
     {
         id: 'discover-30',
-        title: 'Explorer',
-        description: 'Discover 30 events',
-        emoji: '\uD83D\uDDFA\uFE0F',
+        title: 'Curious Mind',
+        description: 'Discover 30 cards',
+        emoji: '\uD83E\uDDE0',
         category: 'discovery',
-        check: (state) => (state.seenEvents || []).length >= 30,
-        progress: (state) => ({ current: Math.min((state.seenEvents || []).length, 30), target: 30 }),
+        check: (state) => (state.seenCards || []).length >= 30,
+        progress: (state) => ({ current: Math.min((state.seenCards || []).length, 30), target: 30 }),
     },
     {
         id: 'discover-all',
-        title: 'Cartographer',
-        description: `Discover all ${CORE_EVENT_COUNT} events`,
-        hint: `Complete lessons and practice to encounter all ${CORE_EVENT_COUNT} historical events in Chronos.`,
-        emoji: '\uD83C\uDF0D',
+        title: 'Knowledge Mapper',
+        description: `Discover all ${CORE_CONCEPT_COUNT} concepts`,
+        hint: `Complete lessons and practice to encounter all ${CORE_CONCEPT_COUNT} AI safety concepts.`,
+        emoji: '\uD83D\uDDFA\uFE0F',
         category: 'discovery',
-        check: (state) => (state.seenEvents || []).length >= CORE_EVENT_COUNT,
-        progress: (state) => ({ current: Math.min((state.seenEvents || []).length, CORE_EVENT_COUNT), target: CORE_EVENT_COUNT }),
+        check: (state) => (state.seenCards || []).length >= CORE_CONCEPT_COUNT,
+        progress: (state) => ({ current: Math.min((state.seenCards || []).length, CORE_CONCEPT_COUNT), target: CORE_CONCEPT_COUNT }),
     },
 
     // ─── Collection ───
     {
         id: 'collect-10',
-        title: 'Collector',
-        description: 'Star 10 events',
+        title: 'Curator',
+        description: 'Star 10 cards',
         emoji: '\uD83C\uDFC6',
         category: 'collection',
-        check: (state) => (state.starredEvents || []).length >= 10,
-        progress: (state) => ({ current: Math.min((state.starredEvents || []).length, 10), target: 10 }),
+        check: (state) => (state.starredCards || []).length >= 10,
+        progress: (state) => ({ current: Math.min((state.starredCards || []).length, 10), target: 10 }),
     },
 
     // ─── Mastery ───
     {
         id: 'mastery-5',
         title: 'Sharp Mind',
-        description: 'Master 5 events (7+ mastery)',
-        hint: 'Score 7 or higher on 5 different events. Practice events you\u2019ve already seen to boost their mastery.',
+        description: 'Master 5 cards (6+ mastery)',
+        hint: 'Score 6 or higher on 5 different cards. Practice cards you\u2019ve already seen to boost their mastery.',
         emoji: '\uD83E\uDDE0',
         category: 'mastery',
-        check: (state) => Object.values(state.eventMastery || {}).filter(m => m.overallMastery >= 7).length >= 5,
+        check: (state) => Object.values(state.cardMastery || {}).filter(m => m.overallMastery >= 6).length >= 5,
         progress: (state) => ({
-            current: Math.min(Object.values(state.eventMastery || {}).filter(m => m.overallMastery >= 7).length, 5),
+            current: Math.min(Object.values(state.cardMastery || {}).filter(m => m.overallMastery >= 6).length, 5),
             target: 5,
         }),
     },
@@ -232,10 +228,10 @@ export const ACHIEVEMENTS = [
 // Each has a trigger condition (must be true) + a random chance per qualifying state change.
 export const BONUS_ACHIEVEMENTS = [
     {
-        id: 'bonus-time-traveler',
-        title: 'Time Traveler',
-        description: 'The timeline whispered your name',
-        emoji: '\uD83D\uDD70\uFE0F',
+        id: 'bonus-deep-thinker',
+        title: 'Deep Thinker',
+        description: 'The concepts resonated with you',
+        emoji: '\uD83E\uDDE0',
         category: 'bonus',
         hidden: true,
         // Triggers when user completes a lesson; 8% chance per lesson completion
@@ -258,7 +254,7 @@ export const BONUS_ACHIEVEMENTS = [
     {
         id: 'bonus-night-owl',
         title: 'Night Owl',
-        description: 'History never sleeps, and neither do you',
+        description: 'AI safety never sleeps, and neither do you',
         emoji: '\uD83E\uDD89',
         category: 'bonus',
         hidden: true,
@@ -271,10 +267,10 @@ export const BONUS_ACHIEVEMENTS = [
         chance: 0.20,
     },
     {
-        id: 'bonus-plot-twist',
-        title: 'Plot Twist',
-        description: 'History is full of surprises!',
-        emoji: '\uD83C\uDFAD',
+        id: 'bonus-paradigm-shift',
+        title: 'Paradigm Shift',
+        description: 'A new way of thinking about AI!',
+        emoji: '\uD83D\uDCA1',
         category: 'bonus',
         hidden: true,
         // Triggers on daily quiz completion; 15% chance
@@ -297,13 +293,13 @@ export const BONUS_ACHIEVEMENTS = [
     {
         id: 'bonus-hidden-gem',
         title: 'Hidden Gem',
-        description: 'A rare find in the annals of time',
+        description: 'A rare find in the world of AI safety',
         emoji: '\uD83D\uDC8E',
         category: 'bonus',
         hidden: true,
-        // Triggers when starring events; 12% chance
-        triggerKey: (state) => (state.starredEvents || []).length,
-        triggerCondition: (state) => (state.starredEvents || []).length >= 1,
+        // Triggers when starring cards; 12% chance
+        triggerKey: (state) => (state.starredCards || []).length,
+        triggerCondition: (state) => (state.starredCards || []).length >= 1,
         chance: 0.12,
     },
 ];
@@ -327,10 +323,10 @@ export function useAchievementChecker() {
     const bonusRollKeys = useRef({}); // tracks last trigger key per bonus achievement
 
     // Destructure the specific fields we depend on for the lint rule
-    const { completedLessons, currentStreak, totalXP, seenEvents, starredEvents, eventMastery, dailyQuiz, achievements, studySessions, challenge } = state;
+    const { completedLessons, currentStreak, totalXP, seenCards, starredCards, cardMastery, dailyQuiz, achievements, studySessions, challenge } = state;
 
     useEffect(() => {
-        const currentState = { completedLessons, currentStreak, totalXP, seenEvents, starredEvents, eventMastery, dailyQuiz, achievements, studySessions, challenge };
+        const currentState = { completedLessons, currentStreak, totalXP, seenCards, starredCards, cardMastery, dailyQuiz, achievements, studySessions, challenge };
 
         if (!mounted.current) {
             // On mount: silently unlock all achievements that already qualify
@@ -372,5 +368,5 @@ export function useAchievementChecker() {
                 }
             }
         }
-    }, [completedLessons, currentStreak, totalXP, seenEvents, starredEvents, eventMastery, dailyQuiz, achievements, studySessions, challenge, dispatch]);
+    }, [completedLessons, currentStreak, totalXP, seenCards, starredCards, cardMastery, dailyQuiz, achievements, studySessions, challenge, dispatch]);
 }

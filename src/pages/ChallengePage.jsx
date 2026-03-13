@@ -1,25 +1,68 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { buildChallengePool, generateChallengeQuestion, generateTieredChallengeQuestion, CHALLENGE_TIERS, TOTAL_CHALLENGE_QUESTIONS, getTierForQuestion, getTierProgress } from '../data/challengeQuiz';
-import { CATEGORY_CONFIG } from '../data/events';
+import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame } from '../data/challengeQuiz';
 import { Button } from '../components/shared';
 import Mascot from '../components/Mascot';
 import * as feedback from '../services/feedback';
 import StreakCelebration from '../components/StreakCelebration';
 import FunFactsFlow from '../components/FunFactsFlow';
-import { getFunFactsForSeenEvents } from '../data/funFacts';
+import { getFunFactsForSeenCards } from '../data/funFacts';
 
-/** Parse a date MCQ label like "1519", "541 CE", "100 BCE" into a numeric year. */
-function parseYearLabel(label) {
-    if (!label) return null;
-    const cleaned = label.trim();
-    const bceMatch = cleaned.match(/^(\d+)\s*BCE?$/i);
-    if (bceMatch) return -parseInt(bceMatch[1], 10);
-    const ceMatch = cleaned.match(/^(\d+)\s*CE?$/i);
-    if (ceMatch) return parseInt(ceMatch[1], 10);
-    const plainMatch = cleaned.match(/^(\d+)$/);
-    if (plainMatch) return parseInt(plainMatch[1], 10);
-    return null;
+// ─── Tier display helpers ─────────────────────────────────────
+// Build display info for each tier (colors, icons, flavors) for the UI
+const TIER_DISPLAY = TIERS.map((t, i) => {
+    const colors = ['#4A90D9', '#2E7D32', '#E65100', '#8E24AA', '#C62828', '#FF6F00'];
+    const icons = ['\uD83D\uDD25', '\uD83D\uDCDA', '\uD83C\uDF93', '\u2699\uFE0F', '\uD83C\uDFC6', '\u26A1'];
+    const flavors = [
+        'The journey begins...',
+        'Knowledge grows deeper.',
+        'Concepts interweave.',
+        'Mastery takes shape.',
+        'Almost at the summit.',
+        'You see the full picture.',
+    ];
+    return {
+        id: t.name.toLowerCase(),
+        label: t.name,
+        questions: t.count,
+        color: colors[i] || '#666',
+        icon: icons[i] || '',
+        flavor: flavors[i] || '',
+    };
+});
+
+/** Given a question index, return the tier display object it belongs to. */
+function getTierForQuestion(qIdx) {
+    let cumulative = 0;
+    for (let i = 0; i < TIERS.length; i++) {
+        cumulative += TIERS[i].count;
+        if (qIdx < cumulative) return TIER_DISPLAY[i];
+    }
+    return TIER_DISPLAY[TIER_DISPLAY.length - 1];
+}
+
+/** Given a question index, return tier progress info. */
+function getTierProgress(qIdx) {
+    let cumulative = 0;
+    for (let i = 0; i < TIERS.length; i++) {
+        const start = cumulative;
+        cumulative += TIERS[i].count;
+        if (qIdx < cumulative) {
+            return {
+                tier: TIER_DISPLAY[i],
+                tierIndex: i,
+                indexInTier: qIdx - start,
+                tierTotal: TIERS[i].count,
+            };
+        }
+    }
+    const lastIdx = TIERS.length - 1;
+    return {
+        tier: TIER_DISPLAY[lastIdx],
+        tierIndex: lastIdx,
+        indexInTier: TIERS[lastIdx].count - 1,
+        tierTotal: TIERS[lastIdx].count,
+    };
 }
 
 // SVG tier icons — replace emoji to avoid rendering issues on Android
@@ -29,16 +72,15 @@ const TierIcon = ({ tierId, size = 24, color = '#666' }) => {
         beginner: <svg {...s}><path d="M12 22c-1-3-5-5-5-10a5 5 0 0 1 10 0c0 5-4 7-5 10z" fill={color} opacity="0.12" /><path d="M12 22c-1-3-5-5-5-10a5 5 0 0 1 10 0c0 5-4 7-5 10z" /><line x1="12" y1="8" x2="12" y2="14" /><path d="M10 11h4" /></svg>,
         amateur: <svg {...s}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill={color} opacity="0.08" /><line x1="9" y1="8" x2="16" y2="8" /><line x1="9" y1="12" x2="14" y2="12" /></svg>,
         advanced: <svg {...s}><path d="M12 3L2 9l10 6 10-6-10-6z" fill={color} opacity="0.1" /><path d="M2 9l10 6 10-6" /><path d="M6 11.5v5c0 2 3 3.5 6 3.5s6-1.5 6-3.5v-5" /><line x1="22" y1="9" x2="22" y2="15" /></svg>,
-        historian: <svg {...s}><path d="M3 21h18M5 21V7l7-4 7 4v14" fill={color} opacity="0.1" /><line x1="9" y1="21" x2="9" y2="10" /><line x1="15" y1="21" x2="15" y2="10" /><path d="M5 7l7-4 7 4" /><line x1="3" y1="21" x2="21" y2="21" /></svg>,
         expert: <svg {...s}><circle cx="12" cy="12" r="9" fill={color} opacity="0.1" /><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>,
-        god: <svg {...s}><polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill={color} opacity="0.15" /><polygon points="13,2 3,14 12,14 11,22 21,10 12,10" /></svg>,
+        master: <svg {...s}><path d="M3 21h18M5 21V7l7-4 7 4v14" fill={color} opacity="0.1" /><line x1="9" y1="21" x2="9" y2="10" /><line x1="15" y1="21" x2="15" y2="10" /><path d="M5 7l7-4 7 4" /><line x1="3" y1="21" x2="21" y2="21" /></svg>,
+        visionary: <svg {...s}><polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill={color} opacity="0.15" /><polygon points="13,2 3,14 12,14 11,22 21,10 12,10" /></svg>,
     };
     return icons[tierId] || null;
 };
 
 // ─── Views ───────────────────────────────────────────────────
 const VIEW = { HUB: 'hub', SETUP_MULTI: 'setup_multi', GAME: 'game', PASS_PHONE: 'pass_phone', RESULTS: 'results', FUN_FACTS: 'fun_facts' };
-const MAX_HEARTS = 3;
 
 // ─── Hearts Component ────────────────────────────────────────
 function Hearts({ current, max = MAX_HEARTS, losingIndex = -1 }) {
@@ -67,7 +109,6 @@ function Hearts({ current, max = MAX_HEARTS, losingIndex = -1 }) {
 function ChallengeQuestion({ question, onAnswer }) {
     const [selected, setSelected] = useState(null);
     const [answered, setAnswered] = useState(false);
-    const [nearMiss, setNearMiss] = useState(false);
     // No useEffect needed — parent uses `key` prop to remount on new question
 
     if (!question) return null;
@@ -78,55 +119,20 @@ function ChallengeQuestion({ question, onAnswer }) {
         setSelected(index);
         setAnswered(true);
 
-        // Near-miss detection for date MCQ questions
-        let isNearMiss = false;
-        if (!isCorrect && question.type === 'hardMCQ' && question.subType === 'date') {
-            const selectedLabel = question.options[index]?.label || '';
-            const correctLabel = question.options.find(o => o.isCorrect)?.label || '';
-            const selectedYear = parseYearLabel(selectedLabel);
-            const correctYear = parseYearLabel(correctLabel);
-            if (selectedYear !== null && correctYear !== null) {
-                const diff = Math.abs(selectedYear - correctYear);
-                const magnitude = Math.abs(correctYear);
-                // Near miss: within ~15% of the era's typical spread or ≤50 years for historical dates
-                isNearMiss = magnitude > 1000 ? diff <= magnitude * 0.15 : diff <= 50;
-            }
-        }
-
         if (isCorrect) feedback.correct();
-        else if (isNearMiss) { feedback.close(); setNearMiss(true); }
         else feedback.wrong();
-        // Delay to let user see the result (longer for near-miss to read message)
-        setTimeout(() => onAnswer(isCorrect), isNearMiss ? 1800 : 1200);
+        setTimeout(() => onAnswer(isCorrect), 1200);
     };
 
     switch (question.type) {
         case 'hardMCQ':
-        case 'eraDetective':
             return (
                 <MCQLayout
                     question={question}
                     selected={selected}
                     answered={answered}
-                    nearMiss={nearMiss}
+                    nearMiss={false}
                     onSelect={handleSelect}
-                />
-            );
-        case 'whichCameFirst':
-            return (
-                <WhichCameFirstLayout
-                    question={question}
-                    selected={selected}
-                    answered={answered}
-                    onSelect={(id) => {
-                        if (answered) return;
-                        const isCorrect = id === question.correctId;
-                        setSelected(id);
-                        setAnswered(true);
-                        if (isCorrect) feedback.correct();
-                        else feedback.wrong();
-                        setTimeout(() => onAnswer(isCorrect), 1200);
-                    }}
                 />
             );
         case 'oddOneOut':
@@ -137,7 +143,7 @@ function ChallengeQuestion({ question, onAnswer }) {
                     answered={answered}
                     onSelect={(id) => {
                         if (answered) return;
-                        const isCorrect = id === question.outlierEventId;
+                        const isCorrect = question.options.some(o => o.id === id && o.isOutlier);
                         setSelected(id);
                         setAnswered(true);
                         if (isCorrect) feedback.correct();
@@ -163,11 +169,14 @@ function ChallengeQuestion({ question, onAnswer }) {
                     }}
                 />
             );
-        case 'chronologicalOrder':
+        case 'conceptRelationship':
             return (
-                <ChronologicalOrderLayout
+                <MCQLayout
                     question={question}
-                    onAnswer={onAnswer}
+                    selected={selected}
+                    answered={answered}
+                    nearMiss={false}
+                    onSelect={handleSelect}
                 />
             );
         default:
@@ -175,15 +184,19 @@ function ChallengeQuestion({ question, onAnswer }) {
     }
 }
 
-// ─── MCQ Layout (hardMCQ, eraDetective) ─────────────────────
+// ─── MCQ Layout (hardMCQ, conceptRelationship) ───────────────
 
 function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
-    const isGrid = question.type === 'hardMCQ' && (question.subType === 'location' || question.subType === 'date');
+    // Normalize options: hardMCQ options have title or description, conceptRelationship has title
+    const normalizedOptions = question.options.map(opt => ({
+        ...opt,
+        label: opt.label || opt.title || opt.description || '',
+    }));
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
-                {question.prompt}
+                {question.prompt || question.question}
             </p>
             {answered && nearMiss && (
                 <p style={{
@@ -202,11 +215,11 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
             )}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: isGrid ? '1fr 1fr' : '1fr',
+                gridTemplateColumns: '1fr',
                 gap: 8,
                 marginTop: 4,
             }}>
-                {question.options.map((opt, i) => {
+                {normalizedOptions.map((opt, i) => {
                     const isSelected = selected === i;
                     const isCorrect = opt.isCorrect;
                     let bg = 'var(--color-card)';
@@ -236,10 +249,10 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
                                 background: bg,
                                 border,
                                 borderRadius: 10,
-                                padding: isGrid ? '12px 10px' : '12px 16px',
+                                padding: '12px 16px',
                                 cursor: answered ? 'default' : 'pointer',
                                 textAlign: 'left',
-                                fontSize: question.subType === 'description' ? '0.78rem' : '0.88rem',
+                                fontSize: question.subtype === 'description' ? '0.78rem' : '0.88rem',
                                 fontFamily: 'var(--font-sans)',
                                 color,
                                 fontWeight: (isSelected || (answered && isCorrect)) ? 600 : 400,
@@ -261,81 +274,23 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
     );
 }
 
-// ─── Which Came First Layout ─────────────────────────────────
-
-function WhichCameFirstLayout({ question, selected, answered, onSelect }) {
-    const { eventA, eventB } = question;
-
-    const renderCard = (event) => {
-        const isSelected = selected === event.id;
-        const isCorrect = event.id === question.correctId;
-        let bg = 'var(--color-card)';
-        let border = '1.5px solid var(--color-ink-faint, #E7E5E4)';
-        if (answered) {
-            if (isCorrect) {
-                bg = 'rgba(5, 150, 105, 0.12)';
-                border = '1.5px solid var(--color-success)';
-            } else if (isSelected) {
-                bg = 'rgba(166, 61, 61, 0.12)';
-                border = '1.5px solid var(--color-error)';
-            }
-        }
-
-        return (
-            <button
-                key={event.id}
-                onClick={() => onSelect(event.id)}
-                disabled={answered}
-                style={{
-                    background: bg,
-                    border,
-                    borderRadius: 12,
-                    padding: '16px',
-                    cursor: answered ? 'default' : 'pointer',
-                    textAlign: 'left',
-                    width: '100%',
-                    transition: 'all 0.15s ease',
-                }}
-            >
-                <p style={{ fontSize: '0.95rem', fontWeight: 600, fontFamily: 'var(--font-serif)', color: 'var(--color-ink)', marginBottom: 4 }}>
-                    {event.title}
-                </p>
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', lineHeight: 1.4 }}>
-                    {event.quizDescription || event.description}
-                </p>
-                {answered && (
-                    <p style={{ fontSize: '0.8rem', fontWeight: 600, marginTop: 8, color: isCorrect ? 'var(--color-success)' : 'var(--color-error)' }}>
-                        {event.date}
-                    </p>
-                )}
-            </button>
-        );
-    };
-
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
-                {question.prompt}
-            </p>
-            {renderCard(eventA)}
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-ink-muted)', fontWeight: 600, letterSpacing: 2 }}>OR</span>
-            {renderCard(eventB)}
-        </div>
-    );
-}
-
 // ─── Odd One Out Layout ──────────────────────────────────────
 
 function OddOneOutLayout({ question, selected, answered, onSelect }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
-                {question.prompt}
+                {question.prompt || question.question}
             </p>
+            {question.hint && (
+                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
+                    {question.hint}
+                </p>
+            )}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                {question.events.map(event => {
-                    const isOutlier = event.id === question.outlierEventId;
-                    const isSelected = selected === event.id;
+                {question.options.map(opt => {
+                    const isOutlier = opt.isOutlier;
+                    const isSelected = selected === opt.id;
                     let bg = 'var(--color-card)';
                     let border = '1.5px solid var(--color-ink-faint, #E7E5E4)';
                     let color = 'var(--color-ink)';
@@ -357,8 +312,8 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
 
                     return (
                         <button
-                            key={event.id}
-                            onClick={() => onSelect(event.id)}
+                            key={opt.id}
+                            onClick={() => onSelect(opt.id)}
                             disabled={answered}
                             style={{
                                 background: bg,
@@ -375,7 +330,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                                 transition: 'all 0.15s ease',
                             }}
                         >
-                            {event.title}
+                            {opt.title}
                         </button>
                     );
                 })}
@@ -395,7 +350,7 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
             <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)' }}>
-                {question.prompt}
+                {question.prompt || 'True or false?'}
             </p>
             <div style={{
                 background: 'var(--color-card)',
@@ -456,118 +411,9 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                     );
                 })}
             </div>
-            {answered && !question.isTrue && (question.correction || question.correctDetail) && (
+            {answered && !question.isTrue && question.correction && (
                 <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
-                    {question.correction || `Correct ${question.swappedDetail}: ${question.correctDetail}`}
-                </p>
-            )}
-        </div>
-    );
-}
-
-// ─── Chronological Order Layout (God tier) ──────────────────
-
-function ChronologicalOrderLayout({ question, onAnswer }) {
-    const [order, setOrder] = useState([]);
-    const [confirmed, setConfirmed] = useState(false);
-
-    const handleTap = (eventId) => {
-        if (confirmed) return;
-        if (order.includes(eventId)) {
-            setOrder(prev => prev.slice(0, prev.indexOf(eventId)));
-        } else {
-            setOrder(prev => [...prev, eventId]);
-        }
-    };
-
-    const handleConfirm = () => {
-        if (confirmed || order.length !== 5) return;
-        const correct = order.every((id, i) => id === question.correctOrder[i]);
-        setConfirmed(true);
-        if (correct) feedback.correct();
-        else feedback.wrong();
-        setTimeout(() => onAnswer(correct), 2500);
-    };
-
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
-                {question.prompt}
-            </p>
-            <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)', textAlign: 'center', marginBottom: 4 }}>
-                Tap events in order, earliest first
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {question.events.map(event => {
-                    const orderIdx = order.indexOf(event.id);
-                    const isSelected = orderIdx !== -1;
-                    const correctPos = confirmed ? question.correctOrder.indexOf(event.id) : -1;
-                    const isCorrectPos = confirmed && isSelected && order[orderIdx] === question.correctOrder[orderIdx];
-
-                    let bg = 'var(--color-card)';
-                    let border = '1.5px solid var(--color-ink-faint, #E7E5E4)';
-                    if (confirmed) {
-                        if (isCorrectPos) {
-                            bg = 'rgba(5, 150, 105, 0.12)';
-                            border = '1.5px solid var(--color-success)';
-                        } else if (isSelected) {
-                            bg = 'rgba(166, 61, 61, 0.12)';
-                            border = '1.5px solid var(--color-error)';
-                        }
-                    } else if (isSelected) {
-                        bg = 'rgba(139, 65, 87, 0.08)';
-                        border = '1.5px solid var(--color-burgundy)';
-                    }
-
-                    return (
-                        <button
-                            key={event.id}
-                            onClick={() => handleTap(event.id)}
-                            disabled={confirmed}
-                            style={{
-                                background: bg, border, borderRadius: 10,
-                                padding: '10px 12px', cursor: confirmed ? 'default' : 'pointer',
-                                textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10,
-                                transition: 'all 0.15s ease',
-                            }}
-                        >
-                            {isSelected ? (
-                                <span style={{
-                                    width: 24, height: 24, borderRadius: '50%',
-                                    background: confirmed ? (isCorrectPos ? 'var(--color-success)' : 'var(--color-error)') : 'var(--color-burgundy)',
-                                    color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
-                                }}>
-                                    {orderIdx + 1}
-                                </span>
-                            ) : (
-                                <span style={{
-                                    width: 24, height: 24, borderRadius: '50%',
-                                    border: '1.5px dashed var(--color-ink-faint)', flexShrink: 0,
-                                }} />
-                            )}
-                            <div style={{ minWidth: 0 }}>
-                                <p style={{ fontSize: '0.85rem', fontWeight: 600, fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
-                                    {event.title}
-                                </p>
-                                {confirmed && (
-                                    <p style={{ fontSize: '0.72rem', color: isCorrectPos ? 'var(--color-success)' : 'var(--color-error)', marginTop: 2, fontWeight: 600 }}>
-                                        {event.date} — correct position: #{correctPos + 1}
-                                    </p>
-                                )}
-                            </div>
-                        </button>
-                    );
-                })}
-            </div>
-            {!confirmed && order.length === 5 && (
-                <Button onClick={handleConfirm} style={{ marginTop: 4 }}>
-                    Lock In Answer
-                </Button>
-            )}
-            {!confirmed && order.length > 0 && order.length < 5 && (
-                <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)', textAlign: 'center' }}>
-                    {5 - order.length} remaining
+                    {question.correction}
                 </p>
             )}
         </div>
@@ -593,7 +439,7 @@ function TierTransition({ tier, onContinue }) {
         >
             <div style={{
                 marginBottom: 16,
-                filter: tier.id === 'god' ? 'drop-shadow(0 0 12px rgba(220, 38, 38, 0.5))' : 'none',
+                filter: tier.id === 'visionary' ? 'drop-shadow(0 0 12px rgba(220, 38, 38, 0.5))' : 'none',
             }}>
                 <TierIcon tierId={tier.id} size={48} color={tier.color} />
             </div>
@@ -622,7 +468,7 @@ function TierTransition({ tier, onContinue }) {
 // ─── Main ChallengePage ──────────────────────────────────────
 
 // Shared tint — used for header gradient endpoint + stats card backgrounds
-const CHALLENGE_TINT = 'rgba(139, 65, 87, 0.36)';
+const CHALLENGE_TINT = 'rgba(30, 58, 95, 0.36)';
 
 export default function ChallengePage({ onSessionChange, registerBackHandler }) {
     const { state, dispatch } = useApp();
@@ -630,18 +476,15 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     const [mode, setMode] = useState(null);         // 'solo' | 'multiplayer'
     const [players, setPlayers] = useState([]);
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-    const [questionPool, setQuestionPool] = useState([]);
+    const [gameQuestions, setGameQuestions] = useState([]); // pre-generated questions
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [questionIndex, setQuestionIndex] = useState(0);
-    const [usedEventIds, setUsedEventIds] = useState(new Set());
     const [consecutiveCorrect, setConsecutiveCorrect] = useState(0);
     const [bestStreak, setBestStreak] = useState(0);
     const [quizmasterMood, setQuizmasterMood] = useState('thinking');
     const [reactorMood, setReactorMood] = useState('happy');
 
-    const [tierTransition, setTierTransition] = useState(null); // tier object or null
-    const [recentLevels, setRecentLevels] = useState([]); // tracks L1/L2 sequence for mixing
-    const [recentTypes, setRecentTypes] = useState([]); // tracks question types to prevent repeats
+    const [tierTransition, setTierTransition] = useState(null); // tier display object or null
     const [streakCelebration, setStreakCelebration] = useState(null);
 
     // Multiplayer setup
@@ -663,61 +506,42 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     // ─── Game Control (ordered by dependency chain) ──
 
     const startSoloGame = useCallback(() => {
-        const pool = buildChallengePool(state.seenEvents);
-        setQuestionPool(pool);
+        const questions = generateChallengeGame();
+        setGameQuestions(questions);
         setMode('solo');
         setPlayers([{ name: 'You', hearts: MAX_HEARTS, score: 0, eliminated: false }]);
         setCurrentPlayerIndex(0);
         setQuestionIndex(0);
-        setUsedEventIds(new Set());
         setConsecutiveCorrect(0);
         setBestStreak(0);
         setQuizmasterMood('thinking');
         setReactorMood('happy');
         setTierTransition(null);
-        setRecentLevels([]);
-        setRecentTypes([]);
         sessionStartTime.current = Date.now();
         sessionRecorded.current = false;
 
-        // Generate first question (tiered)
-        const q = generateTieredChallengeQuestion(pool, 0, new Set(), [], []);
-        setCurrentQuestion(q);
-        const newUsed = new Set();
-        if (q?.events) q.events.forEach(e => newUsed.add(e.id));
-        else if (q?.event) newUsed.add(q.event.id);
-        setUsedEventIds(newUsed);
-        setRecentLevels(q?.level ? [q.level] : [1]);
-        setRecentTypes(q?.type ? [q.type] : []);
+        setCurrentQuestion(questions[0] || null);
         setView(VIEW.GAME);
-    }, [state.seenEvents]);
+    }, []);
 
     const startMultiplayerGame = useCallback(() => {
         if (players.length === 0) return;
-        const pool = buildChallengePool(state.seenEvents);
-        setQuestionPool(pool);
+        const questions = generateChallengeGame();
+        setGameQuestions(questions);
         setMode('multiplayer');
         setPlayers(prev => prev.map(p => ({ ...p, hearts: MAX_HEARTS, score: 0, eliminated: false })));
         setCurrentPlayerIndex(0);
         setQuestionIndex(0);
-        setUsedEventIds(new Set());
         setConsecutiveCorrect(0);
         setBestStreak(0);
         setQuizmasterMood('thinking');
         setReactorMood('happy');
-        setRecentLevels([]);
         sessionStartTime.current = Date.now();
         sessionRecorded.current = false;
 
-        const q = generateChallengeQuestion(pool, 0, new Set(), []);
-        setCurrentQuestion(q);
-        const newUsed = new Set();
-        if (q?.events) q.events.forEach(e => newUsed.add(e.id));
-        else if (q?.event) newUsed.add(q.event.id);
-        setUsedEventIds(newUsed);
-        setRecentTypes(q?.type ? [q.type] : []);
+        setCurrentQuestion(questions[0] || null);
         setView(VIEW.PASS_PHONE);
-    }, [state.seenEvents, players]);
+    }, [players]);
 
     const endGame = useCallback(() => {
         // Record study session
@@ -786,22 +610,11 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
         setQuestionIndex(nextIdx);
         setQuizmasterMood('thinking');
         setReactorMood('happy');
-        const q = mode === 'solo'
-            ? generateTieredChallengeQuestion(questionPool, nextIdx, usedEventIds, recentLevels, recentTypes)
-            : generateChallengeQuestion(questionPool, nextIdx, usedEventIds, recentTypes);
+
+        // Use pre-generated questions array
+        const q = gameQuestions[nextIdx] || null;
         setCurrentQuestion(q);
-        if (q?.events) {
-            setUsedEventIds(prev => { const s = new Set(prev); q.events.forEach(e => s.add(e.id)); return s; });
-        } else if (q?.event) {
-            setUsedEventIds(prev => new Set([...prev, q.event.id]));
-        }
-        if (q?.level) {
-            setRecentLevels(prev => [...prev.slice(-5), q.level]);
-        }
-        if (q?.type) {
-            setRecentTypes(prev => [...prev.slice(-5), q.type]);
-        }
-    }, [questionIndex, questionPool, usedEventIds, mode, recentLevels, recentTypes]);
+    }, [questionIndex, gameQuestions]);
 
     const advanceToNextPlayer = useCallback((currentPlayers) => {
         let nextPI = (currentPlayerIndex + 1) % currentPlayers.length;
@@ -825,7 +638,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     setTimeout(() => endGame(), 100);
                     return prevPlayers;
                 }
-                // Check if all 21 questions completed
+                // Check if all questions completed
                 if (questionIndex >= TOTAL_CHALLENGE_QUESTIONS - 1) {
                     setTimeout(() => endGame(), 100);
                     return prevPlayers;
@@ -835,11 +648,10 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 const nextTier = getTierForQuestion(questionIndex + 1);
                 if (nextTier.id !== currentTier.id) {
                     // Award a bonus heart at tier transitions (max 5 hearts)
-                    // Earned by completing a tier with full hearts, or at harder tiers
                     const updated = [...prevPlayers];
                     const player = updated[0];
                     const atFullHearts = player.hearts === MAX_HEARTS;
-                    const enteringHardTier = ['advanced', 'historian', 'expert', 'god'].includes(nextTier.id);
+                    const enteringHardTier = ['advanced', 'expert', 'master', 'visionary'].includes(nextTier.id);
                     if ((atFullHearts || enteringHardTier) && player.hearts < 5) {
                         updated[0] = { ...player, hearts: player.hearts + 1 };
                     }
@@ -887,13 +699,13 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 return newC;
             });
 
-            // Update mastery for all events (handles chronologicalOrder multi-event)
-            const eventsToUpdate = currentQuestion?.events || (currentQuestion?.event ? [currentQuestion.event] : []);
-            for (const evt of eventsToUpdate) {
+            // Update mastery for the concept in the question
+            const concept = currentQuestion?.concept;
+            if (concept) {
                 dispatch({
-                    type: 'UPDATE_EVENT_MASTERY',
-                    eventId: evt.id,
-                    questionType: currentQuestion.masteryDimension || 'what',
+                    type: 'UPDATE_CARD_MASTERY',
+                    cardId: concept.id,
+                    questionType: 'what',
                     score: 'green',
                 });
             }
@@ -902,12 +714,12 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
             setReactorMood('sad');
             setConsecutiveCorrect(0);
 
-            const eventsToUpdate = currentQuestion?.events || (currentQuestion?.event ? [currentQuestion.event] : []);
-            for (const evt of eventsToUpdate) {
+            const concept = currentQuestion?.concept;
+            if (concept) {
                 dispatch({
-                    type: 'UPDATE_EVENT_MASTERY',
-                    eventId: evt.id,
-                    questionType: currentQuestion.masteryDimension || 'what',
+                    type: 'UPDATE_CARD_MASTERY',
+                    cardId: concept.id,
+                    questionType: 'what',
                     score: 'red',
                 });
             }
@@ -955,7 +767,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     // ─── Derived data ────────────────────────────────
 
     const ch = state.challenge || {};
-    const availableFunFacts = useMemo(() => getFunFactsForSeenEvents(state.seenEvents), [state.seenEvents]);
+    const availableFunFacts = useMemo(() => getFunFactsForSeenCards(state.seenCards || []), [state.seenCards || []]);
     const seenFunFactCount = useMemo(() => {
         const availableIds = new Set(availableFunFacts.map(f => f.id));
         return (state.seenFunFacts || []).filter(id => availableIds.has(id)).length;
@@ -969,12 +781,12 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
         advanceQuestion();
     }, [advanceQuestion]);
 
-    // Compute all-time accuracy from eventMastery
+    // Compute all-time accuracy from cardMastery
     const allTimeAccuracy = (() => {
-        const mastery = state.eventMastery || {};
+        const mastery = state.cardMastery || {};
         let correct = 0, total = 0;
         for (const ev of Object.values(mastery)) {
-            for (const dim of ['locationScore', 'dateScore', 'whatScore', 'descriptionScore']) {
+            for (const dim of ['whatScore', 'whyScore', 'howScore']) {
                 if (ev[dim]) { total++; if (ev[dim] === 'green') correct++; }
             }
         }
@@ -990,14 +802,14 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     if (view === VIEW.HUB) {
         // Determine best tier reached from solo high score
         const bestTierReached = ch.soloHighScore > 0
-            ? CHALLENGE_TIERS.indexOf(getTierForQuestion(ch.soloHighScore - 1))
+            ? TIER_DISPLAY.indexOf(getTierForQuestion(ch.soloHighScore - 1))
             : -1;
 
         return (
             <div style={{ padding: '0' }} className="animate-fade-in">
                 {/* Arena header — compact */}
                 <div style={{
-                    background: `linear-gradient(180deg, rgba(100, 40, 60, 0.83) 0%, ${CHALLENGE_TINT} 100%)`,
+                    background: `linear-gradient(180deg, rgba(30, 58, 95, 0.83) 0%, ${CHALLENGE_TINT} 100%)`,
                     borderRadius: '0 0 20px 20px',
                     margin: '-16px -16px 0',
                     padding: '14px 16px 16px',
@@ -1009,22 +821,22 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <Mascot mood="happy" size={34} />
                     </div>
 
-                    <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 700, textAlign: 'center', color: 'white', textShadow: '0 1px 6px rgba(62, 30, 20, 0.45)', marginBottom: 2 }}>
-                        Challenger Mode
+                    <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 700, textAlign: 'center', color: 'white', textShadow: '0 1px 6px rgba(30, 58, 95, 0.45)', marginBottom: 2 }}>
+                        Challenge Mode
                     </h2>
-                    <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#3E2723', marginBottom: 12 }}>
-                        Climb from Beginner to God {'\u2014'} {TOTAL_CHALLENGE_QUESTIONS} questions, {CHALLENGE_TIERS.length} tiers!
+                    <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>
+                        Climb from Beginner to Visionary {'\u2014'} {TOTAL_CHALLENGE_QUESTIONS} questions, {TIER_DISPLAY.length} tiers!
                     </p>
 
                     {/* Tier progression ladder */}
                     <div style={{ display: 'flex', justifyContent: 'center', padding: '0 8px' }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '85%', maxWidth: 280, position: 'relative' }}>
-                            {/* Dotted connector line — spans exactly from first to last dot center */}
+                            {/* Dotted connector line */}
                             <div style={{
                                 position: 'absolute',
                                 top: 6,
-                                left: `${100 / (2 * CHALLENGE_TIERS.length)}%`,
-                                right: `${100 / (2 * CHALLENGE_TIERS.length)}%`,
+                                left: `${100 / (2 * TIER_DISPLAY.length)}%`,
+                                right: `${100 / (2 * TIER_DISPLAY.length)}%`,
                                 height: 0,
                                 borderTop: '2px dotted rgba(250, 246, 240, 0.5)',
                                 zIndex: 0,
@@ -1034,14 +846,14 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 <div style={{
                                     position: 'absolute',
                                     top: 6,
-                                    left: `${100 / (2 * CHALLENGE_TIERS.length)}%`,
-                                    width: `${(bestTierReached / (CHALLENGE_TIERS.length - 1)) * (100 - 100 / CHALLENGE_TIERS.length)}%`,
+                                    left: `${100 / (2 * TIER_DISPLAY.length)}%`,
+                                    width: `${(bestTierReached / (TIER_DISPLAY.length - 1)) * (100 - 100 / TIER_DISPLAY.length)}%`,
                                     height: 0,
-                                    borderTop: '2px solid var(--color-burgundy)',
+                                    borderTop: '2px solid var(--color-accent, #00BFA5)',
                                     zIndex: 0,
                                 }} />
                             )}
-                            {CHALLENGE_TIERS.map((tier, i) => {
+                            {TIER_DISPLAY.map((tier, i) => {
                                 const reached = i <= bestTierReached;
                                 const isBest = i === bestTierReached;
                                 const dotSize = isBest ? 16 : 12;
@@ -1051,14 +863,14 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                             width: dotSize,
                                             height: dotSize,
                                             borderRadius: '50%',
-                                            background: reached ? 'var(--color-burgundy)' : 'white',
-                                            border: `2px solid ${reached ? 'var(--color-burgundy)' : 'rgba(255, 255, 255, 0.6)'}`,
-                                            boxShadow: isBest ? '0 0 8px rgba(139, 65, 87, 0.4)' : 'none',
+                                            background: reached ? 'var(--color-accent, #00BFA5)' : 'white',
+                                            border: `2px solid ${reached ? 'var(--color-accent, #00BFA5)' : 'rgba(255, 255, 255, 0.6)'}`,
+                                            boxShadow: isBest ? '0 0 8px rgba(0, 191, 165, 0.4)' : 'none',
                                             transition: 'all 0.3s',
                                         }} />
                                         <span style={{
                                             fontSize: isBest ? '0.72rem' : '0.65rem',
-                                            color: reached ? 'var(--color-burgundy)' : '#3E2723',
+                                            color: reached ? 'var(--color-accent, #00BFA5)' : 'rgba(255,255,255,0.7)',
                                             fontWeight: isBest ? 700 : 600,
                                             letterSpacing: '0.02em',
                                         }}>
@@ -1111,7 +923,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                     >
                         <div style={{ flexShrink: 0 }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1E3A5F)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                             </svg>
                         </div>
@@ -1120,7 +932,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 Solo Challenge
                             </p>
                             <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
-                                {CHALLENGE_TIERS.length} tiers, {TOTAL_CHALLENGE_QUESTIONS} questions. Best: <strong>{ch.soloHighScore || 0}/{TOTAL_CHALLENGE_QUESTIONS}</strong>
+                                {TIER_DISPLAY.length} tiers, {TOTAL_CHALLENGE_QUESTIONS} questions. Best: <strong>{ch.soloHighScore || 0}/{TOTAL_CHALLENGE_QUESTIONS}</strong>
                             </p>
                         </div>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" style={{ marginLeft: 'auto', flexShrink: 0 }}>
@@ -1149,7 +961,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                     >
                         <div style={{ flexShrink: 0 }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1E3A5F)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                                 <circle cx="9" cy="7" r="4" />
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -1188,7 +1000,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                     >
                         <div style={{ flexShrink: 0 }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1E3A5F)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M9 18h6" />
                                 <path d="M10 22h4" />
                                 <path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z" />
@@ -1201,7 +1013,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
                                 {availableFunFacts.length > 0
                                     ? `Surprising trivia \u00B7 ${seenFunFactCount}/${availableFunFacts.length} discovered`
-                                    : 'Learn events to unlock fun facts'
+                                    : 'Learn concepts to unlock fun facts'
                                 }
                             </p>
                         </div>
@@ -1224,28 +1036,28 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         alignItems: 'center',
                     }}>
                         <div style={{ textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-burgundy)', lineHeight: 1.1 }}>
+                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                 {ch.soloHighScore || 0}
                             </p>
                             <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\u2B50'} Best</p>
                         </div>
                         {allTimeAccuracy !== null && (
                             <div style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-burgundy)', lineHeight: 1.1 }}>
+                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                     {allTimeAccuracy}%
                                 </p>
                                 <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAF'} Accuracy</p>
                             </div>
                         )}
                         <div style={{ textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-burgundy)', lineHeight: 1.1 }}>
+                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                 {ch.multiplayerVictories || 0}
                             </p>
                             <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFC6'} Victories</p>
                         </div>
                         {(ch.soloGamesPlayed > 0 || ch.multiplayerGamesPlayed > 0) && (
                             <div style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-burgundy)', lineHeight: 1.1 }}>
+                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                     {(ch.soloGamesPlayed || 0) + (ch.multiplayerGamesPlayed || 0)}
                                 </p>
                                 <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAE'} Games</p>
@@ -1381,7 +1193,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                             padding: '10px 14px',
                                             borderRadius: 10,
                                             border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                                            background: 'var(--color-parchment)',
+                                            background: 'var(--color-surface, #FFFFFF)',
                                             fontWeight: 600,
                                             fontSize: '0.9rem',
                                             color: 'var(--color-ink)',
@@ -1486,7 +1298,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     <Hearts current={currentPlayer?.hearts || 0} max={Math.max(MAX_HEARTS, currentPlayer?.hearts || 0)} />
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         {mode === 'multiplayer' && (
-                            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-burgundy)' }}>
+                            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-primary, #1E3A5F)' }}>
                                 {currentPlayer?.name}
                             </span>
                         )}
@@ -1518,11 +1330,11 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                 {/* Question card */}
                 <div style={{
-                    background: tierInfo?.tier.id === 'god' ? 'rgba(220, 38, 38, 0.06)' : 'var(--color-parchment-dark, #F3ECE2)',
+                    background: tierInfo?.tier.id === 'visionary' ? 'rgba(220, 38, 38, 0.06)' : 'var(--color-surface, #F3ECE2)',
                     borderRadius: 14,
                     padding: '20px 16px',
                     flex: 1,
-                    border: tierInfo?.tier.id === 'god' ? '1.5px solid rgba(220, 38, 38, 0.2)' : 'none',
+                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.2)' : 'none',
                 }}>
                     <ChallengeQuestion
                         key={`q-${questionIndex}-${currentPlayerIndex}`}
@@ -1573,7 +1385,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                     {/* Score */}
                     <div style={{ marginBottom: 16 }}>
-                        <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-burgundy)' }}>
+                        <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)' }}>
                             {soloScore}/{TOTAL_CHALLENGE_QUESTIONS}
                         </p>
                         <p style={{ fontSize: '0.82rem', color: 'var(--color-ink-muted)' }}>
@@ -1601,8 +1413,8 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     <div style={{
                         display: 'flex', gap: 3, marginBottom: 16, padding: '0 4px',
                     }}>
-                        {CHALLENGE_TIERS.map((tier, tierIdx) => {
-                            const reachedIdx = CHALLENGE_TIERS.indexOf(reachedTier);
+                        {TIER_DISPLAY.map((tier, tierIdx) => {
+                            const reachedIdx = TIER_DISPLAY.indexOf(reachedTier);
                             const progress = getTierProgress(questionIndex);
                             let fillPercent;
                             if (tierIdx < reachedIdx) {
@@ -1640,19 +1452,19 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         marginBottom: 20,
                     }}>
                         <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-serif)' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
                                 {bestStreak}
                             </p>
                             <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>Best Streak</p>
                         </div>
                         <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-serif)' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
                                 +{soloScore * 8}
                             </p>
                             <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>XP Earned</p>
                         </div>
                         <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-serif)' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
                                 {questionIndex + 1}
                             </p>
                             <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>Questions</p>
@@ -1742,7 +1554,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>
                                 {i + 1}. {p.name}
                             </span>
-                            <span style={{ fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-serif)' }}>
+                            <span style={{ fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
                                 {p.score} pts
                             </span>
                         </div>

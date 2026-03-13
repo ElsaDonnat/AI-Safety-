@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { getTodaysDailyQuiz, DAILY_QUIZ_XP_PER_CORRECT } from '../data/dailyQuiz';
-import { getEventsByIds } from '../data/events';
-import { Card, Button, ProgressBar, DiHBadge, StarButton } from './shared';
+import { getConceptsByIds } from '../data/concepts';
+import { Card, Button, ProgressBar, StarButton } from './shared';
 import Mascot from './Mascot';
 import { shareText, buildDailyQuizShareText } from '../services/share';
 import * as feedback from '../services/feedback';
@@ -25,7 +25,7 @@ function shuffleOptions(correct, wrongs) {
 export default function DailyQuizFlow({ onComplete }) {
     const { state, dispatch } = useApp();
     const dailyData = getTodaysDailyQuiz();
-    const events = useMemo(() => getEventsByIds(dailyData.eventIds), [dailyData.eventIds]);
+    const events = useMemo(() => getConceptsByIds(dailyData.cardIds || dailyData.eventIds || []), [dailyData]);
 
     const [phase, setPhase] = useState(PHASES.INTRO);
     const [quizIndex, setQuizIndex] = useState(0);
@@ -54,7 +54,7 @@ export default function DailyQuizFlow({ onComplete }) {
         }
     }, [shareToast]);
 
-    const totalEvents = events.length;
+    const totalCards = events.length;
 
     // ─── INTRO ───
     if (phase === PHASES.INTRO) {
@@ -80,10 +80,10 @@ export default function DailyQuizFlow({ onComplete }) {
                         </div>
 
                         <h2 className="text-2xl font-bold mt-3 mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
-                            This Day in History
+                            Daily AI Safety Quiz
                         </h2>
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
-                            Can you guess what happened?
+                            Can you identify these concepts?
                         </p>
 
                         <div className="daily-quiz-bonus-pill">
@@ -93,7 +93,7 @@ export default function DailyQuizFlow({ onComplete }) {
                         <div className="mt-4 space-y-3 px-4">
                             {events.map((event, i) => (
                                 <div key={i} className="daily-quiz-year-card animate-fade-in-up" style={{ animationDelay: `${i * 150}ms` }}>
-                                    <span className="daily-quiz-year">{event.year}</span>
+                                    <span className="daily-quiz-year">{event.summary || '???'}</span>
                                 </div>
                             ))}
                         </div>
@@ -123,8 +123,8 @@ export default function DailyQuizFlow({ onComplete }) {
             setResults(prev => [...prev, isCorrect ? 'correct' : 'wrong']);
             // Update 'what' mastery — consistent with lesson learn quiz behavior
             dispatch({
-                type: 'UPDATE_EVENT_MASTERY',
-                eventId: event.id,
+                type: 'UPDATE_CARD_MASTERY',
+                cardId: event.id,
                 questionType: 'what',
                 score: isCorrect ? 'green' : 'red',
             });
@@ -136,7 +136,7 @@ export default function DailyQuizFlow({ onComplete }) {
             setSelectedOption(null);
             setAnswered(false);
             setShowCard(false);
-            if (quizIndex + 1 < totalEvents) {
+            if (quizIndex + 1 < totalCards) {
                 setQuizIndex(i => i + 1);
             } else {
                 // Detect streak earning before dispatching XP
@@ -152,9 +152,9 @@ export default function DailyQuizFlow({ onComplete }) {
                 }
                 // Quiz done — calculate XP and dispatch
                 const xpEarned = results.filter(r => r === 'correct').length * DAILY_QUIZ_XP_PER_CORRECT;
-                const eventIds = events.map(e => e.id);
-                dispatch({ type: 'MARK_EVENTS_SEEN', eventIds });
-                dispatch({ type: 'COMPLETE_DAILY_QUIZ', xpEarned, eventIds });
+                const cardIds = events.map(e => e.id);
+                dispatch({ type: 'MARK_CARDS_SEEN', cardIds });
+                dispatch({ type: 'COMPLETE_DAILY_QUIZ', xpEarned, cardIds });
                 if (xpEarned > 0) {
                     dispatch({ type: 'ADD_XP', amount: xpEarned });
                 }
@@ -179,20 +179,22 @@ export default function DailyQuizFlow({ onComplete }) {
                         <div className="flex items-center gap-2">
                             <span className="daily-quiz-bonus-pill-sm">{'2× XP'}</span>
                             <span className="text-sm font-medium" style={{ color: 'var(--color-ink-muted)' }}>
-                                {quizIndex + 1} / {totalEvents}
+                                {quizIndex + 1} / {totalCards}
                             </span>
                         </div>
                     </div>
-                    <ProgressBar value={quizIndex + 1} max={totalEvents} color="#B8860B" />
+                    <ProgressBar value={quizIndex + 1} max={totalCards} color="#B8860B" />
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto">
                     <div className="mt-5 animate-slide-in-right" key={quizIndex}>
-                        {/* Year display */}
+                        {/* Concept hint */}
                         <div className="text-center mb-5">
-                            <span className="daily-quiz-year">{event.year}</span>
                             <p className="text-sm mt-2 font-medium" style={{ color: 'var(--color-ink-muted)' }}>
-                                What happened on {dailyData.dateLabel}, {event.year}?
+                                Which concept matches this description?
+                            </p>
+                            <p className="text-base mt-2 font-semibold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                                {event.quizDescription || event.summary}
                             </p>
                         </div>
 
@@ -248,18 +250,9 @@ export default function DailyQuizFlow({ onComplete }) {
                         {/* Card reveal — the learning moment */}
                         {showCard && (
                             <Card className="mt-4 daily-quiz-card-reveal daily-quiz-learn-card">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <DiHBadge />
-                                    <span className="text-xs font-medium" style={{ color: 'var(--color-ink-faint)' }}>
-                                        {dailyData.dateLabel}, {event.year}
-                                    </span>
-                                </div>
                                 <h3 className="text-base font-bold mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
                                     {event.title}
                                 </h3>
-                                <p className="text-xs font-medium mb-2" style={{ color: '#B8860B' }}>
-                                    {event.location.place}
-                                </p>
                                 <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
                                     {event.description}
                                 </p>
@@ -271,7 +264,7 @@ export default function DailyQuizFlow({ onComplete }) {
                 {showCard && (
                     <div className="flex-shrink-0 mt-auto pt-4 pb-2">
                         <Button className="w-full daily-quiz-btn" onClick={handleNext}>
-                            {quizIndex + 1 < totalEvents ? 'Continue →' : 'See Results'}
+                            {quizIndex + 1 < totalCards ? 'Continue →' : 'See Results'}
                         </Button>
                     </div>
                 )}
@@ -288,14 +281,14 @@ export default function DailyQuizFlow({ onComplete }) {
             <div className="daily-quiz-container animate-fade-in">
                 <div className="flex-1 min-h-0 overflow-y-auto">
                     <div className="py-6 text-center">
-                        <Mascot mood={correctCount === totalEvents ? 'celebrating' : correctCount > 0 ? 'happy' : 'thinking'} size={70} />
+                        <Mascot mood={correctCount === totalCards ? 'celebrating' : correctCount > 0 ? 'happy' : 'thinking'} size={70} />
 
                         <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-serif)' }}>
-                            {correctCount === totalEvents ? 'Perfect!' : correctCount > 0 ? 'Nice work!' : 'Better luck tomorrow!'}
+                            {correctCount === totalCards ? 'Perfect!' : correctCount > 0 ? 'Nice work!' : 'Better luck tomorrow!'}
                         </h2>
 
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
-                            {dailyData.dateLabel} {'·'} {correctCount}/{totalEvents} correct
+                            {dailyData.dateLabel} {'·'} {correctCount}/{totalCards} correct
                         </p>
 
                         {xpEarned > 0 && (
@@ -308,7 +301,7 @@ export default function DailyQuizFlow({ onComplete }) {
                         {/* Acquired cards */}
                         <div className="mt-6 text-left">
                             <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: '#B8860B' }}>
-                                {totalEvents} Bonus Cards Acquired
+                                {totalCards} Bonus Cards Acquired
                             </h3>
                             <div className="space-y-2">
                                 {events.map((event, i) => (
@@ -324,17 +317,14 @@ export default function DailyQuizFlow({ onComplete }) {
                                                 {results[i] === 'correct' ? '✓' : '✗'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <DiHBadge size="sm" />
-                                                </div>
                                                 <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>{event.title}</p>
                                                 <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                                                    {dailyData.dateLabel}, {event.year} {'·'} {event.location.place}
+                                                    {event.summary}
                                                 </p>
                                             </div>
                                             <StarButton
-                                                isStarred={(state.starredEvents || []).includes(event.id)}
-                                                onClick={() => dispatch({ type: 'TOGGLE_STAR', eventId: event.id })}
+                                                isStarred={(state.starredCards || []).includes(event.id)}
+                                                onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: event.id })}
                                                 size={16}
                                             />
                                         </div>
@@ -355,8 +345,8 @@ export default function DailyQuizFlow({ onComplete }) {
                     </Button>
                     <button
                         onClick={async () => {
-                            const text = buildDailyQuizShareText({ correctCount, totalEvents, xpEarned, dateLabel: dailyData.dateLabel });
-                            const result = await shareText({ title: 'Chronos', text });
+                            const text = buildDailyQuizShareText({ correctCount, totalCards, xpEarned, dateLabel: dailyData.dateLabel });
+                            const result = await shareText({ title: 'AI Safety', text });
                             if (result === 'copied') setShareToast(true);
                         }}
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"

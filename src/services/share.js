@@ -2,7 +2,7 @@
  * Text sharing via Web Share API with clipboard fallback.
  */
 
-const STORE_URL = 'https://play.google.com/store/apps/details?id=com.elsadonnat.chronos';
+const STORE_URL = 'https://play.google.com/store/apps/details?id=com.elsadonnat.aisafety';
 
 /**
  * Share text content. Uses Web Share API on Android/mobile,
@@ -36,43 +36,43 @@ export async function shareText({ title, text }) {
 }
 
 export function buildLessonShareText({ lessonTitle, greenCount, totalQuestions, xp, streak }) {
-    const lines = [`I just completed \‘${lessonTitle}\’ on Chronos!`];
-    let stats = `${greenCount}/${totalQuestions} exact \· +${xp} XP`;
-    if (streak > 1) stats += ` \· ${streak}-day streak \�\�`;
+    const lines = [`I just completed '${lessonTitle}' on AI Safety!`];
+    let stats = `${greenCount}/${totalQuestions} exact \u00B7 +${xp} XP`;
+    if (streak > 1) stats += ` \u00B7 ${streak}-day streak \uD83D\uDD25`;
     lines.push(stats);
-    lines.push('', `Learn history with Chronos \— ${STORE_URL}`);
+    lines.push('', `Learn AI safety \u2014 ${STORE_URL}`);
     return lines.join('\n');
 }
 
 export function buildPracticeShareText({ sessionMode, greenCount, totalQuestions, perfectSession }) {
     const lines = [];
     if (perfectSession) {
-        lines.push('Perfect practice session on Chronos! \✨');
+        lines.push('Perfect practice session on AI Safety! \u2728');
     } else {
-        lines.push('Practice session complete on Chronos!');
+        lines.push('Practice session complete on AI Safety!');
     }
-    lines.push(`${sessionMode} \· ${greenCount}/${totalQuestions} exact`);
-    lines.push('', `Learn history with Chronos \— ${STORE_URL}`);
+    lines.push(`${sessionMode} \u00B7 ${greenCount}/${totalQuestions} exact`);
+    lines.push('', `Learn AI safety \u2014 ${STORE_URL}`);
     return lines.join('\n');
 }
 
-export function buildDailyQuizShareText({ correctCount, totalEvents, xpEarned, dateLabel }) {
+export function buildDailyQuizShareText({ correctCount, totalCards, xpEarned, dateLabel }) {
     const lines = [];
-    if (correctCount === totalEvents) {
-        lines.push(`I aced today\’s Chronos daily quiz! \�\�`);
+    if (correctCount === totalCards) {
+        lines.push('I aced today\'s AI Safety daily quiz! \uD83C\uDF1F');
     } else {
-        lines.push(`I scored ${correctCount}/${totalEvents} on today\’s Chronos daily quiz!`);
+        lines.push(`I scored ${correctCount}/${totalCards} on today's AI Safety daily quiz!`);
     }
-    lines.push(`${dateLabel} \· +${xpEarned} XP (2\× bonus!)`);
-    lines.push('', `Learn history with Chronos \— ${STORE_URL}`);
+    lines.push(`${dateLabel} \u00B7 +${xpEarned} XP (2\u00D7 bonus!)`);
+    lines.push('', `Learn AI safety \u2014 ${STORE_URL}`);
     return lines.join('\n');
 }
 
 export function buildAchievementShareText({ title, emoji }) {
     const lines = [
-        `I just unlocked '${title}' ${emoji} on Chronos!`,
+        `I just unlocked '${title}' ${emoji} on AI Safety!`,
         '',
-        `Learn history with Chronos \u2014 ${STORE_URL}`,
+        `Learn AI safety \u2014 ${STORE_URL}`,
     ];
     return lines.join('\n');
 }
@@ -80,11 +80,11 @@ export function buildAchievementShareText({ title, emoji }) {
 export function buildStreakShareText({ currentStreak }) {
     const lines = [];
     if (currentStreak >= 7) {
-        lines.push(`I\’m on a ${currentStreak}-day learning streak on Chronos! \�\�`);
+        lines.push(`I'm on a ${currentStreak}-day learning streak on AI Safety! \uD83D\uDD25`);
         lines.push('Can you beat it?');
     } else {
-        lines.push(`I\’ve been learning history ${currentStreak} day${currentStreak === 1 ? '' : 's'} in a row on Chronos! \�\�`);
+        lines.push(`I've been learning AI safety ${currentStreak} day${currentStreak === 1 ? '' : 's'} in a row on AI Safety! \uD83D\uDD25`);
     }
-    lines.push('', `Learn history with Chronos \— ${STORE_URL}`);
+    lines.push('', `Learn AI safety \u2014 ${STORE_URL}`);
     return lines.join('\n');
 }

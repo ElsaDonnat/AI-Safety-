@@ -5,7 +5,7 @@ import { useAchievementChecker, ALL_ACHIEVEMENTS } from './data/achievements';
 import TopBar from './components/TopBar';
 import Sidebar, { MobileTabBar } from './components/layout/Sidebar';
 import LearnPage from './pages/LearnPage';
-import TimelinePage from './pages/TimelinePage';
+import LibraryPage from './pages/LibraryPage';
 import PracticePage from './pages/PracticePage';
 import ChallengePage from './pages/ChallengePage';
 import Settings from './components/Settings';
@@ -23,9 +23,9 @@ import {
 import * as feedback from './services/feedback';
 import * as ambientMusic from './services/ambientMusic';
 
-const TAB_KEYS = { '1': 'learn', '2': 'timeline', '3': 'practice', '4': 'challenge' };
+const TAB_KEYS = { '1': 'learn', '2': 'library', '3': 'practice', '4': 'challenge' };
 const RATING_MILESTONE = 3; // Show rating prompt after completing 3 lessons
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.elsadonnat.chronos';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.elsadonnat.aisafety';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(() => {
@@ -103,7 +103,7 @@ export default function App() {
       const todayStr = new Date().toISOString().split('T')[0];
       let dailyCount = 0;
       try {
-        const raw = localStorage.getItem('chronos-encourage-today');
+        const raw = localStorage.getItem('aisafety-encourage-today');
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed.date === todayStr) dailyCount = parsed.count;
@@ -112,7 +112,7 @@ export default function App() {
       if (dailyCount >= 4) return;
 
       encourageSessionCountRef.current += 1;
-      localStorage.setItem('chronos-encourage-today', JSON.stringify({
+      localStorage.setItem('aisafety-encourage-today', JSON.stringify({
         date: todayStr, count: dailyCount + 1,
       }));
       // Defer setState to avoid synchronous setState-in-effect
@@ -174,9 +174,9 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Detect lesson 0 completion during onboarding
+  // Detect first lesson completion during onboarding
   useEffect(() => {
-    if (state.onboardingStep === 'guide_lesson0' && state.completedLessons['lesson-0']) {
+    if (state.onboardingStep === 'topic_overview' && Object.keys(state.completedLessons).length > 0) {
       dispatch({ type: 'SET_ONBOARDING_STEP', step: 'complete' });
     }
   }, [state.completedLessons, state.onboardingStep, dispatch]);
@@ -221,9 +221,7 @@ export default function App() {
 
   // Determine if onboarding overlay should show
   const showOnboardingOverlay = state.onboardingStep
-    && state.onboardingStep !== 'complete'
-    && state.onboardingStep !== 'placement_active'
-    && state.onboardingStep !== 'guide_lesson0';
+    && state.onboardingStep !== 'complete';
 
   // Widget deep-link: listen for "open to practice" event from native widget tap
   useEffect(() => {
@@ -286,7 +284,7 @@ export default function App() {
           <div className={`main-content-inner${inSession ? ' in-session' : ''}`}>
             <div className="animate-fade-in" key={activeTab}>
               {activeTab === 'learn' && <LearnPage onSessionChange={setInSession} registerBackHandler={registerBackHandler} onTabChange={setActiveTab} />}
-              {activeTab === 'timeline' && <TimelinePage />}
+              {activeTab === 'library' && <LibraryPage />}
               {activeTab === 'practice' && <PracticePage onSessionChange={setInSession} registerBackHandler={registerBackHandler} />}
               {activeTab === 'challenge' && <ChallengePage onSessionChange={setInSession} registerBackHandler={registerBackHandler} />}
             </div>
@@ -297,7 +295,7 @@ export default function App() {
       {state.settingsOpen && <Settings />}
       {shouldShowRating && (
         <ConfirmModal
-          title="Enjoying Chronos?"
+          title="Enjoying AI Safety?"
           message="You've completed 3 lessons! If you're enjoying the app, a quick rating on the Play Store would mean a lot."
           confirmLabel="Rate Now"
           cancelLabel="Maybe Later"
@@ -330,7 +328,7 @@ export default function App() {
       {shouldShowMusicPrompt && (
         <ConfirmModal
           title="Background Music"
-          message="Chronos plays a relaxing ambient soundscape while you study. You can adjust the music and sound effect volumes separately in Settings — or slide them all the way down to mute."
+          message="AI Safety plays a relaxing ambient soundscape while you study. You can adjust the music and sound effect volumes separately in Settings — or slide them all the way down to mute."
           confirmLabel="Got It"
           cancelLabel="Mute Music"
           onConfirm={() => dispatch({ type: 'DISMISS_MUSIC_PROMPT' })}

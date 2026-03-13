@@ -1,4 +1,4 @@
-// ─── SM-2 Variant Spaced Repetition for Chronos ─────
+// ─── SM-2 Variant Spaced Repetition ─────
 // Pure functions — no React dependencies.
 //
 // green  → correct, grow interval
@@ -106,8 +106,8 @@ export function getCardStatus(eventId, eventMastery, srSchedule, skippedEvents) 
     const reviewCount = sr?.reviewCount ?? 0;
     const interval = sr?.interval ?? 0;
 
-    // Fully Assimilated: high mastery + long intervals + several reviews
-    if (overallMastery >= 10 && interval >= 14 && reviewCount >= 3) {
+    // Fully Assimilated: high mastery + long intervals + several reviews (max mastery = 9)
+    if (overallMastery >= 8 && interval >= 14 && reviewCount >= 3) {
         return 'fully_assimilated';
     }
 
@@ -146,8 +146,8 @@ export function getStatusCounts(seenEvents, eventMastery, srSchedule, skippedEve
  */
 export function calculateInitialInterval(mastery) {
     const om = mastery?.overallMastery ?? 0;
-    if (om >= 10) return 7;
-    if (om >= 7) return 3;
+    if (om >= 8) return 7;
+    if (om >= 6) return 3;
     if (om >= 4) return 1;
     return 0;
 }

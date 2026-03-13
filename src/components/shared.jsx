@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, forwardRef } from 'react';
-import { CATEGORY_CONFIG, IMPORTANCE_CONFIG, getRelatedEvents } from '../data/events';
+import { CATEGORY_CONFIG } from '../data/concepts';
 import * as feedback from '../services/feedback';
 
 /** Truncates text to `lines` lines with a "Read more / Less" toggle. */
@@ -66,11 +66,11 @@ export function CategoryTag({ category }) {
 }
 
 const CATEGORY_ICON_PATHS = {
-    science: <><circle cx="12" cy="18" r="4" /><line x1="12" y1="14" x2="12" y2="5" /><line x1="9" y1="9" x2="15" y2="9" /><circle cx="12" cy="4" r="1" /></>,
-    war: <><path d="M5 3l14 14" /><path d="M19 3L5 17" /><path d="M5 17l2 2 2-2" /><path d="M19 17l-2 2-2-2" /></>,
-    politics: <><path d="M4 21h16V10H4z" /><path d="M5 10l7-7 7 7" /><line x1="9" y1="21" x2="9" y2="14" /><line x1="15" y1="21" x2="15" y2="14" /></>,
-    culture: <><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1 0 2-.8 2-2 0-.5-.2-1-.5-1.3-.3-.3-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.5c3 0 5.5-2.5 5.5-5.5C23 6 18 2 12 2z" /><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none" /><circle cx="15" cy="8" r="1.5" fill="currentColor" stroke="none" /><circle cx="17" cy="13" r="1.5" fill="currentColor" stroke="none" /></>,
-    revolution: <><path d="M12 22V8" /><path d="M12 8c0-4-3-6-6-6 0 3 2 5.5 6 6z" /><path d="M12 8c0-4 3-6 6-6 0 3-2 5.5-6 6z" /><path d="M12 14c0-2.5-2-4-4-4.5" /><path d="M12 14c0-2.5 2-4 4-4.5" /></>,
+    technical: <><circle cx="12" cy="12" r="3" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
+    alignment: <><circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" /></>,
+    policy: <><path d="M4 21h16V10H4z" /><path d="M5 10l7-7 7 7" /><line x1="9" y1="21" x2="9" y2="14" /><line x1="15" y1="21" x2="15" y2="14" /></>,
+    ethics: <><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></>,
+    risks: <><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></>,
 };
 
 export function CategoryIcon({ category, size = 16, color }) {
@@ -86,17 +86,8 @@ export function CategoryIcon({ category, size = 16, color }) {
     );
 }
 
-export function ImportanceTag({ importance }) {
-    const config = IMPORTANCE_CONFIG[importance];
-    if (!config) return null;
-    return (
-        <span
-            className="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-md flex-shrink-0"
-            style={{ color: config.color, backgroundColor: config.bg }}
-        >
-            {config.label}
-        </span>
-    );
+export function ImportanceTag() {
+    return null;
 }
 
 export function DiHBadge({ size = 'sm' }) {
@@ -135,8 +126,8 @@ export function MasteryDots({ mastery, size = 'sm' }) {
         return 'var(--color-ink-faint)';
     };
 
-    const labels = ['Where', 'When', 'What', 'Why'];
-    const scores = [mastery?.locationScore, mastery?.dateScore, mastery?.whatScore, mastery?.descriptionScore];
+    const labels = ['What', 'Why', 'How'];
+    const scores = [mastery?.whatScore, mastery?.whyScore, mastery?.howScore];
 
     return (
         <div className={`flex items-center ${gap}`} title={scores.map((s, i) => `${labels[i]}: ${s || 'not tested'}`).join(', ')}>
@@ -443,22 +434,28 @@ export function TabSelector({ tabs, activeTab, onChange }) {
     );
 }
 
-/** Shows cause-and-effect connections for an event. */
-export function EventConnections({ eventId, seenEventIds, onEventClick, showAll = false }) {
-    const connections = getRelatedEvents(eventId, showAll ? null : seenEventIds);
-    if (connections.length === 0) return null;
+/** Shows linked cards for a concept. */
+export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
+    const concept = allConcepts.find(c => c.id === cardId);
+    if (!concept || !concept.linkedCards || concept.linkedCards.length === 0) return null;
+
+    const linkedConcepts = concept.linkedCards
+        .map(id => allConcepts.find(c => c.id === id))
+        .filter(Boolean);
+
+    if (linkedConcepts.length === 0) return null;
 
     return (
         <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
             <p className="text-[11px] uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
-                Connected Events
+                Related Concepts
             </p>
-            {connections.map(conn => (
+            {linkedConcepts.map(conn => (
                 <div
                     key={conn.id}
-                    className={`flex items-start gap-2 text-xs py-1.5 ${onEventClick ? 'cursor-pointer active:opacity-70' : ''}`}
+                    className={`flex items-start gap-2 text-xs py-1.5 ${onCardClick ? 'cursor-pointer active:opacity-70' : ''}`}
                     style={{ color: 'var(--color-ink-muted)' }}
-                    onClick={onEventClick ? (e) => { e.stopPropagation(); onEventClick(conn.id); } : undefined}
+                    onClick={onCardClick ? (e) => { e.stopPropagation(); onCardClick(conn.id); } : undefined}
                 >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
                         stroke={CATEGORY_CONFIG[conn.category]?.color || '#999'}
@@ -469,12 +466,6 @@ export function EventConnections({ eventId, seenEventIds, onEventClick, showAll 
                         <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
                             {conn.title}
                         </span>
-                        <span className="ml-1" style={{ color: 'var(--color-ink-faint)' }}>
-                            ({conn.date})
-                        </span>
-                        <p className="text-[11px] leading-snug mt-0.5" style={{ color: 'var(--color-ink-muted)', fontStyle: 'italic' }}>
-                            {conn.connectionLabel}
-                        </p>
                     </div>
                 </div>
             ))}
