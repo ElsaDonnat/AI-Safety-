@@ -7,6 +7,7 @@ import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmMo
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS } from '../../data/lessons';
+import { cardImage } from '../../utils/images';
 import * as feedback from '../../services/feedback';
 import { shareText, buildLessonShareText } from '../../services/share';
 import StreakFlame from '../StreakFlame';
@@ -378,6 +379,14 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     )}
                                 </div>
                             </div>
+                            {concept.image && (
+                                <img
+                                    src={cardImage(concept.image)}
+                                    alt={concept.title}
+                                    className="w-full h-40 object-cover rounded-xl mt-3 mb-2"
+                                    loading="lazy"
+                                />
+                            )}
                             <h2 className="text-xl font-bold mt-3 mb-2 leading-snug" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>{concept.title}</h2>
                             {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-ink-secondary)' }}>

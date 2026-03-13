@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
+import { cardImage } from '../utils/images';
 
 export default function LibraryPage() {
     const { state, dispatch } = useApp();
@@ -168,6 +169,14 @@ export default function LibraryPage() {
                             </div>
                             {isExpanded && (
                                 <div className="mt-3 pt-3 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+                                    {concept.image && (
+                                        <img
+                                            src={cardImage(concept.image)}
+                                            alt={concept.title}
+                                            className="w-full h-36 object-cover rounded-lg mb-3"
+                                            loading="lazy"
+                                        />
+                                    )}
                                     <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
                                         {concept.description}
                                     </p>

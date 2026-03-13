@@ -16,6 +16,7 @@ const CORE_CONCEPTS = [
         linkedCards: ['c2', 'c5'],
         importance: 1,
         isFoundational: true,
+        image: 'value-alignment.webp',
     },
     {
         id: 'c2',
@@ -31,6 +32,7 @@ const CORE_CONCEPTS = [
         linkedCards: ['c1'],
         importance: 2,
         isFoundational: false,
+        image: 'rlhf.webp',
     },
     {
         id: 'c3',
@@ -46,6 +48,7 @@ const CORE_CONCEPTS = [
         linkedCards: ['c4'],
         importance: 1,
         isFoundational: true,
+        image: 'mechanistic-interpretability.webp',
     },
     {
         id: 'c4',
@@ -61,6 +64,7 @@ const CORE_CONCEPTS = [
         linkedCards: ['c3'],
         importance: 2,
         isFoundational: false,
+        image: 'superposition.webp',
     },
     {
         id: 'c5',
@@ -76,6 +80,7 @@ const CORE_CONCEPTS = [
         linkedCards: ['c1'],
         importance: 1,
         isFoundational: true,
+        image: 'ai-governance.webp',
     },
     {
         id: 'c6',
