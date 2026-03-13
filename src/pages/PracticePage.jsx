@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
-import { LESSONS } from '../data/lessons';
+import { LESSONS, TOPICS } from '../data/lessons';
 import { generateWhatOptions, generateDescriptionOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
@@ -10,7 +10,7 @@ import * as feedback from '../services/feedback';
 import { shareText, buildPracticeShareText } from '../services/share';
 import StreakCelebration from '../components/StreakCelebration';
 
-// ─── Matching colors (same palette as Lesson0Flow) ───
+// ─── Matching colors (same palette as learn flow) ───
 const MATCH_COLORS = [
     '#9B8EC4', '#5A9BD5', '#D98C3B', '#D4739D', '#6BAFAC',
 ];
@@ -36,7 +36,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     const [sessionMode, setSessionMode] = useState(null);
     const [selectedLessons, setSelectedLessons] = useState([]);
     const [collectionSort, setCollectionSort] = useState('success'); // success | times
-    const [expandedEventId, setExpandedEventId] = useState(() => {
+    const [expandedCardId, setExpandedCardId] = useState(() => {
         if (window.AISAFETY_OPEN_CARD) {
             const id = window.AISAFETY_OPEN_CARD;
             window.AISAFETY_OPEN_CARD = null;
@@ -76,69 +76,67 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     }, [view, registerBackHandler]);
 
     // ─── Derived data ────────────────────────────────
-    const learnedEvents = useMemo(() => {
+    const learnedConcepts = useMemo(() => {
         return (state.seenCards || []).map(id => getConceptById(id)).filter(Boolean);
     }, [state.seenCards]);
 
-    const starredEvents = useMemo(() => {
+    const starredConcepts = useMemo(() => {
         return (state.starredCards || []).map(id => getConceptById(id)).filter(Boolean);
     }, [state.starredCards]);
 
-    const eventStats = useMemo(() => {
-        return learnedEvents.map(e => {
-            const mastery = state.cardMastery[e.id];
+    const conceptStats = useMemo(() => {
+        return learnedConcepts.map(c => {
+            const mastery = state.cardMastery[c.id];
             const overall = mastery?.overallMastery ?? 0;
             const timesReviewed = mastery?.timesReviewed ?? 0;
-            const successRate = timesReviewed > 0 ? Math.round((overall / 12) * 100) : 0;
-            const cardStatus = getCardStatus(e.id, state.cardMastery, state.srSchedule || {}, state.skippedEvents || []);
-            return { event: e, mastery, overall, timesReviewed, successRate, cardStatus };
+            const successRate = timesReviewed > 0 ? Math.round((overall / 9) * 100) : 0;
+            const cardStatus = getCardStatus(c.id, state.cardMastery, state.srSchedule || {}, []);
+            return { concept: c, mastery, overall, timesReviewed, successRate, cardStatus };
         });
-    }, [learnedEvents, state.cardMastery, state.srSchedule, state.skippedEvents]);
+    }, [learnedConcepts, state.cardMastery, state.srSchedule]);
 
-    // 4-status card tiers (replaces old 3-tier system)
+    // 4-status card tiers
     const statusTiers = useMemo(() => {
-        const newCards = eventStats.filter(s => s.cardStatus === 'new');
-        const learning = eventStats.filter(s => s.cardStatus === 'learning');
-        const known = eventStats.filter(s => s.cardStatus === 'known');
-        const assimilated = eventStats.filter(s => s.cardStatus === 'fully_assimilated');
+        const newCards = conceptStats.filter(s => s.cardStatus === 'new');
+        const learning = conceptStats.filter(s => s.cardStatus === 'learning');
+        const known = conceptStats.filter(s => s.cardStatus === 'known');
+        const assimilated = conceptStats.filter(s => s.cardStatus === 'fully_assimilated');
         return { new: newCards, learning, known, fully_assimilated: assimilated };
-    }, [eventStats]);
+    }, [conceptStats]);
 
-    // Spaced repetition: events due for review
-    const dueEvents = useMemo(() => {
+    // Spaced repetition: cards due for review
+    const dueCards = useMemo(() => {
         return getDueEvents(state.srSchedule || {}, state.seenCards || []);
     }, [state.srSchedule, state.seenCards]);
 
-    const weakEvents = useMemo(() => {
-        return [...eventStats].sort((a, b) => a.overall - b.overall);
-    }, [eventStats]);
+    const weakConcepts = useMemo(() => {
+        return [...conceptStats].sort((a, b) => a.overall - b.overall);
+    }, [conceptStats]);
 
-    // Group results by event for per-event breakdown (used in RESULTS view)
-    const eventBreakdown = useMemo(() => {
+    // Group results by card for per-card breakdown (used in RESULTS view)
+    const cardBreakdown = useMemo(() => {
         const map = {};
         results.forEach(r => {
-            if (!map[r.eventId]) map[r.eventId] = { event: getConceptById(r.eventId), questions: [] };
-            map[r.eventId].questions.push(r);
+            if (!map[r.cardId]) map[r.cardId] = { concept: getConceptById(r.cardId), questions: [] };
+            map[r.cardId].questions.push(r);
         });
         return Object.values(map);
     }, [results]);
 
     // ─── Select 4 cards for a matching question ─────
-    const selectMatchEvents = (pool) => {
+    const selectMatchConcepts = (pool) => {
         if (pool.length < 4) return null;
         const scoreOrder = { red: 0, null: 1, undefined: 1, yellow: 2, green: 3 };
-        // Sort by weakness (weakest first)
         const sorted = [...pool].sort((a, b) => {
             const aScore = scoreOrder[state.cardMastery[a.id]?.whyScore] ?? 1;
             const bScore = scoreOrder[state.cardMastery[b.id]?.whyScore] ?? 1;
             return aScore - bScore;
         });
-        // Group by topic, pick 1 per topic for diversity
         const byTopic = {};
-        for (const ev of sorted) {
-            const topicId = ev.topic || 'other';
+        for (const c of sorted) {
+            const topicId = c.topic || 'other';
             if (!byTopic[topicId]) byTopic[topicId] = [];
-            byTopic[topicId].push(ev);
+            byTopic[topicId].push(c);
         }
         const picked = [];
         const topics = Object.keys(byTopic);
@@ -146,14 +144,13 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
             if (picked.length >= 4) break;
             picked.push(byTopic[topic][0]);
         }
-        // Fill remaining from weakest overall
         if (picked.length < 4) {
-            const pickedIds = new Set(picked.map(e => e.id));
-            for (const ev of sorted) {
+            const pickedIds = new Set(picked.map(c => c.id));
+            for (const c of sorted) {
                 if (picked.length >= 4) break;
-                if (!pickedIds.has(ev.id)) {
-                    picked.push(ev);
-                    pickedIds.add(ev.id);
+                if (!pickedIds.has(c.id)) {
+                    picked.push(c);
+                    pickedIds.add(c.id);
                 }
             }
         }
@@ -161,29 +158,27 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     };
 
     // ─── Question generation ─────────────────────────
-    const generateQuestionsForPool = (eventPool) => {
+    const generateQuestionsForPool = (conceptPool) => {
         const qList = [];
-        const shuffled = shuffle([...eventPool]);
+        const shuffled = shuffle([...conceptPool]);
         const pool = shuffled.slice(0, 15);
 
-        // Try to create one match question (counts as 2 slots)
-        const matchEvents = selectMatchEvents(pool);
-        const _MatchEventIds = matchEvents ? new Set(matchEvents.map(e => e.id)) : new Set();
+        const matchConcepts = selectMatchConcepts(pool);
         let matchQuestion = null;
-        if (matchEvents) {
+        if (matchConcepts) {
             matchQuestion = {
                 type: 'match',
-                events: matchEvents,
-                names: shuffle(matchEvents.map(e => ({ id: e.id, label: e.title }))),
-                dates: shuffle(matchEvents.map(e => ({ id: e.id, label: e.date }))),
+                concepts: matchConcepts,
+                names: shuffle(matchConcepts.map(c => ({ id: c.id, label: c.title }))),
+                descriptions: shuffle(matchConcepts.map(c => ({ id: c.id, label: c.summary }))),
                 key: `practice-match-${Date.now()}-${Math.random()}`,
             };
         }
 
         const regularCap = matchQuestion ? 10 : 12;
 
-        for (const event of pool) {
-            const mastery = state.cardMastery[event.id];
+        for (const concept of pool) {
+            const mastery = state.cardMastery[concept.id];
             const scores = {
                 what: mastery?.whatScore,
                 why: mastery?.whyScore,
@@ -197,16 +192,15 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
             const numQs = Math.min(2, types.filter(t => (scoreOrder[t[1]] ?? 1) < 3).length || 1);
             for (let i = 0; i < numQs && i < types.length; i++) {
                 qList.push({
-                    event,
+                    concept,
                     type: types[i][0],
-                    key: `practice-${event.id}-${types[i][0]}-${Date.now()}-${Math.random()}`,
+                    key: `practice-${concept.id}-${types[i][0]}-${Date.now()}-${Math.random()}`,
                 });
             }
             if (qList.length >= regularCap) break;
         }
 
         const allQuestions = shuffle(qList);
-        // Insert match question at a random position
         if (matchQuestion) {
             const pos = Math.floor(Math.random() * (allQuestions.length + 1));
             allQuestions.splice(pos, 0, matchQuestion);
@@ -214,8 +208,8 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
         return allQuestions;
     };
 
-    const startSession = (mode, eventPool) => {
-        const qs = generateQuestionsForPool(eventPool);
+    const startSession = (mode, conceptPool) => {
+        const qs = generateQuestionsForPool(conceptPool);
         if (qs.length === 0) return;
         setSessionQuestions(qs);
         setCurrentIndex(0);
@@ -227,69 +221,40 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     };
 
     const startSpacedReview = () => {
-        // Prioritize due events, then weak events as fallback
-        const dueIds = dueEvents.slice(0, 15).map(d => d.eventId);
+        const dueIds = dueCards.slice(0, 15).map(d => d.eventId);
         const duePool = dueIds.map(id => getConceptById(id)).filter(Boolean);
         if (duePool.length > 0) {
             startSession('Spaced Review', duePool);
         } else {
-            // No events due — fall back to weak events
-            const pool = weakEvents.filter(w => w.overall < 7).map(w => w.event);
-            startSession('Spaced Review', pool.length > 0 ? pool : learnedEvents);
+            const pool = weakConcepts.filter(w => w.overall < 7).map(w => w.concept);
+            startSession('Spaced Review', pool.length > 0 ? pool : learnedConcepts);
         }
     };
 
     const startFavorites = () => {
-        startSession('Favorites', starredEvents);
+        startSession('Favorites', starredConcepts);
     };
 
     const startLessonPractice = () => {
-        const eventIds = selectedLessons.flatMap(lessonId => {
+        const cardIds = selectedLessons.flatMap(lessonId => {
             const lesson = LESSONS.find(l => l.id === lessonId);
             return lesson ? lesson.cardIds : [];
         });
-        const events = [...new Set(eventIds)].map(id => getConceptById(id)).filter(Boolean);
-        const learned = events.filter(e => (state.seenCards || []).includes(e.id));
-        startSession('By Lesson', learned.length > 0 ? learned : events);
+        const concepts = [...new Set(cardIds)].map(id => getConceptById(id)).filter(Boolean);
+        const learned = concepts.filter(c => (state.seenCards || []).includes(c.id));
+        startSession('By Lesson', learned.length > 0 ? learned : concepts);
         setSelectedLessons([]);
     };
 
     const startByDifficulty = (difficultyLevel) => {
-        const pool = learnedEvents.filter(e => e.difficulty === difficultyLevel);
+        const pool = learnedConcepts.filter(c => c.difficulty === difficultyLevel);
         if (pool.length === 0) return;
         const labels = { 1: 'Beginner', 2: 'Intermediate', 3: 'Advanced' };
-        startSession(`${labels[difficultyLevel] || 'Mixed'} Concepts`, pool);
+        startSession(`${labels[difficultyLevel]} Concepts`, pool);
     };
 
-    const startQuickReview = () => {
-        const scoreOrder = { red: 0, null: 1, undefined: 1, yellow: 2, green: 3 };
-        // Sort by weakest score, pick top 6
-        const pool = [...eventStats]
-            .sort((a, b) => {
-                const aScore = scoreOrder[a.mastery?.whatScore] ?? 1;
-                const bScore = scoreOrder[b.mastery?.whatScore] ?? 1;
-                if (aScore !== bScore) return aScore - bScore;
-                return a.overall - b.overall;
-            })
-            .slice(0, 8);
-        const picked = shuffle(pool).slice(0, 6);
-        const qs = picked.map(({ event }) => ({
-            event,
-            type: 'what',
-            key: `quick-review-${event.id}-${Date.now()}-${Math.random()}`,
-        }));
-        if (qs.length === 0) return;
-        setSessionQuestions(qs);
-        setCurrentIndex(0);
-        setResults([]);
-        setSessionMode('Quick Review');
-        sessionStartTime.current = Date.now();
-        sessionRecorded.current = false;
-        setView(VIEW.SESSION);
-    };
-
-    // ─── No events learned ──────────────────────────
-    if (learnedEvents.length === 0) {
+    // ─── No concepts learned ──────────────────────────
+    if (learnedConcepts.length === 0) {
         return (
             <div className="py-12 text-center animate-fade-in">
                 <Mascot mood="happy" size={70} />
@@ -312,7 +277,6 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 
         const handleSessionNext = () => {
             if (currentIndex + 1 >= sessionQuestions.length) {
-                // Detect streak earning before dispatching XP
                 const today = new Date().toISOString().split('T')[0];
                 const wasActiveToday = state.lastActiveDate === today;
                 let prevStreakStatus = 'inactive';
@@ -323,20 +287,17 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                         prevStreakStatus = 'at-risk';
                     }
                 }
-                // Session complete — calculate XP and show results
                 const xp = results.reduce((s, r) => {
-                    const diff = getConceptById(r.eventId)?.difficulty || 1;
+                    const diff = getConceptById(r.cardId)?.difficulty || 1;
                     return s + (r.score === 'green' ? 5 * diff : r.score === 'yellow' ? 2 * diff : 0);
                 }, 0);
                 if (xp > 0) dispatch({ type: 'ADD_XP', amount: xp });
-                // Record study session
                 if (!sessionRecorded.current && sessionStartTime.current) {
                     sessionRecorded.current = true;
                     const duration = Math.round((Date.now() - sessionStartTime.current) / 1000);
                     setSessionDuration(duration);
                     dispatch({ type: 'RECORD_STUDY_SESSION', duration, sessionType: 'practice', questionsAnswered: results.length });
                 }
-                // Show streak celebration if this is the first activity today
                 if (!wasActiveToday && xp > 0) {
                     const newStreak = prevStreakStatus === 'at-risk' ? state.currentStreak + 1 : 1;
                     setTimeout(() => setStreakCelebration({ previousStatus: prevStreakStatus, newStreak }), 600);
@@ -372,7 +333,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             Exit
                         </button>
                         <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
-                            style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                            style={{ backgroundColor: 'var(--color-accent)', color: 'white' }}>
                             {sessionMode} · {currentIndex + 1}/{sessionQuestions.length}
                         </span>
                     </div>
@@ -383,24 +344,19 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     {q.type === 'match' ? (
                         <PracticeMatchQuestion
                             question={q}
-                            onAnswer={(scores, events, pairs) => {
-                                // Push 2 result entries (match counts as 2 questions)
+                            onAnswer={(scores, concepts, pairs) => {
                                 setResults(prev => [
                                     ...prev,
-                                    { eventId: events[0].id, type: 'match', score: scores[0] },
-                                    { eventId: events[1].id, type: 'match', score: scores[1] },
+                                    { cardId: concepts[0].id, type: 'match', score: scores[0] },
+                                    { cardId: concepts[1].id, type: 'match', score: scores[1] },
                                 ]);
-                                // Update mastery + SR for all 4 matched events
-                                events.forEach(ev => {
-                                    const isCorrect = pairs[ev.id] === ev.id;
-                                    const evScore = isCorrect ? 'green' : 'red';
-                                    dispatch({ type: 'UPDATE_CARD_MASTERY', cardId: ev.id, questionType: 'date', score: evScore });
-                                    const schedule = state.srSchedule?.[ev.id] || { interval: 0, ease: 2.5, reviewCount: 0 };
-                                    const next = calculateNextReview(schedule, evScore);
-                                    dispatch({ type: 'UPDATE_SR_SCHEDULE', cardId: ev.id, ...next });
-                                    if (evScore === 'green' && (state.skippedEvents || []).includes(ev.id)) {
-                                        dispatch({ type: 'REMOVE_SKIPPED_CARD', cardId: ev.id });
-                                    }
+                                concepts.forEach(c => {
+                                    const isCorrect = pairs[c.id] === c.id;
+                                    const cScore = isCorrect ? 'green' : 'red';
+                                    dispatch({ type: 'UPDATE_CARD_MASTERY', cardId: c.id, questionType: 'why', score: cScore });
+                                    const schedule = state.srSchedule?.[c.id] || { interval: 0, ease: 2.5, reviewCount: 0 };
+                                    const next = calculateNextReview(schedule, cScore);
+                                    dispatch({ type: 'UPDATE_SR_SCHEDULE', cardId: c.id, ...next });
                                 });
                             }}
                             onNext={handleSessionNext}
@@ -409,25 +365,20 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     ) : (
                         <PracticeQuestion
                             question={q}
-                            eventMastery={state.cardMastery[q.event.id]}
-                            isStarred={(state.starredCards || []).includes(q.event.id)}
-                            onToggleStar={() => dispatch({ type: 'TOGGLE_STAR', cardId: q.event.id })}
+                            cardMastery={state.cardMastery[q.concept.id]}
+                            isStarred={(state.starredCards || []).includes(q.concept.id)}
+                            onToggleStar={() => dispatch({ type: 'TOGGLE_STAR', cardId: q.concept.id })}
                             onAnswer={(score) => {
-                                setResults(prev => [...prev, { eventId: q.event.id, type: q.type, score }]);
+                                setResults(prev => [...prev, { cardId: q.concept.id, type: q.type, score }]);
                                 dispatch({
                                     type: 'UPDATE_CARD_MASTERY',
-                                    eventId: q.event.id,
-                                    questionType: q.type === 'dateMCQ' ? 'date' : q.type,
+                                    cardId: q.concept.id,
+                                    questionType: q.type,
                                     score,
                                 });
-                                // Update spaced repetition schedule
-                                const schedule = state.srSchedule?.[q.event.id] || { interval: 0, ease: 2.5, reviewCount: 0 };
+                                const schedule = state.srSchedule?.[q.concept.id] || { interval: 0, ease: 2.5, reviewCount: 0 };
                                 const next = calculateNextReview(schedule, score);
-                                dispatch({ type: 'UPDATE_SR_SCHEDULE', cardId: q.event.id, ...next });
-                                // Remove skipped tag on green answer
-                                if (score === 'green' && (state.skippedEvents || []).includes(q.event.id)) {
-                                    dispatch({ type: 'REMOVE_SKIPPED_CARD', cardId: q.event.id });
-                                }
+                                dispatch({ type: 'UPDATE_SR_SCHEDULE', cardId: q.concept.id, ...next });
                             }}
                             onNext={handleSessionNext}
                             onBack={currentIndex > 0 ? () => setCurrentIndex(i => i - 1) : null}
@@ -458,7 +409,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                         <div className="text-center">
                             <Mascot mood={perfectSession ? 'celebrating' : redCount === 0 ? 'happy' : greenCount > redCount ? 'happy' : 'thinking'} size={70} />
                             <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-serif)' }}>
-                                {perfectSession ? '⭐ Perfect Session!' : 'Practice Complete'}
+                                {perfectSession ? 'Perfect Session!' : 'Practice Complete'}
                             </h2>
                             <p className="text-sm mb-1" style={{ color: 'var(--color-ink-muted)' }}>
                                 {sessionMode} · {results.length} questions · {sessionTimeStr}
@@ -466,7 +417,6 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                         </div>
 
                         <Card className="mt-4">
-                            {/* Score dots */}
                             <div className="flex items-center gap-1 mb-4 justify-center flex-wrap">
                                 {results.map((r, i) => (
                                     <div key={i} className="w-2.5 h-2.5 rounded-full animate-dot-stagger" style={{
@@ -477,11 +427,10 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                                 ))}
                             </div>
 
-                            {/* Score summary */}
                             <div className="grid grid-cols-3 gap-3 text-center">
                                 <div className="animate-scale-in" style={{ animationDelay: '200ms' }}>
                                     <div className="text-lg font-bold" style={{ color: 'var(--color-success)' }}>{greenCount}</div>
-                                    <div className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>Exact</div>
+                                    <div className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>Correct</div>
                                 </div>
                                 <div className="animate-scale-in" style={{ animationDelay: '300ms' }}>
                                     <div className="text-lg font-bold" style={{ color: 'var(--color-warning)' }}>{yellowCount}</div>
@@ -494,26 +443,25 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             </div>
                         </Card>
 
-                        {/* Per-event breakdown */}
                         <h3 className="text-sm font-semibold mt-6 mb-3" style={{ color: 'var(--color-ink-muted)' }}>
-                            Event Breakdown
+                            Card Breakdown
                         </h3>
                         <div className="space-y-2">
-                            {eventBreakdown.map(({ event, questions }) => {
-                                if (!event) return null;
+                            {cardBreakdown.map(({ concept, questions }) => {
+                                if (!concept) return null;
                                 const allGreen = questions.every(q => q.score === 'green');
                                 const hasRed = questions.some(q => q.score === 'red');
                                 const borderColor = allGreen ? 'var(--color-success)' : hasRed ? 'var(--color-error)' : 'var(--color-warning)';
                                 return (
-                                    <Card key={event.id} className="p-3" style={{ borderLeft: `3px solid ${borderColor}` }}>
+                                    <Card key={concept.id} className="p-3" style={{ borderLeft: `3px solid ${borderColor}` }}>
                                         <div className="flex items-center justify-between">
                                             <div className="flex-1 min-w-0">
                                                 <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
-                                                    {event.title}
+                                                    {concept.title}
                                                 </h4>
                                                 <div className="flex items-center gap-2 mt-1">
                                                     {questions.map((q, i) => {
-                                                        const label = q.type === 'why' ? 'Why' : q.type === 'how' ? 'How' : q.type === 'description' ? 'Desc' : q.type === 'match' ? 'Match' : 'What';
+                                                        const label = q.type === 'what' ? 'What' : q.type === 'why' ? 'Why' : q.type === 'how' ? 'How' : q.type === 'match' ? 'Match' : q.type;
                                                         return (
                                                             <span key={i} className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
                                                                 style={{
@@ -529,8 +477,8 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                                                 </div>
                                             </div>
                                             <StarButton
-                                                isStarred={(state.starredCards || []).includes(event.id)}
-                                                onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: event.id })}
+                                                isStarred={(state.starredCards || []).includes(concept.id)}
+                                                onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: concept.id })}
                                                 size={16}
                                             />
                                         </div>
@@ -557,7 +505,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             if (result === 'copied') setShareToast(true);
                         }}
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(139, 65, 87, 0.08)' }}
+                        style={{ color: 'var(--color-primary)', backgroundColor: 'rgba(30, 58, 95, 0.08)' }}
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
@@ -573,7 +521,6 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     )}
                 </div>
 
-                {/* Streak Celebration */}
                 {streakCelebration && (
                     <StreakCelebration
                         previousStatus={streakCelebration.previousStatus}
@@ -593,6 +540,12 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
             !l.isFoundational && l.cardIds.some(id => (state.seenCards || []).includes(id))
         );
 
+        const lessonsByTopic = {};
+        availableLessons.forEach(l => {
+            if (!lessonsByTopic[l.topic]) lessonsByTopic[l.topic] = [];
+            lessonsByTopic[l.topic].push(l);
+        });
+
         return (
             <div className="lesson-flow-container animate-fade-in">
                 <div className="flex-shrink-0 pt-4">
@@ -611,58 +564,68 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 
                     <h2 className="text-lg font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>Choose Lessons</h2>
                     <p className="text-xs mb-4" style={{ color: 'var(--color-ink-muted)' }}>
-                        Select which lessons to practice. Events from all selected lessons will be combined.
+                        Select which lessons to practice. Cards from all selected lessons will be combined.
                     </p>
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto">
-                    <div className="space-y-2">
-                        {availableLessons.map(lesson => {
-                            const isSelected = selectedLessons.includes(lesson.id);
-                            const eventCount = lesson.cardIds.length;
-                            const masteredCount = lesson.cardIds.filter(id => {
-                                const m = state.cardMastery[id];
-                                return m && m.overallMastery >= 7;
-                            }).length;
+                    {TOPICS.map(topic => {
+                        const topicLessons = lessonsByTopic[topic.id] || [];
+                        if (topicLessons.length === 0) return null;
+                        return (
+                            <div key={topic.id} className="mb-4">
+                                <h3 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: topic.color }}>
+                                    {topic.icon} {topic.title}
+                                </h3>
+                                <div className="space-y-2">
+                                    {topicLessons.map(lesson => {
+                                        const isSelected = selectedLessons.includes(lesson.id);
+                                        const cardCount = lesson.cardIds.length;
+                                        const masteredCount = lesson.cardIds.filter(id => {
+                                            const m = state.cardMastery[id];
+                                            return m && m.overallMastery >= 7;
+                                        }).length;
 
-                            return (
-                                <Card
-                                    key={lesson.id}
-                                    onClick={() => {
-                                        setSelectedLessons(prev =>
-                                            prev.includes(lesson.id)
-                                                ? prev.filter(id => id !== lesson.id)
-                                                : [...prev, lesson.id]
+                                        return (
+                                            <Card
+                                                key={lesson.id}
+                                                onClick={() => {
+                                                    setSelectedLessons(prev =>
+                                                        prev.includes(lesson.id)
+                                                            ? prev.filter(id => id !== lesson.id)
+                                                            : [...prev, lesson.id]
+                                                    );
+                                                }}
+                                                className="p-3"
+                                                style={{
+                                                    borderLeft: isSelected ? `3px solid ${topic.color}` : '3px solid transparent',
+                                                    backgroundColor: isSelected ? 'rgba(30, 58, 95, 0.04)' : 'var(--color-card)',
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                                                        style={{
+                                                            backgroundColor: isSelected ? topic.color : 'rgba(var(--color-ink-rgb), 0.06)',
+                                                            color: isSelected ? 'white' : 'var(--color-ink-muted)',
+                                                        }}>
+                                                        {isSelected ? '\u2713' : lesson.number}
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
+                                                            {lesson.title}
+                                                        </h4>
+                                                        <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
+                                                            {cardCount} card{cardCount !== 1 ? 's' : ''} · {masteredCount} mastered
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </Card>
                                         );
-                                    }}
-                                    className="p-3"
-                                    style={{
-                                        borderLeft: isSelected ? '3px solid var(--color-burgundy)' : '3px solid transparent',
-                                        backgroundColor: isSelected ? 'rgba(139, 65, 87, 0.04)' : 'var(--color-card)',
-                                    }}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0
-                                            ${isSelected ? '' : ''}`}
-                                            style={{
-                                                backgroundColor: isSelected ? 'var(--color-burgundy)' : 'rgba(var(--color-ink-rgb), 0.06)',
-                                                color: isSelected ? 'white' : 'var(--color-ink-muted)',
-                                            }}>
-                                            {isSelected ? '\u2713' : lesson.number}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
-                                                {lesson.title}
-                                            </h4>
-                                            <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
-                                                {eventCount} events · {masteredCount} mastered
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Card>
-                            );
-                        })}
-                    </div>
+                                    })}
+                                </div>
+                            </div>
+                        );
+                    })}
 
                     {availableLessons.length === 0 && (
                         <div className="text-center py-8">
@@ -675,7 +638,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 
                 <div className="flex-shrink-0 pt-4 pb-2">
                     <Button className="w-full" disabled={selectedLessons.length === 0} onClick={startLessonPractice}>
-                        Practice {selectedLessons.length > 0 ? `${selectedLessons.length} Lesson${selectedLessons.length > 1 ? 's' : ''}` : ''}  →
+                        Practice {selectedLessons.length > 0 ? `${selectedLessons.length} Lesson${selectedLessons.length > 1 ? 's' : ''}` : ''}
                     </Button>
                 </div>
             </div>
@@ -687,20 +650,18 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     // ═══════════════════════════════════════════════════
     return (
         <div className="py-6 animate-fade-in">
-            {/* Header */}
             <div className="text-center mb-6">
                 <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Practice</h1>
                 <p className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>
-                    {learnedEvents.length} events learned · {starredEvents.length} starred
+                    {learnedConcepts.length} concepts learned · {starredConcepts.length} starred
                 </p>
             </div>
 
-            {/* Tab Selector */}
             <div className="mb-5">
                 <TabSelector
                     tabs={[
-                        { id: 'hub', label: '🎯 Modes' },
-                        { id: 'collection', label: '📚 My Cards' },
+                        { id: 'hub', label: 'Modes' },
+                        { id: 'collection', label: 'My Cards' },
                     ]}
                     activeTab={practiceTab}
                     onChange={setPracticeTab}
@@ -709,30 +670,29 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 
             {practiceTab === 'hub' ? (
                 <HubView
-                    starredEvents={starredEvents}
-                    weakEvents={weakEvents}
+                    starredConcepts={starredConcepts}
+                    weakConcepts={weakConcepts}
                     statusTiers={statusTiers}
-                    dueCount={dueEvents.length}
+                    dueCount={dueCards.length}
                     state={state}
                     dispatch={dispatch}
                     onStartSpacedReview={startSpacedReview}
-                    onStartQuickReview={startQuickReview}
                     onStartFavorites={startFavorites}
                     onOpenLessonPicker={() => setView(VIEW.LESSON_PICKER)}
                     onStartByDifficulty={startByDifficulty}
-                    learnedEvents={learnedEvents}
-                    learnedCount={learnedEvents.length}
+                    learnedConcepts={learnedConcepts}
+                    learnedCount={learnedConcepts.length}
                 />
             ) : (
                 <CollectionView
                     statusTiers={statusTiers}
                     collectionSort={collectionSort}
                     setCollectionSort={setCollectionSort}
-                    expandedEventId={expandedEventId}
-                    setExpandedEventId={setExpandedEventId}
+                    expandedCardId={expandedCardId}
+                    setExpandedCardId={setExpandedCardId}
                     state={state}
                     dispatch={dispatch}
-                    onStartSession={(events) => startSession('Custom', events)}
+                    onStartSession={(concepts) => startSession('Custom', concepts)}
                 />
             )}
         </div>
@@ -742,7 +702,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 // ═══════════════════════════════════════════════════════
 // HUB VIEW — Practice mode cards
 // ═══════════════════════════════════════════════════════
-function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, dispatch, onStartSpacedReview, onStartQuickReview, onStartFavorites, onOpenLessonPicker, onStartByDifficulty, learnedEvents, learnedCount }) {
+function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, dispatch, onStartSpacedReview, onStartFavorites, onOpenLessonPicker, onStartByDifficulty, learnedConcepts }) {
     const [showClearStarsConfirm, setShowClearStarsConfirm] = useState(false);
 
     return (
@@ -751,8 +711,8 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
             <Card onClick={onStartSpacedReview} className="lesson-card-row p-4">
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: 'rgba(139, 65, 87, 0.1)' }}>
-                        <span className="text-lg">🧠</span>
+                        style={{ backgroundColor: 'rgba(30, 58, 95, 0.1)' }}>
+                        <span className="text-lg">&#x1F9E0;</span>
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Spaced Review</h3>
@@ -761,8 +721,8 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                         </p>
                         {dueCount > 0 ? (
                             <div className="flex items-center gap-1.5 mt-2">
-                                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-burgundy)' }} />
-                                <span className="text-[10px] font-semibold" style={{ color: 'var(--color-burgundy)' }}>
+                                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-primary)' }} />
+                                <span className="text-[10px] font-semibold" style={{ color: 'var(--color-primary)' }}>
                                     {dueCount} card{dueCount !== 1 ? 's' : ''} due for review
                                 </span>
                             </div>
@@ -781,39 +741,11 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                 </div>
             </Card>
 
-            {/* Quick Review */}
-            <Card
-                onClick={learnedCount >= 3 ? onStartQuickReview : undefined}
-                className="lesson-card-row p-4"
-                style={{ opacity: learnedCount >= 3 ? 1 : 0.5 }}
-            >
-                <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)' }}>
-                        <span className="text-lg">&#x26A1;</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Quick Review</h3>
-                        <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                            {learnedCount >= 3
-                                ? '6 questions on your weakest concepts'
-                                : 'Learn at least 3 events to unlock'
-                            }
-                        </p>
-                    </div>
-                    {learnedCount >= 3 && (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2" className="mt-2 flex-shrink-0">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    )}
-                </div>
-            </Card>
-
             {/* Favorites */}
             <Card
-                onClick={starredEvents.length > 0 ? onStartFavorites : undefined}
+                onClick={starredConcepts.length > 0 ? onStartFavorites : undefined}
                 className="lesson-card-row p-4"
-                style={{ opacity: starredEvents.length > 0 ? 1 : 0.5 }}
+                style={{ opacity: starredConcepts.length > 0 ? 1 : 0.5 }}
             >
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -823,14 +755,14 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Favorites</h3>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                            {starredEvents.length > 0
-                                ? `${starredEvents.length} starred event${starredEvents.length !== 1 ? 's' : ''} · shuffled`
-                                : 'Star events during lessons to add them here'
+                            {starredConcepts.length > 0
+                                ? `${starredConcepts.length} starred card${starredConcepts.length !== 1 ? 's' : ''} · shuffled`
+                                : 'Star cards during lessons to add them here'
                             }
                         </p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                        {starredEvents.length > 0 && (
+                        {starredConcepts.length > 0 && (
                             <button
                                 onClick={(e) => { e.stopPropagation(); setShowClearStarsConfirm(true); }}
                                 className="text-[10px] font-semibold px-2 py-1 rounded-lg transition-all active:scale-95"
@@ -839,7 +771,7 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                                 Clear all
                             </button>
                         )}
-                        {starredEvents.length > 0 && (
+                        {starredConcepts.length > 0 && (
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2" className="mt-0">
                                 <polyline points="9 18 15 12 9 6" />
                             </svg>
@@ -851,7 +783,7 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
             {showClearStarsConfirm && (
                 <ConfirmModal
                     title="Clear all favorites?"
-                    message={`This will remove ${starredEvents.length} event${starredEvents.length !== 1 ? 's' : ''} from your favorites. You can always star them again later.`}
+                    message={`This will remove ${starredConcepts.length} card${starredConcepts.length !== 1 ? 's' : ''} from your favorites. You can always star them again later.`}
                     confirmLabel="Clear all"
                     onConfirm={() => { dispatch({ type: 'CLEAR_ALL_STARS' }); setShowClearStarsConfirm(false); }}
                     onCancel={() => setShowClearStarsConfirm(false)}
@@ -864,7 +796,7 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(101, 119, 74, 0.1)' }}>
-                        <span className="text-lg">{'\u{1F4DA}'}</span>
+                        <span className="text-lg">{'\uD83D\uDCDA'}</span>
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>By Lesson</h3>
@@ -878,23 +810,25 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                 </div>
             </Card>
 
-            {/* By Importance */}
+            {/* By Difficulty */}
             <Card className="p-4">
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(185, 28, 28, 0.08)' }}>
-                        <span className="text-lg">⭐</span>
+                        <span className="text-lg">&#x1F4CA;</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>By Importance</h3>
+                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>By Difficulty</h3>
                         <p className="text-xs mt-0.5 mb-2.5" style={{ color: 'var(--color-ink-muted)' }}>
-                            Practice concepts filtered by difficulty
+                            Practice concepts filtered by difficulty level
                         </p>
                         <div className="flex flex-wrap gap-1.5">
-                            {[1, 2, 3].map(level => {
-                                const labels = { 1: 'Beginner', 2: 'Intermediate', 3: 'Advanced' };
-                                const colors = { 1: '#059669', 2: '#D97706', 3: '#DC2626' };
-                                const count = learnedEvents.filter(e => e.difficulty === level).length;
+                            {[
+                                { level: 1, label: 'Beginner', color: '#059669', bg: 'rgba(5, 150, 105, 0.1)' },
+                                { level: 2, label: 'Intermediate', color: '#D97706', bg: 'rgba(217, 119, 6, 0.1)' },
+                                { level: 3, label: 'Advanced', color: '#DC2626', bg: 'rgba(220, 38, 38, 0.1)' },
+                            ].map(({ level, label, color, bg }) => {
+                                const count = learnedConcepts.filter(c => c.difficulty === level).length;
                                 const enabled = count > 0;
                                 return (
                                     <button
@@ -902,13 +836,13 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                                         onClick={enabled ? () => onStartByDifficulty(level) : undefined}
                                         className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold transition-all duration-150"
                                         style={{
-                                            backgroundColor: enabled ? `${colors[level]}15` : 'rgba(var(--color-ink-rgb), 0.04)',
-                                            color: enabled ? colors[level] : 'var(--color-ink-faint)',
+                                            backgroundColor: enabled ? bg : 'rgba(var(--color-ink-rgb), 0.04)',
+                                            color: enabled ? color : 'var(--color-ink-faint)',
                                             opacity: enabled ? 1 : 0.45,
                                             cursor: enabled ? 'pointer' : 'default',
                                         }}
                                     >
-                                        {labels[level]}
+                                        {label}
                                         {enabled && <span className="opacity-60">({count})</span>}
                                     </button>
                                 );
@@ -944,30 +878,28 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
                 </div>
             </div>
 
-            {/* Top weak events preview */}
-            {weakEvents.length > 0 && weakEvents[0].overall < 7 && (
+            {/* Top weak concepts preview */}
+            {weakConcepts.length > 0 && weakConcepts[0].overall < 7 && (
                 <div className="mt-2">
                     <h3 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-ink-faint)' }}>
                         Needs Most Attention
                     </h3>
                     <div className="space-y-2">
-                        {weakEvents.slice(0, 4).filter(w => w.overall < 7).map(({ event, mastery }) => (
-                            <Card key={event.id} className="p-3">
+                        {weakConcepts.slice(0, 4).filter(w => w.overall < 7).map(({ concept, mastery }) => (
+                            <Card key={concept.id} className="p-3">
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1 min-w-0">
                                         <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
-                                            {event.title}
+                                            {concept.title}
                                         </h4>
                                         <div className="flex items-center gap-3 mt-1">
                                             <MasteryDots mastery={mastery} />
-                                            <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
-                                                {event.date}
-                                            </span>
+                                            <CategoryTag category={concept.category} />
                                         </div>
                                     </div>
                                     <StarButton
-                                        isStarred={(state.starredCards || []).includes(event.id)}
-                                        onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: event.id })}
+                                        isStarred={(state.starredCards || []).includes(concept.id)}
+                                        onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: concept.id })}
                                         size={16}
                                     />
                                 </div>
@@ -983,7 +915,7 @@ function HubView({ starredEvents, weakEvents, statusTiers, dueCount, state, disp
 // ═══════════════════════════════════════════════════════
 // COLLECTION VIEW — Card triage
 // ═══════════════════════════════════════════════════════
-function CollectionView({ statusTiers, collectionSort, setCollectionSort, expandedEventId, setExpandedEventId, state, dispatch, onStartSession }) {
+function CollectionView({ statusTiers, collectionSort, setCollectionSort, expandedCardId, setExpandedCardId, state, dispatch, onStartSession }) {
     const tierConfig = [
         {
             key: 'new',
@@ -1021,7 +953,6 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
 
     return (
         <div>
-            {/* Sort toggle */}
             <div className="mb-4">
                 <TabSelector
                     tabs={[
@@ -1033,7 +964,6 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                 />
             </div>
 
-            {/* Tier sections */}
             {tierConfig.map(tier => (
                 <div key={tier.key} className="mb-5">
                     <div className="flex items-center gap-2 mb-2">
@@ -1044,11 +974,11 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                         </span>
                         {tier.items.length > 0 && tier.practiceLabel && (
                             <button
-                                onClick={() => onStartSession(tier.items.map(i => i.event))}
+                                onClick={() => onStartSession(tier.items.map(i => i.concept))}
                                 className="ml-auto text-[10px] font-semibold px-2 py-1 rounded-lg transition-all"
                                 style={{ backgroundColor: tier.bg, color: tier.color }}
                             >
-                                {tier.practiceLabel} {'→'}
+                                {tier.practiceLabel} {'\u2192'}
                             </button>
                         )}
                     </div>
@@ -1056,7 +986,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                     {tier.items.length === 0 ? (
                         <div className="text-center py-4 rounded-xl" style={{ backgroundColor: tier.bg }}>
                             <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
-                                {tier.key === 'new' ? 'All events have been reviewed' :
+                                {tier.key === 'new' ? 'All cards have been reviewed' :
                                     tier.key === 'learning' ? 'No cards still learning — great work!' :
                                     tier.key === 'fully_assimilated' ? 'Keep practicing to fully assimilate cards' :
                                     'No cards at this level yet'}
@@ -1067,12 +997,12 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                             {(collectionSort === 'success'
                                 ? [...tier.items].sort((a, b) => a.successRate - b.successRate)
                                 : [...tier.items].sort((a, b) => a.timesReviewed - b.timesReviewed)
-                            ).map(({ event, mastery, timesReviewed, successRate }) => {
-                                const isExpanded = expandedEventId === event.id;
+                            ).map(({ concept, mastery, timesReviewed, successRate }) => {
+                                const isExpanded = expandedCardId === concept.id;
                                 return (
                                     <Card
-                                        key={event.id}
-                                        onClick={() => setExpandedEventId(isExpanded ? null : event.id)}
+                                        key={concept.id}
+                                        onClick={() => setExpandedCardId(isExpanded ? null : concept.id)}
                                         className="p-3"
                                         style={{
                                             borderLeft: `3px solid ${isExpanded ? tier.color : 'transparent'}`,
@@ -1080,12 +1010,9 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                     >
                                         <div className="flex items-center gap-3">
                                             <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2">
-                                                    <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
-                                                        {event.title}
-                                                    </h4>
-
-                                                </div>
+                                                <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
+                                                    {concept.title}
+                                                </h4>
                                                 <div className="flex items-center gap-3 mt-1">
                                                     <MasteryDots mastery={mastery} />
                                                     <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
@@ -1098,8 +1025,8 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                             </div>
                                             <div className="flex items-center gap-2 flex-shrink-0">
                                                 <StarButton
-                                                    isStarred={(state.starredCards || []).includes(event.id)}
-                                                    onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: event.id })}
+                                                    isStarred={(state.starredCards || []).includes(concept.id)}
+                                                    onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: concept.id })}
                                                     size={16}
                                                 />
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2"
@@ -1110,32 +1037,28 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                             </div>
                                         </div>
 
-                                        {/* Expanded detail — same card */}
                                         {isExpanded && (
                                             <div className="animate-fade-in mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                 <div className="flex items-center justify-between mb-2">
                                                     <div className="flex items-center gap-2 flex-wrap">
-                                                        <CategoryTag category={event.category} />
-
-    
+                                                        <CategoryTag category={concept.category} />
+                                                        {concept.tags && concept.tags.slice(0, 3).map(tag => (
+                                                            <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)', color: 'var(--color-ink-muted)' }}>
+                                                                {tag}
+                                                            </span>
+                                                        ))}
                                                     </div>
-                                                    <span className="text-xs font-medium" style={{ color: 'var(--color-burgundy)' }}>
-                                                        {event.date}
+                                                    <span className="text-xs font-medium" style={{ color: 'var(--color-primary)' }}>
+                                                        Difficulty {concept.difficulty}
                                                     </span>
                                                 </div>
                                                 <ExpandableText lines={3} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>
-                                                    {event.keywords && <><strong style={{ color: 'var(--color-ink)' }}>{event.keywords}</strong>{' '}</>}{event.description}
+                                                    {concept.description}
                                                 </ExpandableText>
-                                                <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--color-ink-muted)' }}>
-                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                                                    </svg>
-                                                    {event.location.place}
-                                                </div>
                                                 <div className="flex items-center gap-4 mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Reviewed: </span>
-                                                        <span className="font-bold">{timesReviewed}×</span>
+                                                        <span className="font-bold">{timesReviewed}x</span>
                                                     </div>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Success: </span>
@@ -1160,7 +1083,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
 }
 
 // ═══════════════════════════════════════════════════════
-// PRACTICE MATCH QUESTION — match 4 events to their dates
+// PRACTICE MATCH QUESTION — match 4 concepts to their summaries
 // ═══════════════════════════════════════════════════════
 function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
     const [matchPairs, setMatchPairs] = useState({});
@@ -1171,10 +1094,10 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
     const allPaired = pairCount === 4;
 
     const nameColorMap = {};
-    const dateColorMap = {};
+    const descColorMap = {};
     Object.keys(matchPairs).forEach((nameId, i) => {
         nameColorMap[nameId] = MATCH_COLORS[i % MATCH_COLORS.length];
-        dateColorMap[matchPairs[nameId]] = MATCH_COLORS[i % MATCH_COLORS.length];
+        descColorMap[matchPairs[nameId]] = MATCH_COLORS[i % MATCH_COLORS.length];
     });
 
     const handleNameClick = (nameId) => {
@@ -1182,10 +1105,10 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
         setMatchSelected(matchSelected === nameId ? null : nameId);
     };
 
-    const handleDateClick = (dateId) => {
+    const handleDescClick = (descId) => {
         if (matchChecked) return;
         if (!matchSelected) {
-            const pairedName = Object.entries(matchPairs).find(([, d]) => d === dateId)?.[0];
+            const pairedName = Object.entries(matchPairs).find(([, d]) => d === descId)?.[0];
             if (pairedName) {
                 setMatchPairs(prev => { const next = { ...prev }; delete next[pairedName]; return next; });
             }
@@ -1194,9 +1117,9 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
         setMatchPairs(prev => {
             const next = { ...prev };
             delete next[matchSelected];
-            const existing = Object.entries(next).find(([, d]) => d === dateId)?.[0];
+            const existing = Object.entries(next).find(([, d]) => d === descId)?.[0];
             if (existing) delete next[existing];
-            next[matchSelected] = dateId;
+            next[matchSelected] = descId;
             return next;
         });
         setMatchSelected(null);
@@ -1206,13 +1129,12 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
         if (!allPaired || matchChecked) return;
         const correctCount = question.names.filter(n => matchPairs[n.id] === n.id).length;
         const wrongCount = 4 - correctCount;
-        // Scoring: 0 wrong = 2×green, 1 wrong = green+yellow, 2 wrong = 2×yellow, 3-4 wrong = 2×red
         const scores = wrongCount === 0 ? ['green', 'green']
             : wrongCount === 1 ? ['green', 'yellow']
             : wrongCount === 2 ? ['yellow', 'yellow']
             : ['red', 'red'];
         setMatchChecked(true);
-        onAnswer(scores, question.events, matchPairs);
+        onAnswer(scores, question.concepts, matchPairs);
         if (wrongCount === 0) feedback.forScore('green');
         else if (wrongCount <= 2) feedback.forScore('yellow');
         else feedback.forScore('red');
@@ -1230,14 +1152,13 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                 borderLeft: `3px solid ${SCORE_COLORS[matchScore].border}`
             } : {}}>
                 <p className="text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: 'var(--color-ink-faint)' }}>
-                    Match each event to its date
+                    Match each concept to its description
                 </p>
                 <p className="text-[11px] mb-3" style={{ color: 'var(--color-ink-faint)' }}>
-                    Tap an event, then tap its date
+                    Tap a concept, then tap its description
                 </p>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                    {/* Left column: event names */}
                     <div className="flex flex-col gap-1.5">
                         {question.names.map((n) => {
                             const isPaired = !!matchPairs[n.id];
@@ -1251,8 +1172,8 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                                 bg = isCorrect ? 'rgba(5, 150, 105, 0.1)' : 'rgba(166, 61, 61, 0.1)';
                                 border = isCorrect ? 'var(--color-success)' : 'var(--color-error)';
                             } else if (isActive) {
-                                bg = 'var(--color-burgundy-soft)';
-                                border = 'var(--color-burgundy)';
+                                bg = 'rgba(30, 58, 95, 0.08)';
+                                border = 'var(--color-primary)';
                                 borderStyle = 'dashed';
                             } else if (isPaired && color) {
                                 bg = `${color}18`;
@@ -1274,12 +1195,11 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                         })}
                     </div>
 
-                    {/* Right column: dates */}
                     <div className="flex flex-col gap-1.5">
-                        {question.dates.map((d) => {
-                            const pairedByName = Object.entries(matchPairs).find(([, dateId]) => dateId === d.id)?.[0];
+                        {question.descriptions.map((d) => {
+                            const pairedByName = Object.entries(matchPairs).find(([, descId]) => descId === d.id)?.[0];
                             const isPaired = !!pairedByName;
-                            const color = dateColorMap[d.id];
+                            const color = descColorMap[d.id];
                             let bg = 'var(--color-card)';
                             let border = 'rgba(var(--color-ink-rgb), 0.08)';
                             let borderStyle = 'solid';
@@ -1291,15 +1211,15 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                                 bg = `${color}18`;
                                 border = color;
                             } else if (matchSelected && !isPaired) {
-                                border = 'rgba(139, 65, 87, 0.3)';
+                                border = 'rgba(30, 58, 95, 0.3)';
                                 borderStyle = 'dashed';
                             }
                             return (
-                                <button key={d.id} onClick={() => handleDateClick(d.id)} disabled={matchChecked}
+                                <button key={d.id} onClick={() => handleDescClick(d.id)} disabled={matchChecked}
                                     className="rounded-lg transition-all flex items-center justify-center"
                                     style={{
                                         padding: '10px 6px', minHeight: '44px',
-                                        fontSize: '0.7rem', fontWeight: 500,
+                                        fontSize: '0.65rem', fontWeight: 500,
                                         textAlign: 'center', backgroundColor: bg,
                                         border: `2px ${borderStyle} ${border}`,
                                         color: 'var(--color-ink-secondary)', cursor: matchChecked ? 'default' : 'pointer',
@@ -1329,8 +1249,8 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
             </Card>
             {matchChecked && (
                 <div className="pinned-footer flex gap-3">
-                    {onBack && <Button variant="secondary" onClick={onBack}>{'←'} Back</Button>}
-                    <Button className="flex-1" onClick={onNext}>Continue {'→'}</Button>
+                    {onBack && <Button variant="secondary" onClick={onBack}>{'\u2190'} Back</Button>}
+                    <Button className="flex-1" onClick={onNext}>Continue {'\u2192'}</Button>
                 </div>
             )}
         </div>
@@ -1340,26 +1260,22 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
 // ═══════════════════════════════════════════════════════
 // PRACTICE QUESTION — individual question card
 // ═══════════════════════════════════════════════════════
-function PracticeQuestion({ question, eventMastery, isStarred, onToggleStar, onAnswer, onNext, onBack }) {
-    const { event, type } = question;
+function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAnswer, onNext, onBack }) {
+    const { concept, type } = question;
     const [answered, setAnswered] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [score, setScore] = useState(null);
-    // why and how options generated from description options
-    const [whyOptions] = useState(() => generateDescriptionOptions(event, ALL_CONCEPTS, 2));
 
-    // Scale description difficulty with mastery: low mastery (0-4) → d:2, high mastery (5-9) → d:3
     const descDifficulty = (() => {
-        if (!eventMastery) return 2;
+        if (!cardMastery) return 2;
         const scoreMap = { green: 3, yellow: 1, red: 0 };
-        const overall = (scoreMap[eventMastery.whatScore] ?? 0)
-            + (scoreMap[eventMastery.whyScore] ?? 0)
-            + (scoreMap[eventMastery.howScore] ?? 0);
+        const overall = (scoreMap[cardMastery.whatScore] ?? 0)
+            + (scoreMap[cardMastery.whyScore] ?? 0)
+            + (scoreMap[cardMastery.howScore] ?? 0);
         return overall >= 5 ? 3 : 2;
     })();
-    const [whatOptions] = useState(() => generateWhatOptions(event, ALL_CONCEPTS.map(e => e.id)));
-    const [descriptionOptions] = useState(() => generateDescriptionOptions(event, ALL_CONCEPTS, descDifficulty));
-
+    const [whatOptions] = useState(() => generateWhatOptions(concept, ALL_CONCEPTS.map(c => c.id)));
+    const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, ALL_CONCEPTS, descDifficulty));
 
     const handleMCQ = (answer, correct) => {
         if (answered) return;
@@ -1371,7 +1287,6 @@ function PracticeQuestion({ question, eventMastery, isStarred, onToggleStar, onA
         feedback.forScore(s);
     };
 
-    // ─── Post-answer feedback card ───
     const renderFeedback = () => {
         if (!answered || !score) return null;
         return (
@@ -1386,102 +1301,22 @@ function PracticeQuestion({ question, eventMastery, isStarred, onToggleStar, onA
                 </div>
                 {score !== 'green' && (
                     <div className="mt-2 text-xs leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
-                        <strong>{event.title}</strong> — <span style={{ color: 'var(--color-burgundy)' }}>{event.summary}</span>
+                        <strong>{concept.title}</strong> — {concept.summary}
                     </div>
                 )}
             </div>
         );
     };
 
-    if (type === 'why') {
-        return (
-            <div className="animate-slide-in-right">
-                <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
-                    <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>Why does this matter?</p>
-                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{event.title}</h3>
-                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>{event.summary}</p>
-                    <div className="mcq-options">
-                        {whyOptions.map((opt, i) => {
-                            const isCorrect = opt.isCorrect;
-                            const isSelected = selectedAnswer === i;
-                            let optStyle = {};
-                            if (answered) {
-                                if (isCorrect) optStyle = { backgroundColor: 'rgba(5, 150, 105, 0.1)', borderColor: 'var(--color-success)' };
-                                else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
-                            }
-                            return (
-                                <button key={i} onClick={() => handleMCQ(i, whyOptions.findIndex(o => o.isCorrect))} disabled={answered}
-                                    className="mcq-option"
-                                    style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
-                                    <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
-                                    {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>Correct</span>}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    {renderFeedback()}
-                </Card>
-                {answered ? (
-                    <div className="pinned-footer flex gap-3">
-                        {onBack && <Button variant="secondary" onClick={onBack}>← Back</Button>}
-                        <Button className="flex-1" onClick={onNext}>Continue →</Button>
-                    </div>
-                ) : (
-                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>← Back</Button></div>
-                )}
-            </div>
-        );
-    }
-
-    if (type === 'how') {
-        return (
-            <div className="animate-slide-in-right">
-                <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
-                    <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>How does this work?</p>
-                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{event.title}</h3>
-                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>{event.summary}</p>
-                    <div className="mcq-options">
-                        {descriptionOptions.map((opt, i) => {
-                            const isCorrect = opt.isCorrect;
-                            const isSelected = selectedAnswer === i;
-                            let optStyle = {};
-                            if (answered) {
-                                if (isCorrect) optStyle = { backgroundColor: 'rgba(5, 150, 105, 0.1)', borderColor: 'var(--color-success)' };
-                                else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
-                            }
-                            return (
-                                <button key={i} onClick={() => handleMCQ(i, descriptionOptions.findIndex(o => o.isCorrect))} disabled={answered}
-                                    className="mcq-option"
-                                    style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
-                                    <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
-                                    {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>Correct</span>}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    {renderFeedback()}
-                </Card>
-                {answered ? (
-                    <div className="pinned-footer flex gap-3">
-                        {onBack && <Button variant="secondary" onClick={onBack}>← Back</Button>}
-                        <Button className="flex-1" onClick={onNext}>Continue →</Button>
-                    </div>
-                ) : (
-                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>← Back</Button></div>
-                )}
-            </div>
-        );
-    }
-
     if (type === 'what') {
         return (
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>What is this concept?</p>
-                    <p className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>{event.quizDescription || event.summary}</p>
+                    <p className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>{concept.quizDescription || concept.description.substring(0, 120) + '...'}</p>
                     <div className="mcq-options mcq-options--grid">
                         {whatOptions.map((opt, i) => {
-                            const isCorrect = opt.id === event.id;
+                            const isCorrect = opt.id === concept.id;
                             const isSelected = selectedAnswer === opt.id;
                             let optStyle = {};
                             if (answered) {
@@ -1489,37 +1324,37 @@ function PracticeQuestion({ question, eventMastery, isStarred, onToggleStar, onA
                                 else if (isSelected) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
                             }
                             return (
-                                <button key={i} onClick={() => handleMCQ(opt.id, event.id)} disabled={answered}
+                                <button key={i} onClick={() => handleMCQ(opt.id, concept.id)} disabled={answered}
                                     className="mcq-option"
                                     style={{ ...optStyle }}>
                                     <span className="font-semibold">{opt.title}</span>
-                                    {answered && isCorrect && <span className="ml-2 text-xs" style={{ color: 'var(--color-success)' }}>✓</span>}
+                                    {answered && isCorrect && <span className="ml-2 text-xs" style={{ color: 'var(--color-success)' }}>{'\u2713'}</span>}
                                 </button>
                             );
                         })}
                     </div>
                     {renderFeedback()}
                 </Card>
-
                 {answered ? (
                     <div className="pinned-footer flex gap-3">
-                        {onBack && <Button variant="secondary" onClick={onBack}>← Back</Button>}
-                        <Button className="flex-1" onClick={onNext}>Continue →</Button>
+                        {onBack && <Button variant="secondary" onClick={onBack}>{'\u2190'} Back</Button>}
+                        <Button className="flex-1" onClick={onNext}>Continue {'\u2192'}</Button>
                     </div>
                 ) : (
-                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>← Back</Button></div>
+                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>{'\u2190'} Back</Button></div>
                 )}
             </div>
         );
     }
 
-    if (type === 'description') {
+    if (type === 'why' || type === 'how') {
+        const promptLabel = type === 'why' ? 'Why does this matter?' : 'How does this work?';
         return (
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
-                    <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>Which description fits?</p>
-                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{event.title}</h3>
-                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>{event.summary}</p>
+                    <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>{promptLabel}</p>
+                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{concept.title}</h3>
+                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>{concept.summary}</p>
                     <div className="mcq-options">
                         {descriptionOptions.map((opt, i) => {
                             const isCorrect = opt.isCorrect;
@@ -1532,23 +1367,22 @@ function PracticeQuestion({ question, eventMastery, isStarred, onToggleStar, onA
                             return (
                                 <button key={i} onClick={() => handleMCQ(i, descriptionOptions.findIndex(o => o.isCorrect))} disabled={answered}
                                     className="mcq-option"
-                                    style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
+                                    style={{ borderColor: isSelected && !answered ? 'var(--color-primary)' : undefined, ...optStyle }}>
                                     <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
-                                    {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>✓ Correct</span>}
+                                    {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>{'\u2713'} Correct</span>}
                                 </button>
                             );
                         })}
                     </div>
                     {renderFeedback()}
                 </Card>
-
                 {answered ? (
                     <div className="pinned-footer flex gap-3">
-                        {onBack && <Button variant="secondary" onClick={onBack}>← Back</Button>}
-                        <Button className="flex-1" onClick={onNext}>Continue →</Button>
+                        {onBack && <Button variant="secondary" onClick={onBack}>{'\u2190'} Back</Button>}
+                        <Button className="flex-1" onClick={onNext}>Continue {'\u2192'}</Button>
                     </div>
                 ) : (
-                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>← Back</Button></div>
+                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>{'\u2190'} Back</Button></div>
                 )}
             </div>
         );
