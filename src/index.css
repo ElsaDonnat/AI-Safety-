@@ -46,18 +46,6 @@
   --color-cat-ethics-bg: #ECFDF5;
   --color-cat-risks-bg: #FEF2F2;
 
-  /* Legacy category aliases for compatibility */
-  --color-cat-science: #0D9488;
-  --color-cat-war: #DC2626;
-  --color-cat-politics: #2563EB;
-  --color-cat-culture: #059669;
-  --color-cat-revolution: #7C3AED;
-
-  --color-cat-science-bg: #F0FDFA;
-  --color-cat-war-bg: #FEF2F2;
-  --color-cat-politics-bg: #EFF6FF;
-  --color-cat-culture-bg: #ECFDF5;
-  --color-cat-revolution-bg: #F5F3FF;
 
   /* Fonts */
   --font-serif: 'Space Grotesk', system-ui, sans-serif;
@@ -379,7 +367,7 @@ input, textarea, [contenteditable] {
 }
 
 .sidebar-nav-item--active:hover {
-  background-color: rgba(139, 65, 87, 0.1);
+  background-color: rgba(30, 58, 95, 0.1);
   color: var(--color-burgundy);
 }
 
@@ -607,7 +595,7 @@ input, textarea, [contenteditable] {
 
 .mcq-option:focus-visible {
   border-color: var(--color-burgundy);
-  box-shadow: 0 0 0 2px rgba(139, 65, 87, 0.25);
+  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.25);
   outline: none;
 }
 
@@ -666,8 +654,8 @@ input, textarea, [contenteditable] {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 65, 87, 0.2); }
-  50% { box-shadow: 0 0 0 8px rgba(139, 65, 87, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(30, 58, 95, 0); }
 }
 
 @keyframes countUp {
@@ -789,7 +777,7 @@ input, textarea, [contenteditable] {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(139, 65, 87, 0.08), transparent);
+  background: linear-gradient(90deg, transparent, rgba(30, 58, 95, 0.08), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
@@ -882,8 +870,8 @@ input, textarea, [contenteditable] {
   animation: checkpointEnter 0.35s ease-out backwards;
 }
 @keyframes timelineDotPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 65, 87, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(139, 65, 87, 0.08); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.08); }
 }
 .timeline-dot-current {
   animation: timelineDotPulse 1.5s ease-in-out infinite;
@@ -949,7 +937,7 @@ input, textarea, [contenteditable] {
 
 .result-dot-btn:hover {
   transform: scale(1.6);
-  box-shadow: 0 0 0 3px rgba(139, 65, 87, 0.15);
+  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15);
 }
 
 .result-dot-btn:active {
@@ -1418,8 +1406,8 @@ input, textarea, [contenteditable] {
 }
 
 @keyframes onboardingPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 65, 87, 0.3); }
-  50% { box-shadow: 0 0 0 6px rgba(139, 65, 87, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(30, 58, 95, 0); }
 }
 
 .onboarding-pulse {

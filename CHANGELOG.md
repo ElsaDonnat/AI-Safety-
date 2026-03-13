@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.0 — Content expansion & UI improvements
+
+### Added
+- 10 new AI safety concepts (c6–c15): Reward Hacking, Instrumental Convergence, Constitutional AI, Feature Visualization, Existential Risk, Algorithmic Bias, AI Transparency, Dual-Use Technology, Scalable Oversight, Robustness & Adversarial Attacks
+- 2 new topics: AI Risks and AI Ethics
+- 8 new lessons across all 5 topics
+- Star/favorite functionality in LibraryPage with filter toggle
+- CardConnections component integrated into LibraryPage for navigable related concepts
+
+### Changed
+- Replaced all hardcoded old burgundy RGB values (139,65,87) with navy (30,58,95) across all components
+- Button secondary variant and ControversyNote now use CSS variables instead of hardcoded colors
+- LibraryPage search and starred filter use memoized state for performance
+
+### Removed
+- Empty `BottomNav.jsx` (dead code — MobileTabBar in Sidebar handles mobile nav)
+- Legacy Chronos category CSS aliases (science, war, politics, culture, revolution)
+
 ## 0.1.0 — Initial AI Safety scaffold
 
 Transformed the Chronos history-learning app into an AI Safety learning app.

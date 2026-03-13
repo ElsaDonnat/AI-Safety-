@@ -305,8 +305,8 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                             border = '1.5px solid var(--color-error)';
                             color = 'var(--color-error)';
                         } else {
-                            bg = 'rgba(139, 65, 87, 0.06)';
-                            border = '1.5px solid rgba(139, 65, 87, 0.2)';
+                            bg = 'rgba(30, 58, 95, 0.06)';
+                            border = '1.5px solid rgba(30, 58, 95, 0.2)';
                         }
                     }
 

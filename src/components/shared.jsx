@@ -190,10 +190,10 @@ export const Button = forwardRef(function Button({ children, onClick, variant = 
         primary: {
             backgroundColor: disabled ? 'var(--color-ink-faint)' : 'var(--color-burgundy)',
             color: '#fff',
-            boxShadow: disabled ? 'none' : '0 2px 8px rgba(139, 65, 87, 0.25)'
+            boxShadow: disabled ? 'none' : '0 2px 8px rgba(30, 58, 95, 0.25)'
         },
         secondary: {
-            backgroundColor: 'rgba(139, 65, 87, 0.08)',
+            backgroundColor: 'var(--color-burgundy-soft)',
             color: 'var(--color-burgundy)',
         },
         ghost: {
@@ -297,7 +297,7 @@ export function ConfirmModal({ title, message, confirmLabel = 'Yes', cancelLabel
                         style={{
                             backgroundColor: danger ? 'var(--color-error)' : 'var(--color-burgundy)',
                             color: '#fff',
-                            boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(139, 65, 87, 0.25)',
+                            boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(30, 58, 95, 0.25)',
                         }}
                     >
                         {confirmLabel}
@@ -320,7 +320,7 @@ export function ControversyNote({ note }) {
                 style={{ color: 'var(--color-ink-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
                 <span className="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold"
-                    style={{ backgroundColor: 'rgba(139, 65, 87, 0.1)', color: 'var(--color-burgundy)' }}>
+                    style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
                     ?
                 </span>
                 {expanded ? 'Hide scholarly note' : 'See scholarly note'}
@@ -328,7 +328,7 @@ export function ControversyNote({ note }) {
             {expanded && (
                 <div className="mt-2 px-3 py-2.5 rounded-lg text-xs leading-relaxed animate-fade-in"
                     style={{
-                        backgroundColor: 'rgba(139, 65, 87, 0.04)',
+                        backgroundColor: 'rgba(30, 58, 95, 0.04)',
                         borderLeft: '2px solid var(--color-burgundy)',
                         color: 'var(--color-ink-secondary)',
                         fontStyle: 'italic',
