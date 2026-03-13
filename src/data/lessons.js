@@ -37,6 +37,13 @@ export const TOPICS = [
         icon: '\uD83D\uDCA1',
         color: '#059669',
     },
+    {
+        id: 'ai-progress',
+        title: 'AI Progress',
+        description: 'How AI systems are advancing and why the pace matters for safety',
+        icon: '\uD83D\uDE80',
+        color: '#2563EB',
+    },
 ];
 
 export const LESSONS = [
@@ -159,6 +166,57 @@ export const LESSONS = [
         topic: 'ethics',
         isFoundational: false,
         cardIds: ['c12'],
+    },
+    // ─── AI Progress Lessons ──────────────────────────────────
+    {
+        id: 'lesson-ai-progress-0',
+        number: 0,
+        title: 'The Pace of Progress',
+        subtitle: 'Why understanding AI trajectories matters',
+        mood: 'AI is advancing faster than ever. Understanding the trajectory is the first step to shaping it.',
+        topic: 'ai-progress',
+        isFoundational: true,
+        cardIds: ['c16'],
+    },
+    {
+        id: 'lesson-ai-progress-1',
+        number: 1,
+        title: 'How Modern AI Works',
+        subtitle: 'The systems driving today\'s AI revolution',
+        mood: 'What exactly are these systems everyone\'s talking about?',
+        topic: 'ai-progress',
+        isFoundational: false,
+        cardIds: ['c17', 'c18'],
+    },
+    {
+        id: 'lesson-ai-progress-2',
+        number: 2,
+        title: 'What\'s Driving Progress',
+        subtitle: 'Compute, scale, and predictable improvement',
+        mood: 'What if getting smarter AI was as simple as making it bigger?',
+        topic: 'ai-progress',
+        isFoundational: false,
+        cardIds: ['c19', 'c20'],
+    },
+    {
+        id: 'lesson-ai-progress-3',
+        number: 3,
+        title: 'Measuring and Surprises',
+        subtitle: 'How we track progress — and what catches us off guard',
+        mood: 'Some of AI\'s most important capabilities weren\'t predicted by their creators\u2026',
+        topic: 'ai-progress',
+        isFoundational: false,
+        cardIds: ['c21', 'c22'],
+    },
+    {
+        id: 'lesson-ai-progress-4',
+        number: 4,
+        title: 'The Frontier and Beyond',
+        subtitle: 'Where AI is headed next',
+        mood: 'Where is all this heading — and what does it mean for safety?',
+        topic: 'ai-progress',
+        isFoundational: false,
+        cardIds: ['c23', 'c24', 'c25'],
     },
 ];
 
