@@ -1,0 +1,1045 @@
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { useApp } from '../../context/AppContext';
+import { getEventById, ERA_BOUNDARY_EVENTS } from '../../data/events';
+import { SCORE_COLORS, getScoreLabel, shuffle } from '../../data/quiz';
+import { Card, Button, ProgressBar, Divider, ExpandableText, ControversyNote, flyXPToStar } from '../shared';
+import Mascot from '../Mascot';
+import * as feedback from '../../services/feedback';
+import StreakCelebration from '../StreakCelebration';
+
+// ─── Matching colors for pairing lines ──────────────────
+const MATCH_COLORS = [
+    '#9B8EC4', // lavender
+    '#5A9BD5', // medium-light blue
+    '#D98C3B', // orange
+    '#D4739D', // pink
+    '#6BAFAC', // soft teal (distinct from success green)
+];
+
+// SVG era icons — replace emoji to avoid rendering issues on Android
+const EraIcon = ({ type, size = 36 }) => {
+    const icons = {
+        prehistory: ( // bone
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#9E4A4A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 10c0-1.5 1-2.5 2-3 .5-1.5-.5-3-2-3.5S2 4 2.5 5.5c-1 .5-1.5 2-.5 3s2.5 1 3 1.5z" fill="#9E4A4A" opacity="0.15" />
+                <path d="M19 14c0 1.5-1 2.5-2 3-.5 1.5.5 3 2 3.5s3-.5 2.5-2c1-.5 1.5-2 .5-3s-2.5-1-3-1.5z" fill="#9E4A4A" opacity="0.15" />
+                <line x1="7" y1="9" x2="17" y2="15" />
+            </svg>
+        ),
+        ancient: ( // temple columns
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#7A6B50" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 21h18M5 21V7l7-4 7 4v14" fill="#7A6B50" opacity="0.1" />
+                <line x1="9" y1="21" x2="9" y2="10" />
+                <line x1="15" y1="21" x2="15" y2="10" />
+                <path d="M5 7l7-4 7 4" />
+                <line x1="3" y1="21" x2="21" y2="21" />
+            </svg>
+        ),
+        medieval: ( // crossed swords
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#B06A30" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 3l14 14M9.5 7.5L5 3M19 3L5 17" />
+                <path d="M14.5 7.5L19 3" />
+                <path d="M5 17l2 2 2-2" />
+                <path d="M19 17l-2 2-2-2" />
+            </svg>
+        ),
+        earlymodern: ( // compass
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#9A8528" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="9" fill="#9A8528" opacity="0.08" />
+                <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88" fill="#9A8528" opacity="0.2" stroke="#9A8528" />
+                <line x1="12" y1="3" x2="12" y2="5" />
+                <line x1="12" y1="19" x2="12" y2="21" />
+                <line x1="3" y1="12" x2="5" y2="12" />
+                <line x1="19" y1="12" x2="21" y2="12" />
+            </svg>
+        ),
+        modern: ( // globe
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#B09035" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="9" fill="#B09035" opacity="0.08" />
+                <ellipse cx="12" cy="12" rx="4" ry="9" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <path d="M4.5 7.5h15M4.5 16.5h15" />
+            </svg>
+        ),
+    };
+    const icon = icons[type];
+    if (!icon) return null;
+    return <span style={{ display: 'inline-block', lineHeight: 0 }}>{icon}</span>;
+};
+
+// ─── PHASES ────────────────────────────────────────────
+const PHASE = {
+    INTRO: 'intro',
+    LEARN: 'learn',
+    QUIZ: 'quiz',
+    SUMMARY: 'summary',
+};
+
+// ─── Period data (the 5 "cards" for Lesson 0) ──────────
+const PERIODS = [
+    'prehistory', 'ancient', 'medieval', 'earlymodern', 'modern'
+].map(id => {
+    const info = {
+        prehistory: {
+            title: 'Prehistory',
+            subtitle: 'c. 7\–6 million years ago \– c. 3200 BCE',
+            keywords: 'Evolution, fire, farming.',
+            description: 'Literally "before written records," prehistory spans 99% of the human story. It traces the arc from biological to cultural evolution: bipedalism, stone tools, the mastery of fire, the emergence of language and symbolic thought, the migration out of Africa to every continent, and finally the Neolithic transition from nomadic foraging to settled agriculture that made civilization possible.',
+            color: '#9E4A4A', iconType: 'prehistory',
+        },
+        ancient: {
+            title: 'The Ancient World',
+            subtitle: 'c. 3200 BCE \– 476 CE',
+            keywords: 'Writing, cities, empires.',
+            description: 'Defined by the invention of writing, the rise of cities, and the emergence of states and empires. Mesopotamia, Egypt, Greece, Rome, China, and India each developed distinct traditions of law, philosophy, science, and organized religion. The era\’s arc runs from the first civilizations in Sumer to the collapse of the largest \— the Western Roman Empire \— under the weight of economic decay and Germanic invasions.',
+            color: '#7A6B50', iconType: 'ancient',
+        },
+        medieval: {
+            title: 'The Medieval World',
+            subtitle: '476 \– c. 1500 CE',
+            keywords: 'Islam, feudalism, Mongols.',
+            description: 'Far from the "Dark Ages" of popular myth, the Middle Ages were an era of transformation. Islam rose and spread from Arabia to Iberia, the Byzantine Empire preserved Roman learning for a millennium, feudalism structured Western Europe, the Mongol Empire connected East and West, the Crusades reshaped Mediterranean trade, and Europe\’s first universities were founded. The era\’s arc runs from Rome\’s fall to the reconnection of the world.',
+            color: '#B06A30', iconType: 'medieval',
+        },
+        earlymodern: {
+            title: 'The Early Modern Period',
+            subtitle: 'c. 1500 \– 1789',
+            keywords: 'Exploration, Reformation, Enlightenment.',
+            description: 'European exploration and colonization linked every continent for the first time. The Renaissance revived classical learning, the Reformation shattered religious unity, the Scientific Revolution overturned ancient certainties, and the Enlightenment challenged the divine right of kings. The Atlantic slave trade forcibly connected three continents. The arc is from a fragmented world to an interconnected one, ending when Enlightenment ideals erupted into revolution.',
+            color: '#9A8528', iconType: 'earlymodern',
+        },
+        modern: {
+            title: 'The Modern World',
+            subtitle: '1789 \– Present',
+            keywords: 'Industry, world wars, digital.',
+            description: 'More change in two centuries than in the previous two millennia. Industrialization transformed how people worked and lived, nationalism redrew the map of Europe, two world wars killed tens of millions and dismantled colonial empires, the Cold War split the globe, decolonization reshaped the Global South, and the digital revolution connected billions. The defining theme is acceleration \— of technology, population, and the pace of change itself.',
+            color: '#B09035', iconType: 'modern',
+        },
+    }[id];
+    const boundary = ERA_BOUNDARY_EVENTS[id];
+    const startEvent = boundary?.startEventId ? getEventById(boundary.startEventId) : null;
+    const endEvent = boundary?.endEventId ? getEventById(boundary.endEventId) : null;
+    return { id, ...info, startEvent, endEvent };
+});
+
+// ─── Fake but plausible date ranges for each era ──────
+// Each era has "close" fakes (right ballpark, off by a bit) and
+// "far" fakes (different ballpark — too early, too late, too wide, etc.)
+// This prevents process-of-elimination and tests real knowledge.
+const FAKE_DATES = {
+    prehistory: {
+        close: [
+            'c. 7\–6 million years ago \– c. 5000 BCE',
+            'c. 4 million years ago \– c. 3200 BCE',
+            'c. 7\–6 million years ago \– c. 1500 BCE',
+            'c. 5 million years ago \– c. 3000 BCE',
+        ],
+        far: [
+            'c. 10 million years ago \– c. 8000 BCE',
+            'c. 2 million years ago \– c. 500 BCE',
+            'c. 3 million years ago \– c. 5000 BCE',
+            'c. 12 million years ago \– c. 4000 BCE',
+        ],
+    },
+    ancient: {
+        close: [
+            'c. 3200 BCE \– 200 CE',
+            'c. 3200 BCE \– 800 CE',
+            'c. 3500 BCE \– 600 CE',
+            'c. 3000 BCE \– 380 CE',
+        ],
+        far: [
+            'c. 4500 BCE \– 300 CE',
+            'c. 2500 BCE \– 700 CE',
+            'c. 3200 BCE \– 1100 CE',
+            'c. 4000 BCE \– 476 CE',
+        ],
+    },
+    medieval: {
+        close: [
+            '476 \– c. 1350 CE',
+            '476 \– c. 1550 CE',
+            '476 \– c. 1650 CE',
+            '520 \– c. 1500 CE',
+        ],
+        far: [
+            '550 \– 1350 CE',
+            '476 \– 1700 CE',
+            '600 \– c. 1500 CE',
+            '350 \– c. 1250 CE',
+        ],
+    },
+    earlymodern: {
+        close: [
+            'c. 1500 \– 1648',
+            'c. 1500 \– 1850',
+            'c. 1400 \– 1789',
+            'c. 1550 \– 1820',
+        ],
+        far: [
+            '1350 \– 1700',
+            '1600 \– 1900',
+            '1450 \– 1750',
+            'c. 1550 \– 1900',
+        ],
+    },
+    modern: {
+        close: [
+            '1820 \– Present',
+            '1830 \– Present',
+            '1720 \– Present',
+            '1770 \– Present',
+        ],
+        far: [
+            '1700 \– Present',
+            '1860 \– Present',
+            '1870 \– Present',
+            '1680 \– Present',
+        ],
+    },
+};
+
+// Pick 3 fake date ranges for a given era: randomly 1-2 close + 1-2 far
+function pickFakeDates(periodId) {
+    const pool = FAKE_DATES[periodId];
+    const closeCount = Math.random() < 0.5 ? 1 : 2;
+    const farCount = 3 - closeCount;
+    const shuffledClose = shuffle([...pool.close]);
+    const shuffledFar = shuffle([...pool.far]);
+    return [
+        ...shuffledClose.slice(0, closeCount),
+        ...shuffledFar.slice(0, farCount),
+    ];
+}
+
+// ─── Generate MCQ quiz questions ───────────────────────
+function generateQuizQuestions() {
+    const questions = [];
+
+    for (const period of PERIODS) {
+        // Q1: "When?" — given period name, pick correct date range
+        // Wrong answers are plausible fakes, NOT real dates of other eras
+        const fakes = pickFakeDates(period.id);
+        const dateOptions = shuffle([period.subtitle, ...fakes]);
+        questions.push({
+            type: 'date',
+            periodId: period.id,
+            prompt: period.title,
+            promptIconType: period.iconType,
+            correctAnswer: period.subtitle,
+            options: dateOptions,
+        });
+
+        // Q2: "What period?" — given date range, pick correct period name
+        // Only for medieval and earlymodern to keep the quiz concise
+        if (period.id === 'medieval' || period.id === 'earlymodern') {
+            const nameOptions = shuffle(PERIODS
+                .map(p => ({ id: p.id, label: p.title })));
+            questions.push({
+                type: 'event',
+                periodId: period.id,
+                prompt: period.subtitle,
+                promptIconType: null,
+                correctAnswer: period.title,
+                options: nameOptions.map(o => o.label),
+                correctDisplay: period.title,
+            });
+        }
+    }
+
+    // Q11: Matching — match all 5 eras to their real date ranges
+    const shuffledNames = shuffle(PERIODS.map(p => ({ id: p.id, label: p.title })));
+    const shuffledDates = shuffle(PERIODS.map(p => ({ id: p.id, label: p.subtitle })));
+    questions.push({
+        type: 'match',
+        periodId: 'all',
+        names: shuffledNames,
+        dates: shuffledDates,
+    });
+
+    // Shuffle MCQs but keep match question at the end
+    const matchQ = questions.pop();
+    const shuffled = shuffle(questions);
+    shuffled.push(matchQ);
+    return shuffled;
+}
+
+// ─── COMPONENT ─────────────────────────────────────────
+export default function Lesson0Flow({ lesson, onComplete }) {
+    const { state, dispatch } = useApp();
+
+    const [phase, setPhase] = useState(PHASE.INTRO);
+    const [cardIndex, setCardIndex] = useState(0);
+    const [quizQuestions, setQuizQuestions] = useState([]);
+    const [quizIndex, setQuizIndex] = useState(0);
+    const [results, setResults] = useState([]);     // { score, periodId, type }[]
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [answered, setAnswered] = useState(false);
+    const [selectedDot, setSelectedDot] = useState(null);  // for result dot modal
+    // Matching question state
+    const [matchPairs, setMatchPairs] = useState({});       // { nameId: dateId }
+    const [matchSelected, setMatchSelected] = useState(null); // currently selected name id
+    const [matchChecked, setMatchChecked] = useState(false);
+    const xpDispatched = useRef(false);
+    const [streakCelebration, setStreakCelebration] = useState(null);
+
+    const greenCount = useMemo(() => results.filter(r => r.score === 'green').length, [results]);
+    const yellowCount = useMemo(() => results.filter(r => r.score === 'yellow').length, [results]);
+
+    // Dispatch XP when summary is reached
+    useEffect(() => {
+        if (phase === PHASE.SUMMARY && !xpDispatched.current) {
+            xpDispatched.current = true;
+            // Detect streak earning before dispatching XP
+            const today = new Date().toISOString().split('T')[0];
+            const wasActiveToday = state.lastActiveDate === today;
+            let prevStreakStatus = 'inactive';
+            if (!wasActiveToday && state.lastActiveDate && state.currentStreak > 0) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (state.lastActiveDate === yesterday.toISOString().split('T')[0]) {
+                    prevStreakStatus = 'at-risk';
+                }
+            }
+            window.dispatchEvent(new Event('freezeXP'));
+            dispatch({ type: 'COMPLETE_LESSON', lessonId: 'lesson-0' });
+            dispatch({ type: 'ADD_XP', amount: greenCount * 5 + yellowCount * 2 });
+            // Show streak celebration if this is the first activity today
+            if (!wasActiveToday) {
+                const newStreak = prevStreakStatus === 'at-risk' ? state.currentStreak + 1 : 1;
+                setTimeout(() => setStreakCelebration({ previousStatus: prevStreakStatus, newStreak }), 600);
+            }
+        }
+    }, [phase, greenCount, yellowCount, dispatch]);
+
+    // ─── INTRO ─────────────────────────────────────────
+    if (phase === PHASE.INTRO) {
+        return (
+            <div className="py-8 animate-fade-in">
+                <button onClick={onComplete} className="flex items-center gap-1 mb-6 text-sm"
+                    style={{ color: 'var(--color-ink-muted)' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                    Back
+                </button>
+
+                <div className="text-center">
+                    <span className="text-xs font-semibold uppercase tracking-widest block mb-2" style={{ color: 'var(--color-ink-faint)' }}>
+                        Lesson 0
+                    </span>
+                    <h1 className="lesson-intro-title font-bold mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                        {lesson.title}
+                    </h1>
+                    <p className="text-sm mb-4" style={{ color: 'var(--color-ink-muted)' }}>
+                        {lesson.subtitle}
+                    </p>
+                    <Divider />
+                    <p className="text-base italic my-6" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink-secondary)' }}>
+                        "{lesson.mood}"
+                    </p>
+                    <Divider />
+                    <p className="text-sm mt-4 mb-2" style={{ color: 'var(--color-ink-muted)' }}>
+                        5 eras to discover
+                    </p>
+                    <p className="text-xs mb-6" style={{ color: 'var(--color-ink-faint)' }}>
+                        Learn the shape of history, then test your knowledge
+                    </p>
+                    <Mascot mood="happy" size={64} />
+                    {(() => {
+                        const timesCompleted = state.completedLessons['lesson-0'] || 0;
+                        return (
+                            <>
+                                {timesCompleted > 0 && (
+                                    <p className="text-xs font-medium mt-3 mb-1" style={{ color: 'var(--color-success)' }}>
+                                        ✓ Completed {timesCompleted} {timesCompleted === 1 ? 'time' : 'times'}
+                                    </p>
+                                )}
+                                <div className={timesCompleted > 0 ? "mt-3" : "mt-6"}>
+                                    <Button onClick={() => {
+                                        setPhase(PHASE.LEARN);
+                                        setCardIndex(0);
+                                    }}>
+                                        {timesCompleted > 0 ? 'Learn Again' : 'Begin Learning'}
+                                    </Button>
+                                </div>
+                            </>
+                        );
+                    })()}
+                </div>
+            </div>
+        );
+    }
+
+    // ─── LEARN (Period Cards) ──────────────────────────
+    if (phase === PHASE.LEARN) {
+        const period = PERIODS[cardIndex];
+
+        return (
+            <div className="lesson-flow-container animate-fade-in">
+                <div className="flex-shrink-0 pt-2">
+                    <div className="flex items-center justify-between mb-2">
+                        <button onClick={onComplete} className="text-sm flex items-center gap-1" style={{ color: 'var(--color-ink-muted)' }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                            Exit
+                        </button>
+                        <span className="text-sm font-medium" style={{ color: 'var(--color-ink-muted)' }}>
+                            Era {cardIndex + 1} of {PERIODS.length}
+                        </span>
+                    </div>
+
+                    <ProgressBar value={cardIndex + 1} max={PERIODS.length} />
+
+                    <div className="text-center mt-1.5 mb-0.5">
+                        <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
+                            style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                            Study — Era {cardIndex + 1} of {PERIODS.length}
+                        </span>
+                    </div>
+                </div>
+
+                <div className="flex-1 min-h-0 overflow-y-auto mt-1.5" key={period.id}>
+                    <div className="animate-slide-in-right">
+                        <Card className="era-card-content" style={{ borderLeft: `4px solid ${period.color}`, overflow: 'hidden' }}>
+                            <div className="text-center mb-1">
+                                <span className="era-card-icon"><EraIcon type={period.iconType} size={36} /></span>
+                            </div>
+                            <h2 className="era-card-title font-bold text-center mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                                {period.title}
+                            </h2>
+                            <p className="text-sm font-semibold text-center mb-1.5" style={{ color: period.color }}>
+                                {period.subtitle}
+                            </p>
+                            <Divider />
+                            <ExpandableText lines={3} className="text-sm leading-relaxed mt-3" style={{ color: 'var(--color-ink-secondary)' }}>
+                                <strong style={{ color: 'var(--color-ink)' }}>{period.keywords}</strong><span className="keyword-sep" aria-hidden="true" />{period.description}
+                            </ExpandableText>
+
+                            {/* Boundary events */}
+                            <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+                                <p className="text-[11px] uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
+                                    Key Transitions
+                                </p>
+                                {period.startEvent && (
+                                    <div className="flex items-start gap-2 text-xs py-1">
+                                        <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }}>▶</span>
+                                        <div>
+                                            <span className="font-semibold" style={{ color: 'var(--color-ink)' }}>Begins with: </span>
+                                            <span style={{ color: 'var(--color-ink-secondary)' }}>{period.startEvent.title}</span>
+                                            <span className="ml-1 font-medium" style={{ color: 'var(--color-burgundy)' }}>({period.startEvent.date})</span>
+                                            <ControversyNote note={period.startEvent.controversyNotes?.date} />
+                                        </div>
+                                    </div>
+                                )}
+                                {period.endEvent && (
+                                    <div className="flex items-start gap-2 text-xs py-1">
+                                        <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--color-error)' }}>■</span>
+                                        <div>
+                                            <span className="font-semibold" style={{ color: 'var(--color-ink)' }}>Ends with: </span>
+                                            <span style={{ color: 'var(--color-ink-secondary)' }}>{period.endEvent.title}</span>
+                                            <span className="ml-1 font-medium" style={{ color: 'var(--color-burgundy)' }}>({period.endEvent.date})</span>
+                                            <ControversyNote note={period.endEvent.controversyNotes?.date} />
+                                        </div>
+                                    </div>
+                                )}
+                                {!period.endEvent && (
+                                    <div className="flex items-start gap-2 text-xs py-1">
+                                        <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--color-ink-faint)' }}>■</span>
+                                        <span className="italic" style={{ color: 'var(--color-ink-faint)' }}>Ongoing — the era we live in</span>
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+                </div>
+
+                <div className="flex-shrink-0 flex gap-3 pt-2 pb-2">
+                    {cardIndex > 0 && (
+                        <Button variant="secondary" onClick={() => setCardIndex(i => i - 1)}>
+                            ← Back
+                        </Button>
+                    )}
+                    <Button
+                        className="flex-1"
+                        onClick={() => {
+                            if (cardIndex < PERIODS.length - 1) {
+                                setCardIndex(i => i + 1);
+                            } else {
+                                const qs = generateQuizQuestions();
+                                setQuizQuestions(qs);
+                                setQuizIndex(0);
+                                setResults([]);
+                                setSelectedAnswer(null);
+                                setAnswered(false);
+                                setPhase(PHASE.QUIZ);
+                            }
+                        }}
+                    >
+                        {cardIndex < PERIODS.length - 1 ? 'Next Era →' : 'Start Quiz →'}
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    // ─── QUIZ ─────────────────────────────────────────
+    if (phase === PHASE.QUIZ) {
+        const q = quizQuestions[quizIndex];
+
+        if (!q) {
+            if (phase !== PHASE.SUMMARY) {
+                setTimeout(() => setPhase(PHASE.SUMMARY), 0);
+            }
+            return null;
+        }
+
+        const handleNext = () => {
+            if (quizIndex + 1 >= quizQuestions.length) {
+                setPhase(PHASE.SUMMARY);
+                feedback.complete();
+            } else {
+                setQuizIndex(i => i + 1);
+                setSelectedAnswer(null);
+                setAnswered(false);
+                setMatchPairs({});
+                setMatchSelected(null);
+                setMatchChecked(false);
+            }
+        };
+
+        // ── Matching question ──────────────────────────
+        if (q.type === 'match') {
+            const pairCount = Object.keys(matchPairs).length;
+            const allPaired = pairCount === 5;
+
+            // Which color index does each name get?
+            const nameColorMap = {};
+            const dateColorMap = {};
+            const pairedNames = Object.keys(matchPairs);
+            pairedNames.forEach((nameId, i) => {
+                nameColorMap[nameId] = MATCH_COLORS[i % MATCH_COLORS.length];
+                dateColorMap[matchPairs[nameId]] = MATCH_COLORS[i % MATCH_COLORS.length];
+            });
+
+            const handleNameClick = (nameId) => {
+                if (matchChecked) return;
+                if (matchSelected === nameId) {
+                    setMatchSelected(null);
+                } else {
+                    setMatchSelected(nameId);
+                }
+            };
+
+            const handleDateClick = (dateId) => {
+                if (matchChecked) return;
+                if (!matchSelected) {
+                    // If clicking a date that's already paired, unpair it
+                    const pairedName = Object.entries(matchPairs).find(([, d]) => d === dateId)?.[0];
+                    if (pairedName) {
+                        setMatchPairs(prev => {
+                            const next = { ...prev };
+                            delete next[pairedName];
+                            return next;
+                        });
+                    }
+                    return;
+                }
+                // Pair the selected name with this date
+                setMatchPairs(prev => {
+                    const next = { ...prev };
+                    // Remove any existing pair for this name
+                    delete next[matchSelected];
+                    // Remove any existing pair that uses this date
+                    const existingName = Object.entries(next).find(([, d]) => d === dateId)?.[0];
+                    if (existingName) delete next[existingName];
+                    next[matchSelected] = dateId;
+                    return next;
+                });
+                setMatchSelected(null);
+            };
+
+            const handleCheck = () => {
+                if (!allPaired || matchChecked) return;
+                // Count correct matches
+                const correctCount = q.names.filter(n => matchPairs[n.id] === n.id).length;
+                // Score: all correct = green, exactly 1 swap (4 correct or 3 correct) = yellow, else red
+                // A single swap means exactly 2 items are swapped, so 3 correct is the minimum for "one swap"
+                const wrongCount = 5 - correctCount;
+                const score = wrongCount === 0 ? 'green' : wrongCount <= 2 ? 'yellow' : 'red';
+                setResults(prev => [...prev, { score, periodId: 'all', type: 'match' }]);
+                setMatchChecked(true);
+            };
+
+            const matchScore = matchChecked ? results[results.length - 1]?.score : null;
+
+            return (
+                <div className="lesson-flow-container">
+                    <div className="flex-shrink-0 pt-4">
+                        <div className="flex items-center justify-center mb-4 relative">
+                            <button onClick={onComplete} className="text-sm flex items-center gap-1 absolute left-0"
+                                style={{ color: 'var(--color-ink-muted)' }}>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                                Exit
+                            </button>
+                            <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                                style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                                Quiz · {quizIndex + 1}/{quizQuestions.length}
+                            </span>
+                        </div>
+                        <ProgressBar value={quizIndex + 1} max={quizQuestions.length} />
+                    </div>
+
+                    <div className="flex-1 min-h-0 overflow-y-auto mt-4 animate-slide-in-right" key={`quiz-match-${quizIndex}`}>
+                        <Card style={matchChecked && matchScore ? {
+                            backgroundColor: SCORE_COLORS[matchScore].bg,
+                            borderLeft: `3px solid ${SCORE_COLORS[matchScore].border}`
+                        } : {}}>
+                            <p className="text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: 'var(--color-ink-faint)' }}>
+                                Match each era to its dates
+                            </p>
+                            <p className="text-[11px] mb-3" style={{ color: 'var(--color-ink-faint)' }}>
+                                Tap an era, then tap its date range
+                            </p>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                                {/* Left column: era names */}
+                                <div className="flex flex-col gap-1.5">
+                                    {q.names.map((n) => {
+                                        const isPaired = !!matchPairs[n.id];
+                                        const isActive = matchSelected === n.id;
+                                        const color = nameColorMap[n.id];
+                                        let bg = 'var(--color-card)';
+                                        let border = 'rgba(var(--color-ink-rgb), 0.08)';
+                                        let borderStyle = 'solid';
+                                        if (matchChecked && isPaired) {
+                                            const isCorrect = matchPairs[n.id] === n.id;
+                                            bg = isCorrect ? 'rgba(5, 150, 105, 0.1)' : 'rgba(166, 61, 61, 0.1)';
+                                            border = isCorrect ? 'var(--color-success)' : 'var(--color-error)';
+                                        } else if (isActive) {
+                                            bg = 'var(--color-burgundy-soft)';
+                                            border = 'var(--color-burgundy)';
+                                            borderStyle = 'dashed';
+                                        } else if (isPaired && color) {
+                                            bg = `${color}18`;
+                                            border = color;
+                                        }
+                                        return (
+                                            <button
+                                                key={n.id}
+                                                onClick={() => handleNameClick(n.id)}
+                                                disabled={matchChecked}
+                                                className="rounded-lg transition-all flex items-center justify-center"
+                                                style={{
+                                                    padding: '10px 6px',
+                                                    minHeight: '44px',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: 600,
+                                                    fontFamily: 'var(--font-serif)',
+                                                    textAlign: 'center',
+                                                    backgroundColor: bg,
+                                                    border: `2px ${borderStyle} ${border}`,
+                                                    color: 'var(--color-ink)',
+                                                    cursor: matchChecked ? 'default' : 'pointer',
+                                                }}
+                                            >
+                                                {n.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Right column: date ranges */}
+                                <div className="flex flex-col gap-1.5">
+                                    {q.dates.map((d) => {
+                                        const pairedByName = Object.entries(matchPairs).find(([, dateId]) => dateId === d.id)?.[0];
+                                        const isPaired = !!pairedByName;
+                                        const color = dateColorMap[d.id];
+                                        let bg = 'var(--color-card)';
+                                        let border = 'rgba(var(--color-ink-rgb), 0.08)';
+                                        let borderStyle = 'solid';
+                                        if (matchChecked && isPaired) {
+                                            const isCorrect = pairedByName === d.id;
+                                            bg = isCorrect ? 'rgba(5, 150, 105, 0.1)' : 'rgba(166, 61, 61, 0.1)';
+                                            border = isCorrect ? 'var(--color-success)' : 'var(--color-error)';
+                                        } else if (isPaired && color) {
+                                            bg = `${color}18`;
+                                            border = color;
+                                        } else if (matchSelected && !isPaired) {
+                                            border = 'rgba(139, 65, 87, 0.3)';
+                                            borderStyle = 'dashed';
+                                        }
+                                        return (
+                                            <button
+                                                key={d.id}
+                                                onClick={() => handleDateClick(d.id)}
+                                                disabled={matchChecked}
+                                                className="rounded-lg transition-all flex items-center justify-center"
+                                                style={{
+                                                    padding: '10px 6px',
+                                                    minHeight: '44px',
+                                                    fontSize: '0.7rem',
+                                                    fontWeight: 500,
+                                                    textAlign: 'center',
+                                                    backgroundColor: bg,
+                                                    border: `2px ${borderStyle} ${border}`,
+                                                    color: 'var(--color-ink-secondary)',
+                                                    cursor: matchChecked ? 'default' : 'pointer',
+                                                }}
+                                            >
+                                                {d.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {matchChecked && (
+                                <div className="mt-3">
+                                    <p className="text-sm font-semibold" style={{
+                                        color: matchScore === 'green' ? 'var(--color-success)' :
+                                            matchScore === 'yellow' ? 'var(--color-warning)' : 'var(--color-error)'
+                                    }}>
+                                        {getScoreLabel(matchScore)}
+                                    </p>
+                                    {matchScore !== 'green' && (
+                                        <p className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>
+                                            {q.names.filter(n => matchPairs[n.id] === n.id).length} of 5 correct
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+                        </Card>
+                    </div>
+
+                    <div className="mt-4">
+                        {!matchChecked ? (
+                            <Button
+                                className="w-full"
+                                onClick={handleCheck}
+                                disabled={!allPaired}
+                                variant={allPaired ? 'primary' : 'secondary'}
+                            >
+                                {allPaired ? 'Check Answers' : `${pairCount}/5 matched`}
+                            </Button>
+                        ) : (
+                            <Button className="w-full" onClick={handleNext}>Continue →</Button>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // ── MCQ question (date / event) ────────────────
+        const handleAnswer = (answer) => {
+            if (answered) return;
+            feedback.select();
+            setSelectedAnswer(answer);
+            const isCorrect = q.type === 'event'
+                ? answer === q.correctDisplay
+                : answer === q.correctAnswer;
+            const score = isCorrect ? 'green' : 'red';
+            setResults(prev => [...prev, { score, periodId: q.periodId, type: q.type }]);
+            setAnswered(true);
+            feedback.forScore(score);
+        };
+
+        const currentScore = answered ? results[results.length - 1]?.score : null;
+        const correctValue = q.type === 'event' ? q.correctDisplay : q.correctAnswer;
+
+        return (
+            <div className="lesson-flow-container">
+                <div className="flex-shrink-0 pt-4">
+                    <div className="flex items-center justify-center mb-4 relative">
+                        <button onClick={onComplete} className="text-sm flex items-center gap-1 absolute left-0"
+                            style={{ color: 'var(--color-ink-muted)' }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                            Exit
+                        </button>
+                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                            style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                            Quiz · {quizIndex + 1}/{quizQuestions.length}
+                        </span>
+                    </div>
+                    <ProgressBar value={quizIndex + 1} max={quizQuestions.length} />
+                </div>
+
+                <div className="flex-1 min-h-0 overflow-y-auto mt-4 animate-slide-in-right" key={`quiz-mcq-${quizIndex}`}>
+                    <Card style={answered && currentScore ? {
+                        backgroundColor: SCORE_COLORS[currentScore].bg,
+                        borderLeft: `3px solid ${SCORE_COLORS[currentScore].border}`
+                    } : {}}>
+                        <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
+                            {q.type === 'date' ? 'When was this era?' : 'What period is this?'}
+                        </p>
+
+                        {q.promptIconType && (
+                            <span className="text-3xl block mb-2"><EraIcon type={q.promptIconType} size={36} /></span>
+                        )}
+                        <h3 className="text-lg font-bold mb-4" style={{ fontFamily: 'var(--font-serif)', color: q.type === 'date' ? 'var(--color-ink)' : 'var(--color-burgundy)' }}>
+                            {q.prompt}
+                        </h3>
+
+                        <div className="mcq-options mcq-options--grid">
+                            {q.options.map((opt, i) => {
+                                const isCorrect = opt === correctValue;
+                                const isSelected = selectedAnswer === opt;
+                                let optStyle = {};
+                                if (answered) {
+                                    if (isCorrect) optStyle = { backgroundColor: 'rgba(5, 150, 105, 0.1)', borderColor: 'var(--color-success)' };
+                                    else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
+                                }
+                                return (
+                                    <button
+                                        key={i}
+                                        onClick={() => handleAnswer(opt)}
+                                        disabled={answered}
+                                        className="mcq-option"
+                                        style={{
+                                            borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined,
+                                            ...optStyle,
+                                        }}
+                                    >
+                                        <span>{opt}</span>
+                                        {answered && isCorrect && (
+                                            <span className="ml-2 text-xs" style={{ color: 'var(--color-success)' }}>✓</span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {answered && (
+                            <div className="mt-3">
+                                <p className="text-sm font-semibold" style={{
+                                    color: currentScore === 'green' ? 'var(--color-success)' : 'var(--color-error)'
+                                }}>
+                                    {currentScore === 'green' ? 'Correct!' : 'Not quite'}
+                                </p>
+                            </div>
+                        )}
+                    </Card>
+                </div>
+
+                {answered && (
+                    <div className="mt-4">
+                        <Button className="w-full" onClick={handleNext}>Continue →</Button>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // ─── SUMMARY ───────────────────────────────────────
+    if (phase === PHASE.SUMMARY) {
+        const redCount = results.filter(r => r.score === 'red').length;
+        const xp = greenCount * 5 + yellowCount * 2;
+
+        return (
+            <div className="py-4 text-center animate-fade-in">
+                <Mascot mood="celebrating" size={64} />
+
+                <h2 className="text-2xl font-bold mt-2 mb-0.5" style={{ fontFamily: 'var(--font-serif)' }}>
+                    Timeline Unlocked!
+                </h2>
+                <p className="text-sm mb-3" style={{ color: 'var(--color-ink-muted)' }}>
+                    You now know the shape of human history
+                </p>
+
+                <Card className="animate-celebration" style={{
+                    borderTop: '3px solid var(--color-success)',
+                }}>
+                    <div className="flex items-center gap-1 mb-3 justify-center flex-wrap">
+                        {results.map((r, i) => {
+                            const period = PERIODS.find(p => p.id === r.periodId);
+                            const dotLabel = r.type === 'match' ? 'Matching' : r.type === 'date' ? 'Date' : 'Period Name';
+                            return (
+                                <button key={i}
+                                    className={`rounded-full result-dot-btn ${r.type === 'match' ? 'w-4 h-4' : 'w-3 h-3'}`}
+                                    title={`${period?.title || 'All Eras'} — ${dotLabel}`}
+                                    onClick={() => setSelectedDot(r)}
+                                    style={{
+                                        backgroundColor: r.score === 'green' ? 'var(--color-success)' :
+                                            r.score === 'yellow' ? 'var(--color-warning)' : 'var(--color-error)'
+                                    }} />
+                            );
+                        })}
+                    </div>
+
+                    <div className={`grid gap-3 text-center mb-3 ${yellowCount > 0 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+                        <div>
+                            <div className="text-lg font-bold" style={{ color: 'var(--color-success)' }}>{greenCount}</div>
+                            <div className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>Correct</div>
+                        </div>
+                        {yellowCount > 0 && (
+                            <div>
+                                <div className="text-lg font-bold" style={{ color: 'var(--color-warning)' }}>{yellowCount}</div>
+                                <div className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>Close</div>
+                            </div>
+                        )}
+                        <div>
+                            <div className="text-lg font-bold" style={{ color: 'var(--color-error)' }}>{redCount}</div>
+                            <div className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>Missed</div>
+                        </div>
+                    </div>
+
+                    <Divider />
+
+                    {/* XP Reward */}
+                    <div id="xp-earned-display" className="flex items-center justify-center gap-2 mt-2 animate-xp-pop" style={{ animationDelay: '300ms' }}>
+                        <svg className="animate-xp-glow" style={{ animationDelay: '500ms' }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-bronze)" strokeWidth="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-bronze-light)" />
+                        </svg>
+                        <div className="text-left">
+                            <div className="text-xl font-bold leading-none" style={{ color: 'var(--color-burgundy)' }}>+{xp}</div>
+                            <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-faint)' }}>XP earned</div>
+                        </div>
+                    </div>
+
+                    {/* Era preview */}
+                    <div className="mt-2 pt-2" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+                        <p className="text-[11px] uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
+                            Eras Unlocked
+                        </p>
+                        <div className="flex justify-center gap-3">
+                            {PERIODS.map(p => (
+                                <div key={p.id} className="text-center" style={{ width: '56px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '28px' }}>
+                                        <EraIcon type={p.iconType} size={24} />
+                                    </div>
+                                    <p className="text-[9px] font-semibold mt-0.5" style={{ color: p.color }}>{p.title.replace('The ', '')}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </Card>
+
+                {/* What's next in Chronos */}
+                <Card className="mt-3 text-left">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold mb-3" style={{ color: 'var(--color-ink-faint)' }}>
+                        What's next in Chronos
+                    </p>
+                    <div className="flex gap-3 mb-3 items-start">
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px] font-bold"
+                            style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>1</div>
+                        <div>
+                            <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Level 1 — The Big Story</p>
+                            <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>20 lessons · 60 events · Prehistory through the Modern World</p>
+                        </div>
+                    </div>
+                    <div className="flex gap-3 items-start">
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px] font-bold"
+                            style={{ backgroundColor: 'rgba(37, 99, 235, 0.12)', color: '#2563EB' }}>2</div>
+                        <div>
+                            <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Level 2 — Deep Dives</p>
+                            <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>7 thematic chapters — Revolutions, AI, Freedom, Empires, Pandemics, Africa & Art</p>
+                        </div>
+                    </div>
+                </Card>
+
+                <div className="mt-4">
+                    <Button className="w-full" onClick={async () => {
+                        const el = document.getElementById('xp-earned-display');
+                        if (el) await flyXPToStar(el, xp);
+                        window.dispatchEvent(new Event('unfreezeXP'));
+                        onComplete();
+                    }}>
+                        Start Learning
+                    </Button>
+                </div>
+
+                {/* Result Dot Modal */}
+                {selectedDot && (() => {
+                    const dotColor = selectedDot.score === 'green' ? 'var(--color-success)' :
+                        selectedDot.score === 'yellow' ? 'var(--color-warning)' : 'var(--color-error)';
+                    const hlBg = selectedDot.score === 'green' ? 'rgba(5, 150, 105, 0.12)' :
+                        selectedDot.score === 'yellow' ? 'rgba(198, 134, 42, 0.12)' : 'rgba(166, 61, 61, 0.12)';
+
+                    // Match question dot modal
+                    if (selectedDot.type === 'match') {
+                        return (
+                            <div className="dot-modal-backdrop" onClick={() => setSelectedDot(null)}>
+                                <div className="dot-modal-content" onClick={e => e.stopPropagation()}>
+                                    <Card style={{ borderLeft: `4px solid var(--color-burgundy)` }}>
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
+                                                style={{ backgroundColor: hlBg, color: dotColor }}>
+                                                🔗 Matching Question
+                                            </span>
+                                            <button onClick={() => setSelectedDot(null)}
+                                                className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
+                                                style={{ color: 'var(--color-ink-muted)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)' }}>✕</button>
+                                        </div>
+                                        <p className="text-sm font-semibold mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                                            Match each era to its dates
+                                        </p>
+                                        <div className="space-y-1.5">
+                                            {PERIODS.map(p => (
+                                                <div key={p.id} className="flex items-center gap-2 text-xs py-1 px-2 rounded-lg"
+                                                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)' }}>
+                                                    <EraIcon type={p.iconType} size={16} />
+                                                    <span className="font-semibold" style={{ color: 'var(--color-ink)' }}>{p.title}</span>
+                                                    <span style={{ color: 'var(--color-ink-faint)' }}>→</span>
+                                                    <span style={{ color: 'var(--color-ink-secondary)' }}>{p.subtitle}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Card>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // MCQ question dot modal
+                    const period = PERIODS.find(p => p.id === selectedDot.periodId);
+                    if (!period) return null;
+                    const isDateQ = selectedDot.type === 'date';
+                    return (
+                        <div className="dot-modal-backdrop" onClick={() => setSelectedDot(null)}>
+                            <div className="dot-modal-content" onClick={e => e.stopPropagation()}>
+                                <Card style={{ borderLeft: `4px solid ${period.color}` }}>
+                                    <div className="flex items-center justify-between mb-3">
+                                        <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
+                                            style={{ backgroundColor: hlBg, color: dotColor }}>
+                                            {isDateQ ? '📅 Date Question' : '❓ Period Name Question'}
+                                        </span>
+                                        <button onClick={() => setSelectedDot(null)}
+                                            className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
+                                            style={{ color: 'var(--color-ink-muted)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)' }}>✕</button>
+                                    </div>
+                                    <div className="text-center mb-4">
+                                        <EraIcon type={period.iconType} size={48} />
+                                    </div>
+                                    <div className={!isDateQ ? 'dot-highlight' : ''}
+                                        style={!isDateQ ? { backgroundColor: hlBg, color: dotColor } : {}}>
+                                        <h2 className="text-2xl font-bold text-center mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                                            {period.title}
+                                        </h2>
+                                    </div>
+                                    <div className={isDateQ ? 'dot-highlight' : ''}
+                                        style={isDateQ ? { backgroundColor: hlBg, color: dotColor } : {}}>
+                                        <p className="text-sm font-semibold text-center mb-4" style={{ color: period.color }}>
+                                            {period.subtitle}
+                                        </p>
+                                    </div>
+                                    <Divider />
+                                    <p className="text-sm leading-relaxed mt-4" style={{ color: 'var(--color-ink-secondary)' }}>
+                                        {period.description}
+                                    </p>
+                                </Card>
+                            </div>
+                        </div>
+                    );
+                })()}
+
+                {/* Streak Celebration */}
+                {streakCelebration && (
+                    <StreakCelebration
+                        previousStatus={streakCelebration.previousStatus}
+                        newStreak={streakCelebration.newStreak}
+                        onDismiss={() => setStreakCelebration(null)}
+                    />
+                )}
+            </div>
+        );
+    }
+
+    return null;
+}
