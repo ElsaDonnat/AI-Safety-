@@ -1,5 +1,5 @@
 // ─── AI Safety Concepts ─────────────────────────────────────
-// Replaces events.js from Chronos. Each concept teaches one AI safety idea.
+// Each concept teaches one AI safety idea.
 
 const CORE_CONCEPTS = [
     {

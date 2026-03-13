@@ -1,5 +1,5 @@
 // ─── AI Safety Topics & Lessons ─────────────────────────────
-// Replaces the history-era lesson structure from Chronos.
+// Topics and lessons for AI Safety learning app.
 
 export const TOPICS = [
     {

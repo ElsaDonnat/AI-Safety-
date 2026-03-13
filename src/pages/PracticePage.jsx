@@ -90,7 +90,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
             const overall = mastery?.overallMastery ?? 0;
             const timesReviewed = mastery?.timesReviewed ?? 0;
             const successRate = timesReviewed > 0 ? Math.round((overall / 9) * 100) : 0;
-            const cardStatus = getCardStatus(c.id, state.cardMastery, state.srSchedule || {}, []);
+            const cardStatus = getCardStatus(c.id, state.cardMastery, state.srSchedule || {});
             return { concept: c, mastery, overall, timesReviewed, successRate, cardStatus };
         });
     }, [learnedConcepts, state.cardMastery, state.srSchedule]);
@@ -221,7 +221,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     };
 
     const startSpacedReview = () => {
-        const dueIds = dueCards.slice(0, 15).map(d => d.eventId);
+        const dueIds = dueCards.slice(0, 15).map(d => d.cardId);
         const duePool = dueIds.map(id => getConceptById(id)).filter(Boolean);
         if (duePool.length > 0) {
             startSession('Spaced Review', duePool);

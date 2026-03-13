@@ -25,7 +25,7 @@ function shuffleOptions(correct, wrongs) {
 export default function DailyQuizFlow({ onComplete }) {
     const { state, dispatch } = useApp();
     const dailyData = getTodaysDailyQuiz();
-    const events = useMemo(() => getConceptsByIds(dailyData.cardIds || dailyData.eventIds || []), [dailyData]);
+    const events = useMemo(() => getConceptsByIds(dailyData.cardIds || []), [dailyData]);
 
     const [phase, setPhase] = useState(PHASES.INTRO);
     const [quizIndex, setQuizIndex] = useState(0);

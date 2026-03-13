@@ -34,7 +34,7 @@ export default function FunFactsFlow({ onExit }) {
         [availableFacts, factIndex]
     );
 
-    const event = currentFact ? getConceptById(currentFact.cardId || currentFact.eventId) : null;
+    const event = currentFact ? getConceptById(currentFact.cardId) : null;
 
     const shuffledOptions = useMemo(
         () => currentFact ? shuffleOptions(currentFact.correctAnswer, currentFact.wrongAnswers) : [],

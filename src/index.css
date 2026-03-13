@@ -1025,14 +1025,6 @@ input, textarea, [contenteditable] {
   font-size: clamp(0.8rem, 2.5vw, 0.875rem);
 }
 
-.era-card-icon {
-  font-size: clamp(2.25rem, 6vw, 3rem);
-}
-
-.era-card-title {
-  font-size: clamp(1.25rem, 3.5vw, 1.5rem);
-}
-
 .lesson-intro-title {
   font-size: clamp(1.5rem, 4vw, 1.875rem);
 }
@@ -1044,14 +1036,6 @@ input, textarea, [contenteditable] {
     padding: 12px 14px !important;
   }
 
-  /* Era overview cards: tighter spacing */
-  .era-card-content {
-    padding: 14px !important;
-  }
-
-  .era-card-content .text-center.mb-4 {
-    margin-bottom: 8px;
-  }
 }
 
 /* Lesson flow: fill available viewport so flex-column layouts
@@ -1443,7 +1427,7 @@ input, textarea, [contenteditable] {
 }
 
 /* ════════════════════════════════════════════════════════
-   COMPONENT: Daily Quiz ("This Day in History")
+   COMPONENT: Daily Quiz
    ════════════════════════════════════════════════════════ */
 
 .daily-quiz-container {
