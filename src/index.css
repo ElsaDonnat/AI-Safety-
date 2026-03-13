@@ -1,53 +1,66 @@
 @import "tailwindcss";
 
 @theme {
-  /* Warm Antiquity Palette — Soft Powdery Burgundy accent */
-  --color-parchment: #FAF6F0;
-  --color-parchment-dark: #F3ECE2;
-  --color-card: #FFFDF9;
-  --color-card-hover: #FBF7F1;
+  /* AI Safety Palette — Navy + Teal accent */
+  --color-parchment: #F0F4F8;
+  --color-parchment-dark: #E2E8F0;
+  --color-card: #FFFFFF;
+  --color-card-hover: #F8FAFC;
 
-  --color-burgundy: #8B4157;
-  --color-burgundy-dark: #6E3344;
-  --color-burgundy-light: #A8596E;
-  --color-burgundy-soft: rgba(139, 65, 87, 0.08);
-  --color-bronze: #A0845C;
-  --color-bronze-light: #C9B896;
+  --color-burgundy: #1E3A5F;
+  --color-burgundy-dark: #152B47;
+  --color-burgundy-light: #2D5A8E;
+  --color-burgundy-soft: rgba(30, 58, 95, 0.08);
+  --color-bronze: #00BFA5;
+  --color-bronze-light: #4DD0C0;
 
   --color-ink: #1C1917;
-  --color-ink-secondary: #44403C;
-  --color-ink-muted: #78716C;
-  --color-ink-faint: #A8A29E;
+  --color-ink-secondary: #334155;
+  --color-ink-muted: #64748B;
+  --color-ink-faint: #94A3B8;
   --color-ink-rgb: 28, 25, 23;
-  --color-parchment-rgb: 250, 246, 240;
-  --color-parchment-dark-rgb: 243, 236, 226;
+  --color-parchment-rgb: 240, 244, 248;
+  --color-parchment-dark-rgb: 226, 232, 240;
 
-  --color-olive: #65774A;
-  --color-olive-light: #8B9F6E;
-  --color-sage: #6B7F3A;
+  --color-olive: #059669;
+  --color-olive-light: #34D399;
+  --color-sage: #10B981;
 
   --color-success: #059669;
   --color-success-light: #D1FAE5;
-  --color-warning: #C6862A;
+  --color-warning: #F59E0B;
   --color-warning-light: #FEF3C7;
-  --color-error: #A63D3D;
+  --color-error: #DC2626;
   --color-error-light: #FEE2E2;
 
   /* Category Colors */
+  --color-cat-technical: #0D9488;
+  --color-cat-alignment: #7C3AED;
+  --color-cat-policy: #2563EB;
+  --color-cat-ethics: #059669;
+  --color-cat-risks: #DC2626;
+
+  --color-cat-technical-bg: #F0FDFA;
+  --color-cat-alignment-bg: #F5F3FF;
+  --color-cat-policy-bg: #EFF6FF;
+  --color-cat-ethics-bg: #ECFDF5;
+  --color-cat-risks-bg: #FEF2F2;
+
+  /* Legacy category aliases for compatibility */
   --color-cat-science: #0D9488;
-  --color-cat-war: #A0522D;
-  --color-cat-politics: #6B5B73;
-  --color-cat-culture: #65774A;
-  --color-cat-revolution: #8B4157;
+  --color-cat-war: #DC2626;
+  --color-cat-politics: #2563EB;
+  --color-cat-culture: #059669;
+  --color-cat-revolution: #7C3AED;
 
   --color-cat-science-bg: #F0FDFA;
-  --color-cat-war-bg: #FDF2F0;
-  --color-cat-politics-bg: #F5F3F7;
-  --color-cat-culture-bg: #F4F7F0;
-  --color-cat-revolution-bg: #FDF0F3;
+  --color-cat-war-bg: #FEF2F2;
+  --color-cat-politics-bg: #EFF6FF;
+  --color-cat-culture-bg: #ECFDF5;
+  --color-cat-revolution-bg: #F5F3FF;
 
   /* Fonts */
-  --font-serif: 'Libre Baskerville', Georgia, serif;
+  --font-serif: 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
 
   /* Radius */
@@ -59,50 +72,6 @@
   --shadow-card: 0 1px 3px rgba(28, 25, 23, 0.06), 0 1px 2px rgba(28, 25, 23, 0.04);
   --shadow-card-hover: 0 4px 12px rgba(28, 25, 23, 0.08), 0 2px 4px rgba(28, 25, 23, 0.04);
   --shadow-elevated: 0 8px 24px rgba(28, 25, 23, 0.1), 0 4px 8px rgba(28, 25, 23, 0.06);
-
-  /* Map */
-  --color-map-ocean: #D6CFC4;
-  --color-map-land: #E8E0D2;
-  --color-map-land-active: #DDD0BB;
-  --color-map-border: #A89878;
-  --color-map-border-active: #8B4157;
-  --color-map-coastline: #8B7D65;
-  --color-map-country-highlight: #C9A96E;
-  --color-map-graticule: rgba(0, 0, 0, 0.04);
-  --color-map-pin-stroke: #FFFDF9;
-  --color-map-pin-muted: #C9B896;
-  --color-map-label: #A8A29E;
-  --color-map-label-active: #8B4157;
-
-  /* Map sub-region colors — pastel (default fill) + vibrant (selected) */
-  --color-map-region-europe: #C4D4E8;
-  --color-map-region-europe-v: #5B8FC8;
-  --color-map-region-middle-east: #E4D5BA;
-  --color-map-region-middle-east-v: #C49558;
-  --color-map-region-north-africa: #E4CFBE;
-  --color-map-region-north-africa-v: #C48B6C;
-  --color-map-region-west-africa: #BED8BE;
-  --color-map-region-west-africa-v: #5DA85D;
-  --color-map-region-east-africa: #D1C4DA;
-  --color-map-region-east-africa-v: #8B6BA8;
-  --color-map-region-southern-africa: #DAC0C8;
-  --color-map-region-southern-africa-v: #B86C80;
-  --color-map-region-south-asia: #B8D8D0;
-  --color-map-region-south-asia-v: #3A9C8C;
-  --color-map-region-east-asia: #D0D8BA;
-  --color-map-region-east-asia-v: #84A84C;
-  --color-map-region-se-asia: #D8C4D0;
-  --color-map-region-se-asia-v: #A8609C;
-  --color-map-region-central-asia: #D8D0B8;
-  --color-map-region-central-asia-v: #A89848;
-  --color-map-region-oceania: #B8D0D8;
-  --color-map-region-oceania-v: #4898B0;
-  --color-map-region-north-america: #BCD4E0;
-  --color-map-region-north-america-v: #4C98C0;
-  --color-map-region-central-america: #E0C8BC;
-  --color-map-region-central-america-v: #C0785C;
-  --color-map-region-south-america: #C4D4B8;
-  --color-map-region-south-america-v: #6C9C44;
 
   /* Layout */
   --sidebar-width: 232px;
@@ -116,95 +85,64 @@
 
 /* ─── Dark Mode Overrides ─────────────────────────────── */
 html[data-theme="dark"] {
-  --color-parchment: #282420;
-  --color-parchment-dark: #1F1C19;
-  --color-card: #332F2A;
-  --color-card-hover: #3B3631;
+  --color-parchment: #0F172A;
+  --color-parchment-dark: #0B1120;
+  --color-card: #1E293B;
+  --color-card-hover: #263548;
 
-  --color-burgundy: #C4748A;
-  --color-burgundy-dark: #A85A70;
-  --color-burgundy-light: #D4899D;
-  --color-burgundy-soft: rgba(196, 116, 138, 0.12);
-  --color-bronze: #C9A87A;
-  --color-bronze-light: #A08860;
+  --color-burgundy: #60A5FA;
+  --color-burgundy-dark: #3B82F6;
+  --color-burgundy-light: #93C5FD;
+  --color-burgundy-soft: rgba(96, 165, 250, 0.12);
+  --color-bronze: #2DD4BF;
+  --color-bronze-light: #14B8A6;
 
-  --color-ink: #E8E4DF;
-  --color-ink-secondary: #B8B2AA;
-  --color-ink-muted: #8A8480;
-  --color-ink-faint: #6A6560;
-  --color-ink-rgb: 232, 228, 223;
-  --color-parchment-rgb: 40, 36, 32;
-  --color-parchment-dark-rgb: 31, 28, 25;
+  --color-ink: #F1F5F9;
+  --color-ink-secondary: #CBD5E1;
+  --color-ink-muted: #94A3B8;
+  --color-ink-faint: #64748B;
+  --color-ink-rgb: 241, 245, 249;
+  --color-parchment-rgb: 15, 23, 42;
+  --color-parchment-dark-rgb: 11, 17, 32;
 
-  --color-olive: #8FA06A;
-  --color-olive-light: #6B8048;
-  --color-sage: #8BA052;
+  --color-olive: #34D399;
+  --color-olive-light: #10B981;
+  --color-sage: #34D399;
 
   --color-success: #34D399;
   --color-success-light: rgba(52, 211, 153, 0.15);
-  --color-warning: #E8A54A;
-  --color-warning-light: rgba(232, 165, 74, 0.15);
+  --color-warning: #FBBF24;
+  --color-warning-light: rgba(251, 191, 36, 0.15);
   --color-error: #F87171;
   --color-error-light: rgba(248, 113, 113, 0.15);
 
+  --color-cat-technical: #2DD4BF;
+  --color-cat-alignment: #A78BFA;
+  --color-cat-policy: #60A5FA;
+  --color-cat-ethics: #34D399;
+  --color-cat-risks: #F87171;
+
+  --color-cat-technical-bg: rgba(45, 212, 191, 0.1);
+  --color-cat-alignment-bg: rgba(167, 139, 250, 0.1);
+  --color-cat-policy-bg: rgba(96, 165, 250, 0.1);
+  --color-cat-ethics-bg: rgba(52, 211, 153, 0.1);
+  --color-cat-risks-bg: rgba(248, 113, 113, 0.1);
+
   --color-cat-science: #2DD4BF;
-  --color-cat-war: #D4845A;
-  --color-cat-politics: #9B8CA4;
-  --color-cat-culture: #8FA06A;
-  --color-cat-revolution: #C4748A;
+  --color-cat-war: #F87171;
+  --color-cat-politics: #60A5FA;
+  --color-cat-culture: #34D399;
+  --color-cat-revolution: #A78BFA;
 
   --color-cat-science-bg: rgba(45, 212, 191, 0.1);
-  --color-cat-war-bg: rgba(212, 132, 90, 0.1);
-  --color-cat-politics-bg: rgba(155, 140, 164, 0.1);
-  --color-cat-culture-bg: rgba(143, 160, 106, 0.1);
-  --color-cat-revolution-bg: rgba(196, 116, 138, 0.1);
+  --color-cat-war-bg: rgba(248, 113, 113, 0.1);
+  --color-cat-politics-bg: rgba(96, 165, 250, 0.1);
+  --color-cat-culture-bg: rgba(52, 211, 153, 0.1);
+  --color-cat-revolution-bg: rgba(167, 139, 250, 0.1);
 
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2);
   --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
-
-  --color-map-ocean: #242120;
-  --color-map-land: #35312C;
-  --color-map-land-active: #433E38;
-  --color-map-border: #6A6360;
-  --color-map-border-active: #C4748A;
-  --color-map-coastline: #7A7370;
-  --color-map-country-highlight: #8B7744;
-  --color-map-graticule: rgba(255, 255, 255, 0.06);
-  --color-map-pin-stroke: #35312C;
-  --color-map-pin-muted: #544E47;
-  --color-map-label: #6A6560;
-  --color-map-label-active: #C4748A;
-
-  /* Map sub-region colors — dark mode: muted tones */
-  --color-map-region-europe: #2E3A48;
-  --color-map-region-europe-v: #4A7FB8;
-  --color-map-region-middle-east: #3E3428;
-  --color-map-region-middle-east-v: #B48548;
-  --color-map-region-north-africa: #3C302A;
-  --color-map-region-north-africa-v: #B47B5C;
-  --color-map-region-west-africa: #283A28;
-  --color-map-region-west-africa-v: #4D984D;
-  --color-map-region-east-africa: #322A3C;
-  --color-map-region-east-africa-v: #7B5B98;
-  --color-map-region-southern-africa: #3C282E;
-  --color-map-region-southern-africa-v: #A85C70;
-  --color-map-region-south-asia: #243834;
-  --color-map-region-south-asia-v: #2A8C7C;
-  --color-map-region-east-asia: #323826;
-  --color-map-region-east-asia-v: #74983C;
-  --color-map-region-se-asia: #382A34;
-  --color-map-region-se-asia-v: #98508C;
-  --color-map-region-central-asia: #38342A;
-  --color-map-region-central-asia-v: #988838;
-  --color-map-region-oceania: #2A3438;
-  --color-map-region-oceania-v: #3888A0;
-  --color-map-region-north-america: #263440;
-  --color-map-region-north-america-v: #3C88B0;
-  --color-map-region-central-america: #3C2E28;
-  --color-map-region-central-america-v: #B0684C;
-  --color-map-region-south-america: #2A3424;
-  --color-map-region-south-america-v: #5C8C34;
 
   color-scheme: dark;
 }
@@ -711,78 +649,6 @@ input, textarea, [contenteditable] {
   to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes mapPinPulse {
-  0%, 100% { opacity: 0.4; r: inherit; }
-  50% { opacity: 0.15; }
-}
-
-.map-pin-pulse {
-  animation: mapPinPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes mapPinEntrance {
-  from { opacity: 0; transform: scale(0) translateY(4px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-/* Desktop hover states for map */
-@media (hover: hover) {
-  .map-country-hover:hover {
-    filter: brightness(1.08);
-  }
-  .map-pin-hover:hover circle:last-of-type {
-    filter: drop-shadow(0 0 4px currentColor);
-  }
-  .map-pin-hover:hover {
-    filter: drop-shadow(0 0 3px rgba(139, 65, 87, 0.35));
-  }
-}
-
-/* Time slider on map */
-.time-slider-input {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(var(--color-ink-rgb), 0.1);
-  outline: none;
-  margin: 0;
-  cursor: pointer;
-}
-.time-slider-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-burgundy);
-  cursor: pointer;
-  border: 2.5px solid var(--color-parchment);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-.time-slider-input::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-burgundy);
-  cursor: pointer;
-  border: 2.5px solid var(--color-parchment);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-.time-slider-input::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 2px;
-}
-.time-slider-input::-moz-range-track {
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(var(--color-ink-rgb), 0.1);
-}
-
-/* Fullscreen pull-down dismiss */
-.map-fullscreen-pull {
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-}
 
 @keyframes slideFromRight {
   from { opacity: 0.5; transform: translateX(40px); }
@@ -1159,14 +1025,6 @@ input, textarea, [contenteditable] {
   font-size: clamp(0.8rem, 2.5vw, 0.875rem);
 }
 
-.era-card-icon {
-  font-size: clamp(2.25rem, 6vw, 3rem);
-}
-
-.era-card-title {
-  font-size: clamp(1.25rem, 3.5vw, 1.5rem);
-}
-
 .lesson-intro-title {
   font-size: clamp(1.5rem, 4vw, 1.875rem);
 }
@@ -1178,14 +1036,6 @@ input, textarea, [contenteditable] {
     padding: 12px 14px !important;
   }
 
-  /* Era overview cards: tighter spacing */
-  .era-card-content {
-    padding: 14px !important;
-  }
-
-  .era-card-content .text-center.mb-4 {
-    margin-bottom: 8px;
-  }
 }
 
 /* Lesson flow: fill available viewport so flex-column layouts
@@ -1577,7 +1427,7 @@ input, textarea, [contenteditable] {
 }
 
 /* ════════════════════════════════════════════════════════
-   COMPONENT: Daily Quiz ("This Day in History")
+   COMPONENT: Daily Quiz
    ════════════════════════════════════════════════════════ */
 
 .daily-quiz-container {

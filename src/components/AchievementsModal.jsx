@@ -20,7 +20,7 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
 
     const handleShare = async () => {
         const text = buildAchievementShareText({ title: achievement.title, emoji: achievement.emoji });
-        const result = await shareText({ title: `Chronos \u2014 ${achievement.title}`, text });
+        const result = await shareText({ title: `AI Safety \u2014 ${achievement.title}`, text });
         if (result === 'copied') {
             setShareToast('Copied to clipboard!');
             setTimeout(() => setShareToast(null), 2000);

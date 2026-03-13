@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
-import { getFunFactsForSeenEvents, getNextFunFact } from '../data/funFacts';
-import { getEventById } from '../data/events';
+import { getFunFactsForSeenCards, getNextFunFact } from '../data/funFacts';
+import { getConceptById } from '../data/concepts';
 import { Button, CategoryTag } from './shared';
 import * as feedback from '../services/feedback';
 
@@ -24,8 +24,8 @@ export default function FunFactsFlow({ onExit }) {
     const [answered, setAnswered] = useState(false);
 
     const availableFacts = useMemo(
-        () => getFunFactsForSeenEvents(state.seenEvents),
-        [state.seenEvents]
+        () => getFunFactsForSeenCards(state.seenCards || []),
+        [state.seenCards]
     );
 
     const currentFact = useMemo(
@@ -34,7 +34,7 @@ export default function FunFactsFlow({ onExit }) {
         [availableFacts, factIndex]
     );
 
-    const event = currentFact ? getEventById(currentFact.eventId) : null;
+    const event = currentFact ? getConceptById(currentFact.cardId) : null;
 
     const shuffledOptions = useMemo(
         () => currentFact ? shuffleOptions(currentFact.correctAnswer, currentFact.wrongAnswers) : [],
@@ -85,7 +85,7 @@ export default function FunFactsFlow({ onExit }) {
                     <div className="text-4xl mb-4">💡</div>
                     <h2 className="text-lg font-bold mb-2" style={{ fontFamily: 'var(--font-serif)' }}>No Fun Facts Yet</h2>
                     <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
-                        Learn more events in lessons to unlock fun facts!
+                        Learn more concepts in lessons to unlock fun facts!
                     </p>
                 </div>
             </div>

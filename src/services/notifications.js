@@ -5,17 +5,17 @@ const isNative = Capacitor.isNativePlatform();
 
 const DAILY_REMINDER = 1001;
 const STREAK_REMINDER = 1002;
-const CHANNEL_ID = 'chronos-reminders';
+const CHANNEL_ID = 'aisafety-reminders';
 
 const DAILY_TITLES = [
-  'Time for history!',
+  'Time for AI safety!',
   'Your daily lesson awaits',
   'Ready to learn?',
-  'History is calling',
+  'AI safety is calling',
 ];
 
 const DAILY_BODIES = [
-  'Spend a few minutes exploring the story of humanity.',
+  'Spend a few minutes learning about AI safety.',
   'Pick up where you left off.',
   'A quick lesson keeps your knowledge sharp.',
   'Great minds never stop learning.',
@@ -32,7 +32,7 @@ export async function createNotificationChannel() {
   try {
     await LocalNotifications.createChannel({
       id: CHANNEL_ID,
-      name: 'Chronos Reminders',
+      name: 'AI Safety Reminders',
       description: 'Daily learning reminders and streak alerts',
       importance: 3, // DEFAULT
       visibility: 0, // PUBLIC

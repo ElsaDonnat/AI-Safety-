@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer, useEffect, useRef } from 'react';
-import { getEraQuizGroup } from '../data/lessons';
 import { calculateInitialInterval } from '../data/spacedRepetition';
 import { initWidgets, syncWidgetData } from '../services/widgetBridge';
 import { configure as configureFeedback } from '../services/feedback';
@@ -7,17 +6,17 @@ import { configure as configureAmbientMusic } from '../services/ambientMusic';
 
 const AppContext = createContext(null);
 
-const STORAGE_KEY = 'chronos-state-v1';
+const STORAGE_KEY = 'aisafety-state-v1';
 
 const defaultState = {
     // Lesson completion: { [lessonId]: number }
     completedLessons: {},
-    // Event mastery: { [eventId]: { locationScore, dateScore, whatScore, descriptionScore, timesReviewed, lastSeen, overallMastery } }
-    eventMastery: {},
-    // Set of event IDs the user has seen the learn card for
-    seenEvents: [],
-    // Starred/favorited event IDs
-    starredEvents: [],
+    // Card mastery: { [cardId]: { whatScore, whyScore, howScore, timesReviewed, lastSeen, overallMastery } }
+    cardMastery: {},
+    // Set of card IDs the user has seen the learn card for
+    seenCards: [],
+    // Starred/favorited card IDs
+    starredCards: [],
     // XP
     totalXP: 0,
     // Streak
@@ -50,7 +49,7 @@ const defaultState = {
         lastAttemptedDate: null,  // ISO date string — set when quiz is opened (hides card for the day)
         lastXPEarned: 0,
         totalCompleted: 0,
-        acquiredEventIds: [],     // dih-X IDs acquired via daily quiz
+        acquiredCardIds: [],      // card IDs acquired via daily quiz
     },
 
     // ─── Achievements ───
@@ -58,18 +57,11 @@ const defaultState = {
     newAchievements: [],    // IDs unlocked this session (for toast)
 
     // ─── Onboarding ───
-    // 'welcome' | 'guide_lesson0' | 'placement_active' | 'complete' | null
+    // 'welcome' | 'topic_overview' | 'complete' | null
     onboardingStep: 'welcome',
 
-    // ─── Placement Quizzes ───
-    // { [eraId]: { passed, score, maxScore, completedAt } }
-    placementQuizzes: {},
-
-    // ─── Skipped Events (from placement) ───
-    skippedEvents: [],
-
     // ─── Spaced Repetition Schedule ───
-    // { [eventId]: { interval, ease, nextReview, reviewCount, lastReviewScore } }
+    // { [cardId]: { interval, ease, nextReview, reviewCount, lastReviewScore } }
     srSchedule: {},
 
     // ─── Study Timer ───
@@ -94,24 +86,54 @@ const defaultState = {
 function migrateState(parsed) {
     const merged = { ...defaultState, ...parsed, settingsOpen: false };
 
+    // Migration: rename old field names to new ones
+    if (parsed.eventMastery && !parsed.cardMastery) {
+        merged.cardMastery = parsed.eventMastery;
+        delete merged.eventMastery;
+    }
+    if (parsed.seenEvents && !parsed.seenCards) {
+        merged.seenCards = parsed.seenEvents;
+        delete merged.seenEvents;
+    }
+    if (parsed.starredEvents && !parsed.starredCards) {
+        merged.starredCards = parsed.starredEvents;
+        delete merged.starredCards;
+    }
+
+    // Migration: rename acquiredEventIds to acquiredCardIds in dailyQuiz
+    if (parsed.dailyQuiz?.acquiredEventIds && !parsed.dailyQuiz?.acquiredCardIds) {
+        merged.dailyQuiz = {
+            ...merged.dailyQuiz,
+            acquiredCardIds: parsed.dailyQuiz.acquiredEventIds,
+        };
+        delete merged.dailyQuiz.acquiredEventIds;
+    }
+
+    // Migration: remove legacy fields
+    delete merged.placementQuizzes;
+    delete merged.skippedEvents;
+    delete merged.eventMastery;
+    delete merged.seenEvents;
+    delete merged.starredEvents;
+
     // Migration: existing users skip onboarding
     if (parsed.onboardingStep === undefined) {
         const hasProgress = Object.keys(parsed.completedLessons || {}).length > 0
-            || (parsed.seenEvents || []).length > 0;
+            || (parsed.seenCards || parsed.seenEvents || []).length > 0;
         merged.onboardingStep = hasProgress ? 'complete' : 'welcome';
     }
 
     // Migration: removed onboarding steps — redirect to 'complete'
-    if (parsed.onboardingStep === 'post_lesson0' || parsed.onboardingStep === 'placement_offer') {
+    if (['post_lesson0', 'placement_offer', 'guide_lesson0', 'placement_active'].includes(parsed.onboardingStep)) {
         merged.onboardingStep = 'complete';
     }
 
-    // Migration: ensure srSchedule exists for all seen events
+    // Migration: ensure srSchedule exists for all seen cards
     if (!parsed.srSchedule) {
         merged.srSchedule = {};
         const today = getTodayDate();
-        (merged.seenEvents || []).forEach(id => {
-            const mastery = merged.eventMastery[id];
+        (merged.seenCards || []).forEach(id => {
+            const mastery = merged.cardMastery[id];
             merged.srSchedule[id] = {
                 interval: mastery ? calculateInitialInterval(mastery) : 0,
                 ease: 2.5,
@@ -122,15 +144,11 @@ function migrateState(parsed) {
         });
     }
 
-    // Migration: ensure new arrays/objects
-    if (!parsed.skippedEvents) merged.skippedEvents = [];
-    if (!parsed.placementQuizzes) merged.placementQuizzes = {};
-
     // Migration: daily quiz + achievements
-    if (!parsed.dailyQuiz) merged.dailyQuiz = { lastCompletedDate: null, lastAttemptedDate: null, lastXPEarned: 0, totalCompleted: 0, acquiredEventIds: [] };
+    if (!parsed.dailyQuiz) merged.dailyQuiz = { lastCompletedDate: null, lastAttemptedDate: null, lastXPEarned: 0, totalCompleted: 0, acquiredCardIds: [] };
     else {
         if (!('lastAttemptedDate' in parsed.dailyQuiz)) merged.dailyQuiz = { ...merged.dailyQuiz, lastAttemptedDate: null };
-        if (!parsed.dailyQuiz.acquiredEventIds) merged.dailyQuiz = { ...merged.dailyQuiz, acquiredEventIds: [] };
+        if (!parsed.dailyQuiz.acquiredCardIds && !parsed.dailyQuiz.acquiredEventIds) merged.dailyQuiz = { ...merged.dailyQuiz, acquiredCardIds: [] };
     }
     if (!parsed.achievements) merged.achievements = {};
     if (!parsed.newAchievements) merged.newAchievements = [];
@@ -176,11 +194,10 @@ function getInitialState() {
 
 function calculateOverallMastery(mastery) {
     const scoreMap = { green: 3, yellow: 1, red: 0 };
-    const loc = scoreMap[mastery.locationScore] ?? 0;
-    const date = scoreMap[mastery.dateScore] ?? 0;
     const what = scoreMap[mastery.whatScore] ?? 0;
-    const desc = scoreMap[mastery.descriptionScore] ?? 0;
-    return loc + date + what + desc;
+    const why = scoreMap[mastery.whyScore] ?? 0;
+    const how = scoreMap[mastery.howScore] ?? 0;
+    return what + why + how;
 }
 
 function getTodayDate() {
@@ -200,12 +217,12 @@ function reducer(state, action) {
             };
         }
 
-        case 'MARK_EVENTS_SEEN': {
-            const newSeen = [...new Set([...state.seenEvents, ...action.eventIds])];
-            // Also initialize SR entries for newly seen events
+        case 'MARK_CARDS_SEEN': {
+            const newSeen = [...new Set([...state.seenCards, ...action.cardIds])];
+            // Also initialize SR entries for newly seen cards
             const newSr = { ...state.srSchedule };
             const today = getTodayDate();
-            action.eventIds.forEach(id => {
+            action.cardIds.forEach(id => {
                 if (!newSr[id]) {
                     newSr[id] = {
                         interval: 0,
@@ -216,7 +233,7 @@ function reducer(state, action) {
                     };
                 }
             });
-            return { ...state, seenEvents: newSeen, srSchedule: newSr };
+            return { ...state, seenCards: newSeen, srSchedule: newSr };
         }
 
         case 'MARK_FUN_FACT_SEEN': {
@@ -225,32 +242,30 @@ function reducer(state, action) {
             return { ...state, seenFunFacts: [...state.seenFunFacts, ffId] };
         }
 
-        case 'UPDATE_EVENT_MASTERY': {
-            const { eventId, questionType, score } = action;
-            const existing = state.eventMastery[eventId] || {
-                locationScore: null,
-                dateScore: null,
+        case 'UPDATE_CARD_MASTERY': {
+            const { cardId, questionType, score } = action;
+            const existing = state.cardMastery[cardId] || {
                 whatScore: null,
-                descriptionScore: null,
+                whyScore: null,
+                howScore: null,
                 timesReviewed: 0,
                 lastSeen: null,
                 overallMastery: 0
             };
 
             const updated = { ...existing };
-            if (questionType === 'location') updated.locationScore = score;
-            if (questionType === 'date') updated.dateScore = score;
             if (questionType === 'what') updated.whatScore = score;
-            if (questionType === 'description') updated.descriptionScore = score;
+            if (questionType === 'why') updated.whyScore = score;
+            if (questionType === 'how') updated.howScore = score;
             updated.timesReviewed = (existing.timesReviewed || 0) + 1;
             updated.lastSeen = Date.now();
             updated.overallMastery = calculateOverallMastery(updated);
 
             return {
                 ...state,
-                eventMastery: {
-                    ...state.eventMastery,
-                    [eventId]: updated
+                cardMastery: {
+                    ...state.cardMastery,
+                    [cardId]: updated
                 }
             };
         }
@@ -300,19 +315,19 @@ function reducer(state, action) {
         }
 
         case 'TOGGLE_STAR': {
-            const { eventId } = action;
-            const starred = state.starredEvents || [];
-            const isStarred = starred.includes(eventId);
+            const { cardId } = action;
+            const starred = state.starredCards || [];
+            const isStarred = starred.includes(cardId);
             return {
                 ...state,
-                starredEvents: isStarred
-                    ? starred.filter(id => id !== eventId)
-                    : [...starred, eventId]
+                starredCards: isStarred
+                    ? starred.filter(id => id !== cardId)
+                    : [...starred, cardId]
             };
         }
 
         case 'CLEAR_ALL_STARS':
-            return { ...state, starredEvents: [] };
+            return { ...state, starredCards: [] };
 
         case 'TOGGLE_SETTINGS': {
             return { ...state, settingsOpen: !state.settingsOpen };
@@ -389,61 +404,13 @@ function reducer(state, action) {
             return { ...state, onboardingStep: action.step };
         }
 
-        // ─── Placement Quiz ───
-        case 'COMPLETE_PLACEMENT_QUIZ': {
-            const result = {
-                passed: action.passed,
-                score: action.score,
-                maxScore: action.maxScore,
-                completedAt: new Date().toISOString(),
-            };
-            const newQuizzes = { ...state.placementQuizzes, [action.eraId]: result };
-
-            if (!action.passed) {
-                return { ...state, placementQuizzes: newQuizzes };
-            }
-
-            // Passed: mark all lessons in era as completed, events as seen + skipped
-            const group = getEraQuizGroup(action.eraId);
-            const newCompleted = { ...state.completedLessons };
-            group.lessonIds.forEach(lid => {
-                if (!newCompleted[lid]) newCompleted[lid] = 1;
-            });
-            const newSeen = [...new Set([...state.seenEvents, ...group.eventIds])];
-            const newSkipped = [...new Set([...state.skippedEvents, ...group.eventIds])];
-
-            // Init SR entries for newly seen events
-            const newSr = { ...state.srSchedule };
-            const today = getTodayDate();
-            group.eventIds.forEach(id => {
-                if (!newSr[id]) {
-                    newSr[id] = {
-                        interval: 1,
-                        ease: 2.5,
-                        nextReview: today,
-                        reviewCount: 0,
-                        lastReviewScore: null,
-                    };
-                }
-            });
-
-            return {
-                ...state,
-                placementQuizzes: newQuizzes,
-                completedLessons: newCompleted,
-                seenEvents: newSeen,
-                skippedEvents: newSkipped,
-                srSchedule: newSr,
-            };
-        }
-
         // ─── Spaced Repetition ───
         case 'UPDATE_SR_SCHEDULE': {
             return {
                 ...state,
                 srSchedule: {
                     ...state.srSchedule,
-                    [action.eventId]: {
+                    [action.cardId]: {
                         interval: action.interval,
                         ease: action.ease,
                         nextReview: action.nextReview,
@@ -451,14 +418,6 @@ function reducer(state, action) {
                         lastReviewScore: action.lastReviewScore,
                     },
                 },
-            };
-        }
-
-        // ─── Remove skipped tag once verified in practice ───
-        case 'REMOVE_SKIPPED_EVENT': {
-            return {
-                ...state,
-                skippedEvents: state.skippedEvents.filter(id => id !== action.eventId),
             };
         }
 
@@ -496,10 +455,10 @@ function reducer(state, action) {
                     lastCompletedDate: getTodayDate(),
                     lastXPEarned: action.xpEarned,
                     totalCompleted: (state.dailyQuiz?.totalCompleted || 0) + 1,
-                    acquiredEventIds: [
+                    acquiredCardIds: [
                         ...new Set([
-                            ...(state.dailyQuiz?.acquiredEventIds || []),
-                            ...(action.eventIds || []),
+                            ...(state.dailyQuiz?.acquiredCardIds || []),
+                            ...(action.cardIds || []),
                         ]),
                     ],
                 },
@@ -596,7 +555,7 @@ export function AppProvider({ children }) {
                 : state.themeMode;
             document.documentElement.dataset.theme = resolved;
             const meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute('content', resolved === 'dark' ? '#282420' : '#FAF6F0');
+            if (meta) meta.setAttribute('content', resolved === 'dark' ? '#0F172A' : '#F0F4F8');
         };
         apply();
         if (state.themeMode === 'system') {

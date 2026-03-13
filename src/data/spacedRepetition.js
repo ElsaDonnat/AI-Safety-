@@ -1,4 +1,4 @@
-// ─── SM-2 Variant Spaced Repetition for Chronos ─────
+// ─── SM-2 Variant Spaced Repetition ─────
 // Pure functions — no React dependencies.
 //
 // green  → correct, grow interval
@@ -56,35 +56,35 @@ export function calculateNextReview(currentSchedule, score) {
 }
 
 /**
- * Get events due for review, sorted by priority (most overdue first).
- * @param {Object} srSchedule - { [eventId]: { nextReview, ease, ... } }
- * @param {string[]} seenEvents - Array of event IDs
- * @returns {{ eventId: string, overdue: number }[]}
+ * Get cards due for review, sorted by priority (most overdue first).
+ * @param {Object} srSchedule - { [cardId]: { nextReview, ease, ... } }
+ * @param {string[]} seenCards - Array of card IDs
+ * @returns {{ cardId: string, overdue: number }[]}
  */
-export function getDueEvents(srSchedule, seenEvents) {
+export function getDueEvents(srSchedule, seenCards) {
     const today = getTodayStr();
     const due = [];
 
-    for (const eventId of seenEvents) {
-        const schedule = srSchedule[eventId];
+    for (const cardId of seenCards) {
+        const schedule = srSchedule[cardId];
         if (!schedule) {
             // Never scheduled — due immediately
-            due.push({ eventId, overdue: 999 });
+            due.push({ cardId, overdue: 999 });
             continue;
         }
         if (schedule.nextReview <= today) {
             const dueDate = new Date(schedule.nextReview);
             const now = new Date(today);
             const overdueDays = Math.floor((now - dueDate) / (1000 * 60 * 60 * 24));
-            due.push({ eventId, overdue: overdueDays });
+            due.push({ cardId, overdue: overdueDays });
         }
     }
 
     // Sort: most overdue first, then by lowest ease (hardest cards)
     due.sort((a, b) => {
         if (b.overdue !== a.overdue) return b.overdue - a.overdue;
-        const easeA = srSchedule[a.eventId]?.ease ?? DEFAULT_EASE;
-        const easeB = srSchedule[b.eventId]?.ease ?? DEFAULT_EASE;
+        const easeA = srSchedule[a.cardId]?.ease ?? DEFAULT_EASE;
+        const easeB = srSchedule[b.cardId]?.ease ?? DEFAULT_EASE;
         return easeA - easeB;
     });
 
@@ -92,13 +92,12 @@ export function getDueEvents(srSchedule, seenEvents) {
 }
 
 /**
- * Compute card status from mastery, SR schedule, and skipped flags.
+ * Compute card status from mastery and SR schedule.
  * Statuses: 'new' | 'learning' | 'known' | 'fully_assimilated'
  */
-export function getCardStatus(eventId, eventMastery, srSchedule, skippedEvents) {
-    const mastery = eventMastery[eventId];
-    const sr = srSchedule[eventId];
-    const isSkipped = (skippedEvents || []).includes(eventId);
+export function getCardStatus(cardId, cardMastery, srSchedule) {
+    const mastery = cardMastery[cardId];
+    const sr = srSchedule[cardId];
 
     if (!mastery && !sr) return 'new';
 
@@ -106,13 +105,8 @@ export function getCardStatus(eventId, eventMastery, srSchedule, skippedEvents) 
     const reviewCount = sr?.reviewCount ?? 0;
     const interval = sr?.interval ?? 0;
 
-    // Fully Assimilated: high mastery + long intervals + several reviews
-    if (overallMastery >= 10 && interval >= 14 && reviewCount >= 3) {
-        return 'fully_assimilated';
-    }
-
-    // Skipped fast-track: placed via quiz, verified well in practice
-    if (isSkipped && overallMastery >= 7 && reviewCount >= 2) {
+    // Fully Assimilated: high mastery + long intervals + several reviews (max mastery = 9)
+    if (overallMastery >= 8 && interval >= 14 && reviewCount >= 3) {
         return 'fully_assimilated';
     }
 
@@ -132,10 +126,10 @@ export function getCardStatus(eventId, eventMastery, srSchedule, skippedEvents) 
 /**
  * Get counts for each status category.
  */
-export function getStatusCounts(seenEvents, eventMastery, srSchedule, skippedEvents) {
+export function getStatusCounts(seenCards, cardMastery, srSchedule) {
     const counts = { new: 0, learning: 0, known: 0, fully_assimilated: 0 };
-    for (const eventId of seenEvents) {
-        const status = getCardStatus(eventId, eventMastery, srSchedule, skippedEvents);
+    for (const cardId of seenCards) {
+        const status = getCardStatus(cardId, cardMastery, srSchedule);
         counts[status]++;
     }
     return counts;
@@ -146,8 +140,8 @@ export function getStatusCounts(seenEvents, eventMastery, srSchedule, skippedEve
  */
 export function calculateInitialInterval(mastery) {
     const om = mastery?.overallMastery ?? 0;
-    if (om >= 10) return 7;
-    if (om >= 7) return 3;
+    if (om >= 8) return 7;
+    if (om >= 6) return 3;
     if (om >= 4) return 1;
     return 0;
 }

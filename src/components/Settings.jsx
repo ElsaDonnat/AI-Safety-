@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { ALL_EVENTS } from '../data/events';
-import { LESSONS, ALL_LEVEL2_LESSONS } from '../data/lessons';
+import { ALL_CONCEPTS } from '../data/concepts';
+import { LESSONS } from '../data/lessons';
 import { Card, Button, Divider, ConfirmModal } from './shared';
 import Mascot from './Mascot';
 import StreakFlame from './StreakFlame';
@@ -12,18 +12,18 @@ import {
 } from '../services/notifications';
 import * as feedback from '../services/feedback';
 
-const STORAGE_KEY = 'chronos-state-v1';
+const STORAGE_KEY = 'aisafety-state-v1';
 
 async function exportProgress(state) {
     const data = JSON.stringify(state, null, 2);
-    const filename = `chronos-backup-${new Date().toISOString().split('T')[0]}.json`;
+    const filename = `aisafety-backup-${new Date().toISOString().split('T')[0]}.json`;
 
     // On Android / mobile, use Web Share API to let user save/send the file
     if (navigator.share && navigator.canShare) {
         const file = new File([data], filename, { type: 'application/json' });
         if (navigator.canShare({ files: [file] })) {
             try {
-                await navigator.share({ files: [file], title: 'Chronos Backup' });
+                await navigator.share({ files: [file], title: 'AI Safety Backup' });
                 return;
             } catch (e) {
                 if (e.name === 'AbortError') return; // user cancelled, that's fine
@@ -50,8 +50,8 @@ export default function Settings() {
     const [importStatus, setImportStatus] = useState(null); // 'success' | 'error' | null
     const fileInputRef = useRef(null);
 
-    const learnedCount = state.seenEvents.length;
-    const totalEvents = ALL_EVENTS.length;
+    const learnedCount = (state.seenCards || []).length;
+    const totalConcepts = ALL_CONCEPTS.length;
     const completedLessons = Object.keys(state.completedLessons).length;
 
     // Format study time
@@ -82,7 +82,7 @@ export default function Settings() {
         }
     }, [state.notificationsEnabled, state.dailyReminderTime, state.streakRemindersEnabled]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const masteryEntries = Object.values(state.eventMastery);
+    const masteryEntries = Object.values(state.cardMastery || {});
     const greenCount = masteryEntries.filter(m => m.overallMastery >= 7).length;
     const yellowCount = masteryEntries.filter(m => m.overallMastery >= 3 && m.overallMastery < 7).length;
     const redCount = masteryEntries.filter(m => m.overallMastery < 3 && m.overallMastery > 0).length;
@@ -134,17 +134,17 @@ export default function Settings() {
                     </div>
                     <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--color-ink-secondary)' }}>
                         <p><strong>Last updated:</strong> February 26, 2026</p>
-                        <p>Chronos is a history learning app. Your privacy is important to us.</p>
+                        <p>AI Safety is an AI safety learning app. Your privacy is important to us.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>Data Collection</h3>
-                        <p>Chronos does <strong>not</strong> collect, transmit, or share any personal data. The app works entirely offline.</p>
+                        <p>AI Safety does <strong>not</strong> collect, transmit, or share any personal data. The app works entirely offline.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>Local Storage</h3>
                         <p>Your learning progress (completed lessons, mastery scores, XP, and streaks) is stored locally on your device using browser storage. This data never leaves your device.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>No Analytics or Tracking</h3>
-                        <p>Chronos does not use any analytics services, advertising SDKs, crash reporting tools, or tracking technologies.</p>
+                        <p>AI Safety does not use any analytics services, advertising SDKs, crash reporting tools, or tracking technologies.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>No Network Requests</h3>
                         <p>The app makes zero network requests after installation. All content, fonts, and assets are bundled with the app.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>Children{"'"}s Privacy</h3>
-                        <p>Chronos is an educational app suitable for all ages. Since no data is collected, there are no special concerns regarding children{"'"}s privacy.</p>
+                        <p>AI Safety is an educational app suitable for all ages. Since no data is collected, there are no special concerns regarding children{"'"}s privacy.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>Data Deletion</h3>
                         <p>You can delete all your data at any time using the {"\""}Reset All Progress{"\""} button in Settings, or by clearing the app{"'"}s data in your device settings.</p>
                         <h3 className="font-bold mt-4" style={{ color: 'var(--color-ink)' }}>Contact</h3>
@@ -168,7 +168,7 @@ export default function Settings() {
             >
                 <div className="relative flex items-center justify-center mb-4">
                     <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
-                        Your &nbsp;Journey
+                        Your &nbsp;Progress
                     </h2>
                     <button
                         onClick={() => dispatch({ type: 'TOGGLE_SETTINGS' })}
@@ -205,11 +205,11 @@ export default function Settings() {
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Day Streak</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{learnedCount}/{totalEvents}</div>
-                        <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Events Learned</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{learnedCount}/{totalConcepts}</div>
+                        <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Cards Learned</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{completedLessons}/{LESSONS.length + ALL_LEVEL2_LESSONS.length}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{completedLessons}/{LESSONS.length}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Lessons Complete</div>
                     </Card>
                 </div>
@@ -271,7 +271,7 @@ export default function Settings() {
                                         { value: 1, label: '1', sub: '1 per card' },
                                         { value: 2, label: '2', sub: '2 per card' },
                                         { value: 3, label: '3', sub: '3 per card' },
-                                    ].map(({ value, label, sub }) => {
+                                    ].map(({ value, label }) => {
                                         const isActive = recap === value;
                                         return (
                                             <button
@@ -447,7 +447,7 @@ export default function Settings() {
                                 <span style={{ fontSize: '16px' }}>{(state.musicVolume ?? 1) === 0 ? '🔇' : '🎵'}</span>
                                 <div>
                                     <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Ambient music</span>
-                                    <div className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Relaxing antiquity soundscape</div>
+                                    <div className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Ambient soundscape</div>
                                 </div>
                             </div>
                             <span className="text-xs tabular-nums" style={{ color: 'var(--color-ink-muted)', minWidth: '2.5rem', textAlign: 'right' }}>
@@ -483,34 +483,6 @@ export default function Settings() {
                                 className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform"
                                 style={{ transform: state.hapticsEnabled ? 'translateX(20px)' : 'translateX(0)', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }}
                             />
-                        </button>
-                    </div>
-                </Card>
-
-                {/* Placement Quizzes */}
-                <Card className="mb-3 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                        <div className="min-w-0">
-                            <div className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Placement Quizzes</div>
-                            <div className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                                {Object.values(state.placementQuizzes || {}).filter(q => q.passed).length > 0
-                                    ? `${Object.values(state.placementQuizzes).filter(q => q.passed).length} era(s) skipped`
-                                    : 'Skip eras you already know'}
-                            </div>
-                        </div>
-                        <button
-                            onClick={() => {
-                                dispatch({ type: 'TOGGLE_SETTINGS' });
-                                dispatch({ type: 'SET_ONBOARDING_STEP', step: 'placement_active' });
-                            }}
-                            className="flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold"
-                            style={{
-                                backgroundColor: 'var(--color-burgundy-soft)',
-                                color: 'var(--color-burgundy)',
-                                border: '1px solid rgba(139, 65, 87, 0.15)',
-                            }}
-                        >
-                            Take Quiz
                         </button>
                     </div>
                 </Card>
@@ -578,7 +550,7 @@ export default function Settings() {
                 </button>
 
                 <p className="text-center text-xs mt-2" style={{ color: 'var(--color-ink-faint)' }}>
-                    Chronos v{__APP_VERSION__} — The Story of Humanity
+                    AI Safety v{__APP_VERSION__}
                 </p>
             </div>
 
@@ -591,9 +563,7 @@ export default function Settings() {
                     danger
                     onConfirm={() => {
                         cancelAllReminders();
-                        localStorage.removeItem('chronos-level2-unlock-seen');
-                        localStorage.removeItem('chronos-learn-level');
-                        localStorage.removeItem('chronos-settings-tip-seen');
+                        localStorage.removeItem('aisafety-settings-tip-seen');
                         dispatch({ type: 'RESET_PROGRESS' });
                         setShowResetConfirm(false);
                     }}

@@ -42,7 +42,7 @@ export default function NotificationOnboarding({ onEnable, onSkip }) {
                     className="text-sm text-center mb-5"
                     style={{ color: 'var(--color-ink-secondary)' }}
                 >
-                    A gentle daily reminder helps build your history habit.
+                    A gentle daily reminder helps build your learning habit.
                 </p>
 
                 {/* Reminder time */}

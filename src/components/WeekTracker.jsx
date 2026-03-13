@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { getEventById, getEraForYear, ERA_RANGES } from '../data/events';
+import { getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { shareText } from '../services/share';
 import StreakFlame, { FLAME_COUNT_COLORS } from './StreakFlame';
 
@@ -70,37 +70,37 @@ export default function WeekTracker({ onClose }) {
         const lessonSessions = sessions.filter(s => s.type === 'lesson').length;
         const practiceSessions = sessions.filter(s => s.type === 'practice').length;
 
-        // Era mastery
-        const eraScores = {};
-        const eraCounts = {};
-        for (const id of (state.seenEvents || [])) {
-            const ev = getEventById(id);
-            if (!ev) continue;
-            const era = getEraForYear(ev.year);
-            const mastery = state.eventMastery[id]?.overallMastery ?? 0;
-            eraScores[era.id] = (eraScores[era.id] || 0) + mastery;
-            eraCounts[era.id] = (eraCounts[era.id] || 0) + 1;
+        // Topic mastery
+        const topicScores = {};
+        const topicCounts = {};
+        for (const id of (state.seenCards || [])) {
+            const concept = getConceptById(id);
+            if (!concept) continue;
+            const topic = concept.topic;
+            const mastery = state.cardMastery[id]?.overallMastery ?? 0;
+            topicScores[topic] = (topicScores[topic] || 0) + mastery;
+            topicCounts[topic] = (topicCounts[topic] || 0) + 1;
         }
-        const eraAvgs = Object.entries(eraScores)
-            .filter(([id]) => eraCounts[id] >= 2)
+        const topicAvgs = Object.entries(topicScores)
+            .filter(([id]) => topicCounts[id] >= 2)
             .map(([id, total]) => ({
                 id,
-                label: ERA_RANGES.find(e => e.id === id)?.label || id,
-                avg: total / eraCounts[id],
-                count: eraCounts[id],
+                label: CATEGORY_CONFIG[id]?.label || id,
+                avg: total / topicCounts[id],
+                count: topicCounts[id],
             }))
             .sort((a, b) => b.avg - a.avg);
 
         return {
             dayActivity: activity,
             stats: { totalSessions, totalQuestions, totalSeconds, lessonSessions, practiceSessions },
-            strongest: eraAvgs[0] || null,
-            weakest: eraAvgs.length > 1 ? eraAvgs[eraAvgs.length - 1] : null,
+            strongest: topicAvgs[0] || null,
+            weakest: topicAvgs.length > 1 ? topicAvgs[topicAvgs.length - 1] : null,
         };
-    }, [state.studySessions, state.seenEvents, state.eventMastery, weekStart]);
+    }, [state.studySessions, state.seenCards, state.cardMastery, weekStart]);
 
     const activeDays = dayActivity.filter(d => d.sessions > 0).length;
-    const eventsLearned = (state.seenEvents || []).length;
+    const cardsLearned = (state.seenCards || []).length;
 
     function formatTime(secs) {
         if (secs >= 3600) return `${Math.floor(secs / 3600)}h ${Math.floor((secs % 3600) / 60)}m`;
@@ -216,14 +216,14 @@ export default function WeekTracker({ onClose }) {
                                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                 </svg>
-                                <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)' }}>{eventsLearned}</div>
+                                <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)' }}>{cardsLearned}</div>
                             </div>
-                            <div className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>events learned</div>
+                            <div className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>concepts learned</div>
                         </div>
                     </div>
                 </div>
 
-                {/* Era insights */}
+                {/* Topic insights */}
                 {(strongest || weakest) && (
                     <div className="px-5 pb-3">
                         <div className="flex gap-2">
@@ -255,11 +255,11 @@ export default function WeekTracker({ onClose }) {
                         <button
                             onClick={async () => {
                                 const lines = [
-                                    `🔥 ${state.currentStreak}-day streak on Chronos!`,
+                                    `🔥 ${state.currentStreak}-day streak on AI Safety!`,
                                     `📊 This week: ${stats.totalSessions} sessions, ${stats.totalQuestions} questions`,
-                                    `📚 ${eventsLearned} historical events learned`,
+                                    `📚 ${cardsLearned} AI safety concepts learned`,
                                 ];
-                                await shareText({ title: 'Chronos', text: lines.join('\n') });
+                                await shareText({ title: 'AI Safety', text: lines.join('\n') });
                             }}
                             className="w-full flex items-center justify-center gap-2 mb-2 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
                             style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(139, 65, 87, 0.08)' }}
