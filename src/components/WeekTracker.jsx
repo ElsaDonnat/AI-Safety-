@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { shareText } from '../services/share';
-import StreakFlame, { FLAME_COUNT_COLORS } from './StreakFlame';
+import StreakFlame from './StreakFlame';
+import { FLAME_COUNT_COLORS } from '../utils/streakColors';
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 

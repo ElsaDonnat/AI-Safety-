@@ -5,8 +5,8 @@ import { readFileSync } from 'fs'
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
-export default defineConfig(({ command }) => ({
-  base: process.env.CAPACITOR_BUILD ? './' : '/AI-Safety-/',
+export default defineConfig(() => ({
+  base: 'CAPACITOR_BUILD' in (globalThis.process?.env ?? {}) ? './' : '/AI-Safety-/',
   plugins: [react(), tailwindcss()],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),

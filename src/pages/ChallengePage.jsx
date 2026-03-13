@@ -767,7 +767,8 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     // ─── Derived data ────────────────────────────────
 
     const ch = state.challenge || {};
-    const availableFunFacts = useMemo(() => getFunFactsForSeenCards(state.seenCards || []), [state.seenCards || []]);
+    const seenCardsForFacts = useMemo(() => state.seenCards || [], [state.seenCards]);
+    const availableFunFacts = useMemo(() => getFunFactsForSeenCards(seenCardsForFacts), [seenCardsForFacts]);
     const seenFunFactCount = useMemo(() => {
         const availableIds = new Set(availableFunFacts.map(f => f.id));
         return (state.seenFunFacts || []).filter(id => availableIds.has(id)).length;

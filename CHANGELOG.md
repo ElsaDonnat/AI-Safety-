@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.1 — Lint fixes & code cleanup
+
+### Fixed
+- App.jsx: Replaced setState-in-useEffect with lazy useState initializer (eliminated cascading render warning)
+- vite.config.js: Fixed unused `command` parameter and undefined `process` global
+- StreakFlame.jsx: Moved `FLAME_COUNT_COLORS` to `src/utils/streakColors.js` (fixes fast-refresh violation)
+- shared.jsx: Moved `flyXPToStar` to `src/utils/xpAnimation.js` (fixes fast-refresh violation)
+- ChallengePage.jsx: Fixed useMemo dependency array warnings with proper memoization
+
+### Removed
+- Dead CSS: timeline-event-card styles, dark mode legacy Chronos category aliases
+- Lint result: 5 errors + 4 warnings reduced to 0
+
 ## 0.2.0 — Content expansion & UI improvements
 
 ### Added
