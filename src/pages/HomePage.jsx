@@ -117,7 +117,7 @@ export default function HomePage({ onTabChange }) {
             {hasStarted && (
                 <div className="mb-8 px-4 py-4 rounded-[3px]" style={{
                     backgroundColor: 'var(--color-surface)',
-                    border: '1px solid rgba(var(--color-ink-rgb), 0.06)',
+                    border: '1px solid rgba(var(--color-ink-rgb), 0.12)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink)' }}>
@@ -197,7 +197,7 @@ export default function HomePage({ onTabChange }) {
                         className="w-full flex items-center gap-4 px-4 py-3.5 rounded-[3px] text-left transition-all active:scale-[0.995]"
                         style={{
                             backgroundColor: 'var(--color-surface)',
-                            border: '1px solid rgba(var(--color-ink-rgb), 0.06)',
+                            border: '1px solid rgba(var(--color-ink-rgb), 0.12)',
                             cursor: 'pointer',
                         }}
                     >
