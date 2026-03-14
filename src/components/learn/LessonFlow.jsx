@@ -326,7 +326,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
                             Exit
                         </button>
-                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
                             style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
                             Study {'\u00B7'} {cardIndex + 1}/{concepts.length}
                         </span>
@@ -374,14 +374,14 @@ export default function LessonFlow({ lesson, onComplete }) {
                                 </div>
                             )}
                             <h2 className="text-xl font-bold mt-3 mb-2 leading-snug" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{concept.title}</h2>
-                            {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
+                            {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-ink-muted)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-ink-secondary)' }}>
                                 {highlightText(concept.description)}
                             </ExpandableText>
                             {concept.tags && concept.tags.length > 0 && (
                                 <div className="flex items-center gap-1.5 flex-wrap mb-3">
                                     {concept.tags.map(tag => (
-                                        <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                                        <span key={tag} className="text-[10px] px-2 py-0.5 rounded-[2px] font-medium"
                                             style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-muted)' }}>{tag}</span>
                                     ))}
                                 </div>

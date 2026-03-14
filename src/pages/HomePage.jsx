@@ -1,5 +1,6 @@
 import { useApp } from '../context/AppContext';
 import { DOMAINS, LESSONS } from '../data/lessons';
+import MatrixTextReveal from '../components/MatrixTextReveal';
 // Section icons — Clash Display stroke contrast (thick verticals, thin horizontals)
 const SECTION_ICONS = {
     learn: (
@@ -90,7 +91,10 @@ export default function HomePage({ onTabChange }) {
                     transform: 'scaleY(0.9)',
                     transformOrigin: 'bottom',
                 }}>
-                    alignd<span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'var(--color-bronze)', marginLeft: '4px', marginBottom: '4px', verticalAlign: 'baseline' }} />
+                    <MatrixTextReveal
+                        text="alignd."
+                        dotElement={<span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'var(--color-bronze)', marginLeft: '2px', marginBottom: '4px', verticalAlign: 'baseline' }} />}
+                    />
                 </h1>
                 <p style={{
                     fontFamily: 'var(--font-mono)',

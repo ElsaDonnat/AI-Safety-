@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import AchievementsModal from './AchievementsModal';
 import StreakFlame from './StreakFlame';
 import { FLAME_COUNT_COLORS } from '../utils/streakColors';
+import MatrixTextReveal from './MatrixTextReveal';
 
 function getStreakStatus(lastActiveDate, currentStreak) {
     if (!lastActiveDate || currentStreak === 0) return 'inactive';
@@ -108,7 +109,10 @@ export default function TopBar() {
                 <div className="topbar-inner">
                     {/* Logo — left */}
                     <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
-                        alignd<span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-bronze)', flexShrink: 0, marginBottom: '2px' }} />
+                        <MatrixTextReveal
+                            text="alignd."
+                            dotElement={<span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-bronze)', flexShrink: 0, marginBottom: '2px', marginLeft: '1px' }} />}
+                        />
                     </h1>
 
                     {/* Spacer — center */}

@@ -423,8 +423,8 @@ export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
                             {conn.title}
                         </span>
                         {conn.relationship && (
-                            <span style={{ color: 'var(--color-ink-faint)' }}>
-                                {' \u2014 '}{conn.relationship}
+                            <span className="text-[10px] ml-1 px-1.5 py-0.5 rounded-[2px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-faint)' }}>
+                                {conn.relationship}
                             </span>
                         )}
                     </div>
