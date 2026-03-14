@@ -2,79 +2,75 @@ import { useApp } from '../../context/AppContext';
 import { ALL_CONCEPTS } from '../../data/concepts';
 import * as feedback from '../../services/feedback';
 
-// Nav icons as filled shapes with typographic stroke contrast baked into geometry.
-// Like Clash Display glyphs: thick vertical mass, thin horizontal/diagonal mass,
-// with smooth transitions — NOT uniform-width strokes with varying strokeWidth.
+// Nav icons — brush-pen style: each stroke is a filled leaf/crescent shape,
+// tapered at both ends, thick in the middle. Verticals are heavier than
+// horizontals, like a chisel-tipped Japanese pencil held at an angle.
 const NAV_ITEMS = [
     {
         id: 'home',
         label: 'Home',
-        // Contrast ring (like the 'O' glyph) — thick side walls, thin top/bottom walls
-        // Achieved via outer circle + inner ellipse compound path with evenodd fill
+        // Brush-drawn ring: outer circle + inner ellipse (rx<ry → thick sides, thin top/bottom)
+        // Slight center offset for organic asymmetry. Plus a center ink dot.
         icon: () => (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    fillRule="evenodd"
-                    d="M2.5 12 A9.5 9.5 0 1 1 21.5 12 A9.5 9.5 0 1 1 2.5 12 Z M5 12 A7 8.5 0 1 0 19 12 A7 8.5 0 1 0 5 12 Z"
-                />
-                <circle cx="12" cy="12" r="2.4" />
+                <path fillRule="evenodd" d="M12 2.5 A9.5 9.5 0 1 1 11.99 2.5 Z M12.2 4.3 A6.3 7.9 0 1 0 12.19 4.3 Z"/>
+                <circle cx="12" cy="12" r="2.2" />
             </svg>
         ),
     },
     {
         id: 'learn',
         label: 'Learn',
-        // Thick vertical stem + thin horizontal arms at decreasing lengths
+        // Vertical stem (thick leaf stroke) + 3 horizontal lines (thin leaf strokes, decreasing length)
         icon: () => (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="3.5" y="3" width="2.4" height="18" rx="0.4" />
-                <rect x="3.5" y="4" width="16" height="1.1" />
-                <rect x="3.5" y="10.5" width="12" height="1.1" />
-                <rect x="3.5" y="17" width="8" height="1.1" />
+                <path d="M5 2 C7.5 5 7.5 18 5 21 C2.5 18 2.5 5 5 2 Z"/>
+                <path d="M5 5 C8 3.8 17 3.8 20 5 C17 6.2 8 6.2 5 5 Z"/>
+                <path d="M5 11 C7.5 9.8 14 9.8 16.5 11 C14 12.2 7.5 12.2 5 11 Z"/>
+                <path d="M5 17 C6.5 15.8 10.5 15.8 12 17 C10.5 18.2 6.5 18.2 5 17 Z"/>
             </svg>
         ),
     },
     {
         id: 'library',
         label: 'Library',
-        // Grid with thick vertical bars + thin horizontal bars
+        // Grid: 3 thick vertical leaf strokes + 3 thin horizontal leaf strokes
         icon: () => (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="3" y="3" width="2.2" height="18" />
-                <rect x="10.9" y="3" width="2.2" height="18" />
-                <rect x="18.8" y="3" width="2.2" height="18" />
-                <rect x="3" y="3" width="18" height="1.0" />
-                <rect x="3" y="11.5" width="18" height="1.0" />
-                <rect x="3" y="20" width="18" height="1.0" />
+                <path d="M4.5 3 C6.2 6 6.2 18 4.5 21 C2.8 18 2.8 6 4.5 3 Z"/>
+                <path d="M12 3 C13.7 6 13.7 18 12 21 C10.3 18 10.3 6 12 3 Z"/>
+                <path d="M19.5 3 C21.2 6 21.2 18 19.5 21 C17.8 18 17.8 6 19.5 3 Z"/>
+                <path d="M3 4.5 C6 3.5 18 3.5 21 4.5 C18 5.5 6 5.5 3 4.5 Z"/>
+                <path d="M3 12 C6 11 18 11 21 12 C18 13 6 13 3 12 Z"/>
+                <path d="M3 19.5 C6 18.5 18 18.5 21 19.5 C18 20.5 6 20.5 3 19.5 Z"/>
             </svg>
         ),
     },
     {
         id: 'practice',
         label: 'Practice',
-        // Refresh arrows: thin-stroked arcs + filled L-shaped arrowheads
-        // with thick vertical + thin horizontal (like the letter ⌐ and its mirror)
+        // Two crescent-shaped arc brush strokes + leaf-shaped arrowheads
         icon: () => (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 9 A9 9 0 0 0 5 7" fill="none" stroke="currentColor" strokeWidth="1.0" strokeLinecap="round" />
-                <path d="M4 15 A9 9 0 0 0 19 17" fill="none" stroke="currentColor" strokeWidth="1.0" strokeLinecap="round" />
-                <path d="M20 4 H22 V9 H16 V8 H20 Z" />
-                <path d="M4 20 H2 V15 H8 V16 H4 Z" />
+                <path d="M18 8 Q12 1.5 6 8 Q12 4.5 18 8 Z"/>
+                <path d="M6 16 Q12 22.5 18 16 Q12 19.5 6 16 Z"/>
+                <path d="M4.5 5.5 Q5.8 7.5 6.5 9.5 Q5 8 4.5 5.5 Z"/>
+                <path d="M19.5 18.5 Q18.2 16.5 17.5 14.5 Q19 16 19.5 18.5 Z"/>
             </svg>
         ),
     },
     {
         id: 'challenge',
         label: 'Challenge',
-        // Diamond with contrast: thick side walls, thin top/bottom edges
-        // + thick vertical center accent
+        // Diamond: 4 leaf-shaped edge strokes (thick on \ diags, thin on / diags)
+        // + inner vertical brush accent
         icon: () => (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    fillRule="evenodd"
-                    d="M12 2 L22 12 L12 22 L2 12 Z M12 3.8 L5.5 12 L12 20.2 L18.5 12 Z"
-                />
-                <rect x="11" y="7" width="2" height="10" rx="0.5" />
+                <path d="M12 3 Q18 5.5 21 12 Q15 9.5 12 3 Z"/>
+                <path d="M21 12 Q18 18 12 21 Q15.5 15.5 21 12 Z"/>
+                <path d="M12 21 Q6 18.5 3 12 Q9 14.5 12 21 Z"/>
+                <path d="M3 12 Q6 6 12 3 Q8.5 8.5 3 12 Z"/>
+                <path d="M12 8 C13 9.5 13 14.5 12 16 C11 14.5 11 9.5 12 8 Z"/>
             </svg>
         ),
     },

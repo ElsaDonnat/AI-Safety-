@@ -84,7 +84,7 @@ export default function HomePage({ onTabChange }) {
                 <h1 style={{
                     fontFamily: 'var(--font-display)',
                     fontWeight: 600,
-                    fontSize: '42px',
+                    fontSize: '56px',
                     letterSpacing: '-0.04em',
                     color: 'var(--color-ink)',
                     lineHeight: 1.1,
@@ -222,13 +222,13 @@ export default function HomePage({ onTabChange }) {
             </div>
 
             {/* Domains preview — warm panel */}
-            <div className="mt-10 -mx-4 px-4 py-6 rounded-[3px]" style={{ backgroundColor: 'var(--color-warm-light)' }}>
+            <div className="mt-10 -mx-4 px-4 py-6 rounded-[3px]" style={{ backgroundColor: 'var(--color-dark-panel)' }}>
                 <p style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '10px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.06em',
-                    color: 'var(--color-ink-faint)',
+                    color: 'var(--color-dark-panel-muted)',
                     marginBottom: '12px',
                 }}>
                     Domains
@@ -239,21 +239,21 @@ export default function HomePage({ onTabChange }) {
                             key={domain.id}
                             className="flex items-center gap-3 px-4 py-3 rounded-[3px]"
                             style={{
-                                backgroundColor: `${domain.color}08`,
-                                border: `1px solid ${domain.color}15`,
+                                backgroundColor: `${domain.color}18`,
+                                border: `1px solid ${domain.color}25`,
                             }}
                         >
                             <div className="w-2 h-2 rounded-[1px] flex-shrink-0" style={{ backgroundColor: domain.color }} />
                             <div className="flex-1">
-                                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '13px', color: 'var(--color-ink)' }}>
+                                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '13px', color: 'var(--color-dark-panel-text)' }}>
                                     {domain.title}
                                 </p>
-                                <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                                <p className="text-xs" style={{ color: 'var(--color-dark-panel-muted)' }}>
                                     {domain.description}
                                 </p>
                             </div>
                             {domain.comingSoon && (
-                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', color: '#8C7E74' }}>
                                     Soon
                                 </span>
                             )}

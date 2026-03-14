@@ -9,14 +9,14 @@
   --color-warm: #E8E0D6;
   --color-warm-light: #F0EBE5;
 
-  /* Sidebar — cool dark brown */
-  --color-sidebar-bg: #4A3F38;
-  --color-sidebar-border: #3D342E;
-  --color-sidebar-text: #C4B8AD;
-  --color-sidebar-text-hover: #E8E0D6;
-  --color-sidebar-active-bg: rgba(168, 200, 216, 0.12);
+  /* Sidebar — warm medium brown */
+  --color-sidebar-bg: #5C514A;
+  --color-sidebar-border: #4A3F38;
+  --color-sidebar-text: #D4C8BD;
+  --color-sidebar-text-hover: #F0EBE5;
+  --color-sidebar-active-bg: rgba(168, 200, 216, 0.14);
   --color-sidebar-active-text: #A8C8D8;
-  --color-sidebar-divider: #5C514A;
+  --color-sidebar-divider: #6E635B;
 
   /* Dark panel (domains section) */
   --color-dark-panel: #3D342E;
@@ -419,7 +419,7 @@ input, textarea, [contenteditable] {
 
 .sidebar-progress-fill {
   height: 100%;
-  background-color: var(--color-bronze);
+  background-color: var(--color-warning);
   border-radius: 1px;
   transition: width 0.5s ease-out;
 }

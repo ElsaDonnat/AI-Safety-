@@ -12,6 +12,9 @@ const CHARS_NUM = '0123456789';
 const CHARS_JP = 'アイセフモデリスク安全';
 const CHARS_BIN = '01';
 
+// ~5% of chars get coral color
+const CORAL_CHANCE = 0.05;
+
 function randomChar() {
     const r = Math.random();
     if (r < 0.70) return CHARS_NUM[Math.floor(Math.random() * CHARS_NUM.length)];
@@ -33,16 +36,21 @@ export default function MatrixRain() {
         const CHAR_SPACING = 16;
         const FADE_END = 0.65; // fully transparent by 65% of screen height
 
+        // Sidebar width for offset (matches CSS --sidebar-width)
+        const SIDEBAR_WIDTH = 232;
+        const isWide = window.innerWidth >= 900;
+
         let width = window.innerWidth;
         let height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
 
-        // Create clustered columns — random positions, some close together, some far apart
+        // Create clustered columns — start at sidebar edge on wide screens
         const columns = [];
-        let x = 5 + Math.random() * 20;
+        const startX = isWide ? SIDEBAR_WIDTH : 5 + Math.random() * 20;
+        let x = startX + Math.random() * 15;
         while (x < width - 10) {
-            const columnAlpha = 0.10 + Math.random() * 0.22; // 0.10–0.32
+            const columnAlpha = 0.15 + Math.random() * 0.25; // 0.15–0.40 (more opaque)
             const speed = BASE_SPEED + Math.random() * 0.2;
             const charCount = Math.floor((height * FADE_END) / CHAR_SPACING) + 8;
 
@@ -50,6 +58,7 @@ export default function MatrixRain() {
             for (let j = 0; j < charCount; j++) {
                 chars.push({
                     char: randomChar(),
+                    isCoral: Math.random() < CORAL_CHANCE,
                     mutateTimer: 20 + Math.random() * 60, // faster mutation
                 });
             }
@@ -117,6 +126,7 @@ export default function MatrixRain() {
                     col.chars[j].mutateTimer -= 1;
                     if (col.chars[j].mutateTimer <= 0) {
                         col.chars[j].char = randomChar();
+                        col.chars[j].isCoral = Math.random() < CORAL_CHANCE;
                         col.chars[j].mutateTimer = 20 + Math.random() * 60;
                     }
 
@@ -125,16 +135,23 @@ export default function MatrixRain() {
                     const verticalFade = 1.0 - verticalProgress;
 
                     // Horizontal fade: edges clearly visible, center very faint
-                    // Cubic ease for a strong contrast — center nearly invisible, edges pop
-                    const centerX = width / 2;
-                    const distFromCenter = Math.abs(col.x - centerX) / (width / 2); // 0 = center, 1 = edge
-                    const eased = distFromCenter * distFromCenter * distFromCenter; // cubic ease
-                    const horizontalFade = 0.12 + eased * 0.88;
+                    // On wide screens, compute center relative to content area (right of sidebar)
+                    const contentLeft = isWide ? SIDEBAR_WIDTH : 0;
+                    const contentWidth = width - contentLeft;
+                    const centerX = contentLeft + contentWidth / 2;
+                    const distFromCenter = Math.min(1, Math.abs(col.x - centerX) / (contentWidth / 2)); // 0 = center, 1 = edge
+                    const eased = distFromCenter * distFromCenter; // quadratic (softer than cubic)
+                    const horizontalFade = 0.15 + eased * 0.85;
 
                     const alpha = col.alpha * verticalFade * horizontalFade;
                     if (alpha <= 0.008) continue;
 
-                    ctx.fillStyle = `rgba(44, 36, 32, ${Math.max(0, alpha)})`;
+                    // ~5% of chars render in coral instead of ink
+                    if (col.chars[j].isCoral) {
+                        ctx.fillStyle = `rgba(212, 114, 106, ${Math.max(0, alpha)})`;
+                    } else {
+                        ctx.fillStyle = `rgba(44, 36, 32, ${Math.max(0, alpha)})`;
+                    }
                     ctx.fillText(col.chars[j].char, col.x, charY);
                 }
             }

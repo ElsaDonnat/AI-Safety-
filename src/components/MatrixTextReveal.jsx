@@ -19,7 +19,7 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
 
   const [charStates, setCharStates] = useState(() => {
     if (!shouldAnimate) {
-      return Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0 }));
+      return Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0, started: true }));
     }
     return Array.from(text).map(() => ({ display: '', resolved: false, cycleCount: 0, started: false }));
   });
@@ -43,15 +43,18 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
       const now = Date.now();
       const elapsed = now - (intervalRef.current?.startTime || now);
 
+      // Track resolution during this tick so the dot can see if 'd' just resolved
+      const resolvedThisTick = [];
       const next = prev.map((charState, i) => {
-        if (charState.resolved) return charState;
+        if (charState.resolved) { resolvedThisTick[i] = true; return charState; }
 
         // If this is the dot (last char) and dotElement is used, don't iterate —
         // resolve it instantly once the previous char has resolved
         const isLastDot = dotElement && text.endsWith('.') && i === prev.length - 1;
         if (isLastDot) {
-          const prevResolved = i === 0 || prev[i - 1].resolved;
+          const prevResolved = i === 0 || prev[i - 1].resolved || resolvedThisTick[i - 1];
           if (prevResolved) {
+            resolvedThisTick[i] = true;
             return { display: text[i], resolved: true, cycleCount: 0, started: true };
           }
           return charState; // stay hidden until previous char resolves
