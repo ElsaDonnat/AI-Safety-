@@ -9,6 +9,20 @@
   --color-warm: #E8E0D6;
   --color-warm-light: #F0EBE5;
 
+  /* Sidebar — cool dark brown */
+  --color-sidebar-bg: #4A3F38;
+  --color-sidebar-border: #3D342E;
+  --color-sidebar-text: #C4B8AD;
+  --color-sidebar-text-hover: #E8E0D6;
+  --color-sidebar-active-bg: rgba(168, 200, 216, 0.12);
+  --color-sidebar-active-text: #A8C8D8;
+  --color-sidebar-divider: #5C514A;
+
+  /* Dark panel (domains section) */
+  --color-dark-panel: #3D342E;
+  --color-dark-panel-text: #F0EBE5;
+  --color-dark-panel-muted: #B5A99F;
+
   --color-burgundy: #D4726A;
   --color-burgundy-dark: #B8564E;
   --color-burgundy-light: #E08B83;
@@ -306,8 +320,8 @@ input, textarea, [contenteditable] {
 .sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
-  background-color: var(--color-warm-light);
-  border-right: 1px solid var(--color-warm);
+  background-color: var(--color-sidebar-bg);
+  border-right: 1px solid var(--color-sidebar-border);
   display: flex;
   flex-direction: column;
   padding: 20px 0;
@@ -339,7 +353,7 @@ input, textarea, [contenteditable] {
   border: none;
   background: none;
   cursor: pointer;
-  color: var(--color-ink-muted);
+  color: var(--color-sidebar-text);
   font-size: 0.9rem;
   font-weight: 500;
   font-family: var(--font-sans);
@@ -349,21 +363,21 @@ input, textarea, [contenteditable] {
 }
 
 .sidebar-nav-item:hover {
-  background-color: rgba(var(--color-ink-rgb), 0.04);
-  color: var(--color-ink-secondary);
+  background-color: rgba(255, 255, 255, 0.07);
+  color: var(--color-sidebar-text-hover);
 }
 
 .sidebar-nav-item--active {
-  background-color: var(--color-burgundy-soft);
-  color: var(--color-burgundy);
+  background-color: var(--color-sidebar-active-bg);
+  color: var(--color-sidebar-active-text);
   font-weight: 600;
-  border-left: 3px solid var(--color-burgundy);
+  border-left: 3px solid var(--color-sidebar-active-text);
   padding-left: 13px;
 }
 
 .sidebar-nav-item--active:hover {
-  background-color: rgba(212, 114, 106, 0.12);
-  color: var(--color-burgundy);
+  background-color: rgba(168, 200, 216, 0.15);
+  color: var(--color-sidebar-active-text);
 }
 
 .sidebar-nav-item:focus-visible {
@@ -384,7 +398,7 @@ input, textarea, [contenteditable] {
 .sidebar-progress {
   margin-top: auto;
   padding: 20px 24px 0;
-  border-top: 1px solid var(--color-warm);
+  border-top: 1px solid var(--color-sidebar-divider);
 }
 
 .sidebar-progress-label {
@@ -392,13 +406,13 @@ input, textarea, [contenteditable] {
   justify-content: space-between;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-ink-muted);
+  color: var(--color-sidebar-text);
   margin-bottom: 8px;
 }
 
 .sidebar-progress-bar {
   height: 4px;
-  background-color: rgba(var(--color-ink-rgb), 0.06);
+  background-color: rgba(255, 255, 255, 0.10);
   border-radius: 1px;
   overflow: hidden;
 }
@@ -412,7 +426,7 @@ input, textarea, [contenteditable] {
 
 .sidebar-progress-text {
   font-size: 0.7rem;
-  color: var(--color-ink-faint);
+  color: var(--color-sidebar-text);
   margin-top: 6px;
 }
 

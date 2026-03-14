@@ -2,97 +2,81 @@ import { useApp } from '../../context/AppContext';
 import { ALL_CONCEPTS } from '../../data/concepts';
 import * as feedback from '../../services/feedback';
 
-// Nav icons with Clash Display stroke contrast:
-// - Vertical strokes thicker (2.0–2.2px), horizontal strokes thinner (1.2–1.4px)
-// - Geometric shapes, sharp terminals, slight taper feel
+// Nav icons as filled shapes with typographic stroke contrast baked into geometry.
+// Like Clash Display glyphs: thick vertical mass, thin horizontal/diagonal mass,
+// with smooth transitions — NOT uniform-width strokes with varying strokeWidth.
 const NAV_ITEMS = [
     {
         id: 'home',
         label: 'Home',
-        // Circle with dot — thick circle, thin inner detail
-        icon: (active) => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="9" strokeWidth={active ? 2.0 : 1.6} />
-                <circle cx="12" cy="12" r="2.5" strokeWidth={active ? 1.4 : 1.0} fill={active ? 'currentColor' : 'none'} />
+        // Contrast ring (like the 'O' glyph) — thick side walls, thin top/bottom walls
+        // Achieved via outer circle + inner ellipse compound path with evenodd fill
+        icon: () => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    fillRule="evenodd"
+                    d="M2.5 12 A9.5 9.5 0 1 1 21.5 12 A9.5 9.5 0 1 1 2.5 12 Z M5 12 A7 8.5 0 1 0 19 12 A7 8.5 0 1 0 5 12 Z"
+                />
+                <circle cx="12" cy="12" r="2.4" />
             </svg>
         ),
     },
     {
         id: 'learn',
         label: 'Learn',
-        // Stacked lines — thick left verticals, tapering horizontal lines
-        icon: (active) => {
-            const v = active ? 2.2 : 1.8; // vertical weight
-            const h = active ? 1.3 : 1.0; // horizontal weight
-            return (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    {/* Thick vertical spine */}
-                    <line x1="4" y1="4" x2="4" y2="20" strokeWidth={v} strokeLinecap="round" />
-                    {/* Horizontal arms — thinner */}
-                    <line x1="4" y1="5" x2="20" y2="5" strokeWidth={h} />
-                    <line x1="4" y1="10.5" x2="16" y2="10.5" strokeWidth={h} />
-                    <line x1="4" y1="16" x2="12" y2="16" strokeWidth={h} />
-                </svg>
-            );
-        },
+        // Thick vertical stem + thin horizontal arms at decreasing lengths
+        icon: () => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3.5" y="3" width="2.4" height="18" rx="0.4" />
+                <rect x="3.5" y="4" width="16" height="1.1" />
+                <rect x="3.5" y="10.5" width="12" height="1.1" />
+                <rect x="3.5" y="17" width="8" height="1.1" />
+            </svg>
+        ),
     },
     {
         id: 'library',
         label: 'Library',
-        // Grid — thick verticals, thin horizontals
-        icon: (active) => {
-            const v = active ? 2.0 : 1.6;
-            const h = active ? 1.2 : 0.9;
-            return (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    {/* Vertical dividers — thick */}
-                    <line x1="3" y1="3" x2="3" y2="21" strokeWidth={v} />
-                    <line x1="12" y1="3" x2="12" y2="21" strokeWidth={v} />
-                    <line x1="21" y1="3" x2="21" y2="21" strokeWidth={v} />
-                    {/* Horizontal dividers — thin */}
-                    <line x1="3" y1="3" x2="21" y2="3" strokeWidth={h} />
-                    <line x1="3" y1="12" x2="21" y2="12" strokeWidth={h} />
-                    <line x1="3" y1="21" x2="21" y2="21" strokeWidth={h} />
-                </svg>
-            );
-        },
+        // Grid with thick vertical bars + thin horizontal bars
+        icon: () => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="2.2" height="18" />
+                <rect x="10.9" y="3" width="2.2" height="18" />
+                <rect x="18.8" y="3" width="2.2" height="18" />
+                <rect x="3" y="3" width="18" height="1.0" />
+                <rect x="3" y="11.5" width="18" height="1.0" />
+                <rect x="3" y="20" width="18" height="1.0" />
+            </svg>
+        ),
     },
     {
         id: 'practice',
         label: 'Practice',
-        // Refresh arrows — thick vertical strokes, thin circular arc
-        icon: (active) => {
-            const v = active ? 2.2 : 1.8; // arrow stems
-            const h = active ? 1.3 : 1.0; // arc
-            return (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round">
-                    {/* Top arc — thin */}
-                    <path d="M20 8A9 9 0 0 0 5 7" strokeWidth={h} />
-                    {/* Bottom arc — thin */}
-                    <path d="M4 16a9 9 0 0 0 15 1" strokeWidth={h} />
-                    {/* Arrow heads — thick */}
-                    <polyline points="21 4 21 9 16 9" strokeWidth={v} strokeLinejoin="round" />
-                    <polyline points="3 20 3 15 8 15" strokeWidth={v} strokeLinejoin="round" />
-                </svg>
-            );
-        },
+        // Refresh arrows: thin-stroked arcs + filled L-shaped arrowheads
+        // with thick vertical + thin horizontal (like the letter ⌐ and its mirror)
+        icon: () => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 9 A9 9 0 0 0 5 7" fill="none" stroke="currentColor" strokeWidth="1.0" strokeLinecap="round" />
+                <path d="M4 15 A9 9 0 0 0 19 17" fill="none" stroke="currentColor" strokeWidth="1.0" strokeLinecap="round" />
+                <path d="M20 4 H22 V9 H16 V8 H20 Z" />
+                <path d="M4 20 H2 V15 H8 V16 H4 Z" />
+            </svg>
+        ),
     },
     {
         id: 'challenge',
         label: 'Challenge',
-        // Diamond/rhombus — thick verticals, thin diagonals
-        icon: (active) => {
-            const v = active ? 2.2 : 1.8;
-            const h = active ? 1.2 : 0.9;
-            return (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                    {/* Diamond shape — thin diagonals */}
-                    <path d="M12 2L22 12L12 22L2 12Z" strokeWidth={h} />
-                    {/* Thick vertical center line */}
-                    <line x1="12" y1="6" x2="12" y2="18" strokeWidth={v} />
-                </svg>
-            );
-        },
+        // Diamond with contrast: thick side walls, thin top/bottom edges
+        // + thick vertical center accent
+        icon: () => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    fillRule="evenodd"
+                    d="M12 2 L22 12 L12 22 L2 12 Z M12 3.8 L5.5 12 L12 20.2 L18.5 12 Z"
+                />
+                <rect x="11" y="7" width="2" height="10" rx="0.5" />
+            </svg>
+        ),
     },
 ];
 
