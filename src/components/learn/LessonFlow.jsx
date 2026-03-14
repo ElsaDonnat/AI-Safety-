@@ -190,11 +190,7 @@ export default function LessonFlow({ lesson, onComplete }) {
     if (phase === PHASE.INTRO) {
         const timesCompleted = state.completedLessons[lesson.id] || 0;
         const startLesson = () => {
-            if (topic && lesson.isFoundational) {
-                setPhase(PHASE.TOPIC_INTRO);
-            } else {
-                setPhase(PHASE.LEARN_CARD);
-            }
+            setPhase(PHASE.LEARN_CARD);
             setCardIndex(0);
         };
 
@@ -213,7 +209,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <span className="text-2xl block mb-2">{topic.icon}</span>
                         )}
                         <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ color: 'var(--color-ink-faint)' }}>
-                            {lesson.isFoundational ? 'Introduction' : `Lesson ${lesson.number}`}
+                            {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number}`}
                         </span>
                         <h1 className="lesson-intro-title font-bold mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
                             {lesson.title}
@@ -227,6 +223,17 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <p className="text-sm italic mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink-secondary)' }}>
                                 {'"'}{lesson.mood}{'"'}
                             </p>
+                        )}
+                        {lesson.isFoundational && topic && (
+                            <div className="text-left mb-3 px-1">
+                                <div className="flex items-start gap-3 px-4 py-3 rounded-xl"
+                                    style={{ backgroundColor: `${topic.color}08`, borderLeft: `3px solid ${topic.color}` }}>
+                                    <span className="text-2xl flex-shrink-0">{topic.icon}</span>
+                                    <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
+                                        {topic.description}
+                                    </p>
+                                </div>
+                            </div>
                         )}
                         <p className="text-xs mb-2" style={{ color: 'var(--color-ink-muted)' }}>
                             {concepts.length} {concepts.length === 1 ? 'concept' : 'concepts'} {'\u00B7'} {totalQuestions} questions {'\u00B7'} ~{Math.max(1, Math.round(totalQuestions / 2))} min
@@ -260,67 +267,6 @@ export default function LessonFlow({ lesson, onComplete }) {
                     <Button className="w-full" onClick={startLesson}>
                         {timesCompleted > 0 ? 'Learn Again' : 'Begin Learning'}
                     </Button>
-                </div>
-            </div>
-        );
-    }
-
-    // ════════════════════════════════════════════════════
-    // TOPIC INTRO
-    // ════════════════════════════════════════════════════
-    if (phase === PHASE.TOPIC_INTRO) {
-        if (!topic) { setPhase(PHASE.LEARN_CARD); return null; }
-        return (
-            <div className="lesson-flow-container animate-fade-in">
-                <div className="flex-shrink-0 pt-4">
-                    <div className="flex items-center justify-between mb-4">
-                        <button onClick={onComplete} className="text-sm flex items-center gap-1" style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
-                            Exit
-                        </button>
-                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
-                            style={{ backgroundColor: `${topic.color}15`, color: topic.color }}>
-                            Topic Overview
-                        </span>
-                    </div>
-                </div>
-                <div className="flex-1 min-h-0 overflow-y-auto">
-                    <div className="animate-slide-in-right">
-                        <Card style={{ borderLeft: `4px solid ${topic.color}` }}>
-                            <div className="text-center mb-2 sm:mb-4">
-                                <span className="text-4xl">{topic.icon}</span>
-                            </div>
-                            <h2 className="text-xl font-bold text-center mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{topic.title}</h2>
-                            <Divider />
-                            <p className="text-sm leading-relaxed mt-4" style={{ color: 'var(--color-ink-secondary)' }}>
-                                {topic.description}
-                            </p>
-                            {concepts.length > 0 && (
-                                <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
-                                    <p className="text-[11px] uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
-                                        {"What You'll Learn"}
-                                    </p>
-                                    {concepts.map(c => (
-                                        <div key={c.id} className="flex items-start gap-2 text-xs py-1.5" style={{ color: 'var(--color-ink-muted)' }}>
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                                stroke={topic.color} strokeWidth="2.5" strokeLinecap="round" className="flex-shrink-0 mt-0.5">
-                                                <polyline points="9 18 15 12 9 6" />
-                                            </svg>
-                                            <div>
-                                                <span className="font-medium" style={{ color: 'var(--color-ink)' }}>{c.title}</span>
-                                                {c.summary && (
-                                                    <span className="ml-1" style={{ color: 'var(--color-ink-muted)' }}>{' \u2014 '}{c.summary}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </Card>
-                    </div>
-                </div>
-                <div className="flex-shrink-0 pt-4 pb-2">
-                    <Button className="w-full" onClick={() => setPhase(PHASE.LEARN_CARD)}>{'Begin Learning \u2192'}</Button>
                 </div>
             </div>
         );
@@ -426,7 +372,8 @@ export default function LessonFlow({ lesson, onComplete }) {
         if (!q) {
             const next = cardIndex + 1;
             if (next < concepts.length) { setCardIndex(next); setLearnQuizIndex(0); setPhase(PHASE.LEARN_CARD); }
-            else if (recapPerCard > 0) { setPhase(PHASE.RECAP_TRANSITION); }
+            else if (recapPerCard > 0 && concepts.length > 2) { setPhase(PHASE.RECAP_TRANSITION); }
+            else if (recapPerCard > 0) { setRecapIndex(0); setPhase(PHASE.RECAP); }
             else { setPhase(PHASE.SUMMARY); }
             return null;
         }
@@ -454,7 +401,9 @@ export default function LessonFlow({ lesson, onComplete }) {
                     <QuizQuestion question={q} lessonCardIds={lesson.cardIds} descriptionDifficulty={1}
                         onAnswer={(score) => recordAnswer(q.concept.id, q.type, score)}
                         onNext={() => handleNext(() => setLearnQuizIndex(i => i + 1), q.concept,
-                            isLastOfCard ? `Card ${cardIndex + 1} of ${concepts.length} complete` : false)}
+                            (isLastOfCard && cardIndex < concepts.length - 1)
+                                ? `Card ${cardIndex + 1} of ${concepts.length} complete`
+                                : false)}
                         onBack={learnQuizIndex > 0 ? () => setLearnQuizIndex(i => i - 1) : null} />
                 </div>
             </div>
