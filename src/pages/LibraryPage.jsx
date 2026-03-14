@@ -2,24 +2,30 @@ import { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS } from '../data/lessons';
-import { Card, MasteryDots, CategoryTag } from '../components/shared';
+import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
 import { cardImage } from '../utils/images';
 
 export default function LibraryPage() {
-    const { state } = useApp();
+    const { state, dispatch } = useApp();
     const [search, setSearch] = useState('');
     const [topicFilter, setTopicFilter] = useState(null);
     const [categoryFilter, setCategoryFilter] = useState(null);
     const [expandedCard, setExpandedCard] = useState(null);
+    const [showStarredOnly, setShowStarredOnly] = useState(false);
 
-    const seenCards = state.seenCards || [];
+    const seenCards = useMemo(() => state.seenCards || [], [state.seenCards]);
 
     const discoveredConcepts = useMemo(() => {
         return ALL_CONCEPTS.filter(c => seenCards.includes(c.id));
     }, [seenCards]);
 
+    const starredCards = useMemo(() => state.starredCards || [], [state.starredCards]);
+
     const filtered = useMemo(() => {
         let result = discoveredConcepts;
+        if (showStarredOnly) {
+            result = result.filter(c => starredCards.includes(c.id));
+        }
         if (search) {
             const q = search.toLowerCase();
             result = result.filter(c =>
@@ -34,7 +40,7 @@ export default function LibraryPage() {
             result = result.filter(c => c.category === categoryFilter);
         }
         return result;
-    }, [discoveredConcepts, search, topicFilter, categoryFilter]);
+    }, [discoveredConcepts, search, topicFilter, categoryFilter, showStarredOnly, starredCards]);
 
     if (discoveredConcepts.length === 0) {
         return (
@@ -56,7 +62,22 @@ export default function LibraryPage() {
                 Library
             </h2>
 
-            {/* Search */}
+            {/* Starred toggle + Search */}
+            <div className="flex gap-2 mb-4">
+                <button
+                    onClick={() => setShowStarredOnly(s => !s)}
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex-shrink-0"
+                    style={{
+                        backgroundColor: showStarredOnly ? 'rgba(230, 168, 23, 0.12)' : 'var(--color-card)',
+                        border: showStarredOnly ? '1px solid rgba(230, 168, 23, 0.3)' : '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                        color: showStarredOnly ? '#8B6914' : 'var(--color-ink-muted)',
+                    }}
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill={showStarredOnly ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    {starredCards.length > 0 && <span>{starredCards.length}</span>}
+                </button>
             <input
                 type="text"
                 placeholder="Search cards..."
@@ -68,8 +89,10 @@ export default function LibraryPage() {
                     border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
                     color: 'var(--color-ink)',
                     outline: 'none',
+                    flex: 1,
                 }}
             />
+            </div>
 
             {/* Topic filter chips */}
             <div className="flex flex-wrap gap-2 mb-3">
@@ -138,6 +161,11 @@ export default function LibraryPage() {
                                         {concept.summary}
                                     </p>
                                 </div>
+                                <StarButton
+                                    isStarred={starredCards.includes(concept.id)}
+                                    onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: concept.id })}
+                                    size={16}
+                                />
                             </div>
                             {isExpanded && (
                                 <div className="mt-3 pt-3 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
@@ -165,21 +193,11 @@ export default function LibraryPage() {
                                             ))}
                                         </div>
                                     )}
-                                    {concept.linkedCards.length > 0 && (
-                                        <div className="mt-3">
-                                            <p className="text-[11px] uppercase tracking-wider font-semibold mb-1" style={{ color: 'var(--color-ink-faint)' }}>
-                                                Related Concepts
-                                            </p>
-                                            {concept.linkedCards.map(linkedId => {
-                                                const linked = ALL_CONCEPTS.find(c => c.id === linkedId);
-                                                return linked ? (
-                                                    <p key={linkedId} className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
-                                                        • {linked.title}
-                                                    </p>
-                                                ) : null;
-                                            })}
-                                        </div>
-                                    )}
+                                    <CardConnections
+                                        cardId={concept.id}
+                                        allConcepts={ALL_CONCEPTS}
+                                        onCardClick={(id) => setExpandedCard(id)}
+                                    />
                                 </div>
                             )}
                         </Card>

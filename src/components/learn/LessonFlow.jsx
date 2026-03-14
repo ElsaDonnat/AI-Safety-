@@ -3,7 +3,8 @@ import { useApp } from '../../context/AppContext';
 import { getConceptById, getConceptsByIds, ALL_CONCEPTS, CATEGORY_CONFIG } from '../../data/concepts';
 import { generateWhatOptions, generateDescriptionOptions, calculateXP, SCORE_COLORS, shuffle } from '../../data/quiz';
 import { calculateNextReview } from '../../data/spacedRepetition';
-import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots, flyXPToStar } from '../shared';
+import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
+import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS } from '../../data/lessons';
 import { cardImage } from '../../utils/images';
@@ -364,9 +365,9 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     {cardIndex === 0 && !state.hasSeenFavoriteTip && (
                                         <div className="absolute right-0 top-full mt-1 w-56 z-50 animate-fade-in">
                                             <div className="rounded-xl p-3 text-xs leading-relaxed"
-                                                style={{ backgroundColor: 'var(--color-card)', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '1px solid rgba(139, 65, 87, 0.15)', color: 'var(--color-ink-secondary)' }}>
+                                                style={{ backgroundColor: 'var(--color-card)', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '1px solid rgba(30, 58, 95, 0.15)', color: 'var(--color-ink-secondary)' }}>
                                                 <div className="absolute -top-1.5 right-4 w-3 h-3 rotate-45"
-                                                    style={{ backgroundColor: 'var(--color-card)', borderTop: '1px solid rgba(139, 65, 87, 0.15)', borderLeft: '1px solid rgba(139, 65, 87, 0.15)' }} />
+                                                    style={{ backgroundColor: 'var(--color-card)', borderTop: '1px solid rgba(30, 58, 95, 0.15)', borderLeft: '1px solid rgba(30, 58, 95, 0.15)' }} />
                                                 <p><strong style={{ color: 'var(--color-ink)' }}>Tap the star</strong> to save concepts to your favorites.</p>
                                                 <button onClick={(e) => { e.stopPropagation(); dispatch({ type: 'DISMISS_FAVORITE_TIP' }); }}
                                                     className="mt-2 text-xs font-semibold"
@@ -518,7 +519,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
-                            style={{ backgroundColor: 'rgba(139, 65, 87, 0.15)', color: 'var(--color-burgundy)' }}>
+                            style={{ backgroundColor: 'rgba(30, 58, 95, 0.15)', color: 'var(--color-burgundy)' }}>
                             Recap {'\u00B7'} {answeredCount + 1}/{totalQuestions}
                         </span>
                     </div>
@@ -680,7 +681,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                         const result = await shareText({ title: 'AI Safety', text });
                         if (result === 'copied') setShareToast(true);
                     }} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(139, 65, 87, 0.08)' }}>
+                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(30, 58, 95, 0.08)' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
                         </svg>

@@ -1,7 +1,8 @@
 import { useApp } from '../context/AppContext';
 import { useState, useEffect, useRef } from 'react';
 import AchievementsModal from './AchievementsModal';
-import StreakFlame, { FLAME_COUNT_COLORS } from './StreakFlame';
+import StreakFlame from './StreakFlame';
+import { FLAME_COUNT_COLORS } from '../utils/streakColors';
 
 const SECTION_NAMES = {
     learn: 'Learn',

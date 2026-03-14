@@ -305,8 +305,8 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                             border = '1.5px solid var(--color-error)';
                             color = 'var(--color-error)';
                         } else {
-                            bg = 'rgba(139, 65, 87, 0.06)';
-                            border = '1.5px solid rgba(139, 65, 87, 0.2)';
+                            bg = 'rgba(30, 58, 95, 0.06)';
+                            border = '1.5px solid rgba(30, 58, 95, 0.2)';
                         }
                     }
 
@@ -767,7 +767,8 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     // ─── Derived data ────────────────────────────────
 
     const ch = state.challenge || {};
-    const availableFunFacts = useMemo(() => getFunFactsForSeenCards(state.seenCards || []), [state.seenCards || []]);
+    const seenCardsForFacts = useMemo(() => state.seenCards || [], [state.seenCards]);
+    const availableFunFacts = useMemo(() => getFunFactsForSeenCards(seenCardsForFacts), [seenCardsForFacts]);
     const seenFunFactCount = useMemo(() => {
         const availableIds = new Set(availableFunFacts.map(f => f.id));
         return (state.seenFunFacts || []).filter(id => availableIds.has(id)).length;
