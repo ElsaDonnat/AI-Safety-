@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* aligned. Palette — Warm cream + baby blue + coral */
+  /* alignd. Palette — Warm cream + baby blue + coral */
   --color-parchment: #F5F0EB;
   --color-parchment-dark: #EDE8E3;
   --color-card: #FFFFFF;

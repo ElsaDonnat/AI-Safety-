@@ -546,7 +546,7 @@ export default function Settings() {
                 </button>
 
                 <p className="text-center text-xs mt-2" style={{ color: 'var(--color-ink-faint)' }}>
-                    aligned. v{__APP_VERSION__}
+                    alignd. v{__APP_VERSION__}
                 </p>
             </div>
 

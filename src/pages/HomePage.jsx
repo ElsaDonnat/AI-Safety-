@@ -2,29 +2,32 @@ import { useApp } from '../context/AppContext';
 import { DOMAINS, LESSONS } from '../data/lessons';
 const SECTION_ICONS = {
     learn: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <line x1="4" y1="5" x2="20" y2="5" />
+            <line x1="4" y1="10" x2="16" y2="10" />
+            <line x1="4" y1="15" x2="12" y2="15" />
+            <line x1="4" y1="20" x2="8" y2="20" />
         </svg>
     ),
     library: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="7" height="7" rx="1" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <rect x="3" y="3" width="8" height="8" />
+            <rect x="13" y="3" width="8" height="8" />
+            <rect x="3" y="13" width="8" height="8" />
+            <rect x="13" y="13" width="8" height="8" />
         </svg>
     ),
     practice: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="23 4 23 10 17 10" />
-            <polyline points="1 20 1 14 7 14" />
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <path d="M12 3v18" />
+            <path d="M3 12h18" />
+            <circle cx="12" cy="12" r="9" />
         </svg>
     ),
     challenge: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <path d="M12 3l3 6 3 6H6l3-6 3-6z" />
+            <line x1="12" y1="15" x2="12" y2="21" />
         </svg>
     ),
 };
@@ -77,8 +80,10 @@ export default function HomePage({ onTabChange }) {
                     letterSpacing: '-0.04em',
                     color: 'var(--color-ink)',
                     lineHeight: 1.1,
+                    transform: 'scaleY(0.9)',
+                    transformOrigin: 'bottom',
                 }}>
-                    a<span style={{ color: 'var(--color-burgundy)', fontSize: '48px' }}>.</span>
+                    alignd<span style={{ color: 'var(--color-bronze)', fontSize: '48px' }}>.</span>
                 </h1>
                 <p style={{
                     fontFamily: 'var(--font-mono)',
@@ -242,11 +247,11 @@ export default function HomePage({ onTabChange }) {
 
             {/* Footer */}
             <div className="mt-12 mb-8 text-center">
-                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
-                    a<span style={{ color: 'var(--color-burgundy)', fontSize: '18px' }}>.</span>
+                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)' }}>
+                    alignd<span style={{ color: 'var(--color-bronze)', fontSize: '18px' }}>.</span>
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    aligned — ai safety companion
+                    alignd — ai safety companion
                 </p>
             </div>
         </div>
