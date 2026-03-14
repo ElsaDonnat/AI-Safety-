@@ -93,7 +93,7 @@ export default function HomePage({ onTabChange }) {
                 }}>
                     <MatrixTextReveal
                         text="alignd."
-                        dotElement={<span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'var(--color-bronze)', marginLeft: '2px', marginBottom: '4px', verticalAlign: 'baseline' }} />}
+                        dotElement={<span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'var(--color-bronze)', marginLeft: '2px', verticalAlign: 'baseline' }} />}
                     />
                 </h1>
                 <p style={{
@@ -116,8 +116,9 @@ export default function HomePage({ onTabChange }) {
             {/* Progress summary (only if started) */}
             {hasStarted && (
                 <div className="mb-8 px-4 py-4 rounded-[3px]" style={{
-                    backgroundColor: 'var(--color-surface)',
-                    border: '1px solid rgba(var(--color-ink-rgb), 0.12)',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                    boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink)' }}>
@@ -196,8 +197,9 @@ export default function HomePage({ onTabChange }) {
                         onClick={() => onTabChange(section.id)}
                         className="w-full flex items-center gap-4 px-4 py-3.5 rounded-[3px] text-left transition-all active:scale-[0.995]"
                         style={{
-                            backgroundColor: 'var(--color-surface)',
-                            border: '1px solid rgba(var(--color-ink-rgb), 0.12)',
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                            boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
                             cursor: 'pointer',
                         }}
                     >

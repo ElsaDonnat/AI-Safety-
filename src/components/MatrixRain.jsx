@@ -2,12 +2,12 @@ import { useEffect, useRef } from 'react';
 
 /**
  * Full-screen matrix rain — mostly numbers + some Japanese, falling vertically.
- * Columns start from top on mount, fall slowly, with varying opacity per column.
- * Fades out toward the bottom and faster in the center horizontally.
- * Positioned behind all content, full viewport width.
+ * Columns start from top on mount, fall slowly, with varying opacity.
+ * Fades out at ~65% screen height. Clustered randomly, not evenly spaced.
+ * Positioned behind sidebar and content (z-index: 0).
  */
 
-// Weighted toward numbers: ~70% digits, ~20% Japanese, ~10% binary
+// Weighted: ~70% digits, ~20% Japanese, ~10% binary
 const CHARS_NUM = '0123456789';
 const CHARS_JP = 'アイセフモデリスク安全';
 const CHARS_BIN = '01';
@@ -29,44 +29,58 @@ export default function MatrixRain() {
         const ctx = canvas.getContext('2d');
 
         const FONT_SIZE = 12;
-        const COL_SPACING = 55; // wide spacing — no overlap
-        const BASE_SPEED = 0.25; // slower base speed
-        const CHAR_SPACING = 16; // vertical gap between chars in a column
+        const BASE_SPEED = 0.3;
+        const CHAR_SPACING = 16;
+        const FADE_END = 0.65; // fully transparent by 65% of screen height
 
         let width = window.innerWidth;
         let height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
 
-        // Create sparse, non-overlapping columns spread across the full width
-        const numCols = Math.floor(width / COL_SPACING);
+        // Create clustered columns — random positions, some close together, some far apart
         const columns = [];
-        for (let i = 0; i < numCols; i++) {
-            const x = i * COL_SPACING + 10 + Math.random() * (COL_SPACING * 0.4);
-            const columnAlpha = 0.06 + Math.random() * 0.14; // 0.06–0.20 — some very faint, some slightly visible
-            const speed = BASE_SPEED + Math.random() * 0.15;
-            const charCount = Math.floor(height / CHAR_SPACING) + 5;
+        let x = 5 + Math.random() * 20;
+        while (x < width - 10) {
+            const columnAlpha = 0.08 + Math.random() * 0.18; // 0.08–0.26
+            const speed = BASE_SPEED + Math.random() * 0.2;
+            const charCount = Math.floor((height * FADE_END) / CHAR_SPACING) + 8;
 
             const chars = [];
             for (let j = 0; j < charCount; j++) {
                 chars.push({
                     char: randomChar(),
-                    mutateTimer: 80 + Math.random() * 250,
+                    mutateTimer: 20 + Math.random() * 60, // faster mutation
                 });
             }
 
+            // Each column starts way above with different offsets
+            // headY tracks the leading edge — chars above headY are visible, below are not yet
+            const totalColHeight = charCount * CHAR_SPACING;
             columns.push({
                 x,
-                y: -height - Math.random() * height, // start well above viewport — will fall in
+                y: -totalColHeight - Math.random() * height * 0.8, // start fully above viewport
+                headY: 0, // will be computed relative to y
                 speed,
                 alpha: columnAlpha,
                 chars,
+                entryDelay: Math.random() * 5000, // random delay 0-5s before starting to fall
+                started: false,
             });
+
+            // Random gap to next column — sometimes tight (cluster), sometimes wide
+            const gap = Math.random() < 0.35
+                ? 15 + Math.random() * 25   // tight cluster (35% chance)
+                : 40 + Math.random() * 60;  // normal/wide spacing
+            x += gap;
         }
 
-        // Stagger entry: columns start appearing from left-ish, with delays
+        // Shuffle entry order so it's not left-to-right
+        columns.forEach(col => {
+            col.entryDelay = Math.random() * 4000;
+        });
+
         const startTime = Date.now();
-        const entryDuration = 4000; // 4 seconds for all columns to start appearing
 
         function draw() {
             ctx.clearRect(0, 0, width, height);
@@ -77,40 +91,48 @@ export default function MatrixRain() {
             for (let ci = 0; ci < columns.length; ci++) {
                 const col = columns[ci];
 
-                // Stagger entry: each column starts moving after a delay
-                const entryDelay = (ci / columns.length) * entryDuration;
-                if (elapsed < entryDelay) continue;
+                // Stagger entry
+                if (!col.started) {
+                    if (elapsed < col.entryDelay) continue;
+                    col.started = true;
+                    // Reset y to start from just above viewport
+                    col.y = -col.chars.length * CHAR_SPACING;
+                }
 
                 col.y += col.speed;
 
-                // Reset when scrolled well past bottom
-                if (col.y > height + 300) {
-                    col.y = -Math.random() * height * 0.5 - 200;
+                // Reset when the entire column has scrolled past the fade zone
+                if (col.y > height * FADE_END + 100) {
+                    col.y = -col.chars.length * CHAR_SPACING - Math.random() * height * 0.3;
                 }
 
                 for (let j = 0; j < col.chars.length; j++) {
                     const charY = col.y + j * CHAR_SPACING;
-                    if (charY < -20 || charY > height + 20) continue;
 
-                    // Mutate chars occasionally
+                    // Skip chars above viewport or below fade zone
+                    if (charY < -20) continue;
+                    if (charY > height * FADE_END) break;
+
+                    // Mutate chars faster
                     col.chars[j].mutateTimer -= 1;
                     if (col.chars[j].mutateTimer <= 0) {
                         col.chars[j].char = randomChar();
-                        col.chars[j].mutateTimer = 80 + Math.random() * 250;
+                        col.chars[j].mutateTimer = 20 + Math.random() * 60;
                     }
 
-                    // Vertical fade: visible at top, fading toward bottom
-                    const verticalFade = 1.0 - (charY / height) * 0.85;
+                    // Vertical fade: full opacity at top, zero by FADE_END
+                    const verticalProgress = Math.max(0, charY) / (height * FADE_END);
+                    const verticalFade = 1.0 - verticalProgress;
 
-                    // Horizontal fade: fade faster in center (where content is)
-                    // Content area is roughly 200px–(width-200px) on desktop
+                    // Horizontal fade: edges ~40% more opaque than center, gradual shift
+                    // Uses a smooth curve (eased) so the transition feels natural
                     const centerX = width / 2;
-                    const distFromCenter = Math.abs(col.x - centerX) / (width / 2);
-                    // Center = 0.3 opacity multiplier, edges = 1.0
-                    const horizontalFade = 0.3 + distFromCenter * 0.7;
+                    const distFromCenter = Math.abs(col.x - centerX) / (width / 2); // 0 = center, 1 = edge
+                    const eased = distFromCenter * distFromCenter; // quadratic ease — gentle near center, steeper at edges
+                    const horizontalFade = 0.35 + eased * 0.65;
 
                     const alpha = col.alpha * verticalFade * horizontalFade;
-                    if (alpha <= 0.01) continue;
+                    if (alpha <= 0.008) continue;
 
                     ctx.fillStyle = `rgba(44, 36, 32, ${Math.max(0, alpha)})`;
                     ctx.fillText(col.chars[j].char, col.x, charY);

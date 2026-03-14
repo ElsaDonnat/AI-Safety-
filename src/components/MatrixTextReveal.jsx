@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-const RANDOM_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&';
+// Only lowercase letters and digits — no capitals, no symbols
+const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789';
 const CYCLE_INTERVAL = 40;
-const STAGGER_DELAY = 80;
-const CYCLES_BEFORE_RESOLVE = 12;
+const STAGGER_DELAY = 120; // longer stagger so each letter starts visibly after the previous
+const CYCLES_BEFORE_RESOLVE = 8;
 
 // Track whether the animation has played this session
 let hasPlayedThisSession = false;
@@ -20,7 +21,8 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
     if (!shouldAnimate) {
       return Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0 }));
     }
-    return Array.from(text).map(() => ({ display: getRandomChar(), resolved: false, cycleCount: 0 }));
+    // All chars start blank (not visible) — they appear one by one via stagger
+    return Array.from(text).map(() => ({ display: '', resolved: false, cycleCount: 0, started: false }));
   });
   const intervalRef = useRef(null);
   const completedRef = useRef(!shouldAnimate);
@@ -35,17 +37,19 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
 
         const charStartTime = i * STAGGER_DELAY;
         if (elapsed < charStartTime) {
-          return { ...charState, display: getRandomChar() };
+          // Not started yet — keep invisible
+          return charState;
         }
 
+        // Mark as started once we begin cycling
         const newCycleCount = charState.cycleCount + 1;
-        const targetCycles = CYCLES_BEFORE_RESOLVE - 4 + Math.floor(Math.random() * 8);
+        const targetCycles = CYCLES_BEFORE_RESOLVE + Math.floor(Math.random() * 4);
 
         if (newCycleCount >= targetCycles) {
-          return { display: text[i], resolved: true, cycleCount: newCycleCount };
+          return { display: text[i], resolved: true, cycleCount: newCycleCount, started: true };
         }
 
-        return { display: getRandomChar(), resolved: false, cycleCount: newCycleCount };
+        return { display: getRandomChar(), resolved: false, cycleCount: newCycleCount, started: true };
       });
 
       return next;
@@ -80,6 +84,14 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
         const isLastChar = i === charStates.length - 1;
         if (useDotElement && isLastChar && charState.resolved) {
           return <span key={i}>{dotElement}</span>;
+        }
+        // Don't render anything if not started yet
+        if (!charState.started && !charState.resolved) {
+          return (
+            <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : '0.5em', visibility: 'hidden' }}>
+              {text[i]}
+            </span>
+          );
         }
         return (
           <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : undefined }}>

@@ -236,6 +236,12 @@ input, textarea, [contenteditable] {
   margin: 0;
   flex-shrink: 0;
 }
+/* Hide topbar logo on desktop — sidebar has it */
+@media (min-width: 900px) {
+  .topbar-logo {
+    visibility: hidden;
+  }
+}
 
 .topbar-section-name {
   font-family: var(--font-display);
@@ -312,6 +318,8 @@ input, textarea, [contenteditable] {
   flex-direction: column;
   padding: 20px 0;
   overflow-y: auto;
+  position: relative;
+  z-index: 2;
 }
 
 /* Hide sidebar below 900px */

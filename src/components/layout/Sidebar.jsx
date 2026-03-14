@@ -104,6 +104,22 @@ export default function Sidebar({ activeTab, onTabChange }) {
 
     return (
         <aside className="sidebar">
+            {/* Logo */}
+            <div className="px-4 mb-4">
+                <span style={{
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 600,
+                    fontSize: '20px',
+                    letterSpacing: '-0.03em',
+                    color: 'var(--color-ink)',
+                    transform: 'scaleY(0.92)',
+                    display: 'inline-flex',
+                    alignItems: 'baseline',
+                    gap: '1px',
+                }}>
+                    alignd<span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-bronze)', marginLeft: '1px' }} />
+                </span>
+            </div>
             <nav className="sidebar-nav">
                 {NAV_ITEMS.map(item => {
                     const isActive = activeTab === item.id;
