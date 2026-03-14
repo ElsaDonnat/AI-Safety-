@@ -408,7 +408,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                         {/* Lesson info */}
                                                                         <div className="flex-1 min-w-0">
                                                                             <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
-                                                                                {lesson.title}
+                                                                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 500, color: 'var(--color-ink-faint)', marginRight: '6px' }}>{lesson.number + 1}.</span>{lesson.title}
                                                                             </p>
                                                                             <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
                                                                                 {lesson.subtitle || `${lesson.cardIds.length} concept${lesson.cardIds.length !== 1 ? 's' : ''}`}

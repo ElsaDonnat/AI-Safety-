@@ -6,7 +6,7 @@ import { calculateNextReview } from '../../data/spacedRepetition';
 import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
-import { TOPICS } from '../../data/lessons';
+import { TOPICS, CHAPTERS, DIFFICULTY_COLORS } from '../../data/lessons';
 
 // Monoline topic icons — matches LearnPage ICON_SVG
 const TOPIC_ICON = {
@@ -74,6 +74,7 @@ export default function LessonFlow({ lesson, onComplete }) {
     const recapPerCard = state.recapPerCard ?? 1;
     const concepts = useMemo(() => getConceptsByIds(lesson.cardIds || []), [lesson]);
     const topic = useMemo(() => TOPICS.find(t => t.id === lesson.topic), [lesson]);
+    const chapter = useMemo(() => CHAPTERS.find(ch => ch.id === lesson.chapter), [lesson]);
 
     const [phase, setPhase] = useState(PHASE.INTRO);
     const [cardIndex, setCardIndex] = useState(0);
@@ -244,9 +245,9 @@ export default function LessonFlow({ lesson, onComplete }) {
                         Back
                     </button>
                 </div>
-                <div className="flex-1 min-h-0 flex flex-col justify-center" style={{ position: 'relative', zIndex: 1 }}>
-                    <div className="py-2">
-                        {/* Header: lesson type + title — compact, max 2 lines */}
+                <div className="flex-1 min-h-0 flex flex-col items-center justify-center" style={{ position: 'relative', zIndex: 1 }}>
+                    <div className="py-2 w-full">
+                        {/* Header: lesson type + title + difficulty chip — centered */}
                         <div className="text-center mb-4">
                             <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)' }}>
                                 {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number}`}
@@ -254,6 +255,25 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <h1 className="lesson-intro-title font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 {lesson.title}
                             </h1>
+                            {chapter && (() => {
+                                const diffColor = DIFFICULTY_COLORS[chapter.difficulty] || '#888';
+                                return (
+                                    <span
+                                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider mt-2"
+                                        style={{
+                                            fontFamily: 'var(--font-mono)',
+                                            fontSize: '11px',
+                                            fontWeight: 500,
+                                            letterSpacing: '0.02em',
+                                            backgroundColor: `${diffColor}18`,
+                                            color: diffColor,
+                                        }}
+                                    >
+                                        <span className="w-1.5 h-1.5 rounded-[1px]" style={{ backgroundColor: diffColor }} />
+                                        {chapter.title}
+                                    </span>
+                                );
+                            })()}
                         </div>
 
                         {/* Topic info — icon + name + description in one row */}
