@@ -93,7 +93,7 @@ export default function HomePage({ onTabChange }) {
                 }}>
                     <MatrixTextReveal
                         text="alignd."
-                        dotElement={<span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'var(--color-bronze)', marginLeft: '2px', verticalAlign: 'baseline' }} />}
+                        dotElement={<span style={{ color: 'var(--color-bronze)' }}>.</span>}
                     />
                 </h1>
                 <p style={{
@@ -166,7 +166,7 @@ export default function HomePage({ onTabChange }) {
                 className="w-full mb-8 py-3.5 rounded-[3px] text-sm font-semibold transition-all active:scale-[0.99]"
                 style={{
                     fontFamily: 'var(--font-display)',
-                    backgroundColor: 'var(--color-burgundy)',
+                    backgroundColor: 'var(--color-bronze)',
                     color: '#fff',
                     border: 'none',
                     cursor: 'pointer',
@@ -264,8 +264,8 @@ export default function HomePage({ onTabChange }) {
 
             {/* Footer */}
             <div className="mt-12 mb-8 text-center">
-                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)', display: 'inline-flex', alignItems: 'baseline', gap: '2px' }}>
-                    alignd<span style={{ display: 'inline-block', width: '4px', height: '4px', backgroundColor: 'var(--color-bronze)', marginBottom: '1px' }} />
+                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)' }}>
+                    alignd<span style={{ color: 'var(--color-bronze)' }}>.</span>
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     alignd — ai safety companion

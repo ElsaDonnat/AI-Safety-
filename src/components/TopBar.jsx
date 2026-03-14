@@ -108,10 +108,10 @@ export default function TopBar() {
             <header className="topbar">
                 <div className="topbar-inner">
                     {/* Logo — left */}
-                    <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
+                    <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)' }}>
                         <MatrixTextReveal
                             text="alignd."
-                            dotElement={<span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-bronze)', flexShrink: 0, marginLeft: '1px' }} />}
+                            dotElement={<span style={{ color: 'var(--color-bronze)' }}>.</span>}
                         />
                     </h1>
 

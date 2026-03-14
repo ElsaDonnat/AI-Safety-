@@ -189,13 +189,13 @@ export const Button = forwardRef(function Button({ children, onClick, variant = 
 
     const variants = {
         primary: {
-            backgroundColor: disabled ? 'var(--color-ink-faint)' : 'var(--color-burgundy)',
+            backgroundColor: disabled ? 'var(--color-ink-faint)' : 'var(--color-bronze)',
             color: '#fff',
-            boxShadow: disabled ? 'none' : '0 2px 8px rgba(212, 114, 106, 0.25)'
+            boxShadow: disabled ? 'none' : '0 2px 8px rgba(168, 200, 216, 0.35)'
         },
         secondary: {
-            backgroundColor: 'var(--color-burgundy-soft)',
-            color: 'var(--color-burgundy)',
+            backgroundColor: 'rgba(168, 200, 216, 0.12)',
+            color: 'var(--color-bronze-light)',
         },
         ghost: {
             backgroundColor: 'transparent',
@@ -296,9 +296,9 @@ export function ConfirmModal({ title, message, confirmLabel = 'Yes', cancelLabel
                         onClick={onConfirm}
                         className="flex-1 px-6 py-3 rounded-[3px] font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer"
                         style={{
-                            backgroundColor: danger ? 'var(--color-error)' : 'var(--color-burgundy)',
+                            backgroundColor: danger ? 'var(--color-error)' : 'var(--color-bronze)',
                             color: '#fff',
-                            boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(212, 114, 106, 0.25)',
+                            boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(168, 200, 216, 0.35)',
                         }}
                     >
                         {confirmLabel}

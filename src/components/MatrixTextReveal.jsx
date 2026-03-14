@@ -3,8 +3,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 // Only lowercase letters and digits — no capitals, no symbols
 const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789';
 const CYCLE_INTERVAL = 40;
-const STAGGER_DELAY = 120; // longer stagger so each letter starts visibly after the previous
+const STAGGER_DELAY = 120;
 const CYCLES_BEFORE_RESOLVE = 8;
+const MAX_ANIMATION_TIME = 3000; // safety: force resolve after 3s no matter what
 
 // Track whether the animation has played this session
 let hasPlayedThisSession = false;
@@ -14,18 +15,28 @@ function getRandomChar() {
 }
 
 export default function MatrixTextReveal({ text = '', className, style, onComplete, dotElement }) {
-  // Only animate once per session — after that, show static text
   const shouldAnimate = !hasPlayedThisSession;
 
   const [charStates, setCharStates] = useState(() => {
     if (!shouldAnimate) {
       return Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0 }));
     }
-    // All chars start blank (not visible) — they appear one by one via stagger
     return Array.from(text).map(() => ({ display: '', resolved: false, cycleCount: 0, started: false }));
   });
   const intervalRef = useRef(null);
   const completedRef = useRef(!shouldAnimate);
+  const safetyTimerRef = useRef(null);
+
+  // Force all chars to their final state
+  const forceComplete = useCallback(() => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    hasPlayedThisSession = true;
+    if (intervalRef.current?.id) clearInterval(intervalRef.current.id);
+    if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+    setCharStates(Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0, started: true })));
+    onComplete?.();
+  }, [text, onComplete]);
 
   const tick = useCallback(() => {
     setCharStates(prev => {
@@ -35,13 +46,22 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
       const next = prev.map((charState, i) => {
         if (charState.resolved) return charState;
 
+        // If this is the dot (last char) and dotElement is used, don't iterate —
+        // resolve it instantly once the previous char has resolved
+        const isLastDot = dotElement && text.endsWith('.') && i === prev.length - 1;
+        if (isLastDot) {
+          const prevResolved = i === 0 || prev[i - 1].resolved;
+          if (prevResolved) {
+            return { display: text[i], resolved: true, cycleCount: 0, started: true };
+          }
+          return charState; // stay hidden until previous char resolves
+        }
+
         const charStartTime = i * STAGGER_DELAY;
         if (elapsed < charStartTime) {
-          // Not started yet — keep invisible
           return charState;
         }
 
-        // Mark as started once we begin cycling
         const newCycleCount = charState.cycleCount + 1;
         const targetCycles = CYCLES_BEFORE_RESOLVE + Math.floor(Math.random() * 4);
 
@@ -54,7 +74,7 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
 
       return next;
     });
-  }, [text]);
+  }, [text, dotElement]);
 
   useEffect(() => {
     if (!shouldAnimate) return;
@@ -62,16 +82,21 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
     const id = setInterval(tick, CYCLE_INTERVAL);
     intervalRef.current = { id, startTime };
 
-    return () => clearInterval(id);
-  }, [tick, shouldAnimate]);
+    // Safety timer: force complete if animation hasn't finished in time
+    safetyTimerRef.current = setTimeout(forceComplete, MAX_ANIMATION_TIME);
+
+    return () => {
+      clearInterval(id);
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+    };
+  }, [tick, shouldAnimate, forceComplete]);
 
   useEffect(() => {
     if (!completedRef.current && charStates.length > 0 && charStates.every(c => c.resolved)) {
       completedRef.current = true;
       hasPlayedThisSession = true;
-      if (intervalRef.current?.id) {
-        clearInterval(intervalRef.current.id);
-      }
+      if (intervalRef.current?.id) clearInterval(intervalRef.current.id);
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
       onComplete?.();
     }
   }, [charStates, onComplete]);
@@ -85,7 +110,6 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
         if (useDotElement && isLastChar && charState.resolved) {
           return <span key={i}>{dotElement}</span>;
         }
-        // Don't render anything if not started yet
         if (!charState.started && !charState.resolved) {
           return (
             <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : '0.5em', visibility: 'hidden' }}>

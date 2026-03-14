@@ -236,12 +236,6 @@ input, textarea, [contenteditable] {
   margin: 0;
   flex-shrink: 0;
 }
-/* Hide topbar logo on desktop — sidebar has it */
-@media (min-width: 900px) {
-  .topbar-logo {
-    visibility: hidden;
-  }
-}
 
 .topbar-section-name {
   font-family: var(--font-display);

@@ -42,7 +42,7 @@ export default function MatrixRain() {
         const columns = [];
         let x = 5 + Math.random() * 20;
         while (x < width - 10) {
-            const columnAlpha = 0.08 + Math.random() * 0.18; // 0.08–0.26
+            const columnAlpha = 0.10 + Math.random() * 0.22; // 0.10–0.32
             const speed = BASE_SPEED + Math.random() * 0.2;
             const charCount = Math.floor((height * FADE_END) / CHAR_SPACING) + 8;
 
@@ -124,12 +124,12 @@ export default function MatrixRain() {
                     const verticalProgress = Math.max(0, charY) / (height * FADE_END);
                     const verticalFade = 1.0 - verticalProgress;
 
-                    // Horizontal fade: edges ~40% more opaque than center, gradual shift
-                    // Uses a smooth curve (eased) so the transition feels natural
+                    // Horizontal fade: edges clearly visible, center very faint
+                    // Cubic ease for a strong contrast — center nearly invisible, edges pop
                     const centerX = width / 2;
                     const distFromCenter = Math.abs(col.x - centerX) / (width / 2); // 0 = center, 1 = edge
-                    const eased = distFromCenter * distFromCenter; // quadratic ease — gentle near center, steeper at edges
-                    const horizontalFade = 0.35 + eased * 0.65;
+                    const eased = distFromCenter * distFromCenter * distFromCenter; // cubic ease
+                    const horizontalFade = 0.12 + eased * 0.88;
 
                     const alpha = col.alpha * verticalFade * horizontalFade;
                     if (alpha <= 0.008) continue;

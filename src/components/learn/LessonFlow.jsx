@@ -247,10 +247,22 @@ export default function LessonFlow({ lesson, onComplete }) {
                 </div>
                 <div className="flex-1 min-h-0 flex flex-col items-center justify-center" style={{ position: 'relative', zIndex: 1 }}>
                     <div className="py-2 w-full">
-                        {/* Header: lesson type + title + difficulty chip — centered */}
+                        {/* Header: lesson number badge + type + title + difficulty chip — centered */}
                         <div className="text-center mb-4">
+                            {/* Lesson number badge */}
+                            <div className="flex justify-center mb-3">
+                                <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
+                                    style={{
+                                        backgroundColor: topic?.color || 'var(--color-bronze)',
+                                        color: '#fff',
+                                    }}>
+                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '16px', fontWeight: 600 }}>
+                                        {lesson.number + 1}
+                                    </span>
+                                </div>
+                            </div>
                             <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)' }}>
-                                {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number}`}
+                                {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number + 1}`}
                             </span>
                             <h1 className="lesson-intro-title font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 {lesson.title}

@@ -234,9 +234,9 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                             }}
                             className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
                             style={{
-                                backgroundColor: isActive ? 'var(--color-burgundy)' : 'transparent',
+                                backgroundColor: isActive ? 'var(--color-bronze)' : 'transparent',
                                 color: isActive ? '#fff' : 'var(--color-ink-muted)',
-                                border: isActive ? '1px solid var(--color-burgundy)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                                border: isActive ? '1px solid var(--color-bronze)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
                             }}
                         >
                             <TopicIcon iconId={domain.icon} color={isActive ? '#fff' : domain.color} />
@@ -408,7 +408,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                         {/* Lesson info */}
                                                                         <div className="flex-1 min-w-0">
                                                                             <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
-                                                                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 500, color: 'var(--color-ink-faint)', marginRight: '6px' }}>{lesson.number + 1}.</span>{lesson.title}
+                                                                                {lesson.title}
                                                                             </p>
                                                                             <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
                                                                                 {lesson.subtitle || `${lesson.cardIds.length} concept${lesson.cardIds.length !== 1 ? 's' : ''}`}
