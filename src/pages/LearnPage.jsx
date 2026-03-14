@@ -9,8 +9,6 @@ import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
-import Mascot from '../components/Mascot';
-
 // ─── "This Week" card session tracking ───
 let _thisWeekShown = false;
 let _thisWeekDismissed = false;
@@ -119,19 +117,16 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto" ref={mainRef}>
             {/* Header */}
-            <div className="flex items-center gap-3 mb-6">
-                <Mascot mood={completedCount > 0 ? 'happy' : 'neutral'} size={48} />
-                <div>
-                    <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
-                        Learn AI Safety
-                    </h2>
-                    <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
-                        {completedCount === 0
-                            ? 'Start your journey into AI safety'
-                            : `${completedCount}/${totalLessons} lessons completed`
-                        }
-                    </p>
-                </div>
+            <div className="mb-6">
+                <h2 className="text-[22px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
+                    Learn
+                </h2>
+                <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
+                    {completedCount === 0
+                        ? 'Start your journey into AI safety'
+                        : <><span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{completedCount}/{totalLessons}</span> lessons completed</>
+                    }
+                </p>
             </div>
 
             {/* This Week card */}
@@ -164,7 +159,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             {showDailyQuizCard && (
                 <Card className="mb-4" onClick={() => setActiveDailyQuiz(true)}>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
+                        <div className="w-10 h-10 rounded-[3px] flex items-center justify-center text-lg"
                             style={{ backgroundColor: 'rgba(230, 168, 23, 0.12)' }}>
                             📅
                         </div>
@@ -184,7 +179,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 </Card>
             )}
 
-            {/* Domain sub-tabs (horizontal pill bar) */}
+            {/* Domain sub-tabs */}
             <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
                 {DOMAINS.map(domain => {
                     const isActive = activeDomain === domain.id;
@@ -195,17 +190,17 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                 setActiveDomain(domain.id);
                                 setExpandedTopic(null);
                             }}
-                            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
+                            className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
                             style={{
-                                backgroundColor: isActive ? domain.color : 'rgba(var(--color-ink-rgb), 0.05)',
+                                backgroundColor: isActive ? 'var(--color-burgundy)' : 'transparent',
                                 color: isActive ? '#fff' : 'var(--color-ink-muted)',
-                                border: isActive ? 'none' : '1px solid rgba(var(--color-ink-rgb), 0.08)',
+                                border: isActive ? '1px solid var(--color-burgundy)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
                             }}
                         >
                             <span>{domain.icon}</span>
                             <span>{domain.title}</span>
                             {domain.comingSoon && (
-                                <span className="ml-0.5 opacity-60">🔒</span>
+                                <span className="ml-0.5" style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', opacity: 0.7 }}>Soon</span>
                             )}
                         </button>
                     );
@@ -216,13 +211,13 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             {currentDomain?.comingSoon && (
                 <div className="text-center py-16">
                     <div className="text-4xl mb-3">{currentDomain.icon}</div>
-                    <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-ink)' }}>
+                    <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                         {currentDomain.title}
                     </h3>
                     <p className="text-sm mb-1" style={{ color: 'var(--color-ink-muted)' }}>
                         {currentDomain.description}
                     </p>
-                    <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
                         Coming soon
                     </p>
                 </div>
@@ -247,24 +242,24 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                     className="flex items-center gap-3 cursor-pointer"
                                     onClick={() => setExpandedTopic(isExpanded ? null : topic.id)}
                                 >
-                                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+                                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center text-lg flex-shrink-0"
                                         style={{ backgroundColor: `${topic.color}15` }}>
                                         {topic.icon}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="font-bold text-sm" style={{ color: 'var(--color-ink)' }}>
+                                        <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                             {topic.title}
                                         </h3>
                                         <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
                                             {topic.description}
                                         </p>
                                         {/* Progress bar */}
-                                        <div className="mt-2 w-full h-1.5 rounded-full overflow-hidden"
-                                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
-                                            <div className="h-full rounded-full transition-all duration-500"
-                                                style={{ width: `${progressPct}%`, backgroundColor: topic.color }} />
+                                        <div className="mt-2 w-full overflow-hidden"
+                                            style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
+                                            <div className="h-full transition-all duration-500"
+                                                style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-bronze)' }} />
                                         </div>
-                                        <p className="text-[10px] mt-1" style={{ color: 'var(--color-ink-faint)' }}>
+                                        <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)' }}>
                                             {completedTopicLessons.length}/{allTopicLessons.length} lessons
                                         </p>
                                     </div>
@@ -299,18 +294,22 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                     {/* Chapter header badge */}
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <span
-                                                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold"
+                                                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider"
                                                             style={{
+                                                                fontFamily: 'var(--font-mono)',
+                                                                fontSize: '11px',
+                                                                fontWeight: 500,
+                                                                letterSpacing: '0.02em',
                                                                 backgroundColor: `${diffColor}18`,
                                                                 color: diffColor,
                                                             }}
                                                         >
-                                                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: diffColor }} />
+                                                            <span className="w-1.5 h-1.5 rounded-[1px]" style={{ backgroundColor: diffColor }} />
                                                             {chapter.title}
                                                         </span>
                                                         {chapter.comingSoon && (
-                                                            <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
-                                                                Coming soon
+                                                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
+                                                                Soon
                                                             </span>
                                                         )}
                                                     </div>
@@ -331,7 +330,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                 return (
                                                                     <div
                                                                         key={lesson.id}
-                                                                        className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${isUnlocked ? 'cursor-pointer active:scale-[0.99]' : 'opacity-50'}`}
+                                                                        className={`flex items-center gap-3 px-3 py-3 rounded-[3px] transition-all ${isUnlocked ? 'cursor-pointer active:scale-[0.99]' : 'opacity-50'}`}
                                                                         style={{
                                                                             backgroundColor: isNext
                                                                                 ? `${topic.color}10`
@@ -345,7 +344,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                         }}
                                                                     >
                                                                         {/* Status indicator */}
-                                                                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                                                                        <div className="w-8 h-8 rounded-[3px] flex items-center justify-center flex-shrink-0"
                                                                             style={{
                                                                                 backgroundColor: isCompleted
                                                                                     ? 'var(--color-success)'
@@ -360,7 +359,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                                     <polyline points="20 6 9 17 4 12" />
                                                                                 </svg>
                                                                             ) : (
-                                                                                <span className="text-xs font-bold">{idx + 1}</span>
+                                                                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 500 }}>{idx + 1}</span>
                                                                             )}
                                                                         </div>
 

@@ -8,16 +8,14 @@ import '@fontsource/dm-sans/500.css'
 import '@fontsource/dm-sans/600.css'
 import '@fontsource/dm-sans/700.css'
 import '@fontsource/dm-sans/400-italic.css'
-import '@fontsource/space-grotesk/400.css'
-import '@fontsource/space-grotesk/500.css'
-import '@fontsource/space-grotesk/600.css'
-import '@fontsource/space-grotesk/700.css'
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
 import './index.css'
 import App from './App.jsx'
 import { AppProvider } from './context/AppContext.jsx'
 
 // Configure native status bar (no-ops on web)
-StatusBar.setBackgroundColor({ color: '#F0F4F8' }).catch(() => {});
+StatusBar.setBackgroundColor({ color: '#F5F0EB' }).catch(() => {});
 StatusBar.setStyle({ style: Style.Light }).catch(() => {});
 SplashScreen.hide().catch(() => {});
 

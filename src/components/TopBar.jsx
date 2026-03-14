@@ -4,13 +4,6 @@ import AchievementsModal from './AchievementsModal';
 import StreakFlame from './StreakFlame';
 import { FLAME_COUNT_COLORS } from '../utils/streakColors';
 
-const SECTION_NAMES = {
-    learn: 'Learn',
-    library: 'Library',
-    practice: 'Practice',
-    challenge: 'Challenge',
-};
-
 function getStreakStatus(lastActiveDate, currentStreak) {
     if (!lastActiveDate || currentStreak === 0) return 'inactive';
     const today = new Date().toISOString().split('T')[0];
@@ -21,7 +14,7 @@ function getStreakStatus(lastActiveDate, currentStreak) {
     return 'inactive';
 }
 
-export default function TopBar({ activeTab }) {
+export default function TopBar() {
     const { state, dispatch } = useApp();
     const [displayXP, setDisplayXP] = useState(state.totalXP);
     const [showAchievements, setShowAchievements] = useState(false);
@@ -114,19 +107,12 @@ export default function TopBar({ activeTab }) {
             <header className="topbar">
                 <div className="topbar-inner">
                     {/* Logo — left */}
-                    <h1 className="topbar-logo">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{ marginRight: 2 }}>
-                            {/* Shield icon */}
-                            <path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L12 2z" fill="var(--color-burgundy)" opacity="0.15" stroke="var(--color-burgundy)" strokeWidth="1.5" />
-                            <path d="M9 12l2 2 4-4" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        </svg>
-                        AI Safety
+                    <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.02em', color: 'var(--color-ink)' }}>
+                        aligned<span style={{ color: 'var(--color-burgundy)' }}>.</span>
                     </h1>
 
-                    {/* Section name — center (hidden on small screens) */}
-                    <div className="topbar-section-name">
-                        {SECTION_NAMES[activeTab] || ''}
-                    </div>
+                    {/* Spacer — center */}
+                    <div className="topbar-section-name" />
 
                     {/* Stats — right */}
                     <div className="topbar-stats">
@@ -137,7 +123,7 @@ export default function TopBar({ activeTab }) {
                             aria-label={`${state.currentStreak} day streak — click for details`}
                         >
                             <StreakFlame status={streakStatus} size={18} />
-                            <span className="text-sm font-semibold" style={{ color: FLAME_COUNT_COLORS[streakStatus] }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 500, color: FLAME_COUNT_COLORS[streakStatus] }}>
                                 {state.currentStreak}
                             </span>
                         </button>
@@ -146,13 +132,13 @@ export default function TopBar({ activeTab }) {
                         <div id="xp-star-target" className="topbar-stat"
                             onClick={() => window.dispatchEvent(new Event('openWeekTracker'))}
                             style={{ cursor: 'pointer' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-bronze)" strokeWidth="2" strokeLinecap="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-bronze-light)" stroke="var(--color-bronze)" opacity="0.8" />
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-burgundy)" stroke="var(--color-burgundy)" opacity="0.2" />
                             </svg>
-                            <span className="text-sm font-semibold" style={{ color: 'var(--color-bronze)' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 500, color: 'var(--color-burgundy)' }}>
                                 {displayXP}
                             </span>
-                            <span className="text-xs hidden sm:inline" style={{ color: 'var(--color-ink-faint)' }}>XP</span>
+                            <span className="hidden sm:inline" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>XP</span>
                         </div>
 
                         {/* Achievements trophy */}
@@ -161,7 +147,7 @@ export default function TopBar({ activeTab }) {
                             className="topbar-trophy-btn"
                             aria-label="Achievements"
                         >
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B8860B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
                                 <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
                                 <path d="M4 22h16" />
@@ -178,7 +164,7 @@ export default function TopBar({ activeTab }) {
                             className="topbar-settings-btn"
                             aria-label="Settings"
                         >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="3" />
                                 <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                             </svg>

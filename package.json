@@ -1,5 +1,5 @@
 {
-  "name": "ai-safety",
+  "name": "aligned",
   "private": true,
   "version": "0.3.0",
   "type": "module",
@@ -23,6 +23,7 @@
     "@capacitor/splash-screen": "^8.0.1",
     "@capacitor/status-bar": "^8.0.1",
     "@fontsource/dm-sans": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/space-grotesk": "^5.2.10",
     "capacitor-widget-bridge": "^8.0.0",
     "react": "^19.2.0",

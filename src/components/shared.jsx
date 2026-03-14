@@ -57,8 +57,8 @@ export function CategoryTag({ category }) {
 
     return (
         <span
-            className="inline-flex items-center px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider rounded-md"
-            style={{ color: config.color, backgroundColor: config.bg }}
+            className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-[2px]"
+            style={{ color: config.color, backgroundColor: config.bg, fontFamily: 'var(--font-mono)' }}
         >
             {config.label}
         </span>
@@ -105,7 +105,7 @@ export function DiHBadge({ size = 'sm' }) {
     const isSmall = size === 'sm';
     return (
         <span
-            className="inline-flex items-center gap-1 rounded-md font-semibold uppercase tracking-wider flex-shrink-0"
+            className="inline-flex items-center gap-1 rounded-[2px] font-semibold uppercase tracking-wider flex-shrink-0"
             style={{
                 fontSize: isSmall ? '9px' : '11px',
                 padding: isSmall ? '2px 6px' : '3px 8px',
@@ -171,12 +171,13 @@ export function Divider() {
 export function ProgressBar({ value, max, color }) {
     const pct = Math.min((value / max) * 100, 100);
     return (
-        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
+        <div className="w-full overflow-hidden" style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
             <div
-                className="h-full rounded-full transition-all duration-500 ease-out"
+                className="h-full transition-all duration-500 ease-out"
                 style={{
                     width: `${pct}%`,
-                    backgroundColor: color || 'var(--color-burgundy)',
+                    borderRadius: '1px',
+                    backgroundColor: color || 'var(--color-bronze)',
                 }}
             />
         </div>
@@ -184,13 +185,13 @@ export function ProgressBar({ value, max, color }) {
 }
 
 export const Button = forwardRef(function Button({ children, onClick, variant = 'primary', disabled = false, className = '' }, ref) {
-    const base = 'px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer';
+    const base = 'px-6 py-3 rounded-[3px] font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer';
 
     const variants = {
         primary: {
             backgroundColor: disabled ? 'var(--color-ink-faint)' : 'var(--color-burgundy)',
             color: '#fff',
-            boxShadow: disabled ? 'none' : '0 2px 8px rgba(30, 58, 95, 0.25)'
+            boxShadow: disabled ? 'none' : '0 2px 8px rgba(212, 114, 106, 0.25)'
         },
         secondary: {
             backgroundColor: 'var(--color-burgundy-soft)',
@@ -238,7 +239,7 @@ export function Card({ children, className = '', onClick, style = {} }) {
     return (
         <div
             onClick={onClick}
-            className={`rounded-[14px] p-5 transition-all duration-200 ${onClick ? 'cursor-pointer hover:shadow-lg active:scale-[0.99]' : ''} ${className}`}
+            className={`rounded-[3px] p-5 transition-all duration-200 ${onClick ? 'cursor-pointer active:scale-[0.99]' : ''} ${className}`}
             style={{
                 backgroundColor: 'var(--color-card)',
                 boxShadow: 'var(--shadow-card)',
@@ -255,7 +256,7 @@ export function StarButton({ isStarred, onClick, size = 18 }) {
         <button
             onClick={(e) => { e.stopPropagation(); feedback.starPing(); onClick(); }}
             className="flex items-center justify-center transition-all duration-200 active:scale-90"
-            style={{ color: isStarred ? '#E6A817' : 'var(--color-ink-faint)', minWidth: '44px', minHeight: '44px' }}
+            style={{ color: isStarred ? 'var(--color-burgundy)' : 'var(--color-ink-faint)', minWidth: '44px', minHeight: '44px' }}
             title={isStarred ? 'Remove from favorites' : 'Add to favorites'}
         >
             <svg width={size} height={size} viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -278,8 +279,8 @@ export function ConfirmModal({ title, message, confirmLabel = 'Yes', cancelLabel
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} onClick={onCancel || onConfirm}>
-            <div role="dialog" aria-modal="true" aria-labelledby={titleId.current} className="w-full max-w-sm rounded-2xl p-6 animate-fade-in" style={{ backgroundColor: 'var(--color-card)', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }} onClick={e => e.stopPropagation()}>
-                <h3 id={titleId.current} className="text-lg font-bold mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+            <div role="dialog" aria-modal="true" aria-labelledby={titleId.current} className="w-full max-w-sm rounded-[4px] p-6 animate-fade-in" style={{ backgroundColor: 'var(--color-card)', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }} onClick={e => e.stopPropagation()}>
+                <h3 id={titleId.current} className="text-lg font-bold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                     {title}
                 </h3>
                 <p className="text-sm mb-6" style={{ color: 'var(--color-ink-muted)' }}>
@@ -293,11 +294,11 @@ export function ConfirmModal({ title, message, confirmLabel = 'Yes', cancelLabel
                     )}
                     <button
                         onClick={onConfirm}
-                        className="flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                        className="flex-1 px-6 py-3 rounded-[3px] font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer"
                         style={{
                             backgroundColor: danger ? 'var(--color-error)' : 'var(--color-burgundy)',
                             color: '#fff',
-                            boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(30, 58, 95, 0.25)',
+                            boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(212, 114, 106, 0.25)',
                         }}
                     >
                         {confirmLabel}
@@ -326,7 +327,7 @@ export function ControversyNote({ note }) {
                 {expanded ? 'Hide scholarly note' : 'See scholarly note'}
             </button>
             {expanded && (
-                <div className="mt-2 px-3 py-2.5 rounded-lg text-xs leading-relaxed animate-fade-in"
+                <div className="mt-2 px-3 py-2.5 rounded-[3px] text-xs leading-relaxed animate-fade-in"
                     style={{
                         backgroundColor: 'rgba(30, 58, 95, 0.04)',
                         borderLeft: '2px solid var(--color-burgundy)',
@@ -366,12 +367,12 @@ export function AnimatedCounter({ value, prefix = '', duration = 600, delay = 0,
 
 export function TabSelector({ tabs, activeTab, onChange }) {
     return (
-        <div className="flex rounded-xl p-1" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)' }}>
+        <div className="flex rounded-[3px] p-1" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)' }}>
             {tabs.map(tab => (
                 <button
                     key={tab.id}
                     onClick={() => onChange(tab.id)}
-                    className="flex-1 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"
+                    className="flex-1 px-4 py-2 rounded-[2px] text-xs font-semibold transition-all duration-200"
                     style={{
                         backgroundColor: activeTab === tab.id ? 'var(--color-card)' : 'transparent',
                         color: activeTab === tab.id ? 'var(--color-ink)' : 'var(--color-ink-muted)',
