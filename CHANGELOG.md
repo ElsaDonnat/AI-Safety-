@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 — AI Progress topic
+
+### Added
+- New topic: AI Progress (10 cards, 5 lessons)
+- Cards c16–c25: AI Progress, Large Language Models, Foundation Models, Compute, Scaling Laws, Benchmarks & Evaluation, Emergent Abilities, AI Agents, Frontier Models, Artificial General Intelligence
+- 5 lessons for AI Progress topic covering modern AI systems, drivers of progress, measurement, and the frontier
+- Description distractors for all 10 new cards (c16–c25)
+- 6 fun facts related to AI progress concepts
+
 ## 0.2.1 — Lint fixes & code cleanup
 
 ### Fixed
