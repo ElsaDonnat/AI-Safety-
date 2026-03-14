@@ -83,7 +83,7 @@ export default function HomePage({ onTabChange }) {
                     transform: 'scaleY(0.9)',
                     transformOrigin: 'bottom',
                 }}>
-                    alignd<span style={{ color: 'var(--color-bronze)', fontSize: '48px' }}>.</span>
+                    alignd<span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'var(--color-bronze)', marginLeft: '4px', marginBottom: '4px', verticalAlign: 'baseline' }} />
                 </h1>
                 <p style={{
                     fontFamily: 'var(--font-mono)',
@@ -247,8 +247,8 @@ export default function HomePage({ onTabChange }) {
 
             {/* Footer */}
             <div className="mt-12 mb-8 text-center">
-                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)' }}>
-                    alignd<span style={{ color: 'var(--color-bronze)', fontSize: '18px' }}>.</span>
+                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)', display: 'inline-flex', alignItems: 'baseline', gap: '2px' }}>
+                    alignd<span style={{ display: 'inline-block', width: '4px', height: '4px', backgroundColor: 'var(--color-bronze)', marginBottom: '1px' }} />
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     alignd — ai safety companion

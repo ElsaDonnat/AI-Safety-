@@ -30,8 +30,8 @@ export default function OnboardingOverlay({ step, dispatch }) {
         return (
             <div className="onboarding-overlay animate-fade-in">
                 <div className="onboarding-card">
-                    <h1 className="mt-2 mb-1" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '36px', letterSpacing: '-0.04em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', transformOrigin: 'bottom' }}>
-                        alignd<span style={{ color: 'var(--color-bronze)', fontSize: '42px' }}>.</span>
+                    <h1 className="mt-2 mb-1" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '36px', letterSpacing: '-0.04em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', transformOrigin: 'bottom', display: 'inline-flex', alignItems: 'baseline', gap: '3px' }}>
+                        alignd<span style={{ display: 'inline-block', width: '8px', height: '8px', backgroundColor: 'var(--color-bronze)', marginBottom: '3px' }} />
                     </h1>
                     <p className="text-xs uppercase tracking-widest mb-6" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>
                         your ai safety companion

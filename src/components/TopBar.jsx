@@ -107,8 +107,8 @@ export default function TopBar() {
             <header className="topbar">
                 <div className="topbar-inner">
                     {/* Logo — left */}
-                    <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)' }}>
-                        alignd<span style={{ color: 'var(--color-bronze)', fontSize: '24px', lineHeight: 0 }}>.</span>
+                    <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
+                        alignd<span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-bronze)', flexShrink: 0, marginBottom: '2px' }} />
                     </h1>
 
                     {/* Spacer — center */}
