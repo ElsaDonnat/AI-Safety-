@@ -31,7 +31,7 @@ const QUESTION_TYPES = ['what', 'why', 'how'];
 export default function LessonFlow({ lesson, onComplete }) {
     const { state, dispatch } = useApp();
     const recapPerCard = state.recapPerCard ?? 1;
-    const concepts = useMemo(() => getConceptsByIds(lesson.cardIds || []).slice(0, 3), [lesson]);
+    const concepts = useMemo(() => getConceptsByIds(lesson.cardIds || []), [lesson]);
     const topic = useMemo(() => TOPICS.find(t => t.id === lesson.topic), [lesson]);
 
     const [phase, setPhase] = useState(PHASE.INTRO);

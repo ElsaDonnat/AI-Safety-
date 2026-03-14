@@ -1,184 +1,178 @@
-// ─── AI Safety Topics & Lessons ─────────────────────────────
-// Topics and lessons for AI Safety learning app.
+// ─── AI Safety Domains, Topics, Chapters & Lessons ─────────
+// 4-level hierarchy: Domain → Topic → Chapter → Lesson
 
-export const TOPICS = [
+// ─── Domains (top-level tabs) ───────────────────────────────
+export const DOMAINS = [
     {
-        id: 'alignment',
-        title: 'Value Alignment',
-        description: 'How to ensure AI systems pursue human-compatible goals',
-        icon: '\uD83C\uDFAF',
-        color: '#7C3AED',
-    },
-    {
-        id: 'interpretability',
-        title: 'Interpretability',
-        description: 'Understanding what happens inside AI models',
-        icon: '\uD83D\uDD0D',
-        color: '#0D9488',
+        id: 'foundations',
+        title: 'Foundations of AI',
+        description: 'Core concepts behind modern AI systems',
+        icon: '\uD83E\uDDE0',
+        color: '#1E3A5F',
+        order: 0,
     },
     {
         id: 'governance',
-        title: 'AI Governance',
-        description: 'Policy frameworks for safe AI development',
+        title: 'Governance',
+        description: 'Policy, regulation, and international coordination',
         icon: '\u2696\uFE0F',
         color: '#2563EB',
+        order: 1,
+        comingSoon: true,
     },
     {
-        id: 'risks',
-        title: 'AI Risks',
-        description: 'Understanding and mitigating potential harms from AI',
-        icon: '\u26A0\uFE0F',
-        color: '#DC2626',
+        id: 'ai-safety',
+        title: 'AI Safety',
+        description: 'Alignment, interpretability, and risk mitigation',
+        icon: '\uD83D\uDEE1\uFE0F',
+        color: '#7C3AED',
+        order: 2,
+        comingSoon: true,
     },
+];
+
+// ─── Topics (within domains) ────────────────────────────────
+export const TOPICS = [
     {
-        id: 'ethics',
-        title: 'AI Ethics',
-        description: 'Fairness, accountability, and societal impact of AI',
-        icon: '\uD83D\uDCA1',
-        color: '#059669',
+        id: 'ai-basics',
+        domain: 'foundations',
+        title: 'AI Basics',
+        description: 'What AI is and how it works at a high level',
+        icon: '\uD83E\uDD16',
+        color: '#0D9488',
+        order: 0,
     },
     {
         id: 'ai-progress',
+        domain: 'foundations',
         title: 'AI Progress',
-        description: 'How AI systems are advancing and why the pace matters for safety',
+        description: 'How AI capabilities are advancing and accelerating',
         icon: '\uD83D\uDE80',
         color: '#2563EB',
+        order: 1,
+    },
+    {
+        id: 'ai-concepts',
+        domain: 'foundations',
+        title: 'AI Concepts',
+        description: 'Key technical ideas behind modern AI systems',
+        icon: '\u2699\uFE0F',
+        color: '#DC2626',
+        order: 2,
     },
 ];
 
+// ─── Chapters (difficulty tiers within topics) ──────────────
+export const CHAPTERS = [
+    // AI Basics
+    { id: 'ai-basics-beginner', topic: 'ai-basics', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'ai-basics-amateur', topic: 'ai-basics', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'ai-basics-advanced', topic: 'ai-basics', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // AI Progress
+    { id: 'ai-progress-beginner', topic: 'ai-progress', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'ai-progress-amateur', topic: 'ai-progress', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'ai-progress-advanced', topic: 'ai-progress', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // AI Concepts
+    { id: 'ai-concepts-beginner', topic: 'ai-concepts', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'ai-concepts-amateur', topic: 'ai-concepts', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'ai-concepts-advanced', topic: 'ai-concepts', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+];
+
+// Difficulty badge colors
+export const DIFFICULTY_COLORS = {
+    beginner: '#22C55E',
+    amateur: '#F59E0B',
+    advanced: '#EF4444',
+};
+
+// ─── Lessons ────────────────────────────────────────────────
 export const LESSONS = [
-    // ─── Alignment (3 lessons) ──────────────────────────────
+    // ─── AI Basics / Beginner ───────────────────────────────
     {
-        id: 'lesson-alignment-0',
+        id: 'lesson-ai-basics-b-0',
         number: 0,
-        title: 'Introduction to Value Alignment',
-        subtitle: 'The core challenge and how we tackle it',
-        mood: 'Before we dive in, let\u2019s understand why alignment matters\u2026',
-        topic: 'alignment',
+        title: 'What is AI?',
+        subtitle: 'The core hierarchy: AI, ML, and deep learning',
+        mood: 'Let\u2019s start at the very beginning\u2026',
+        chapter: 'ai-basics-beginner',
+        topic: 'ai-basics',
         isFoundational: true,
-        cardIds: ['c1', 'c2'],
+        cardIds: ['c101', 'c102', 'c103'],
     },
     {
-        id: 'lesson-alignment-1',
+        id: 'lesson-ai-basics-b-1',
         number: 1,
-        title: 'Reward Hacking & Specification',
-        subtitle: 'Getting what you asked for, not what you wanted',
-        mood: 'AI is very good at finding loopholes\u2026',
-        topic: 'alignment',
+        title: 'How AI Sees & Speaks',
+        subtitle: 'Neural networks and their applications',
+        mood: 'Now let\u2019s see what AI can actually do\u2026',
+        chapter: 'ai-basics-beginner',
+        topic: 'ai-basics',
         isFoundational: false,
-        cardIds: ['c6', 'c7'],
-    },
-    {
-        id: 'lesson-alignment-2',
-        number: 2,
-        title: 'Constitutional AI & Oversight',
-        subtitle: 'Scaling alignment beyond human review',
-        mood: 'Can AI help align itself?',
-        topic: 'alignment',
-        isFoundational: false,
-        cardIds: ['c8', 'c14'],
+        cardIds: ['c105', 'c104', 'c106'],
     },
 
-    // ─── Interpretability (2 lessons) ───────────────────────
+    // ─── AI Progress / Beginner ─────────────────────────────
     {
-        id: 'lesson-interp-0',
+        id: 'lesson-ai-progress-b-0',
         number: 0,
-        title: 'What is Interpretability?',
-        subtitle: 'Opening the black box',
-        mood: 'Can we understand what AI models are actually thinking?',
-        topic: 'interpretability',
-        isFoundational: true,
-        cardIds: ['c3', 'c4'],
-    },
-    {
-        id: 'lesson-interp-1',
-        number: 1,
-        title: 'Visualization & Robustness',
-        subtitle: 'Seeing what models see',
-        mood: 'What do neurons actually respond to?',
-        topic: 'interpretability',
-        isFoundational: false,
-        cardIds: ['c9', 'c15'],
-    },
-
-    // ─── Governance (1 lesson) ──────────────────────────────
-    {
-        id: 'lesson-gov-0',
-        number: 0,
-        title: 'AI Governance Basics',
-        subtitle: 'Rules for the AI age',
-        mood: 'Who decides how AI should be built and used?',
-        topic: 'governance',
-        isFoundational: true,
-        cardIds: ['c5', 'c13'],
-    },
-
-    // ─── Risks (1 lesson, single card) ──────────────────────
-    {
-        id: 'lesson-risks-0',
-        number: 0,
-        title: 'Understanding AI Risks',
-        subtitle: 'Why safety matters now',
-        mood: 'The stakes are higher than you might think\u2026',
-        topic: 'risks',
-        isFoundational: true,
-        cardIds: ['c10'],
-    },
-
-    // ─── Ethics (1 lesson) ──────────────────────────────────
-    {
-        id: 'lesson-ethics-0',
-        number: 0,
-        title: 'AI Ethics Foundations',
-        subtitle: 'Fairness, accountability, and transparency',
-        mood: 'Who is affected when AI gets it wrong?',
-        topic: 'ethics',
-        isFoundational: true,
-        cardIds: ['c11', 'c12'],
-    },
-
-    // ─── AI Progress (4 lessons) ────────────────────────────
-    {
-        id: 'lesson-ai-progress-0',
-        number: 0,
-        title: 'The Pace of Progress',
-        subtitle: 'Why understanding AI trajectories matters',
-        mood: 'AI is advancing faster than ever. Understanding the trajectory is the first step to shaping it.',
+        title: 'The AI Landscape',
+        subtitle: 'LLMs, foundation models, and who builds them',
+        mood: 'AI is moving fast. Here\u2019s what\u2019s happening\u2026',
+        chapter: 'ai-progress-beginner',
         topic: 'ai-progress',
         isFoundational: true,
-        cardIds: ['c16', 'c17', 'c18'],
+        cardIds: ['c201', 'c202', 'c206'],
     },
     {
-        id: 'lesson-ai-progress-1',
+        id: 'lesson-ai-progress-b-1',
         number: 1,
-        title: 'What\'s Driving Progress',
-        subtitle: 'Compute, scale, and predictable improvement',
+        title: 'Why AI Keeps Getting Better',
+        subtitle: 'Scaling laws, benchmarks, and surprises',
         mood: 'What if getting smarter AI was as simple as making it bigger?',
+        chapter: 'ai-progress-beginner',
         topic: 'ai-progress',
         isFoundational: false,
-        cardIds: ['c19', 'c20'],
+        cardIds: ['c203', 'c204', 'c205'],
+    },
+
+    // ─── AI Concepts / Beginner ─────────────────────────────
+    {
+        id: 'lesson-ai-concepts-b-0',
+        number: 0,
+        title: 'How Machines Learn',
+        subtitle: 'Training, inference, and the three learning paradigms',
+        mood: 'There are different ways machines can learn\u2026',
+        chapter: 'ai-concepts-beginner',
+        topic: 'ai-concepts',
+        isFoundational: true,
+        cardIds: ['c301', 'c302', 'c303', 'c304'],
     },
     {
-        id: 'lesson-ai-progress-2',
-        number: 2,
-        title: 'Measuring and Surprises',
-        subtitle: 'How we track progress \u2014 and what catches us off guard',
-        mood: 'Some of AI\'s most important capabilities weren\'t predicted by their creators\u2026',
-        topic: 'ai-progress',
+        id: 'lesson-ai-concepts-b-1',
+        number: 1,
+        title: 'Modern AI Building Blocks',
+        subtitle: 'Transformers and fine-tuning',
+        mood: 'These two ideas power almost everything in modern AI\u2026',
+        chapter: 'ai-concepts-beginner',
+        topic: 'ai-concepts',
         isFoundational: false,
-        cardIds: ['c21', 'c22'],
-    },
-    {
-        id: 'lesson-ai-progress-3',
-        number: 3,
-        title: 'The Frontier and Beyond',
-        subtitle: 'Where AI is headed next',
-        mood: 'Where is all this heading \u2014 and what does it mean for safety?',
-        topic: 'ai-progress',
-        isFoundational: false,
-        cardIds: ['c23', 'c24', 'c25'],
+        cardIds: ['c305', 'c306'],
     },
 ];
+
+// ─── Helper Functions ───────────────────────────────────────
+
+export function getTopicsByDomain(domainId) {
+    return TOPICS.filter(t => t.domain === domainId).sort((a, b) => a.order - b.order);
+}
+
+export function getChaptersByTopic(topicId) {
+    return CHAPTERS.filter(ch => ch.topic === topicId).sort((a, b) => a.order - b.order);
+}
+
+export function getLessonsByChapter(chapterId) {
+    return LESSONS.filter(l => l.chapter === chapterId);
+}
 
 export function getLessonsByTopic(topicId) {
     return LESSONS.filter(l => l.topic === topicId);

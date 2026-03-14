@@ -217,13 +217,15 @@ function generateConceptRelationship() {
     if (withLinks.length === 0) return null;
 
     const concept = withLinks[Math.floor(Math.random() * withLinks.length)];
-    const linkedId = concept.linkedCards[Math.floor(Math.random() * concept.linkedCards.length)];
+    const linkedEntry = concept.linkedCards[Math.floor(Math.random() * concept.linkedCards.length)];
+    const linkedId = typeof linkedEntry === 'string' ? linkedEntry : linkedEntry.id;
     const linkedConcept = ALL_CONCEPTS.find(c => c.id === linkedId);
     if (!linkedConcept) return null;
 
     // Get distractors (not linked)
+    const linkedIds = concept.linkedCards.map(lc => typeof lc === 'string' ? lc : lc.id);
     const distractorPool = ALL_CONCEPTS.filter(
-        c => c.id !== concept.id && !concept.linkedCards.includes(c.id)
+        c => c.id !== concept.id && !linkedIds.includes(c.id)
     );
     const distractors = shuffle(distractorPool).slice(0, 3);
 

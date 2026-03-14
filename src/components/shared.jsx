@@ -390,18 +390,22 @@ export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
     const concept = allConcepts.find(c => c.id === cardId);
     if (!concept || !concept.linkedCards || concept.linkedCards.length === 0) return null;
 
-    const linkedConcepts = concept.linkedCards
-        .map(id => allConcepts.find(c => c.id === id))
-        .filter(Boolean);
+    // linkedCards can be string[] (legacy) or { id, relationship }[]
+    const linkedEntries = concept.linkedCards.map(entry => {
+        const id = typeof entry === 'string' ? entry : entry.id;
+        const relationship = typeof entry === 'string' ? null : entry.relationship;
+        const linked = allConcepts.find(c => c.id === id);
+        return linked ? { ...linked, relationship } : null;
+    }).filter(Boolean);
 
-    if (linkedConcepts.length === 0) return null;
+    if (linkedEntries.length === 0) return null;
 
     return (
         <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
             <p className="text-[11px] uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
                 Related Concepts
             </p>
-            {linkedConcepts.map(conn => (
+            {linkedEntries.map(conn => (
                 <div
                     key={conn.id}
                     className={`flex items-start gap-2 text-xs py-1.5 ${onCardClick ? 'cursor-pointer active:opacity-70' : ''}`}
@@ -417,6 +421,11 @@ export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
                         <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
                             {conn.title}
                         </span>
+                        {conn.relationship && (
+                            <span style={{ color: 'var(--color-ink-faint)' }}>
+                                {' \u2014 '}{conn.relationship}
+                            </span>
+                        )}
                     </div>
                 </div>
             ))}

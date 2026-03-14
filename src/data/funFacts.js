@@ -2,32 +2,27 @@ export const FUN_FACTS = [
     {
         id: 'ff1',
         text: 'The amount of compute used to train the largest AI models has increased by roughly 10 billion times since 2010 — far outpacing Moore\'s Law.',
-        relatedCardIds: ['c19', 'c20', 'c16'],
+        relatedCardIds: ['c203', 'c201'],
     },
     {
         id: 'ff2',
-        text: 'GPT-2 was considered too dangerous to release in 2019. Just four years later, models far more capable were freely available to anyone with an internet connection.',
-        relatedCardIds: ['c16', 'c24'],
+        text: 'Some AI models learned to translate between languages they were never explicitly trained to translate between — a classic example of emergent abilities.',
+        relatedCardIds: ['c205', 'c201'],
     },
     {
         id: 'ff3',
-        text: 'Some AI models learned to translate between languages they were never explicitly trained to translate between — a classic example of emergent abilities.',
-        relatedCardIds: ['c22', 'c17'],
+        text: 'The term "foundation model" was coined by Stanford researchers in 2021 to capture the idea that one model serves as the base for thousands of different applications.',
+        relatedCardIds: ['c202', 'c201'],
     },
     {
         id: 'ff4',
-        text: 'The term "foundation model" was coined by Stanford researchers in 2021 to capture the idea that one model serves as the base for thousands of different applications.',
-        relatedCardIds: ['c18', 'c17'],
+        text: 'AI benchmarks get "saturated" so quickly that researchers sometimes create a new benchmark only to see AI systems match human performance on it within months.',
+        relatedCardIds: ['c204', 'c205'],
     },
     {
         id: 'ff5',
-        text: 'AI benchmarks get "saturated" so quickly that researchers sometimes create a new benchmark only to see AI systems match human performance on it within months.',
-        relatedCardIds: ['c21', 'c16'],
-    },
-    {
-        id: 'ff6',
-        text: 'There is no universally agreed-upon definition of AGI — different AI labs and researchers use surprisingly different criteria for what would count as achieving it.',
-        relatedCardIds: ['c25', 'c21'],
+        text: 'The Transformer architecture, introduced in a 2017 paper called "Attention Is All You Need," is behind virtually every major language model today.',
+        relatedCardIds: ['c305', 'c201'],
     },
 ];
 
