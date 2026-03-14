@@ -93,7 +93,7 @@ export default function MatrixRain() {
 
         function draw() {
             ctx.clearRect(0, 0, width, height);
-            ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
+            ctx.font = `${FONT_SIZE}px 'Space Mono', monospace`;
 
             const elapsed = Date.now() - startTime;
 
