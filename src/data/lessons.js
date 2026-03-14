@@ -7,16 +7,16 @@ export const DOMAINS = [
         id: 'foundations',
         title: 'Foundations of AI',
         description: 'Core concepts behind modern AI systems',
-        icon: '\uD83E\uDDE0',
-        color: '#1E3A5F',
+        icon: 'foundations',
+        color: '#D4726A',
         order: 0,
     },
     {
         id: 'governance',
         title: 'Governance',
         description: 'Policy, regulation, and international coordination',
-        icon: '\u2696\uFE0F',
-        color: '#2563EB',
+        icon: 'governance',
+        color: '#A8C8D8',
         order: 1,
         comingSoon: true,
     },
@@ -24,8 +24,8 @@ export const DOMAINS = [
         id: 'ai-safety',
         title: 'AI Safety',
         description: 'Alignment, interpretability, and risk mitigation',
-        icon: '\uD83D\uDEE1\uFE0F',
-        color: '#7C3AED',
+        icon: 'ai-safety',
+        color: '#9B7EC8',
         order: 2,
         comingSoon: true,
     },
@@ -38,8 +38,8 @@ export const TOPICS = [
         domain: 'foundations',
         title: 'AI Basics',
         description: 'What AI is and how it works at a high level',
-        icon: '\uD83E\uDD16',
-        color: '#0D9488',
+        icon: 'ai-basics',
+        color: '#A8C8D8',
         order: 0,
     },
     {
@@ -47,8 +47,8 @@ export const TOPICS = [
         domain: 'foundations',
         title: 'AI Progress',
         description: 'How AI capabilities are advancing and accelerating',
-        icon: '\uD83D\uDE80',
-        color: '#2563EB',
+        icon: 'ai-progress',
+        color: '#D4726A',
         order: 1,
     },
     {
@@ -56,8 +56,8 @@ export const TOPICS = [
         domain: 'foundations',
         title: 'AI Concepts',
         description: 'Key technical ideas behind modern AI systems',
-        icon: '\u2699\uFE0F',
-        color: '#DC2626',
+        icon: 'ai-concepts',
+        color: '#9B7EC8',
         order: 2,
     },
 ];
@@ -80,9 +80,9 @@ export const CHAPTERS = [
 
 // Difficulty badge colors
 export const DIFFICULTY_COLORS = {
-    beginner: '#22C55E',
-    amateur: '#F59E0B',
-    advanced: '#EF4444',
+    beginner: '#A8C8D8',
+    amateur: '#D4A04A',
+    advanced: '#D4726A',
 };
 
 // ─── Lessons ────────────────────────────────────────────────

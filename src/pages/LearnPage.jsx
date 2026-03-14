@@ -9,6 +9,46 @@ import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
+
+// Simple monoline SVG icons for domains and topics
+const ICON_SVG = {
+    foundations: (color) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="3" /><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+        </svg>
+    ),
+    governance: (color) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="3" x2="12" y2="21" /><polyline points="5 8 12 3 19 8" /><path d="M5 8v4c0 2 3 4 7 4s7-2 7-4V8" />
+        </svg>
+    ),
+    'ai-safety': (color) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+    ),
+    'ai-basics': (color) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2" /><line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="2.5" /><line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="2.5" /><path d="M9 15h6" />
+        </svg>
+    ),
+    'ai-progress': (color) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
+        </svg>
+    ),
+    'ai-concepts': (color) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+        </svg>
+    ),
+};
+
+function TopicIcon({ iconId, color }) {
+    const render = ICON_SVG[iconId];
+    return render ? render(color || 'currentColor') : null;
+}
+
 // ─── "This Week" card session tracking ───
 let _thisWeekShown = false;
 let _thisWeekDismissed = false;
@@ -159,9 +199,11 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             {showDailyQuizCard && (
                 <Card className="mb-4" onClick={() => setActiveDailyQuiz(true)}>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-[3px] flex items-center justify-center text-lg"
-                            style={{ backgroundColor: 'rgba(230, 168, 23, 0.12)' }}>
-                            📅
+                        <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
+                            style={{ backgroundColor: 'rgba(212, 160, 74, 0.12)' }}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-warning)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+                            </svg>
                         </div>
                         <div className="flex-1">
                             <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
@@ -197,7 +239,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                 border: isActive ? '1px solid var(--color-burgundy)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
                             }}
                         >
-                            <span>{domain.icon}</span>
+                            <TopicIcon iconId={domain.icon} color={isActive ? '#fff' : domain.color} />
                             <span>{domain.title}</span>
                             {domain.comingSoon && (
                                 <span className="ml-0.5" style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', opacity: 0.7 }}>Soon</span>
@@ -210,7 +252,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             {/* Coming Soon state for locked domains */}
             {currentDomain?.comingSoon && (
                 <div className="text-center py-16">
-                    <div className="text-4xl mb-3">{currentDomain.icon}</div>
+                    <div className="mb-3"><TopicIcon iconId={currentDomain.icon} color={currentDomain.color} /></div>
                     <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                         {currentDomain.title}
                     </h3>
@@ -242,9 +284,9 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                     className="flex items-center gap-3 cursor-pointer"
                                     onClick={() => setExpandedTopic(isExpanded ? null : topic.id)}
                                 >
-                                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center text-lg flex-shrink-0"
+                                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                                         style={{ backgroundColor: `${topic.color}15` }}>
-                                        {topic.icon}
+                                        <TopicIcon iconId={topic.icon} color={topic.color} />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>

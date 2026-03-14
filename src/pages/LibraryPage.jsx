@@ -46,7 +46,7 @@ export default function LibraryPage() {
         return (
             <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
                 <div className="text-4xl mb-4">📚</div>
-                <h2 className="text-lg font-bold mb-2" style={{ color: 'var(--color-ink)', fontFamily: 'var(--font-serif)' }}>
+                <h2 className="text-lg font-bold mb-2" style={{ color: 'var(--color-ink)', fontFamily: 'var(--font-display)' }}>
                     No cards discovered yet
                 </h2>
                 <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
@@ -58,7 +58,7 @@ export default function LibraryPage() {
 
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto">
-            <h2 className="text-xl font-bold mb-4" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+            <h2 className="text-xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                 Library
             </h2>
 
@@ -66,7 +66,7 @@ export default function LibraryPage() {
             <div className="flex gap-2 mb-4">
                 <button
                     onClick={() => setShowStarredOnly(s => !s)}
-                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex-shrink-0"
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-[3px] text-sm font-semibold transition-all flex-shrink-0"
                     style={{
                         backgroundColor: showStarredOnly ? 'rgba(230, 168, 23, 0.12)' : 'var(--color-card)',
                         border: showStarredOnly ? '1px solid rgba(230, 168, 23, 0.3)' : '1px solid rgba(var(--color-ink-rgb), 0.1)',
@@ -83,7 +83,7 @@ export default function LibraryPage() {
                 placeholder="Search cards..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl text-sm mb-4"
+                className="w-full px-4 py-2.5 rounded-[3px] text-sm mb-4"
                 style={{
                     backgroundColor: 'var(--color-card)',
                     border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
@@ -170,7 +170,7 @@ export default function LibraryPage() {
                             {isExpanded && (
                                 <div className="mt-3 pt-3 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                     {concept.image && (
-                                        <div className="rounded-lg overflow-hidden mb-3 flex items-center justify-center"
+                                        <div className="rounded-[3px] overflow-hidden mb-3 flex items-center justify-center"
                                             style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)' }}>
                                             <img
                                                 src={cardImage(concept.image)}

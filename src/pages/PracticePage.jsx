@@ -258,7 +258,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
         return (
             <div className="py-12 text-center animate-fade-in">
                 <Mascot mood="happy" size={70} />
-                <h2 className="text-xl font-bold mt-4" style={{ fontFamily: 'var(--font-serif)' }}>
+                <h2 className="text-xl font-bold mt-4" style={{ fontFamily: 'var(--font-display)' }}>
                     Practice awaits
                 </h2>
                 <p className="text-sm mt-2 mx-4" style={{ color: 'var(--color-ink-muted)' }}>
@@ -408,7 +408,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     <div className="py-4">
                         <div className="text-center">
                             <Mascot mood={perfectSession ? 'celebrating' : redCount === 0 ? 'happy' : greenCount > redCount ? 'happy' : 'thinking'} size={70} />
-                            <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-serif)' }}>
+                            <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-display)' }}>
                                 {perfectSession ? 'Perfect Session!' : 'Practice Complete'}
                             </h2>
                             <p className="text-sm mb-1" style={{ color: 'var(--color-ink-muted)' }}>
@@ -456,7 +456,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                                     <Card key={concept.id} className="p-3" style={{ borderLeft: `3px solid ${borderColor}` }}>
                                         <div className="flex items-center justify-between">
                                             <div className="flex-1 min-w-0">
-                                                <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
+                                                <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-display)' }}>
                                                     {concept.title}
                                                 </h4>
                                                 <div className="flex items-center gap-2 mt-1">
@@ -504,8 +504,8 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             const result = await shareText({ title: 'AI Safety', text });
                             if (result === 'copied') setShareToast(true);
                         }}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-primary)', backgroundColor: 'rgba(30, 58, 95, 0.08)' }}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
+                        style={{ color: 'var(--color-primary)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }}
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
@@ -562,7 +562,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                         </span>
                     </div>
 
-                    <h2 className="text-lg font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>Choose Lessons</h2>
+                    <h2 className="text-lg font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>Choose Lessons</h2>
                     <p className="text-xs mb-4" style={{ color: 'var(--color-ink-muted)' }}>
                         Select which lessons to practice. Cards from all selected lessons will be combined.
                     </p>
@@ -599,7 +599,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                                                 className="p-3"
                                                 style={{
                                                     borderLeft: isSelected ? `3px solid ${topic.color}` : '3px solid transparent',
-                                                    backgroundColor: isSelected ? 'rgba(30, 58, 95, 0.04)' : 'var(--color-card)',
+                                                    backgroundColor: isSelected ? 'rgba(var(--color-ink-rgb), 0.04)' : 'var(--color-card)',
                                                 }}
                                             >
                                                 <div className="flex items-center gap-3">
@@ -611,7 +611,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                                                         {isSelected ? '\u2713' : lesson.number}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
+                                                        <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-display)' }}>
                                                             {lesson.title}
                                                         </h4>
                                                         <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
@@ -651,7 +651,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     return (
         <div className="py-6 animate-fade-in">
             <div className="text-center mb-6">
-                <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Practice</h1>
+                <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>Practice</h1>
                 <p className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>
                     {learnedConcepts.length} concepts learned · {starredConcepts.length} starred
                 </p>
@@ -710,12 +710,12 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
             {/* Spaced Review */}
             <Card onClick={onStartSpacedReview} className="lesson-card-row p-4">
                 <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: 'rgba(30, 58, 95, 0.1)' }}>
+                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.1)' }}>
                         <span className="text-lg">&#x1F9E0;</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Spaced Review</h3>
+                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Spaced Review</h3>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
                             Reviews cards at optimal intervals
                         </p>
@@ -748,12 +748,12 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                 style={{ opacity: starredConcepts.length > 0 ? 1 : 0.5 }}
             >
                 <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(230, 168, 23, 0.1)' }}>
                         <span className="text-lg">{'\u2B50'}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>Favorites</h3>
+                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Favorites</h3>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
                             {starredConcepts.length > 0
                                 ? `${starredConcepts.length} starred card${starredConcepts.length !== 1 ? 's' : ''} · shuffled`
@@ -765,7 +765,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                         {starredConcepts.length > 0 && (
                             <button
                                 onClick={(e) => { e.stopPropagation(); setShowClearStarsConfirm(true); }}
-                                className="text-[10px] font-semibold px-2 py-1 rounded-lg transition-all active:scale-95"
+                                className="text-[10px] font-semibold px-2 py-1 rounded-[3px] transition-all active:scale-95"
                                 style={{ backgroundColor: 'rgba(166, 61, 61, 0.08)', color: 'var(--color-error)' }}
                             >
                                 Clear all
@@ -794,12 +794,12 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
             {/* By Lesson */}
             <Card onClick={onOpenLessonPicker} className="lesson-card-row p-4">
                 <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(101, 119, 74, 0.1)' }}>
                         <span className="text-lg">{'\uD83D\uDCDA'}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>By Lesson</h3>
+                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>By Lesson</h3>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
                             Pick lessons to combine into a custom session
                         </p>
@@ -813,12 +813,12 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
             {/* By Difficulty */}
             <Card className="p-4">
                 <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(185, 28, 28, 0.08)' }}>
                         <span className="text-lg">&#x1F4CA;</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)' }}>By Difficulty</h3>
+                        <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>By Difficulty</h3>
                         <p className="text-xs mt-0.5 mb-2.5" style={{ color: 'var(--color-ink-muted)' }}>
                             Practice concepts filtered by difficulty level
                         </p>
@@ -834,7 +834,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                                     <button
                                         key={level}
                                         onClick={enabled ? () => onStartByDifficulty(level) : undefined}
-                                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold transition-all duration-150"
+                                        className="flex items-center gap-1 px-2 py-1 rounded-[3px] text-[10px] font-semibold transition-all duration-150"
                                         style={{
                                             backgroundColor: enabled ? bg : 'rgba(var(--color-ink-rgb), 0.04)',
                                             color: enabled ? color : 'var(--color-ink-faint)',
@@ -859,19 +859,19 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                     Card Status
                 </h3>
                 <div className="grid grid-cols-4 gap-2">
-                    <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)' }}>
+                    <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)' }}>
                         <div className="text-lg font-bold" style={{ color: 'var(--color-ink-muted)' }}>{statusTiers.new.length}</div>
                         <div className="text-[9px] font-semibold" style={{ color: 'var(--color-ink-muted)' }}>New</div>
                     </div>
-                    <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(166, 61, 61, 0.06)' }}>
+                    <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(166, 61, 61, 0.06)' }}>
                         <div className="text-lg font-bold" style={{ color: 'var(--color-error)' }}>{statusTiers.learning.length}</div>
                         <div className="text-[9px] font-semibold" style={{ color: 'var(--color-error)' }}>Learning</div>
                     </div>
-                    <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(198, 134, 42, 0.06)' }}>
+                    <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(198, 134, 42, 0.06)' }}>
                         <div className="text-lg font-bold" style={{ color: 'var(--color-warning)' }}>{statusTiers.known.length}</div>
                         <div className="text-[9px] font-semibold" style={{ color: 'var(--color-warning)' }}>Known</div>
                     </div>
-                    <div className="text-center p-2.5 rounded-xl" style={{ backgroundColor: 'rgba(5, 150, 105, 0.06)' }}>
+                    <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.06)' }}>
                         <div className="text-lg font-bold" style={{ color: 'var(--color-success)' }}>{statusTiers.fully_assimilated.length}</div>
                         <div className="text-[9px] font-semibold" style={{ color: 'var(--color-success)' }}>Mastered</div>
                     </div>
@@ -889,7 +889,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                             <Card key={concept.id} className="p-3">
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1 min-w-0">
-                                        <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
+                                        <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-display)' }}>
                                             {concept.title}
                                         </h4>
                                         <div className="flex items-center gap-3 mt-1">
@@ -975,7 +975,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                         {tier.items.length > 0 && tier.practiceLabel && (
                             <button
                                 onClick={() => onStartSession(tier.items.map(i => i.concept))}
-                                className="ml-auto text-[10px] font-semibold px-2 py-1 rounded-lg transition-all"
+                                className="ml-auto text-[10px] font-semibold px-2 py-1 rounded-[3px] transition-all"
                                 style={{ backgroundColor: tier.bg, color: tier.color }}
                             >
                                 {tier.practiceLabel} {'\u2192'}
@@ -984,7 +984,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                     </div>
 
                     {tier.items.length === 0 ? (
-                        <div className="text-center py-4 rounded-xl" style={{ backgroundColor: tier.bg }}>
+                        <div className="text-center py-4 rounded-[3px]" style={{ backgroundColor: tier.bg }}>
                             <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
                                 {tier.key === 'new' ? 'All cards have been reviewed' :
                                     tier.key === 'learning' ? 'No cards still learning — great work!' :
@@ -1010,7 +1010,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                     >
                                         <div className="flex items-center gap-3">
                                             <div className="flex-1 min-w-0">
-                                                <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-serif)' }}>
+                                                <h4 className="text-sm font-semibold truncate" style={{ fontFamily: 'var(--font-display)' }}>
                                                     {concept.title}
                                                 </h4>
                                                 <div className="flex items-center gap-3 mt-1">
@@ -1172,7 +1172,7 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                                 bg = isCorrect ? 'rgba(5, 150, 105, 0.1)' : 'rgba(166, 61, 61, 0.1)';
                                 border = isCorrect ? 'var(--color-success)' : 'var(--color-error)';
                             } else if (isActive) {
-                                bg = 'rgba(30, 58, 95, 0.08)';
+                                bg = 'rgba(var(--color-ink-rgb), 0.08)';
                                 border = 'var(--color-primary)';
                                 borderStyle = 'dashed';
                             } else if (isPaired && color) {
@@ -1181,10 +1181,10 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                             }
                             return (
                                 <button key={n.id} onClick={() => handleNameClick(n.id)} disabled={matchChecked}
-                                    className="rounded-lg transition-all flex items-center justify-center"
+                                    className="rounded-[3px] transition-all flex items-center justify-center"
                                     style={{
                                         padding: '10px 6px', minHeight: '44px',
-                                        fontSize: '0.7rem', fontWeight: 600, fontFamily: 'var(--font-serif)',
+                                        fontSize: '0.7rem', fontWeight: 600, fontFamily: 'var(--font-display)',
                                         textAlign: 'center', backgroundColor: bg,
                                         border: `2px ${borderStyle} ${border}`,
                                         color: 'var(--color-ink)', cursor: matchChecked ? 'default' : 'pointer',
@@ -1211,12 +1211,12 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
                                 bg = `${color}18`;
                                 border = color;
                             } else if (matchSelected && !isPaired) {
-                                border = 'rgba(30, 58, 95, 0.3)';
+                                border = 'rgba(var(--color-ink-rgb), 0.3)';
                                 borderStyle = 'dashed';
                             }
                             return (
                                 <button key={d.id} onClick={() => handleDescClick(d.id)} disabled={matchChecked}
-                                    className="rounded-lg transition-all flex items-center justify-center"
+                                    className="rounded-[3px] transition-all flex items-center justify-center"
                                     style={{
                                         padding: '10px 6px', minHeight: '44px',
                                         fontSize: '0.65rem', fontWeight: 500,
@@ -1353,7 +1353,7 @@ function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAn
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>{promptLabel}</p>
-                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{concept.title}</h3>
+                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h3>
                     <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>{concept.summary}</p>
                     <div className="mcq-options">
                         {descriptionOptions.map((opt, i) => {

@@ -79,7 +79,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             {dailyData.dateLabel}
                         </div>
 
-                        <h2 className="text-2xl font-bold mt-3 mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                        <h2 className="text-2xl font-bold mt-3 mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                             Daily AI Safety Quiz
                         </h2>
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
@@ -193,7 +193,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             <p className="text-sm mt-2 font-medium" style={{ color: 'var(--color-ink-muted)' }}>
                                 Which concept matches this description?
                             </p>
-                            <p className="text-base mt-2 font-semibold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                            <p className="text-base mt-2 font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 {event.quizDescription || event.summary}
                             </p>
                         </div>
@@ -250,7 +250,7 @@ export default function DailyQuizFlow({ onComplete }) {
                         {/* Card reveal — the learning moment */}
                         {showCard && (
                             <Card className="mt-4 daily-quiz-card-reveal daily-quiz-learn-card">
-                                <h3 className="text-base font-bold mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                                <h3 className="text-base font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                     {event.title}
                                 </h3>
                                 <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
@@ -283,7 +283,7 @@ export default function DailyQuizFlow({ onComplete }) {
                     <div className="py-6 text-center">
                         <Mascot mood={correctCount === totalCards ? 'celebrating' : correctCount > 0 ? 'happy' : 'thinking'} size={70} />
 
-                        <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-serif)' }}>
+                        <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-display)' }}>
                             {correctCount === totalCards ? 'Perfect!' : correctCount > 0 ? 'Nice work!' : 'Better luck tomorrow!'}
                         </h2>
 
@@ -317,7 +317,7 @@ export default function DailyQuizFlow({ onComplete }) {
                                                 {results[i] === 'correct' ? '✓' : '✗'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>{event.title}</p>
+                                                <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)' }}>{event.title}</p>
                                                 <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
                                                     {event.summary}
                                                 </p>
@@ -349,7 +349,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             const result = await shareText({ title: 'AI Safety', text });
                             if (result === 'copied') setShareToast(true);
                         }}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
                         style={{ color: '#8B6914', backgroundColor: 'rgba(184, 134, 11, 0.1)' }}
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

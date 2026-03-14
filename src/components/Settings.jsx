@@ -3,7 +3,6 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS } from '../data/concepts';
 import { LESSONS } from '../data/lessons';
 import { Card, Button, Divider, ConfirmModal } from './shared';
-import Mascot from './Mascot';
 import StreakFlame from './StreakFlame';
 import {
     rescheduleNotifications,
@@ -118,15 +117,15 @@ export default function Settings() {
             <div className="fixed inset-0 z-[60] flex items-center justify-center" onClick={() => setShowPrivacy(false)}>
                 <div className="absolute inset-0" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} />
                 <div
-                    className="relative w-full max-w-lg rounded-2xl p-6 mx-4 animate-fade-in-up"
+                    className="relative w-full max-w-lg rounded-[4px] p-6 mx-4 animate-fade-in-up"
                     style={{ backgroundColor: 'var(--color-parchment)', maxHeight: '80vh', overflowY: 'auto', boxShadow: 'var(--shadow-elevated)' }}
                     onClick={e => e.stopPropagation()}
                 >
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                        <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                             Privacy Policy
                         </h2>
-                        <button onClick={() => setShowPrivacy(false)} className="p-1 rounded-lg" style={{ color: 'var(--color-ink-muted)' }}>
+                        <button onClick={() => setShowPrivacy(false)} className="p-1 rounded-[3px]" style={{ color: 'var(--color-ink-muted)' }}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
@@ -162,17 +161,17 @@ export default function Settings() {
         <div className="fixed inset-0 z-[60] flex items-center justify-center" onClick={() => dispatch({ type: 'TOGGLE_SETTINGS' })}>
             <div className="absolute inset-0" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} />
             <div
-                className="relative w-full max-w-lg rounded-2xl p-6 mx-4 animate-fade-in-up"
+                className="relative w-full max-w-lg rounded-[4px] p-6 mx-4 animate-fade-in-up"
                 style={{ backgroundColor: 'var(--color-parchment)', maxHeight: '80vh', overflowY: 'auto', boxShadow: 'var(--shadow-elevated)' }}
                 onClick={e => e.stopPropagation()}
             >
                 <div className="relative flex items-center justify-center mb-4">
-                    <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                    <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                         Your &nbsp;Progress
                     </h2>
                     <button
                         onClick={() => dispatch({ type: 'TOGGLE_SETTINGS' })}
-                        className="absolute right-0 p-1 rounded-lg"
+                        className="absolute right-0 p-1 rounded-[3px]"
                         style={{ color: 'var(--color-ink-muted)' }}
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -181,13 +180,10 @@ export default function Settings() {
                     </button>
                 </div>
 
-                <div className="flex justify-center mb-4">
-                    <Mascot mood="happy" size={64} />
-                </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{state.totalXP}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{state.totalXP}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Total XP</div>
                     </Card>
                     <Card className="text-center p-4">
@@ -200,16 +196,16 @@ export default function Settings() {
                                 yesterday.setDate(yesterday.getDate() - 1);
                                 return state.lastActiveDate === yesterday.toISOString().split('T')[0] ? 'at-risk' : 'inactive';
                             })()} size={22} />
-                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{state.currentStreak}</div>
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{state.currentStreak}</div>
                         </div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Day Streak</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{learnedCount}/{totalConcepts}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{learnedCount}/{totalConcepts}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Cards Learned</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{completedLessons}/{LESSONS.length}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{completedLessons}/{LESSONS.length}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Lessons Complete</div>
                     </Card>
                 </div>
@@ -277,7 +273,7 @@ export default function Settings() {
                                             <button
                                                 key={value}
                                                 onClick={() => dispatch({ type: 'SET_RECAP_PER_CARD', value })}
-                                                className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                                                className="flex-1 py-2.5 rounded-[3px] text-sm font-semibold transition-colors"
                                                 style={{
                                                     backgroundColor: isActive ? 'var(--color-burgundy)' : 'var(--color-card)',
                                                     color: isActive ? 'white' : 'var(--color-ink-secondary)',
@@ -325,13 +321,13 @@ export default function Settings() {
                                     type: state.notificationsEnabled ? 'DISABLE_NOTIFICATIONS' : 'ENABLE_NOTIFICATIONS',
                                 });
                             }}
-                            className="relative w-11 h-6 rounded-full transition-colors"
+                            className="relative w-11 h-6 rounded-[3px] transition-colors"
                             style={{
                                 backgroundColor: state.notificationsEnabled ? 'var(--color-burgundy)' : 'rgba(var(--color-ink-rgb), 0.15)',
                             }}
                         >
                             <span
-                                className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform"
+                                className="absolute top-0.5 left-0.5 w-5 h-5 rounded-[2px] bg-white transition-transform"
                                 style={{
                                     transform: state.notificationsEnabled ? 'translateX(20px)' : 'translateX(0)',
                                     boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
@@ -349,7 +345,7 @@ export default function Settings() {
                                     type="time"
                                     value={state.dailyReminderTime}
                                     onChange={e => dispatch({ type: 'SET_DAILY_REMINDER_TIME', value: e.target.value })}
-                                    className="rounded-lg px-2 py-1 text-xs"
+                                    className="rounded-[3px] px-2 py-1 text-xs"
                                     style={{
                                         backgroundColor: 'var(--color-parchment)',
                                         color: 'var(--color-ink)',
@@ -366,13 +362,13 @@ export default function Settings() {
                                     role="switch"
                                     aria-checked={state.streakRemindersEnabled}
                                     onClick={() => { feedback.toggleClick(); dispatch({ type: 'SET_STREAK_REMINDERS', value: !state.streakRemindersEnabled }); }}
-                                    className="relative w-9 h-5 rounded-full transition-colors"
+                                    className="relative w-9 h-5 rounded-[3px] transition-colors"
                                     style={{
                                         backgroundColor: state.streakRemindersEnabled ? '#D4C5B0' : 'rgba(var(--color-ink-rgb), 0.12)',
                                     }}
                                 >
                                     <span
-                                        className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform"
+                                        className="absolute top-0.5 left-0.5 w-4 h-4 rounded-[2px] bg-white transition-transform"
                                         style={{
                                             transform: state.streakRemindersEnabled ? 'translateX(16px)' : 'translateX(0)',
                                             boxShadow: '0 1px 2px rgba(0,0,0,0.18)',
@@ -393,7 +389,7 @@ export default function Settings() {
                             </svg>
                             <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Appearance</span>
                         </div>
-                        <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(var(--color-ink-rgb), 0.1)' }}>
+                        <div className="flex rounded-[3px] overflow-hidden" style={{ border: '1px solid rgba(var(--color-ink-rgb), 0.1)' }}>
                             {[
                                 { value: 'light', label: 'Light' },
                                 { value: 'dark', label: 'Dark' },
@@ -422,7 +418,7 @@ export default function Settings() {
                     <div>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                                <span style={{ fontSize: '16px' }}>{(state.soundVolume ?? 1) === 0 ? '🔇' : '🔊'}</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>
                                 <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Sound effects</span>
                             </div>
                             <span className="text-xs tabular-nums" style={{ color: 'var(--color-ink-muted)', minWidth: '2.5rem', textAlign: 'right' }}>
@@ -435,7 +431,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_SOUND_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, rgba(30, 58, 95, 0.45) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.12) ${(state.soundVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, rgba(168, 200, 216, 0.7) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.12) ${(state.soundVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -444,7 +440,7 @@ export default function Settings() {
                     <div className="pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                                <span style={{ fontSize: '16px' }}>{(state.musicVolume ?? 1) === 0 ? '🔇' : '🎵'}</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /></svg>
                                 <div>
                                     <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Ambient music</span>
                                     <div className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Ambient soundscape</div>
@@ -460,7 +456,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_MUSIC_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, rgba(30, 58, 95, 0.45) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.12) ${(state.musicVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, rgba(168, 200, 216, 0.7) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.12) ${(state.musicVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -468,7 +464,7 @@ export default function Settings() {
                     {/* Haptic feedback toggle */}
                     <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div className="flex items-center gap-2">
-                            <span style={{ fontSize: '16px' }}>&#x1F4F3;</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2" /><line x1="1" y1="8" x2="1" y2="16" /><line x1="23" y1="8" x2="23" y2="16" /></svg>
                             <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Haptic feedback</span>
                         </div>
                         <button
@@ -476,11 +472,11 @@ export default function Settings() {
                             role="switch"
                             aria-checked={state.hapticsEnabled}
                             onClick={() => { feedback.toggleClick(); dispatch({ type: 'TOGGLE_HAPTICS' }); }}
-                            className="relative w-11 h-6 rounded-full transition-colors"
+                            className="relative w-11 h-6 rounded-[3px] transition-colors"
                             style={{ backgroundColor: state.hapticsEnabled ? 'var(--color-burgundy)' : 'rgba(var(--color-ink-rgb), 0.15)' }}
                         >
                             <span
-                                className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform"
+                                className="absolute top-0.5 left-0.5 w-5 h-5 rounded-[2px] bg-white transition-transform"
                                 style={{ transform: state.hapticsEnabled ? 'translateX(20px)' : 'translateX(0)', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }}
                             />
                         </button>
@@ -521,8 +517,8 @@ export default function Settings() {
                 <div className="flex gap-2 mb-3">
                     <button
                         onClick={() => window.open('https://forms.gle/JDUzvYqq5dVxo5vL9', '_blank')}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-medium"
-                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'var(--color-burgundy-soft)', border: '1px solid rgba(30, 58, 95, 0.15)' }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-medium"
+                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'var(--color-burgundy-soft)', border: '1px solid rgba(var(--color-ink-rgb), 0.10)' }}
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -531,7 +527,7 @@ export default function Settings() {
                     </button>
                     <button
                         onClick={() => window.open('https://buymeacoffee.com/elsadonnat0', '_blank')}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-medium"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-medium"
                         style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'rgba(201, 169, 110, 0.12)', border: '1px solid rgba(201, 169, 110, 0.2)' }}
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -550,7 +546,7 @@ export default function Settings() {
                 </button>
 
                 <p className="text-center text-xs mt-2" style={{ color: 'var(--color-ink-faint)' }}>
-                    AI Safety v{__APP_VERSION__}
+                    aligned. v{__APP_VERSION__}
                 </p>
             </div>
 

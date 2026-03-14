@@ -24,7 +24,7 @@ export default function NotificationOnboarding({ onEnable, onSkip }) {
         <div className="fixed inset-0 z-[70] flex items-center justify-center" onClick={onSkip}>
             <div className="absolute inset-0" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} />
             <div
-                className="relative w-full max-w-sm rounded-2xl p-6 mx-4 animate-fade-in-up"
+                className="relative w-full max-w-sm rounded-[4px] p-6 mx-4 animate-fade-in-up"
                 style={{ backgroundColor: 'var(--color-parchment)', boxShadow: 'var(--shadow-elevated)' }}
                 onClick={e => e.stopPropagation()}
             >
@@ -34,7 +34,7 @@ export default function NotificationOnboarding({ onEnable, onSkip }) {
 
                 <h2
                     className="text-lg font-bold text-center mb-1"
-                    style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}
+                    style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}
                 >
                     Stay on track?
                 </h2>
@@ -57,7 +57,7 @@ export default function NotificationOnboarding({ onEnable, onSkip }) {
                         type="time"
                         value={time}
                         onChange={e => setTime(e.target.value)}
-                        className="w-full rounded-xl px-3 py-2.5 text-sm"
+                        className="w-full rounded-[3px] px-3 py-2.5 text-sm"
                         style={{
                             backgroundColor: 'var(--color-card)',
                             color: 'var(--color-ink)',

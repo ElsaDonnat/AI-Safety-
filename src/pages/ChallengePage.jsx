@@ -195,7 +195,7 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
+            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center' }}>
                 {question.prompt || question.question}
             </p>
             {answered && nearMiss && (
@@ -279,7 +279,7 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
 function OddOneOutLayout({ question, selected, answered, onSelect }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
+            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center' }}>
                 {question.prompt || question.question}
             </p>
             {question.hint && (
@@ -305,8 +305,8 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                             border = '1.5px solid var(--color-error)';
                             color = 'var(--color-error)';
                         } else {
-                            bg = 'rgba(30, 58, 95, 0.06)';
-                            border = '1.5px solid rgba(30, 58, 95, 0.2)';
+                            bg = 'rgba(var(--color-ink-rgb), 0.06)';
+                            border = '1.5px solid rgba(var(--color-ink-rgb), 0.2)';
                         }
                     }
 
@@ -322,7 +322,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                                 padding: '12px 10px',
                                 cursor: answered ? 'default' : 'pointer',
                                 fontSize: '0.82rem',
-                                fontFamily: 'var(--font-serif)',
+                                fontFamily: 'var(--font-display)',
                                 color,
                                 fontWeight: (isSelected || (answered && isOutlier)) ? 600 : 400,
                                 lineHeight: 1.3,
@@ -349,7 +349,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
 function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-serif)' }}>
+            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)' }}>
                 {question.prompt || 'True or false?'}
             </p>
             <div style={{
@@ -360,7 +360,7 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                 width: '100%',
                 textAlign: 'center',
             }}>
-                <p style={{ fontSize: '0.9rem', fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
+                <p style={{ fontSize: '0.9rem', fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
                     &ldquo;{question.statement}&rdquo;
                 </p>
             </div>
@@ -399,7 +399,7 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                                 cursor: answered ? 'default' : 'pointer',
                                 fontSize: '1rem',
                                 fontWeight: 600,
-                                fontFamily: 'var(--font-serif)',
+                                fontFamily: 'var(--font-display)',
                                 color,
                                 transition: 'all 0.15s ease',
                             }}
@@ -450,7 +450,7 @@ function TierTransition({ tier, onContinue }) {
                 Level Up
             </p>
             <h2 style={{
-                fontFamily: 'var(--font-serif)', fontSize: '1.6rem', fontWeight: 700,
+                fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 700,
                 color: tier.color, marginBottom: 8,
             }}>
                 {tier.label}
@@ -468,7 +468,7 @@ function TierTransition({ tier, onContinue }) {
 // ─── Main ChallengePage ──────────────────────────────────────
 
 // Shared tint — used for header gradient endpoint + stats card backgrounds
-const CHALLENGE_TINT = 'rgba(30, 58, 95, 0.36)';
+const CHALLENGE_TINT = 'rgba(var(--color-ink-rgb), 0.36)';
 
 export default function ChallengePage({ onSessionChange, registerBackHandler }) {
     const { state, dispatch } = useApp();
@@ -810,7 +810,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
             <div style={{ padding: '0' }} className="animate-fade-in">
                 {/* Arena header — compact */}
                 <div style={{
-                    background: `linear-gradient(180deg, rgba(30, 58, 95, 0.83) 0%, ${CHALLENGE_TINT} 100%)`,
+                    background: `linear-gradient(180deg, rgba(var(--color-ink-rgb), 0.83) 0%, ${CHALLENGE_TINT} 100%)`,
                     borderRadius: '0 0 20px 20px',
                     margin: '-16px -16px 0',
                     padding: '14px 16px 16px',
@@ -822,7 +822,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <Mascot mood="happy" size={34} />
                     </div>
 
-                    <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 700, textAlign: 'center', color: 'white', textShadow: '0 1px 6px rgba(30, 58, 95, 0.45)', marginBottom: 2 }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', fontWeight: 700, textAlign: 'center', color: 'white', textShadow: '0 1px 6px rgba(var(--color-ink-rgb), 0.45)', marginBottom: 2 }}>
                         Challenge Mode
                     </h2>
                     <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>
@@ -895,7 +895,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                 {/* Section heading */}
                 <h3 style={{
-                    fontFamily: 'var(--font-serif)',
+                    fontFamily: 'var(--font-display)',
                     fontSize: '0.95rem',
                     fontWeight: 700,
                     color: 'var(--color-ink)',
@@ -929,7 +929,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </svg>
                         </div>
                         <div style={{ minWidth: 0 }}>
-                            <p style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
                                 Solo Challenge
                             </p>
                             <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
@@ -970,7 +970,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </svg>
                         </div>
                         <div style={{ minWidth: 0 }}>
-                            <p style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
                                 Multiplayer
                             </p>
                             <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
@@ -1008,7 +1008,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </svg>
                         </div>
                         <div style={{ minWidth: 0 }}>
-                            <p style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
                                 Fun Facts
                             </p>
                             <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
@@ -1037,28 +1037,28 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         alignItems: 'center',
                     }}>
                         <div style={{ textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
+                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                 {ch.soloHighScore || 0}
                             </p>
                             <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\u2B50'} Best</p>
                         </div>
                         {allTimeAccuracy !== null && (
                             <div style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
+                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                     {allTimeAccuracy}%
                                 </p>
                                 <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAF'} Accuracy</p>
                             </div>
                         )}
                         <div style={{ textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
+                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                 {ch.multiplayerVictories || 0}
                             </p>
                             <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFC6'} Victories</p>
                         </div>
                         {(ch.soloGamesPlayed > 0 || ch.multiplayerGamesPlayed > 0) && (
                             <div style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
+                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                     {(ch.soloGamesPlayed || 0) + (ch.multiplayerGamesPlayed || 0)}
                                 </p>
                                 <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAE'} Games</p>
@@ -1075,7 +1075,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     if (view === VIEW.SETUP_MULTI) {
         return (
             <div style={{ padding: '16px 0' }} className="animate-fade-in">
-                <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', fontWeight: 700, textAlign: 'center', color: 'var(--color-ink)', marginBottom: 16 }}>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 700, textAlign: 'center', color: 'var(--color-ink)', marginBottom: 16 }}>
                     Who's playing?
                 </h2>
 
@@ -1169,7 +1169,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             className="animate-fade-in"
                         >
                             <h3 style={{
-                                fontFamily: 'var(--font-serif)',
+                                fontFamily: 'var(--font-display)',
                                 fontSize: '1.05rem',
                                 fontWeight: 700,
                                 textAlign: 'center',
@@ -1240,7 +1240,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
         return (
             <div className="pass-phone-overlay animate-fade-in">
                 <Mascot variant="quizmaster" mood="happy" size={70} />
-                <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 700, color: 'var(--color-ink)' }}>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: 'var(--color-ink)' }}>
                     Pass to {currentPlayer?.name}!
                 </h2>
                 <Hearts current={currentPlayer?.hearts || 0} max={Math.max(MAX_HEARTS, currentPlayer?.hearts || 0)} />
@@ -1304,7 +1304,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </span>
                         )}
                         <div style={{ textAlign: 'center' }}>
-                            <span style={{ fontSize: '1.1rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                            <span style={{ fontSize: '1.1rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 {currentPlayer?.score || 0}
                             </span>
                             <span style={{ fontSize: '0.7rem', color: 'var(--color-ink-muted)', marginLeft: 2 }}>pts</span>
@@ -1368,7 +1368,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <Mascot mood={soloScore >= 10 ? 'celebrating' : soloScore >= 5 ? 'happy' : 'sad'} size={52} />
                     </div>
 
-                    <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-ink)', marginBottom: 8 }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-ink)', marginBottom: 8 }}>
                         {isPerfect ? 'Perfect Run!' : 'Game Over!'}
                     </h2>
 
@@ -1386,7 +1386,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                     {/* Score */}
                     <div style={{ marginBottom: 16 }}>
-                        <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-serif)', color: 'var(--color-primary, #1E3A5F)' }}>
+                        <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)' }}>
                             {soloScore}/{TOTAL_CHALLENGE_QUESTIONS}
                         </p>
                         <p style={{ fontSize: '0.82rem', color: 'var(--color-ink-muted)' }}>
@@ -1403,7 +1403,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             marginBottom: 16,
                             color: 'white',
                             fontWeight: 700,
-                            fontFamily: 'var(--font-serif)',
+                            fontFamily: 'var(--font-display)',
                             fontSize: '0.95rem',
                         }}>
                             New High Score!
@@ -1453,19 +1453,19 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         marginBottom: 20,
                     }}>
                         <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
                                 {bestStreak}
                             </p>
                             <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>Best Streak</p>
                         </div>
                         <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
                                 +{soloScore * 8}
                             </p>
                             <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>XP Earned</p>
                         </div>
                         <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
                                 {questionIndex + 1}
                             </p>
                             <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>Questions</p>
@@ -1511,7 +1511,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     <Mascot mood="celebrating" size={48} />
                 </div>
 
-                <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-ink)', marginBottom: 16 }}>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-ink)', marginBottom: 16 }}>
                     {sorted[0]?.name} wins!
                 </h2>
 
@@ -1555,7 +1555,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>
                                 {i + 1}. {p.name}
                             </span>
-                            <span style={{ fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-serif)' }}>
+                            <span style={{ fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
                                 {p.score} pts
                             </span>
                         </div>

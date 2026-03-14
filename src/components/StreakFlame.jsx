@@ -1,71 +1,47 @@
-const LOGS = (
-    <>
-        {/* Log 1 - leaning right */}
-        <path d="M6,21.5 L13,17.5" fill="none" stroke="#8B5E3C" strokeWidth="3" strokeLinecap="round"/>
-        <path d="M7,21 L12.5,18" fill="none" stroke="#6D4534" strokeWidth="0.6" strokeLinecap="round"/>
-        {/* Log 2 - leaning left */}
-        <path d="M18,21.5 L11,17.5" fill="none" stroke="#8B5E3C" strokeWidth="3" strokeLinecap="round"/>
-        <path d="M17,21 L11.5,18" fill="none" stroke="#6D4534" strokeWidth="0.6" strokeLinecap="round"/>
-    </>
-);
-
-const FLAMES = {
-    active: (
-        <>
-            {/* Outer flame - warm coral-orange */}
-            <path d="M12,0.5 C12,0.5 5,7.5 5,11.5 C5,14.7 8,17 12,17 C16,17 19,14.7 19,11.5 C19,7.5 12,0.5 12,0.5 Z" fill="#D4726A"/>
-            {/* Middle flame - amber */}
-            <path d="M12,4 C12,4 7.5,9 7.5,11.5 C7.5,13.6 9.5,15.1 12,15.1 C14.5,15.1 16.5,13.6 16.5,11.5 C16.5,9 12,4 12,4 Z" fill="#E8956A"/>
-            {/* Inner flame - golden */}
-            <path d="M12,6.5 C12,6.5 9.5,10 9.5,12 C9.5,13.3 10.5,14 12,14 C13.5,14 14.5,13.3 14.5,12 C14.5,10 12,6.5 12,6.5 Z" fill="#F0C060"/>
-            {/* Core - bright warm */}
-            <path d="M12,9 C12,9 11,11 11,12 C11,12.7 11.4,13.1 12,13.1 C12.6,13.1 13,12.7 13,12 C13,11 12,9 12,9 Z" fill="#FFF3E0"/>
-        </>
-    ),
-    'at-risk': (
-        <>
-            {/* Outer flame - warm red */}
-            <path d="M12,0 C12,0 2.5,7 2.5,12 C2.5,15.5 6.5,17.5 12,17.5 C17.5,17.5 21.5,15.5 21.5,12 C21.5,7 12,0 12,0 Z" fill="#C44D4D"/>
-            {/* Middle flame - warm crimson */}
-            <path d="M12,2.5 C12,2.5 5.5,8 5.5,11.5 C5.5,14.5 8,16.5 12,16.5 C16,16.5 18.5,14.5 18.5,11.5 C18.5,8 12,2.5 12,2.5 Z" fill="#D4726A"/>
-            {/* Inner flame - coral-orange */}
-            <path d="M12,5.5 C12,5.5 8,9.5 8,12 C8,14 9.5,15.5 12,15.5 C14.5,15.5 16,14 16,12 C16,9.5 12,5.5 12,5.5 Z" fill="#E8956A"/>
-            {/* Core - warm amber */}
-            <path d="M12,8.5 C12,8.5 10,11 10,12.5 C10,13.5 10.8,14.2 12,14.2 C13.2,14.2 14,13.5 14,12.5 C14,11 12,8.5 12,8.5 Z" fill="#D4A04A"/>
-        </>
-    ),
-    inactive: (
-        <>
-            {/* Outer flame - warm grey */}
-            <path d="M12,0.5 C12,0.5 5,7.5 5,11.5 C5,14.7 8,17 12,17 C16,17 19,14.7 19,11.5 C19,7.5 12,0.5 12,0.5 Z" fill="#8C7E74" opacity="0.5"/>
-            {/* Middle flame - lighter warm grey */}
-            <path d="M12,4 C12,4 7.5,9 7.5,11.5 C7.5,13.6 9.5,15.1 12,15.1 C14.5,15.1 16.5,13.6 16.5,11.5 C16.5,9 12,4 12,4 Z" fill="#B5A99F" opacity="0.45"/>
-            {/* Inner flame - pale warm grey */}
-            <path d="M12,6.5 C12,6.5 9.5,10 9.5,12 C9.5,13.3 10.5,14 12,14 C13.5,14 14.5,13.3 14.5,12 C14.5,10 12,6.5 12,6.5 Z" fill="#D1C8BE" opacity="0.4"/>
-            {/* Core - light warm grey */}
-            <path d="M12,9 C12,9 11,11 11,12 C11,12.7 11.4,13.1 12,13.1 C12.6,13.1 13,12.7 13,12 C13,11 12,9 12,9 Z" fill="#EDE8E3" opacity="0.35"/>
-        </>
-    ),
-};
-
+/**
+ * Minimal editorial streak flame — monoline style matching the app's design language.
+ * Three states: active (coral gradient), at-risk (amber with clock), inactive (warm gray).
+ */
 export default function StreakFlame({ status = 'inactive', size = 18 }) {
     const className = status !== 'inactive' ? `streak-flame--${status}` : undefined;
+
+    // Color configs per status
+    const colors = {
+        active: { stroke: '#D4726A', fill: 'rgba(212, 114, 106, 0.15)', inner: '#F0C060' },
+        'at-risk': { stroke: '#D4A04A', fill: 'rgba(212, 160, 74, 0.12)', inner: '#E8956A' },
+        inactive: { stroke: '#B5A99F', fill: 'rgba(181, 169, 159, 0.08)', inner: '#D1C8BE' },
+    };
+
+    const c = colors[status];
+
     return (
-        <svg width={size} height={size} viewBox="-2 -2 28 28" fill="none" className={className}>
-            <defs><filter id="clockShadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="0" stdDeviation="1" floodColor="white" floodOpacity="0.85" /></filter></defs>
-            {LOGS}
-            {FLAMES[status]}
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+            {/* Outer flame shape — filled softly */}
+            <path
+                d="M12 2C12 2 6 8.5 6 13.5C6 17.1 8.7 20 12 20C15.3 20 18 17.1 18 13.5C18 8.5 12 2 12 2Z"
+                fill={c.fill}
+                stroke={c.stroke}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            {/* Inner flame — smaller, warm core */}
+            <path
+                d="M12 9C12 9 9.5 12.5 9.5 14.5C9.5 16.1 10.6 17 12 17C13.4 17 14.5 16.1 14.5 14.5C14.5 12.5 12 9 12 9Z"
+                fill={status === 'inactive' ? 'none' : c.inner}
+                stroke={c.stroke}
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity={status === 'inactive' ? 0.5 : 0.8}
+            />
+            {/* Clock badge for at-risk */}
             {status === 'at-risk' && (
-                <>
-                    {/* Clock badge — upper-right, dark brown, 40% larger, white shadow */}
-                    <g transform="translate(17.5, 4) scale(1.4)" filter="url(#clockShadow)">
-                        <circle cx="0" cy="0" r="3.2" fill="#F5E6D3" stroke="#5D4037" strokeWidth="1.2"/>
-                        {/* Hour hand (pointing to 12) */}
-                        <line x1="0" y1="0" x2="0" y2="-2" stroke="#5D4037" strokeWidth="1.2" strokeLinecap="round"/>
-                        {/* Minute hand (pointing to 3) */}
-                        <line x1="0" y1="0" x2="1.8" y2="0" stroke="#5D4037" strokeWidth="1.2" strokeLinecap="round"/>
-                    </g>
-                </>
+                <g transform="translate(17, 4)">
+                    <circle cx="0" cy="0" r="3.5" fill="#F5E6D3" stroke="#D4A04A" strokeWidth="1" />
+                    <line x1="0" y1="0" x2="0" y2="-1.8" stroke="#5D4037" strokeWidth="1" strokeLinecap="round" />
+                    <line x1="0" y1="0" x2="1.5" y2="0" stroke="#5D4037" strokeWidth="1" strokeLinecap="round" />
+                </g>
             )}
         </svg>
     );

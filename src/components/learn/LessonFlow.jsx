@@ -211,7 +211,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                         <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ color: 'var(--color-ink-faint)' }}>
                             {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number}`}
                         </span>
-                        <h1 className="lesson-intro-title font-bold mb-1" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                        <h1 className="lesson-intro-title font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                             {lesson.title}
                         </h1>
                         {lesson.subtitle && (
@@ -220,13 +220,13 @@ export default function LessonFlow({ lesson, onComplete }) {
                             </p>
                         )}
                         {lesson.mood && (
-                            <p className="text-sm italic mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink-secondary)' }}>
+                            <p className="text-sm italic mb-3" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink-secondary)' }}>
                                 {'"'}{lesson.mood}{'"'}
                             </p>
                         )}
                         {lesson.isFoundational && topic && (
                             <div className="text-left mb-3 px-1">
-                                <div className="flex items-start gap-3 px-4 py-3 rounded-xl"
+                                <div className="flex items-start gap-3 px-4 py-3 rounded-[3px]"
                                     style={{ backgroundColor: `${topic.color}08`, borderLeft: `3px solid ${topic.color}` }}>
                                     <span className="text-2xl flex-shrink-0">{topic.icon}</span>
                                     <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
@@ -244,7 +244,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     const catConfig = CATEGORY_CONFIG[concept.category];
                                     return (
                                         <div key={concept.id}
-                                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl animate-fade-in-up"
+                                            className="flex items-center gap-3 px-3 py-2.5 rounded-[3px] animate-fade-in-up"
                                             style={{ backgroundColor: `${catConfig?.color || '#999'}10`, border: `1.5px solid ${catConfig?.color || 'var(--color-ink-faint)'}25`, animationDelay: `${i * 0.1}s` }}>
                                             <CategoryIcon category={concept.category} size={18} />
                                             <div className="min-w-0 flex-1">
@@ -310,10 +310,10 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     />
                                     {cardIndex === 0 && !state.hasSeenFavoriteTip && (
                                         <div className="absolute right-0 top-full mt-1 w-56 z-50 animate-fade-in">
-                                            <div className="rounded-xl p-3 text-xs leading-relaxed"
-                                                style={{ backgroundColor: 'var(--color-card)', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '1px solid rgba(30, 58, 95, 0.15)', color: 'var(--color-ink-secondary)' }}>
+                                            <div className="rounded-[3px] p-3 text-xs leading-relaxed"
+                                                style={{ backgroundColor: 'var(--color-card)', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '1px solid rgba(var(--color-ink-rgb), 0.15)', color: 'var(--color-ink-secondary)' }}>
                                                 <div className="absolute -top-1.5 right-4 w-3 h-3 rotate-45"
-                                                    style={{ backgroundColor: 'var(--color-card)', borderTop: '1px solid rgba(30, 58, 95, 0.15)', borderLeft: '1px solid rgba(30, 58, 95, 0.15)' }} />
+                                                    style={{ backgroundColor: 'var(--color-card)', borderTop: '1px solid rgba(var(--color-ink-rgb), 0.15)', borderLeft: '1px solid rgba(var(--color-ink-rgb), 0.15)' }} />
                                                 <p><strong style={{ color: 'var(--color-ink)' }}>Tap the star</strong> to save concepts to your favorites.</p>
                                                 <button onClick={(e) => { e.stopPropagation(); dispatch({ type: 'DISMISS_FAVORITE_TIP' }); }}
                                                     className="mt-2 text-xs font-semibold"
@@ -326,7 +326,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                 </div>
                             </div>
                             {concept.image && (
-                                <div className="mt-3 mb-2 rounded-xl overflow-hidden flex items-center justify-center"
+                                <div className="mt-3 mb-2 rounded-[3px] overflow-hidden flex items-center justify-center"
                                     style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)' }}>
                                     <img
                                         src={cardImage(concept.image)}
@@ -336,7 +336,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     />
                                 </div>
                             )}
-                            <h2 className="text-xl font-bold mt-3 mb-2 leading-snug" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>{concept.title}</h2>
+                            <h2 className="text-xl font-bold mt-3 mb-2 leading-snug" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{concept.title}</h2>
                             {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-ink-secondary)' }}>
                                 {concept.description}
@@ -420,14 +420,14 @@ export default function LessonFlow({ lesson, onComplete }) {
                 <div className="flex-1 min-h-0 overflow-y-auto">
                     <div className="text-center py-6">
                         <div className="animate-recap-pulse"><Mascot mood="thinking" size={72} /></div>
-                        <h2 className="text-2xl font-bold mt-6 mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>Time to Recap</h2>
+                        <h2 className="text-2xl font-bold mt-6 mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>Time to Recap</h2>
                         <p className="text-sm mb-1" style={{ color: 'var(--color-ink-muted)' }}>{"Now let's see how well you remember everything"}</p>
                         <p className="text-xs mb-6" style={{ color: 'var(--color-ink-faint)' }}>{recapQuestions.length} {recapQuestions.length === 1 ? 'question' : 'questions'}</p>
                         <div className="flex flex-col gap-1.5 mt-1 mb-4 text-left mx-auto" style={{ maxWidth: 320 }}>
                             {concepts.map((c, i) => {
                                 const catConfig = CATEGORY_CONFIG[c.category];
                                 return (
-                                    <div key={c.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl animate-fade-in-up"
+                                    <div key={c.id} className="flex items-center gap-3 px-3 py-2.5 rounded-[3px] animate-fade-in-up"
                                         style={{ backgroundColor: `${catConfig?.color || '#999'}10`, border: `1.5px solid ${catConfig?.color || 'var(--color-ink-faint)'}25`, animationDelay: `${i * 0.1}s` }}>
                                         <CategoryIcon category={c.category} size={18} />
                                         <div className="min-w-0 flex-1">
@@ -468,7 +468,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
-                            style={{ backgroundColor: 'rgba(30, 58, 95, 0.15)', color: 'var(--color-burgundy)' }}>
+                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.15)', color: 'var(--color-burgundy)' }}>
                             Recap {'\u00B7'} {answeredCount + 1}/{totalQuestions}
                         </span>
                     </div>
@@ -510,7 +510,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                     <div className="flex-1 min-h-0 overflow-y-auto">
                         <Card className="animate-slide-in-right" style={{ borderLeft: `3px solid ${borderColor}` }}>
                             <CategoryTag category={concept.category} />
-                            <h2 className="text-xl font-bold mt-3 mb-2" style={{ fontFamily: 'var(--font-serif)' }}>{concept.title}</h2>
+                            <h2 className="text-xl font-bold mt-3 mb-2" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h2>
                             {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>
                                 {concept.description}
@@ -549,7 +549,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 <div className="flex-1 min-h-0 overflow-y-auto">
                     <div className="text-center pt-8 pb-4 relative">
                         <Mascot mood={allPassed ? 'celebrating' : 'thinking'} size={64} />
-                        <h2 className="text-2xl font-bold mt-2 mb-0.5" style={{ fontFamily: 'var(--font-serif)' }}>
+                        <h2 className="text-2xl font-bold mt-2 mb-0.5" style={{ fontFamily: 'var(--font-display)' }}>
                             {allPassed ? 'Lesson Complete!' : 'Keep Practicing'}
                         </h2>
                         <p className="text-sm mb-3" style={{ color: 'var(--color-ink-muted)' }}>{lesson.title}</p>
@@ -629,8 +629,8 @@ export default function LessonFlow({ lesson, onComplete }) {
                         const text = buildLessonShareText({ lessonTitle: lesson.title, greenCount, totalQuestions: quizResults.length, xp, streak });
                         const result = await shareText({ title: 'AI Safety', text });
                         if (result === 'copied') setShareToast(true);
-                    }} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(30, 58, 95, 0.08)' }}>
+                    }} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
+                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
                         </svg>
@@ -661,7 +661,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                         <StarButton isStarred={(state.starredCards || []).includes(dotConcept.id)}
                                             onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: dotConcept.id })} />
                                     </div>
-                                    <h2 className="text-xl font-bold leading-snug mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>{dotConcept.title}</h2>
+                                    <h2 className="text-xl font-bold leading-snug mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{dotConcept.title}</h2>
                                     <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>{dotConcept.description}</p>
                                 </Card>
                             </div>
@@ -752,7 +752,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>Why does this matter?</p>
-                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{concept.title}</h3>
+                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h3>
                     <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>Which description best explains this concept?</p>
                     <div className="mcq-options">
                         {descriptionOptions.map((opt, i) => {
@@ -781,7 +781,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>How does this work?</p>
-                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{concept.title}</h3>
+                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h3>
                     <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>Pick the correct description</p>
                     <div className="mcq-options">
                         {descriptionOptions.map((opt, i) => {

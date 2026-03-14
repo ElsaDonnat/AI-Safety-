@@ -83,7 +83,7 @@ export default function FunFactsFlow({ onExit }) {
                 </div>
                 <div className="text-center mt-16">
                     <div className="text-4xl mb-4">💡</div>
-                    <h2 className="text-lg font-bold mb-2" style={{ fontFamily: 'var(--font-serif)' }}>No Fun Facts Yet</h2>
+                    <h2 className="text-lg font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>No Fun Facts Yet</h2>
                     <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
                         Learn more concepts in lessons to unlock fun facts!
                     </p>
@@ -118,9 +118,9 @@ export default function FunFactsFlow({ onExit }) {
                     Related to
                 </p>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: 'rgba(30, 58, 95, 0.06)' }}>
+                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
                     <CategoryTag category={event.category} />
-                    <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                    <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                         {event.title}
                     </span>
                 </div>
@@ -129,7 +129,7 @@ export default function FunFactsFlow({ onExit }) {
             {/* Question */}
             <div className="animate-slide-in-right" key={`q-${factIndex}`}>
                 <div className="text-center mb-6 px-2">
-                    <h2 className="text-base font-bold leading-relaxed" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                    <h2 className="text-base font-bold leading-relaxed" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                         {currentFact.question}
                     </h2>
                 </div>
@@ -173,7 +173,7 @@ export default function FunFactsFlow({ onExit }) {
                                 key={i}
                                 onClick={() => handleAnswer(i)}
                                 disabled={answered}
-                                className="w-full text-left px-4 py-3 rounded-xl flex items-center justify-between gap-2 transition-all active:scale-[0.98]"
+                                className="w-full text-left px-4 py-3 rounded-[3px] flex items-center justify-between gap-2 transition-all active:scale-[0.98]"
                                 style={{ backgroundColor: bg, border, color: textColor, opacity }}
                             >
                                 <span className="text-sm font-medium">{opt.text}</span>
@@ -186,7 +186,7 @@ export default function FunFactsFlow({ onExit }) {
                 {/* Explanation (after answering) */}
                 {answered && (
                     <div className="mt-5 animate-fade-in">
-                        <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
+                        <div className="p-4 rounded-[3px]" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
                             <div className="flex items-center gap-1.5 mb-2">
                                 <span className="text-sm">💡</span>
                                 <span className="text-[10px] uppercase tracking-wider font-bold" style={{ color: '#92400E' }}>

@@ -112,7 +112,7 @@ export default function AchievementsModal({ onClose }) {
                 <div className="achievement-modal-header">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>
+                            <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 Achievements
                             </h2>
                             <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>

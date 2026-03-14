@@ -329,7 +329,7 @@ export function ControversyNote({ note }) {
             {expanded && (
                 <div className="mt-2 px-3 py-2.5 rounded-[3px] text-xs leading-relaxed animate-fade-in"
                     style={{
-                        backgroundColor: 'rgba(30, 58, 95, 0.04)',
+                        backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)',
                         borderLeft: '2px solid var(--color-burgundy)',
                         color: 'var(--color-ink-secondary)',
                         fontStyle: 'italic',

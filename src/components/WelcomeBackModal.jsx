@@ -15,7 +15,7 @@ export default function WelcomeBackModal({ daysAway, onDismiss }) {
       onClick={onDismiss}
     >
       <div
-        className="w-full max-w-sm rounded-2xl p-6 text-center animate-welcome-back"
+        className="w-full max-w-sm rounded-[4px] p-6 text-center animate-welcome-back"
         style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-elevated)' }}
         onClick={e => e.stopPropagation()}
       >
@@ -24,7 +24,7 @@ export default function WelcomeBackModal({ daysAway, onDismiss }) {
         </div>
         <h2
           className="text-xl font-bold mb-2"
-          style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}
+          style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}
         >
           Welcome!
         </h2>
