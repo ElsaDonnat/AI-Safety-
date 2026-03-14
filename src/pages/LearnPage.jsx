@@ -234,7 +234,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                             }}
                             className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
                             style={{
-                                backgroundColor: isActive ? 'var(--color-bronze)' : 'transparent',
+                                backgroundColor: isActive ? 'var(--color-bronze)' : 'var(--color-parchment)',
                                 color: isActive ? '#fff' : 'var(--color-ink-muted)',
                                 border: isActive ? '1px solid var(--color-bronze)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
                             }}
