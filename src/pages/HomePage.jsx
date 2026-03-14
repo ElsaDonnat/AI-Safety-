@@ -1,33 +1,37 @@
 import { useApp } from '../context/AppContext';
 import { DOMAINS, LESSONS } from '../data/lessons';
+// Section icons — Clash Display stroke contrast (thick verticals, thin horizontals)
 const SECTION_ICONS = {
     learn: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-            <line x1="4" y1="5" x2="20" y2="5" />
-            <line x1="4" y1="10" x2="16" y2="10" />
-            <line x1="4" y1="15" x2="12" y2="15" />
-            <line x1="4" y1="20" x2="8" y2="20" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="4" y1="4" x2="4" y2="20" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="4" y1="5" x2="20" y2="5" strokeWidth="1.0" />
+            <line x1="4" y1="10.5" x2="16" y2="10.5" strokeWidth="1.0" />
+            <line x1="4" y1="16" x2="12" y2="16" strokeWidth="1.0" />
         </svg>
     ),
     library: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-            <rect x="3" y="3" width="8" height="8" />
-            <rect x="13" y="3" width="8" height="8" />
-            <rect x="3" y="13" width="8" height="8" />
-            <rect x="13" y="13" width="8" height="8" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="3" y1="3" x2="3" y2="21" strokeWidth="1.6" />
+            <line x1="12" y1="3" x2="12" y2="21" strokeWidth="1.6" />
+            <line x1="21" y1="3" x2="21" y2="21" strokeWidth="1.6" />
+            <line x1="3" y1="3" x2="21" y2="3" strokeWidth="0.9" />
+            <line x1="3" y1="12" x2="21" y2="12" strokeWidth="0.9" />
+            <line x1="3" y1="21" x2="21" y2="21" strokeWidth="0.9" />
         </svg>
     ),
     practice: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-            <path d="M12 3v18" />
-            <path d="M3 12h18" />
-            <circle cx="12" cy="12" r="9" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round">
+            <path d="M20 8A9 9 0 0 0 5 7" strokeWidth="1.0" />
+            <path d="M4 16a9 9 0 0 0 15 1" strokeWidth="1.0" />
+            <polyline points="21 4 21 9 16 9" strokeWidth="1.8" strokeLinejoin="round" />
+            <polyline points="3 20 3 15 8 15" strokeWidth="1.8" strokeLinejoin="round" />
         </svg>
     ),
     challenge: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-            <path d="M12 3l3 6 3 6H6l3-6 3-6z" />
-            <line x1="12" y1="15" x2="12" y2="21" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L22 12L12 22L2 12Z" strokeWidth="0.9" />
+            <line x1="12" y1="6" x2="12" y2="18" strokeWidth="1.8" />
         </svg>
     ),
 };
@@ -73,8 +77,8 @@ export default function HomePage({ onTabChange }) {
         <div className="px-4 py-8 max-w-2xl mx-auto">
             {/* Hero — with warm accent bar */}
             <div className="mb-10 flex gap-4">
-                {/* Warm brown accent line */}
-                <div className="flex-shrink-0 mt-1" style={{ width: '3px', background: 'linear-gradient(to bottom, var(--color-ink), var(--color-warm))', borderRadius: '1px' }} />
+                {/* Warm brown accent line — starts aligned with top of logo */}
+                <div className="flex-shrink-0 mt-2" style={{ width: '3px', alignSelf: 'stretch', background: 'linear-gradient(to bottom, var(--color-ink), var(--color-warm))', borderRadius: '1px' }} />
                 <div>
                 <h1 style={{
                     fontFamily: 'var(--font-display)',

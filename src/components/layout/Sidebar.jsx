@@ -2,62 +2,97 @@ import { useApp } from '../../context/AppContext';
 import { ALL_CONCEPTS } from '../../data/concepts';
 import * as feedback from '../../services/feedback';
 
-// Artsy minimal nav icons — geometric, abstract, single-weight monoline
+// Nav icons with Clash Display stroke contrast:
+// - Vertical strokes thicker (2.0–2.2px), horizontal strokes thinner (1.2–1.4px)
+// - Geometric shapes, sharp terminals, slight taper feel
 const NAV_ITEMS = [
     {
         id: 'home',
         label: 'Home',
+        // Circle with dot — thick circle, thin inner detail
         icon: (active) => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 1.8 : 1.4}>
-                <circle cx="12" cy="12" r="9" />
-                <circle cx="12" cy="12" r="2" fill={active ? 'currentColor' : 'none'} />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="9" strokeWidth={active ? 2.0 : 1.6} />
+                <circle cx="12" cy="12" r="2.5" strokeWidth={active ? 1.4 : 1.0} fill={active ? 'currentColor' : 'none'} />
             </svg>
         ),
     },
     {
         id: 'learn',
         label: 'Learn',
-        icon: (active) => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 1.8 : 1.4}>
-                <line x1="4" y1="5" x2="20" y2="5" />
-                <line x1="4" y1="10" x2="16" y2="10" />
-                <line x1="4" y1="15" x2="12" y2="15" />
-                <line x1="4" y1="20" x2="8" y2="20" />
-            </svg>
-        ),
+        // Stacked lines — thick left verticals, tapering horizontal lines
+        icon: (active) => {
+            const v = active ? 2.2 : 1.8; // vertical weight
+            const h = active ? 1.3 : 1.0; // horizontal weight
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    {/* Thick vertical spine */}
+                    <line x1="4" y1="4" x2="4" y2="20" strokeWidth={v} strokeLinecap="round" />
+                    {/* Horizontal arms — thinner */}
+                    <line x1="4" y1="5" x2="20" y2="5" strokeWidth={h} />
+                    <line x1="4" y1="10.5" x2="16" y2="10.5" strokeWidth={h} />
+                    <line x1="4" y1="16" x2="12" y2="16" strokeWidth={h} />
+                </svg>
+            );
+        },
     },
     {
         id: 'library',
         label: 'Library',
-        icon: (active) => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 1.8 : 1.4}>
-                <rect x="3" y="3" width="8" height="8" />
-                <rect x="13" y="3" width="8" height="8" />
-                <rect x="3" y="13" width="8" height="8" />
-                <rect x="13" y="13" width="8" height="8" />
-            </svg>
-        ),
+        // Grid — thick verticals, thin horizontals
+        icon: (active) => {
+            const v = active ? 2.0 : 1.6;
+            const h = active ? 1.2 : 0.9;
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    {/* Vertical dividers — thick */}
+                    <line x1="3" y1="3" x2="3" y2="21" strokeWidth={v} />
+                    <line x1="12" y1="3" x2="12" y2="21" strokeWidth={v} />
+                    <line x1="21" y1="3" x2="21" y2="21" strokeWidth={v} />
+                    {/* Horizontal dividers — thin */}
+                    <line x1="3" y1="3" x2="21" y2="3" strokeWidth={h} />
+                    <line x1="3" y1="12" x2="21" y2="12" strokeWidth={h} />
+                    <line x1="3" y1="21" x2="21" y2="21" strokeWidth={h} />
+                </svg>
+            );
+        },
     },
     {
         id: 'practice',
         label: 'Practice',
-        icon: (active) => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 1.8 : 1.4}>
-                <path d="M12 3v18" />
-                <path d="M3 12h18" />
-                <circle cx="12" cy="12" r="9" />
-            </svg>
-        ),
+        // Refresh arrows — thick vertical strokes, thin circular arc
+        icon: (active) => {
+            const v = active ? 2.2 : 1.8; // arrow stems
+            const h = active ? 1.3 : 1.0; // arc
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round">
+                    {/* Top arc — thin */}
+                    <path d="M20 8A9 9 0 0 0 5 7" strokeWidth={h} />
+                    {/* Bottom arc — thin */}
+                    <path d="M4 16a9 9 0 0 0 15 1" strokeWidth={h} />
+                    {/* Arrow heads — thick */}
+                    <polyline points="21 4 21 9 16 9" strokeWidth={v} strokeLinejoin="round" />
+                    <polyline points="3 20 3 15 8 15" strokeWidth={v} strokeLinejoin="round" />
+                </svg>
+            );
+        },
     },
     {
         id: 'challenge',
         label: 'Challenge',
-        icon: (active) => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 1.8 : 1.4}>
-                <path d="M12 3l3 6 3 6H6l3-6 3-6z" />
-                <line x1="12" y1="15" x2="12" y2="21" />
-            </svg>
-        ),
+        // Diamond/rhombus — thick verticals, thin diagonals
+        icon: (active) => {
+            const v = active ? 2.2 : 1.8;
+            const h = active ? 1.2 : 0.9;
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                    {/* Diamond shape — thin diagonals */}
+                    <path d="M12 2L22 12L12 22L2 12Z" strokeWidth={h} />
+                    {/* Thick vertical center line */}
+                    <line x1="12" y1="6" x2="12" y2="18" strokeWidth={v} />
+                </svg>
+            );
+        },
     },
 ];
 

@@ -505,34 +505,7 @@ input, textarea, [contenteditable] {
   }
 }
 
-/* Matrix rain — subtle falling brown characters as texture */
-.main-content::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 160px;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.04;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='900'%3E%3Cstyle%3Etext%7Bfont-family:monospace;font-size:11px;fill:%232C2420%7D%3C/style%3E%3Ctext x='8' y='20'%3E01001%3C/text%3E%3Ctext x='42' y='55'%3Ealign%3C/text%3E%3Ctext x='95' y='30'%3E110%3C/text%3E%3Ctext x='12' y='90'%3Esafe%3C/text%3E%3Ctext x='70' y='120'%3E0.97%3C/text%3E%3Ctext x='120' y='80'%3E01%3C/text%3E%3Ctext x='30' y='155'%3Evalue%3C/text%3E%3Ctext x='95' y='170'%3E1101%3C/text%3E%3Ctext x='8' y='200'%3E00110%3C/text%3E%3Ctext x='55' y='230'%3Erisk%3C/text%3E%3Ctext x='110' y='215'%3E01%3C/text%3E%3Ctext x='20' y='270'%3E1010%3C/text%3E%3Ctext x='80' y='290'%3Emodel%3C/text%3E%3Ctext x='130' y='260'%3E11%3C/text%3E%3Ctext x='10' y='330'%3Eagent%3C/text%3E%3Ctext x='65' y='355'%3E0110%3C/text%3E%3Ctext x='115' y='340'%3E10%3C/text%3E%3Ctext x='25' y='395'%3E11001%3C/text%3E%3Ctext x='90' y='410'%3Eeval%3C/text%3E%3Ctext x='5' y='450'%3Eloss%3C/text%3E%3Ctext x='55' y='475'%3E0101%3C/text%3E%3Ctext x='110' y='455'%3E110%3C/text%3E%3Ctext x='15' y='520'%3E10110%3C/text%3E%3Ctext x='75' y='540'%3Ebias%3C/text%3E%3Ctext x='125' y='510'%3E01%3C/text%3E%3Ctext x='8' y='580'%3Escale%3C/text%3E%3Ctext x='60' y='605'%3E1001%3C/text%3E%3Ctext x='105' y='585'%3E11%3C/text%3E%3Ctext x='30' y='640'%3E01101%3C/text%3E%3Ctext x='85' y='660'%3Enorm%3C/text%3E%3Ctext x='10' y='700'%3Etrust%3C/text%3E%3Ctext x='65' y='725'%3E0011%3C/text%3E%3Ctext x='120' y='695'%3E10%3C/text%3E%3Ctext x='20' y='770'%3E11010%3C/text%3E%3Ctext x='80' y='790'%3Edata%3C/text%3E%3Ctext x='130' y='755'%3E01%3C/text%3E%3Ctext x='5' y='830'%3E10011%3C/text%3E%3Ctext x='55' y='855'%3Egoal%3C/text%3E%3Ctext x='110' y='835'%3E110%3C/text%3E%3Ctext x='35' y='890'%3E01110%3C/text%3E%3C/svg%3E");
-  background-repeat: repeat-y;
-  animation: matrix-drift 30s linear infinite;
-}
-
-@keyframes matrix-drift {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 900px; }
-}
-
-/* Hide matrix on mobile — too narrow */
-@media (max-width: 899px) {
-  .main-content::before {
-    display: none;
-  }
-}
+/* Matrix rain is now a React <canvas> component — see MatrixRain.jsx */
 
 .main-content-inner {
   width: 100%;

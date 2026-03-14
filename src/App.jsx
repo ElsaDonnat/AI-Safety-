@@ -13,6 +13,7 @@ import Settings from './components/Settings';
 import WeekTracker from './components/WeekTracker';
 import NotificationOnboarding from './components/NotificationOnboarding';
 import OnboardingOverlay from './components/OnboardingOverlay';
+import MatrixRain from './components/MatrixRain';
 import WelcomeBackModal from './components/WelcomeBackModal';
 import { ConfirmModal } from './components/shared';
 import {
@@ -289,6 +290,7 @@ export default function App() {
           </div>
         </main>
       </div>
+      {!inSession && <div className="hidden min-[900px]:block"><MatrixRain /></div>}
       {!inSession && <MobileTabBar activeTab={activeTab} onTabChange={setActiveTab} />}
       {state.settingsOpen && <Settings />}
       {shouldShowRating && (
