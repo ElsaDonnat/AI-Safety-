@@ -7,6 +7,47 @@ import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmMo
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS } from '../../data/lessons';
+
+// Monoline topic icons — matches LearnPage ICON_SVG
+const TOPIC_ICON = {
+    'ai-basics': (color) => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2" /><line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="2.5" /><line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="2.5" /><path d="M9 15h6" />
+        </svg>
+    ),
+    'ai-progress': (color) => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
+        </svg>
+    ),
+    'ai-concepts': (color) => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+        </svg>
+    ),
+};
+
+// Highlight key AI terms in coral
+function highlightText(text) {
+    const HIGHLIGHT_TERMS = [
+        'AI', 'ML', 'artificial intelligence', 'machine learning', 'deep learning',
+        'neural network', 'neural networks', 'training', 'model', 'models',
+        'data', 'algorithm', 'algorithms', 'GPT', 'LLM', 'alignment',
+        'safety', 'risk', 'bias', 'fairness', 'interpretability', 'RLHF',
+        'reward', 'agent', 'agents', 'human', 'intelligence', 'tasks',
+        'patterns', 'layers', 'parameters', 'compute', 'scaling',
+    ];
+    // Build regex — match whole words, case insensitive for most but preserve case
+    const escaped = HIGHLIGHT_TERMS.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const regex = new RegExp(`\\b(${escaped.join('|')})\\b`, 'gi');
+    const parts = text.split(regex);
+    return parts.map((part, i) => {
+        if (regex.test(part) || HIGHLIGHT_TERMS.some(t => t.toLowerCase() === part.toLowerCase())) {
+            return <span key={i} style={{ color: 'var(--color-burgundy)', fontWeight: 600 }}>{part}</span>;
+        }
+        return part;
+    });
+}
 import { cardImage } from '../../utils/images';
 import * as feedback from '../../services/feedback';
 import { shareText, buildLessonShareText } from '../../services/share';
@@ -204,42 +245,37 @@ export default function LessonFlow({ lesson, onComplete }) {
                     </button>
                 </div>
                 <div className="flex-1 min-h-0 flex flex-col justify-center" style={{ position: 'relative', zIndex: 1 }}>
-                    <div className="text-center py-2">
+                    <div className="py-2">
+                        {/* Header: lesson type + title — compact, max 2 lines */}
+                        <div className="text-center mb-4">
+                            <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)' }}>
+                                {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number}`}
+                            </span>
+                            <h1 className="lesson-intro-title font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                                {lesson.title}
+                            </h1>
+                        </div>
+
+                        {/* Topic info — icon + name + description in one row */}
                         {topic && (
-                            <span className="text-2xl block mb-2">{topic.icon}</span>
-                        )}
-                        <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ color: 'var(--color-ink-faint)' }}>
-                            {lesson.isFoundational ? 'Topic Introduction' : `Lesson ${lesson.number}`}
-                        </span>
-                        <h1 className="lesson-intro-title font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                            {lesson.title}
-                        </h1>
-                        {lesson.subtitle && (
-                            <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
-                                {lesson.subtitle}
-                            </p>
-                        )}
-                        {lesson.mood && (
-                            <p className="text-sm italic mb-3" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink-secondary)' }}>
-                                {'"'}{lesson.mood}{'"'}
-                            </p>
-                        )}
-                        {lesson.isFoundational && topic && (
-                            <div className="text-left mb-3 px-1">
-                                <div className="flex items-start gap-3 px-4 py-3 rounded-[3px]"
-                                    style={{ backgroundColor: `${topic.color}08`, borderLeft: `3px solid ${topic.color}` }}>
-                                    <span className="text-2xl flex-shrink-0">{topic.icon}</span>
-                                    <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
-                                        {topic.description}
-                                    </p>
+                            <div className="flex items-start gap-3 px-4 py-3 mb-4 rounded-[3px]"
+                                style={{ backgroundColor: `${topic.color}08`, borderLeft: `3px solid ${topic.color}` }}>
+                                <span className="flex-shrink-0 mt-0.5">{TOPIC_ICON[topic.icon]?.(topic.color)}</span>
+                                <div className="min-w-0">
+                                    <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{topic.title}</p>
+                                    <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>{topic.description}</p>
                                 </div>
                             </div>
                         )}
-                        <p className="text-xs mb-2" style={{ color: 'var(--color-ink-muted)' }}>
+
+                        {/* Stats line */}
+                        <p className="text-xs text-center mb-3" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>
                             {concepts.length} {concepts.length === 1 ? 'concept' : 'concepts'} {'\u00B7'} {totalQuestions} questions {'\u00B7'} ~{Math.max(1, Math.round(totalQuestions / 2))} min
                         </p>
+
+                        {/* Concept cards — with coral highlights */}
                         {concepts.length > 0 && (
-                            <div className="flex flex-col gap-1.5 mt-1 mb-2 text-left">
+                            <div className="flex flex-col gap-1.5 mb-2 text-left">
                                 {concepts.map((concept, i) => {
                                     const catConfig = CATEGORY_CONFIG[concept.category];
                                     return (
@@ -249,15 +285,16 @@ export default function LessonFlow({ lesson, onComplete }) {
                                             <CategoryIcon category={concept.category} size={18} />
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-sm font-semibold truncate" style={{ color: 'var(--color-ink)' }}>{concept.title}</p>
-                                                <p className="text-xs truncate" style={{ color: catConfig?.color || 'var(--color-ink-muted)' }}>{concept.summary}</p>
+                                                <p className="text-xs" style={{ color: 'var(--color-ink-secondary)' }}>{highlightText(concept.summary)}</p>
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
                         )}
+
                         {timesCompleted > 0 && (
-                            <p className="text-xs font-medium mt-1" style={{ color: 'var(--color-success)' }}>
+                            <p className="text-xs font-medium mt-1 text-center" style={{ color: 'var(--color-success)' }}>
                                 Completed {timesCompleted} {timesCompleted === 1 ? 'time' : 'times'}
                             </p>
                         )}
@@ -339,7 +376,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <h2 className="text-xl font-bold mt-3 mb-2 leading-snug" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{concept.title}</h2>
                             {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-ink-secondary)' }}>
-                                {concept.description}
+                                {highlightText(concept.description)}
                             </ExpandableText>
                             {concept.tags && concept.tags.length > 0 && (
                                 <div className="flex items-center gap-1.5 flex-wrap mb-3">
@@ -724,7 +761,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>What is this concept?</p>
-                    <p className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>{concept.quizDescription || concept.description}</p>
+                    <p className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>{highlightText(concept.quizDescription || concept.description)}</p>
                     <div className="mcq-options mcq-options--grid">
                         {whatOptions.map((opt, i) => {
                             const isCorrect = opt.id === concept.id;
