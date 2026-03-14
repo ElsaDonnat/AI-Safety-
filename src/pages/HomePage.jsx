@@ -71,8 +71,11 @@ export default function HomePage({ onTabChange }) {
 
     return (
         <div className="px-4 py-8 max-w-2xl mx-auto">
-            {/* Hero */}
-            <div className="mb-10">
+            {/* Hero — with warm accent bar */}
+            <div className="mb-10 flex gap-4">
+                {/* Warm brown accent line */}
+                <div className="flex-shrink-0 mt-1" style={{ width: '3px', background: 'linear-gradient(to bottom, var(--color-ink), var(--color-warm))', borderRadius: '1px' }} />
+                <div>
                 <h1 style={{
                     fontFamily: 'var(--font-display)',
                     fontWeight: 600,
@@ -99,6 +102,7 @@ export default function HomePage({ onTabChange }) {
                     Build a deep understanding of AI safety through interactive lessons,
                     spaced repetition, and challenge quizzes.
                 </p>
+                </div>
             </div>
 
             {/* Progress summary (only if started) */}
@@ -163,6 +167,9 @@ export default function HomePage({ onTabChange }) {
                 {hasStarted ? 'Continue Learning' : 'Start Learning'}
             </button>
 
+            {/* Warm divider */}
+            <div className="my-2" style={{ height: '1px', backgroundColor: 'var(--color-warm)' }} />
+
             {/* Section cards */}
             <div className="space-y-3">
                 <p style={{
@@ -204,8 +211,8 @@ export default function HomePage({ onTabChange }) {
                 ))}
             </div>
 
-            {/* Domains preview */}
-            <div className="mt-10">
+            {/* Domains preview — warm panel */}
+            <div className="mt-10 -mx-4 px-4 py-6 rounded-[3px]" style={{ backgroundColor: 'var(--color-warm-light)' }}>
                 <p style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '10px',
