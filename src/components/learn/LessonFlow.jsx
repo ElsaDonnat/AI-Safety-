@@ -425,7 +425,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
                             Exit
                         </button>
-                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
                             style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
                             Learn Quiz {'\u00B7'} {answeredCount + 1}/{totalQuestions}
                         </span>
@@ -504,7 +504,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
                             Exit
                         </button>
-                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
                             style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.15)', color: 'var(--color-burgundy)' }}>
                             Recap {'\u00B7'} {answeredCount + 1}/{totalQuestions}
                         </span>
@@ -688,7 +688,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <div className="dot-modal-content" onClick={e => e.stopPropagation()}>
                                 <Card style={{ borderLeft: `3px solid ${dotColor}` }}>
                                     <div className="flex items-center justify-between mb-3">
-                                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
                                             style={{ backgroundColor: hlBg, color: dotColor }}>{typeLabels[qType] || qType}</span>
                                         <button onClick={() => setSelectedDot(null)} className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
                                             style={{ color: 'var(--color-ink-muted)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)' }}>{'\u2715'}</button>
