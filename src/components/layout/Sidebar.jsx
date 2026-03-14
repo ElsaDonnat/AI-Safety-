@@ -4,6 +4,16 @@ import * as feedback from '../../services/feedback';
 
 const NAV_ITEMS = [
     {
+        id: 'home',
+        label: 'Home',
+        icon: (active) => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+        ),
+    },
+    {
         id: 'learn',
         label: 'Learn',
         icon: (active) => (
@@ -67,7 +77,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
                             <span className="sidebar-nav-icon">
                                 {item.icon(isActive)}
                             </span>
-                            <span className="sidebar-nav-label">{item.label}</span>
+                            <span className="sidebar-nav-label" style={{ fontFamily: 'var(--font-display)' }}>{item.label}</span>
                         </button>
                     );
                 })}
@@ -75,8 +85,8 @@ export default function Sidebar({ activeTab, onTabChange }) {
 
             <div className="sidebar-progress">
                 <div className="sidebar-progress-label">
-                    <span>Progress</span>
-                    <span>{learnedCount}/{totalConcepts}</span>
+                    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600 }}>Progress</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 500 }}>{learnedCount}/{totalConcepts}</span>
                 </div>
                 <div className="sidebar-progress-bar">
                     <div
@@ -84,7 +94,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
                         style={{ width: `${progressPct}%` }}
                     />
                 </div>
-                <p className="sidebar-progress-text">
+                <p className="sidebar-progress-text" style={{ fontFamily: 'var(--font-mono)' }}>
                     {learnedCount === 0
                         ? 'Start your first lesson'
                         : `${progressPct}% of concepts discovered`

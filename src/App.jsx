@@ -4,6 +4,7 @@ import { useApp } from './context/AppContext';
 import { useAchievementChecker, ALL_ACHIEVEMENTS } from './data/achievements';
 import TopBar from './components/TopBar';
 import Sidebar, { MobileTabBar } from './components/layout/Sidebar';
+import HomePage from './pages/HomePage';
 import LearnPage from './pages/LearnPage';
 import LibraryPage from './pages/LibraryPage';
 import PracticePage from './pages/PracticePage';
@@ -23,7 +24,7 @@ import {
 import * as feedback from './services/feedback';
 import * as ambientMusic from './services/ambientMusic';
 
-const TAB_KEYS = { '1': 'learn', '2': 'library', '3': 'practice', '4': 'challenge' };
+const TAB_KEYS = { '0': 'home', '1': 'learn', '2': 'library', '3': 'practice', '4': 'challenge' };
 const RATING_MILESTONE = 3; // Show rating prompt after completing 3 lessons
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.elsadonnat.aisafety';
 
@@ -34,7 +35,7 @@ export default function App() {
       window.WIDGET_OPEN_TAB = null;
       return 'practice';
     }
-    return 'learn';
+    return 'home';
   });
   const [inSession, setInSession] = useState(false);
   const [showWeekTracker, setShowWeekTracker] = useState(false);
@@ -134,12 +135,12 @@ export default function App() {
         backHandlerRef.current();
         return;
       }
-      // 3. Not on learn tab → go to learn tab
-      if (activeTab !== 'learn') {
-        setActiveTab('learn');
+      // 3. Not on home tab → go to home tab
+      if (activeTab !== 'home') {
+        setActiveTab('home');
         return;
       }
-      // 4. On learn tab, top level → minimize app
+      // 4. On home tab, top level → minimize app
       CapApp.minimizeApp();
     });
 
@@ -279,6 +280,7 @@ export default function App() {
         <main className="main-content" ref={mainRef}>
           <div className={`main-content-inner${inSession ? ' in-session' : ''}`}>
             <div className="animate-fade-in" key={activeTab}>
+              {activeTab === 'home' && <HomePage onTabChange={setActiveTab} />}
               {activeTab === 'learn' && <LearnPage onSessionChange={setInSession} registerBackHandler={registerBackHandler} onTabChange={setActiveTab} />}
               {activeTab === 'library' && <LibraryPage />}
               {activeTab === 'practice' && <PracticePage onSessionChange={setInSession} registerBackHandler={registerBackHandler} />}
