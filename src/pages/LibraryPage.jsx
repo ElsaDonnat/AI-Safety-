@@ -170,12 +170,15 @@ export default function LibraryPage() {
                             {isExpanded && (
                                 <div className="mt-3 pt-3 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                     {concept.image && (
-                                        <img
-                                            src={cardImage(concept.image)}
-                                            alt={concept.title}
-                                            className="w-full h-36 object-cover rounded-lg mb-3"
-                                            loading="lazy"
-                                        />
+                                        <div className="rounded-lg overflow-hidden mb-3 flex items-center justify-center"
+                                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)' }}>
+                                            <img
+                                                src={cardImage(concept.image)}
+                                                alt={concept.title}
+                                                className="w-full max-h-48 object-contain"
+                                                loading="lazy"
+                                            />
+                                        </div>
                                     )}
                                     <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
                                         {concept.description}

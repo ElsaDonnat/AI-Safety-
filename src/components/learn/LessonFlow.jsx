@@ -380,12 +380,15 @@ export default function LessonFlow({ lesson, onComplete }) {
                                 </div>
                             </div>
                             {concept.image && (
-                                <img
-                                    src={cardImage(concept.image)}
-                                    alt={concept.title}
-                                    className="w-full h-40 object-cover rounded-xl mt-3 mb-2"
-                                    loading="lazy"
-                                />
+                                <div className="mt-3 mb-2 rounded-xl overflow-hidden flex items-center justify-center"
+                                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)' }}>
+                                    <img
+                                        src={cardImage(concept.image)}
+                                        alt={concept.title}
+                                        className="w-full max-h-56 object-contain"
+                                        loading="lazy"
+                                    />
+                                </div>
                             )}
                             <h2 className="text-xl font-bold mt-3 mb-2 leading-snug" style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-ink)' }}>{concept.title}</h2>
                             {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
