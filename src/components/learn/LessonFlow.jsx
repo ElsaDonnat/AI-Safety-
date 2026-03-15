@@ -256,7 +256,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                         backgroundColor: topic?.color || 'var(--color-bronze)',
                                         color: '#fff',
                                     }}>
-                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '16px', fontWeight: 600 }}>
+                                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600 }}>
                                         {lesson.number + 1}
                                     </span>
                                 </div>

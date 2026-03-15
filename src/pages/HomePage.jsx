@@ -90,7 +90,7 @@ export default function HomePage({ onTabChange }) {
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink)' }}>
                             Your Progress
                         </span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 500, color: 'var(--color-burgundy)' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
                             {progressPct}%
                         </span>
                     </div>
@@ -99,7 +99,7 @@ export default function HomePage({ onTabChange }) {
                     </div>
                     <div className="flex justify-between mt-3">
                         <div>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
                                 {completedCount}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
@@ -107,7 +107,7 @@ export default function HomePage({ onTabChange }) {
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
                                 {learnedCards}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
@@ -115,7 +115,7 @@ export default function HomePage({ onTabChange }) {
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
                                 {state.currentStreak}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>

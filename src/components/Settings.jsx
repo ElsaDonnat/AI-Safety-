@@ -183,7 +183,7 @@ export default function Settings() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{state.totalXP}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Total XP</div>
                     </Card>
                     <Card className="text-center p-4">
@@ -196,16 +196,16 @@ export default function Settings() {
                                 yesterday.setDate(yesterday.getDate() - 1);
                                 return state.lastActiveDate === yesterday.toISOString().split('T')[0] ? 'at-risk' : 'inactive';
                             })()} size={22} />
-                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{state.currentStreak}</div>
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
                         </div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Day Streak</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{learnedCount}/{totalConcepts}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Cards Learned</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>{completedLessons}/{LESSONS.length}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
                         <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Lessons Complete</div>
                     </Card>
                 </div>

@@ -40,7 +40,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
             <div className="sidebar-progress">
                 <div className="sidebar-progress-label">
                     <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600 }}>Progress</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 500 }}>{learnedCount}/{totalConcepts}</span>
+                    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600 }}>{learnedCount}/{totalConcepts}</span>
                 </div>
                 <div className="sidebar-progress-bar">
                     <div

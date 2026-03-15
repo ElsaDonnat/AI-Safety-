@@ -127,7 +127,7 @@ export default function TopBar() {
                             aria-label={`${state.currentStreak} day streak — click for details`}
                         >
                             <StreakFlame status={streakStatus} size={18} />
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 500, color: FLAME_COUNT_COLORS[streakStatus] }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: FLAME_COUNT_COLORS[streakStatus] }}>
                                 {state.currentStreak}
                             </span>
                         </button>
@@ -139,7 +139,7 @@ export default function TopBar() {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round">
                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-burgundy)" stroke="var(--color-burgundy)" opacity="0.2" />
                             </svg>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 500, color: 'var(--color-burgundy)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
                                 {displayXP}
                             </span>
                             <span className="hidden sm:inline" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>XP</span>

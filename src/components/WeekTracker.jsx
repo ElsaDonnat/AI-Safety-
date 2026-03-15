@@ -122,7 +122,7 @@ export default function WeekTracker({ onClose }) {
                     style={{ background: 'linear-gradient(to bottom, rgba(168, 200, 216, 0.12), transparent)' }}>
                     <div className="flex items-center justify-center gap-3 mb-2">
                         <StreakFlame status={streakStatus} size={32} />
-                        <span className="text-3xl font-bold" style={{ fontFamily: 'var(--font-mono)', color: streakStatus === 'inactive' ? '#A8A29E' : 'var(--color-burgundy)' }}>
+                        <span className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: streakStatus === 'inactive' ? '#A8A29E' : 'var(--color-burgundy)' }}>
                             {state.currentStreak}
                         </span>
                     </div>
@@ -177,7 +177,7 @@ export default function WeekTracker({ onClose }) {
                 <div className="px-5 pb-3">
                     <div className="grid grid-cols-3 gap-2">
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-burgundy)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
                                 {stats.totalSessions}
                             </div>
                             <div className="text-[10px]" style={{ color: 'var(--color-ink-muted)' }}>
@@ -185,13 +185,13 @@ export default function WeekTracker({ onClose }) {
                             </div>
                         </div>
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-burgundy)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
                                 {stats.totalQuestions}
                             </div>
                             <div className="text-[10px]" style={{ color: 'var(--color-ink-muted)' }}>questions</div>
                         </div>
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-burgundy)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
                                 {formatTime(stats.totalSeconds)}
                             </div>
                             <div className="text-[10px]" style={{ color: 'var(--color-ink-muted)' }}>study time</div>

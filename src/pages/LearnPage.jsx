@@ -164,7 +164,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
                     {completedCount === 0
                         ? 'Start your journey into AI safety'
-                        : <><span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{completedCount}/{totalLessons}</span> lessons completed</>
+                        : <><span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{completedCount}/{totalLessons}</span> lessons completed</>
                     }
                 </p>
             </div>
@@ -401,7 +401,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                                     <polyline points="20 6 9 17 4 12" />
                                                                                 </svg>
                                                                             ) : (
-                                                                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 500 }}>{idx + 1}</span>
+                                                                                <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{idx + 1}</span>
                                                                             )}
                                                                         </div>
 
