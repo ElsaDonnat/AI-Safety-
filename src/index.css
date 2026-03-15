@@ -2066,7 +2066,7 @@ input, textarea, [contenteditable] {
   width: 16px;
   height: 16px;
   border-radius: 3px;
-  background: var(--color-sidebar-bg);
+  background: var(--color-burgundy);
   border: 2px solid white;
   box-shadow: 0 1px 4px rgba(44, 36, 32, 0.25);
 }
@@ -2074,7 +2074,7 @@ input, textarea, [contenteditable] {
   width: 16px;
   height: 16px;
   border-radius: 3px;
-  background: var(--color-sidebar-bg);
+  background: var(--color-burgundy);
   border: 2px solid white;
   box-shadow: 0 1px 4px rgba(44, 36, 32, 0.25);
 }

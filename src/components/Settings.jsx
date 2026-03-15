@@ -216,7 +216,7 @@ export default function Settings() {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                                 <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                             </svg>
-                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Study Time</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Study Time</span>
                         </div>
                         <div className="flex items-center justify-around">
                             <div className="flex flex-col items-center">
@@ -234,7 +234,7 @@ export default function Settings() {
 
                 {masteryEntries.length > 0 && (
                     <Card className="mb-4 p-4">
-                        <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Mastery Breakdown</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Mastery Breakdown</div>
                         <div className="flex items-center justify-around w-full">
                             <div className="flex flex-col items-center">
                                 <span className="text-xl font-bold" style={{ color: 'var(--color-success)', fontFamily: 'var(--font-display)' }}>{greenCount}</span>
@@ -260,7 +260,7 @@ export default function Settings() {
                     return (
                         <>
                             <Card className="mb-3 p-4">
-                                <div className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Recap intensity (lessons)</div>
+                                <div className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Recap intensity (lessons)</div>
                                 <div className="flex gap-2">
                                     {[
                                         { value: 0, label: 'Off', sub: 'No recap' },
@@ -278,7 +278,7 @@ export default function Settings() {
                                                     backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-card)',
                                                     color: isActive ? '#F0EBE5' : 'var(--color-ink-secondary)',
                                                     border: isActive ? 'none' : '1px solid rgba(var(--color-ink-rgb), 0.08)',
-                                                    fontFamily: 'var(--font-mono)',
+                                                    fontFamily: 'var(--font-display)',
                                                 }}
                                             >
                                                 {label}
@@ -293,7 +293,7 @@ export default function Settings() {
                                         '2 per card',
                                         '3 per card',
                                     ].map(text => (
-                                        <span key={text} className="flex-1 text-center text-[11px]" style={{ color: 'var(--color-ink-faint)' }}>{text}</span>
+                                        <span key={text} className="flex-1 text-center text-[11px]" style={{ color: 'var(--color-ink-faint)', fontFamily: 'var(--font-mono)' }}>{text}</span>
                                     ))}
                                 </div>
                             </Card>
@@ -307,7 +307,7 @@ export default function Settings() {
                 {/* Notifications */}
                 <Card className="mb-3 p-4">
                     <div className="flex items-center justify-between mb-1">
-                        <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Daily reminders</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Daily reminders</div>
                         <button
                             type="button"
                             role="switch"
@@ -388,7 +388,7 @@ export default function Settings() {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-ink-muted)' }}>
                                 <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                             </svg>
-                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Appearance</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Appearance</span>
                         </div>
                         <div className="flex rounded-[3px] overflow-hidden" style={{ border: '1px solid rgba(var(--color-ink-rgb), 0.1)' }}>
                             {[
@@ -404,7 +404,7 @@ export default function Settings() {
                                         color: state.themeMode === opt.value ? '#F0EBE5' : 'var(--color-ink-muted)',
                                         border: 'none',
                                         cursor: 'pointer',
-                                        fontFamily: 'var(--font-mono)',
+                                        fontFamily: 'var(--font-display)',
                                     }}
                                 >
                                     {opt.label}
@@ -421,7 +421,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>
-                                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Sound effects</span>
+                                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Sound effects</span>
                             </div>
                             <span className="text-xs tabular-nums" style={{ color: 'var(--color-ink-muted)', minWidth: '2.5rem', textAlign: 'right' }}>
                                 {(state.soundVolume ?? 1) === 0 ? 'Off' : `${Math.round((state.soundVolume ?? 1) * 100)}%`}
@@ -433,7 +433,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_SOUND_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, var(--color-sidebar-bg) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.soundVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, var(--color-burgundy) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.soundVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -444,7 +444,7 @@ export default function Settings() {
                             <div className="flex items-center gap-2">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /></svg>
                                 <div>
-                                    <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Ambient music</span>
+                                    <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Ambient music</span>
                                     <div className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Ambient soundscape</div>
                                 </div>
                             </div>
@@ -458,7 +458,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_MUSIC_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, var(--color-sidebar-bg) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.musicVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, var(--color-burgundy) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.musicVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -467,7 +467,7 @@ export default function Settings() {
                     <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div className="flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2" /><line x1="1" y1="8" x2="1" y2="16" /><line x1="23" y1="8" x2="23" y2="16" /></svg>
-                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Haptic feedback</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Haptic feedback</span>
                         </div>
                         <button
                             type="button"
