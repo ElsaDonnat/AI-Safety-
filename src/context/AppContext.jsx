@@ -578,10 +578,12 @@ export function useApp() {
     return ctx;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+// eslint-disable-next-line react-refresh/only-export-components, no-unused-vars
 export function useIsLessonUnlocked(lessonIndex, lessons) {
-    const { state } = useApp();
-    if (lessonIndex === 0) return true;
-    const prevLesson = lessons[lessonIndex - 1];
-    return !!state.completedLessons[prevLesson.id];
+    // All lessons unlocked for testing — TODO: restore sequential gating
+    // const { state } = useApp();
+    // if (lessonIndex === 0) return true;
+    // const prevLesson = lessons[lessonIndex - 1];
+    // return !!state.completedLessons[prevLesson.id];
+    return true;
 }

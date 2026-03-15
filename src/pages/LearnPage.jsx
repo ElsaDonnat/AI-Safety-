@@ -322,14 +322,15 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                             const chapterLessons = getLessonsByChapter(chapter.id);
                                             const diffColor = DIFFICULTY_COLORS[chapter.difficulty] || '#888';
 
-                                            // Chapter unlock: first chapter always unlocked;
-                                            // subsequent chapters unlock when all lessons in previous chapter are completed
-                                            let chapterUnlocked = chIdx === 0;
-                                            if (chIdx > 0) {
-                                                const prevChapterLessons = getLessonsByChapter(chapters[chIdx - 1].id);
-                                                chapterUnlocked = prevChapterLessons.length > 0 &&
-                                                    prevChapterLessons.every(l => state.completedLessons[l.id]);
-                                            }
+                                            // Chapter unlock: all chapters unlocked for testing
+                                            // TODO: restore sequential gating when content is finalized
+                                            // let chapterUnlocked = chIdx === 0;
+                                            // if (chIdx > 0) {
+                                            //     const prevChapterLessons = getLessonsByChapter(chapters[chIdx - 1].id);
+                                            //     chapterUnlocked = prevChapterLessons.length > 0 &&
+                                            //         prevChapterLessons.every(l => state.completedLessons[l.id]);
+                                            // }
+                                            let _chapterUnlocked = true;
 
                                             return (
                                                 <div key={chapter.id} className={chIdx > 0 ? 'mt-4' : ''}>
@@ -361,10 +362,12 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                         <div className="space-y-2">
                                                             {chapterLessons.map((lesson, idx) => {
                                                                 const isCompleted = !!state.completedLessons[lesson.id];
-                                                                // Within a chapter: sequential unlock
-                                                                const isUnlocked = chapterUnlocked && (
-                                                                    idx === 0 || !!state.completedLessons[chapterLessons[idx - 1]?.id]
-                                                                );
+                                                                // Within a chapter: all lessons unlocked for testing
+                                                                // TODO: restore sequential unlock when content is finalized
+                                                                // const isUnlocked = chapterUnlocked && (
+                                                                //     idx === 0 || !!state.completedLessons[chapterLessons[idx - 1]?.id]
+                                                                // );
+                                                                const isUnlocked = true;
                                                                 // Find the next lesson across all chapters in this topic
                                                                 const isNext = isUnlocked && !isCompleted &&
                                                                     !chapterLessons.slice(0, idx).some(l => !state.completedLessons[l.id]);
