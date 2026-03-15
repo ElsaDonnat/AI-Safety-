@@ -18,8 +18,8 @@
   --color-sidebar-active-text: #A8C8D8;
   --color-sidebar-divider: #6E635B;
 
-  /* Dark panel (domains section) */
-  --color-dark-panel: #3D342E;
+  /* Dark panel (domains section) — matches sidebar */
+  --color-dark-panel: #5C514A;
   --color-dark-panel-text: #F0EBE5;
   --color-dark-panel-muted: #B5A99F;
 
@@ -66,7 +66,7 @@
   --font-display: 'Clash Display', 'Space Grotesk', system-ui, sans-serif;
   --font-serif: 'Clash Display', 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
-  --font-mono: 'Space Mono', 'Courier Prime', monospace;
+  --font-mono: 'Share Tech Mono', monospace;
 
   /* Radius — sharp, editorial */
   --radius-card: 3px;
