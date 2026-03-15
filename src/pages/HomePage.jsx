@@ -1,41 +1,7 @@
 import { useApp } from '../context/AppContext';
 import { DOMAINS, LESSONS } from '../data/lessons';
 import MatrixTextReveal from '../components/MatrixTextReveal';
-// Section icons — Clash Display stroke contrast (thick verticals, thin horizontals)
-const SECTION_ICONS = {
-    learn: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <line x1="4" y1="4" x2="4" y2="20" strokeWidth="1.8" strokeLinecap="round" />
-            <line x1="4" y1="5" x2="20" y2="5" strokeWidth="1.0" />
-            <line x1="4" y1="10.5" x2="16" y2="10.5" strokeWidth="1.0" />
-            <line x1="4" y1="16" x2="12" y2="16" strokeWidth="1.0" />
-        </svg>
-    ),
-    library: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <line x1="3" y1="3" x2="3" y2="21" strokeWidth="1.6" />
-            <line x1="12" y1="3" x2="12" y2="21" strokeWidth="1.6" />
-            <line x1="21" y1="3" x2="21" y2="21" strokeWidth="1.6" />
-            <line x1="3" y1="3" x2="21" y2="3" strokeWidth="0.9" />
-            <line x1="3" y1="12" x2="21" y2="12" strokeWidth="0.9" />
-            <line x1="3" y1="21" x2="21" y2="21" strokeWidth="0.9" />
-        </svg>
-    ),
-    practice: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round">
-            <path d="M20 8A9 9 0 0 0 5 7" strokeWidth="1.0" />
-            <path d="M4 16a9 9 0 0 0 15 1" strokeWidth="1.0" />
-            <polyline points="21 4 21 9 16 9" strokeWidth="1.8" strokeLinejoin="round" />
-            <polyline points="3 20 3 15 8 15" strokeWidth="1.8" strokeLinejoin="round" />
-        </svg>
-    ),
-    challenge: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2L22 12L12 22L2 12Z" strokeWidth="0.9" />
-            <line x1="12" y1="6" x2="12" y2="18" strokeWidth="1.8" />
-        </svg>
-    ),
-};
+import { NAV_ICONS } from '../components/layout/NavIcons';
 
 const SECTIONS = [
     {
@@ -204,7 +170,7 @@ export default function HomePage({ onTabChange }) {
                         }}
                     >
                         <div className="flex-shrink-0" style={{ color: section.color }}>
-                            {SECTION_ICONS[section.id]}
+                            {NAV_ICONS[section.id]}
                         </div>
                         <div className="flex-1 min-w-0">
                             <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink)', letterSpacing: '-0.01em' }}>
@@ -239,8 +205,8 @@ export default function HomePage({ onTabChange }) {
                             key={domain.id}
                             className="flex items-center gap-3 px-4 py-3 rounded-[3px]"
                             style={{
-                                backgroundColor: `${domain.color}18`,
-                                border: `1px solid ${domain.color}25`,
+                                backgroundColor: `${domain.color}35`,
+                                border: `1px solid ${domain.color}50`,
                             }}
                         >
                             <div className="w-2 h-2 rounded-[1px] flex-shrink-0" style={{ backgroundColor: domain.color }} />
