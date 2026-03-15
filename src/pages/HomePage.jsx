@@ -59,7 +59,7 @@ export default function HomePage({ onTabChange }) {
                 }}>
                     <MatrixTextReveal
                         text="alignd."
-                        dotElement={<span style={{ color: 'var(--color-bronze)', fontSize: '1.2em' }}>.</span>}
+                        dotColor="var(--color-bronze)"
                     />
                 </h1>
                 <p style={{

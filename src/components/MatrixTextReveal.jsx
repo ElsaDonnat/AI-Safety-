@@ -14,7 +14,7 @@ function getRandomChar() {
   return RANDOM_CHARS[Math.floor(Math.random() * RANDOM_CHARS.length)];
 }
 
-export default function MatrixTextReveal({ text = '', className, style, onComplete, dotElement }) {
+export default function MatrixTextReveal({ text = '', className, style, onComplete, dotElement, dotColor }) {
   // Capture once at mount so another instance completing can't kill this animation
   const [shouldAnimate] = useState(() => !hasPlayedThisSession);
 
@@ -121,8 +121,9 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
             </span>
           );
         }
+        const isDot = dotColor && isLastChar && text.endsWith('.');
         return (
-          <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : undefined }}>
+          <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : undefined, color: isDot && charState.resolved ? dotColor : undefined }}>
             {charState.display}
           </span>
         );
