@@ -41,7 +41,7 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
             <div className="achievement-detail-content">
                 <div
                     className="achievement-detail-emoji-wrap"
-                    style={isUnlocked ? { background: 'rgba(230, 168, 23, 0.10)' } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
+                    style={isUnlocked ? { background: 'rgba(92, 81, 74, 0.08)' } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
                 >
                     <span className={`achievement-detail-emoji ${isUnlocked ? '' : 'achievement-emoji--locked'}`}>
                         {achievement.emoji}
@@ -110,30 +110,28 @@ export default function AchievementsModal({ onClose }) {
             <div className="achievement-modal" onClick={e => e.stopPropagation()}>
                 {/* Header */}
                 <div className="achievement-modal-header">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                Achievements
-                            </h2>
-                            <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                                {totalUnlocked} / {ACHIEVEMENTS.length + BONUS_ACHIEVEMENTS.length} unlocked
-                            </p>
-                        </div>
-                        <button onClick={onClose} className="achievement-close-btn" aria-label="Close">
+                    <div className="relative flex items-center justify-center">
+                        <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                            Achievements
+                        </h2>
+                        <button onClick={onClose} className="absolute right-0 p-1 rounded-[3px]" style={{ color: 'var(--color-ink-muted)' }} aria-label="Close">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <line x1="18" y1="6" x2="6" y2="18" />
                                 <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
                         </button>
                     </div>
+                    <p className="text-[11px] text-center mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>
+                        {totalUnlocked} / {ACHIEVEMENTS.length + BONUS_ACHIEVEMENTS.length} unlocked
+                    </p>
 
                     {/* Progress bar */}
-                    <div className="mt-3 w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
+                    <div className="mt-3 w-full h-1.5 rounded-[2px] overflow-hidden" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div
-                            className="h-full rounded-full transition-all duration-700 ease-out"
+                            className="h-full rounded-[2px] transition-all duration-700 ease-out"
                             style={{
                                 width: `${(totalUnlocked / (ACHIEVEMENTS.length + BONUS_ACHIEVEMENTS.length)) * 100}%`,
-                                backgroundColor: '#B8860B',
+                                backgroundColor: 'var(--color-sidebar-bg)',
                             }}
                         />
                     </div>
@@ -157,7 +155,7 @@ export default function AchievementsModal({ onClose }) {
 
                                 return (
                                     <div key={cat} className="mb-5">
-                                        <h3 className="text-[10px] uppercase tracking-widest font-bold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
+                                        <h3 className="text-[10px] uppercase tracking-widest font-semibold mb-2" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>
                                             {CATEGORY_LABELS[cat]}
                                         </h3>
                                         <div className="achievement-grid">
@@ -205,7 +203,7 @@ export default function AchievementsModal({ onClose }) {
 
                             {/* Bonus (Secret) Achievements */}
                             <div className="mb-5">
-                                <h3 className="text-[10px] uppercase tracking-widest font-bold mb-2" style={{ color: '#B8860B' }}>
+                                <h3 className="text-[10px] uppercase tracking-widest font-semibold mb-2" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>
                                     Secret {unlockedBonus > 0 ? `\u2014 ${unlockedBonus}/${BONUS_ACHIEVEMENTS.length}` : ''}
                                 </h3>
                                 <div className="achievement-grid">

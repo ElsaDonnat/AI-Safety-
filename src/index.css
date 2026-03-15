@@ -1655,7 +1655,7 @@ input, textarea, [contenteditable] {
   width: 100%;
   max-width: 420px;
   max-height: 85vh;
-  background: var(--color-card);
+  background: var(--color-parchment);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-elevated);
   overflow: hidden;
@@ -1676,9 +1676,9 @@ input, textarea, [contenteditable] {
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius-button);
   border: none;
-  background: rgba(var(--color-ink-rgb), 0.06);
+  background: transparent;
   color: var(--color-ink-muted);
   cursor: pointer;
   transition: background-color var(--duration-fast) ease;
@@ -1713,8 +1713,9 @@ input, textarea, [contenteditable] {
   align-items: center;
   text-align: center;
   padding: 12px 8px;
-  border-radius: 12px;
-  background: rgba(var(--color-ink-rgb), 0.02);
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
   transition: transform var(--duration-fast) ease;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -1725,7 +1726,8 @@ input, textarea, [contenteditable] {
 }
 
 .achievement-tile--unlocked {
-  background: rgba(230, 168, 23, 0.06);
+  background: var(--color-card);
+  border-left: 3px solid var(--color-sidebar-bg);
 }
 
 .achievement-tile--locked {
@@ -1746,7 +1748,7 @@ input, textarea, [contenteditable] {
 .achievement-title {
   font-size: 0.7rem;
   font-weight: 700;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   color: var(--color-ink);
   margin-bottom: 2px;
   line-height: 1.2;
@@ -1771,7 +1773,7 @@ input, textarea, [contenteditable] {
 .achievement-progress-fill {
   height: 100%;
   border-radius: 2px;
-  background: #B8860B;
+  background: var(--color-sidebar-bg);
   transition: width 0.4s ease-out;
 }
 
@@ -1783,32 +1785,27 @@ input, textarea, [contenteditable] {
 
 .achievement-unlock-date {
   font-size: 0.55rem;
-  color: var(--color-success);
+  color: var(--color-sidebar-bg);
+  font-family: var(--font-mono);
   margin-top: 2px;
 }
 
 .achievement-tile--mystery {
   opacity: 0.45;
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(var(--color-ink-rgb), 0.02),
-    rgba(var(--color-ink-rgb), 0.02) 4px,
-    rgba(var(--color-ink-rgb), 0.05) 4px,
-    rgba(var(--color-ink-rgb), 0.05) 8px
-  );
+  background: rgba(var(--color-ink-rgb), 0.02);
   border: 1px dashed rgba(var(--color-ink-rgb), 0.12);
 }
 
 .achievement-emoji--mystery {
   font-size: 1.4rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-weight: bold;
   color: var(--color-ink-faint);
 }
 
 .achievement-tile--bonus {
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.08), rgba(230, 168, 23, 0.12));
-  border: 1px solid rgba(184, 134, 11, 0.15);
+  background: var(--color-card);
+  border-left: 3px solid var(--color-burgundy);
 }
 
 /* Achievement Detail View */
@@ -1826,7 +1823,7 @@ input, textarea, [contenteditable] {
   left: 8px;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-button);
   border: none;
   background: rgba(var(--color-ink-rgb), 0.05);
   color: var(--color-ink);
@@ -1854,7 +1851,7 @@ input, textarea, [contenteditable] {
 .achievement-detail-emoji-wrap {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: var(--radius-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1869,7 +1866,7 @@ input, textarea, [contenteditable] {
 .achievement-detail-title {
   font-size: 1.2rem;
   font-weight: 700;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   color: var(--color-ink);
   margin-bottom: 8px;
 }
@@ -1883,8 +1880,9 @@ input, textarea, [contenteditable] {
 
 .achievement-detail-date {
   font-size: 0.8rem;
-  color: var(--color-success);
+  color: var(--color-sidebar-bg);
   font-weight: 600;
+  font-family: var(--font-mono);
   margin-bottom: 20px;
 }
 
@@ -1913,13 +1911,13 @@ input, textarea, [contenteditable] {
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(var(--color-ink-rgb), 0.12);
-  background: rgba(var(--color-ink-rgb), 0.03);
-  color: var(--color-ink);
+  border-radius: var(--radius-button);
+  border: none;
+  background: var(--color-sidebar-bg);
+  color: var(--color-sidebar-text-hover);
   font-size: 0.85rem;
   font-weight: 600;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   cursor: pointer;
   transition: background var(--duration-fast) ease, transform var(--duration-fast) ease;
 }
