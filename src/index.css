@@ -355,7 +355,7 @@ input, textarea, [contenteditable] {
   cursor: pointer;
   color: var(--color-sidebar-text);
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 400;
   font-family: var(--font-sans);
   transition: all var(--duration-fast) ease;
   width: 100%;
@@ -370,7 +370,7 @@ input, textarea, [contenteditable] {
 .sidebar-nav-item--active {
   background-color: var(--color-sidebar-active-bg);
   color: var(--color-sidebar-active-text);
-  font-weight: 600;
+  font-weight: 400;
   border-left: 3px solid var(--color-sidebar-active-text);
   padding-left: 13px;
 }
