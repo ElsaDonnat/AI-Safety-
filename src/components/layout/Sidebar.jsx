@@ -31,7 +31,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
                             <span className="sidebar-nav-icon">
                                 {NAV_ICONS[item.id]}
                             </span>
-                            <span className="sidebar-nav-label" style={{ fontFamily: 'var(--font-mono)' }}>{item.label}</span>
+                            <span className="sidebar-nav-label">{item.label}</span>
                         </button>
                     );
                 })}
