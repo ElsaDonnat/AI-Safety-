@@ -95,7 +95,7 @@ export default function HomePage({ onTabChange }) {
                         </span>
                     </div>
                     <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
-                        <div style={{ height: '100%', width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-bronze)', transition: 'width 0.5s ease-out' }} />
+                        <div style={{ height: '100%', width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-burgundy)', transition: 'width 0.5s ease-out' }} />
                     </div>
                     <div className="flex justify-between mt-3">
                         <div>
@@ -173,7 +173,7 @@ export default function HomePage({ onTabChange }) {
                             {NAV_ICONS[section.id]}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink)', letterSpacing: '-0.01em' }}>
+                            <p style={{ fontFamily: 'var(--font-mono)', fontWeight: 400, fontSize: '14px', color: 'var(--color-ink)' }}>
                                 {section.title}
                             </p>
                             <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
@@ -211,7 +211,7 @@ export default function HomePage({ onTabChange }) {
                         >
                             <div className="w-2 h-2 rounded-[1px] flex-shrink-0" style={{ backgroundColor: domain.color }} />
                             <div className="flex-1">
-                                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '13px', color: 'var(--color-dark-panel-text)' }}>
+                                <p style={{ fontFamily: 'var(--font-mono)', fontWeight: 400, fontSize: '13px', color: 'var(--color-dark-panel-text)' }}>
                                     {domain.title}
                                 </p>
                                 <p className="text-xs" style={{ color: 'var(--color-dark-panel-muted)' }}>
