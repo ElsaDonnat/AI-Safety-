@@ -419,7 +419,7 @@ input, textarea, [contenteditable] {
 
 .sidebar-progress-fill {
   height: 100%;
-  background-color: var(--color-warning);
+  background-color: var(--color-burgundy);
   border-radius: 1px;
   transition: width 0.5s ease-out;
 }
