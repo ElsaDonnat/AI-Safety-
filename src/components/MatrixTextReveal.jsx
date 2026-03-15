@@ -15,13 +15,14 @@ function getRandomChar() {
 }
 
 export default function MatrixTextReveal({ text = '', className, style, onComplete, dotElement }) {
-  const shouldAnimate = !hasPlayedThisSession;
+  // Capture once at mount so another instance completing can't kill this animation
+  const [shouldAnimate] = useState(() => !hasPlayedThisSession);
 
   const [charStates, setCharStates] = useState(() => {
-    if (!shouldAnimate) {
-      return Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0, started: true }));
+    if (shouldAnimate) {
+      return Array.from(text).map(() => ({ display: '', resolved: false, cycleCount: 0, started: false }));
     }
-    return Array.from(text).map(() => ({ display: '', resolved: false, cycleCount: 0, started: false }));
+    return Array.from(text).map((ch) => ({ display: ch, resolved: true, cycleCount: 0, started: true }));
   });
   const intervalRef = useRef(null);
   const completedRef = useRef(!shouldAnimate);

@@ -111,7 +111,7 @@ export default function TopBar() {
                     <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '20px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)' }}>
                         <MatrixTextReveal
                             text="alignd."
-                            dotElement={<span style={{ color: 'var(--color-bronze)' }}>.</span>}
+                            dotElement={<span style={{ display: 'inline-block', width: '0.18em', height: '0.18em', backgroundColor: 'var(--color-bronze)', borderRadius: '50%', marginBottom: '0.15em', verticalAlign: 'baseline' }} />}
                         />
                     </h1>
 

@@ -183,8 +183,8 @@ export default function Settings() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
-                        <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Total XP</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
+                        <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Total XP</div>
                     </Card>
                     <Card className="text-center p-4">
                         <div className="flex items-center justify-center gap-1.5">
@@ -196,31 +196,31 @@ export default function Settings() {
                                 yesterday.setDate(yesterday.getDate() - 1);
                                 return state.lastActiveDate === yesterday.toISOString().split('T')[0] ? 'at-risk' : 'inactive';
                             })()} size={22} />
-                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
                         </div>
-                        <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Day Streak</div>
+                        <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Day Streak</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
-                        <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Cards Learned</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
+                        <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Cards Learned</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
-                        <div className="text-xs mt-1" style={{ color: 'var(--color-ink-muted)' }}>Lessons Complete</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
+                        <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Lessons Complete</div>
                     </Card>
                 </div>
 
                 {(totalSeconds > 0 || todaySeconds > 0) && (
                     <Card className="mb-4 p-4">
                         <div className="flex items-center gap-2 mb-3">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-sidebar-bg)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                                 <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                             </svg>
-                            <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Study Time</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Study Time</span>
                         </div>
                         <div className="flex items-center justify-around">
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-burgundy)' }}>{todayTimeStr}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-sidebar-bg)' }}>{todayTimeStr}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Today</span>
                             </div>
                             <div style={{ width: 1, height: 28, backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }} />
@@ -234,7 +234,7 @@ export default function Settings() {
 
                 {masteryEntries.length > 0 && (
                     <Card className="mb-4 p-4">
-                        <div className="text-sm font-semibold mb-2" style={{ color: 'var(--color-ink-secondary)' }}>Mastery Breakdown</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Mastery Breakdown</div>
                         <div className="flex items-center justify-around w-full">
                             <div className="flex flex-col items-center">
                                 <span className="text-xl font-bold" style={{ color: 'var(--color-success)' }}>{greenCount}</span>
@@ -260,7 +260,7 @@ export default function Settings() {
                     return (
                         <>
                             <Card className="mb-3 p-4">
-                                <div className="text-sm font-semibold mb-3" style={{ color: 'var(--color-ink-secondary)' }}>Recap intensity (lessons)</div>
+                                <div className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Recap intensity (lessons)</div>
                                 <div className="flex gap-2">
                                     {[
                                         { value: 0, label: 'Off', sub: 'No recap' },
@@ -275,8 +275,8 @@ export default function Settings() {
                                                 onClick={() => dispatch({ type: 'SET_RECAP_PER_CARD', value })}
                                                 className="flex-1 py-2.5 rounded-[3px] text-sm font-semibold transition-colors"
                                                 style={{
-                                                    backgroundColor: isActive ? 'var(--color-burgundy)' : 'var(--color-card)',
-                                                    color: isActive ? 'white' : 'var(--color-ink-secondary)',
+                                                    backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-card)',
+                                                    color: isActive ? '#F0EBE5' : 'var(--color-ink-secondary)',
                                                     border: isActive ? 'none' : '1px solid rgba(var(--color-ink-rgb), 0.08)',
                                                 }}
                                             >
@@ -306,7 +306,7 @@ export default function Settings() {
                 {/* Notifications */}
                 <Card className="mb-3 p-4">
                     <div className="flex items-center justify-between mb-1">
-                        <div className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Daily reminders</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Daily reminders</div>
                         <button
                             type="button"
                             role="switch"
@@ -323,7 +323,7 @@ export default function Settings() {
                             }}
                             className="relative w-11 h-6 rounded-[3px] transition-colors"
                             style={{
-                                backgroundColor: state.notificationsEnabled ? 'var(--color-burgundy)' : 'rgba(var(--color-ink-rgb), 0.15)',
+                                backgroundColor: state.notificationsEnabled ? 'var(--color-sidebar-bg)' : 'rgba(var(--color-ink-rgb), 0.12)',
                             }}
                         >
                             <span
@@ -387,7 +387,7 @@ export default function Settings() {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-ink-muted)' }}>
                                 <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                             </svg>
-                            <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Appearance</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Appearance</span>
                         </div>
                         <div className="flex rounded-[3px] overflow-hidden" style={{ border: '1px solid rgba(var(--color-ink-rgb), 0.1)' }}>
                             {[
@@ -399,8 +399,8 @@ export default function Settings() {
                                     onClick={() => dispatch({ type: 'SET_THEME', mode: opt.value })}
                                     className="px-3 py-1.5 text-xs font-semibold transition-colors"
                                     style={{
-                                        backgroundColor: state.themeMode === opt.value ? 'var(--color-burgundy)' : 'transparent',
-                                        color: state.themeMode === opt.value ? '#fff' : 'var(--color-ink-muted)',
+                                        backgroundColor: state.themeMode === opt.value ? 'var(--color-sidebar-bg)' : 'transparent',
+                                        color: state.themeMode === opt.value ? '#F0EBE5' : 'var(--color-ink-muted)',
                                         border: 'none',
                                         cursor: 'pointer',
                                     }}
@@ -419,7 +419,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>
-                                <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Sound effects</span>
+                                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Sound effects</span>
                             </div>
                             <span className="text-xs tabular-nums" style={{ color: 'var(--color-ink-muted)', minWidth: '2.5rem', textAlign: 'right' }}>
                                 {(state.soundVolume ?? 1) === 0 ? 'Off' : `${Math.round((state.soundVolume ?? 1) * 100)}%`}
@@ -431,7 +431,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_SOUND_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, rgba(168, 200, 216, 0.7) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.12) ${(state.soundVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, var(--color-sidebar-bg) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.soundVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -442,7 +442,7 @@ export default function Settings() {
                             <div className="flex items-center gap-2">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /></svg>
                                 <div>
-                                    <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Ambient music</span>
+                                    <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Ambient music</span>
                                     <div className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Ambient soundscape</div>
                                 </div>
                             </div>
@@ -456,7 +456,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_MUSIC_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, rgba(168, 200, 216, 0.7) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.12) ${(state.musicVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, var(--color-sidebar-bg) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.musicVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -465,7 +465,7 @@ export default function Settings() {
                     <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div className="flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2" /><line x1="1" y1="8" x2="1" y2="16" /><line x1="23" y1="8" x2="23" y2="16" /></svg>
-                            <span className="text-sm font-semibold" style={{ color: 'var(--color-ink-secondary)' }}>Haptic feedback</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Haptic feedback</span>
                         </div>
                         <button
                             type="button"
@@ -473,7 +473,7 @@ export default function Settings() {
                             aria-checked={state.hapticsEnabled}
                             onClick={() => { feedback.toggleClick(); dispatch({ type: 'TOGGLE_HAPTICS' }); }}
                             className="relative w-11 h-6 rounded-[3px] transition-colors"
-                            style={{ backgroundColor: state.hapticsEnabled ? 'var(--color-burgundy)' : 'rgba(var(--color-ink-rgb), 0.15)' }}
+                            style={{ backgroundColor: state.hapticsEnabled ? 'var(--color-sidebar-bg)' : 'rgba(var(--color-ink-rgb), 0.12)' }}
                         >
                             <span
                                 className="absolute top-0.5 left-0.5 w-5 h-5 rounded-[2px] bg-white transition-transform"
@@ -487,12 +487,26 @@ export default function Settings() {
 
                 {/* Data Management */}
                 <div className="flex gap-2 mb-3">
-                    <Button variant="secondary" className="flex-1 text-center" onClick={() => exportProgress(state)}>
-                        Export Progress
-                    </Button>
-                    <Button variant="secondary" className="flex-1 text-center" onClick={() => fileInputRef.current?.click()}>
-                        Import Progress
-                    </Button>
+                    <button
+                        onClick={() => { feedback.tap(); exportProgress(state); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
+                    >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Export
+                    </button>
+                    <button
+                        onClick={() => { feedback.tap(); fileInputRef.current?.click(); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
+                    >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        Import
+                    </button>
                     <input ref={fileInputRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
                 </div>
                 {importStatus === 'success' && (
@@ -502,14 +516,13 @@ export default function Settings() {
                     <p className="text-xs text-center mb-3" style={{ color: 'var(--color-error)' }}>Invalid backup file. Please try again.</p>
                 )}
 
-                <Button
-                    variant="ghost"
-                    onClick={() => setShowResetConfirm(true)}
-                    className="w-full text-center"
-                    style={{ color: 'var(--color-error)' }}
+                <button
+                    onClick={() => { feedback.tap(); setShowResetConfirm(true); }}
+                    className="w-full text-center py-2 text-xs font-medium transition-all active:scale-[0.98]"
+                    style={{ color: 'var(--color-ink-muted)', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                     Reset All Progress
-                </Button>
+                </button>
 
                 <Divider />
 
@@ -517,20 +530,20 @@ export default function Settings() {
                 <div className="flex gap-2 mb-3">
                     <button
                         onClick={() => window.open('https://forms.gle/JDUzvYqq5dVxo5vL9', '_blank')}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-medium"
-                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'var(--color-burgundy-soft)', border: '1px solid rgba(var(--color-ink-rgb), 0.10)' }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
                     >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         </svg>
-                        Give Feedback
+                        Feedback
                     </button>
                     <button
                         onClick={() => window.open('https://buymeacoffee.com/elsadonnat0', '_blank')}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-medium"
-                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'rgba(201, 169, 110, 0.12)', border: '1px solid rgba(201, 169, 110, 0.2)' }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
                     >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" /><line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />
                         </svg>
                         Buy Me a Coffee
