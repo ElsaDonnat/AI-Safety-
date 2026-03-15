@@ -1727,7 +1727,7 @@ input, textarea, [contenteditable] {
 
 .achievement-tile--unlocked {
   background: var(--color-card);
-  border-left: 3px solid var(--color-sidebar-bg);
+  border-left: 3px solid var(--color-burgundy);
 }
 
 .achievement-tile--locked {
@@ -1773,7 +1773,7 @@ input, textarea, [contenteditable] {
 .achievement-progress-fill {
   height: 100%;
   border-radius: 2px;
-  background: var(--color-sidebar-bg);
+  background: var(--color-burgundy);
   transition: width 0.4s ease-out;
 }
 
@@ -1785,7 +1785,7 @@ input, textarea, [contenteditable] {
 
 .achievement-unlock-date {
   font-size: 0.55rem;
-  color: var(--color-sidebar-bg);
+  color: var(--color-burgundy);
   font-family: var(--font-mono);
   margin-top: 2px;
 }
@@ -1880,7 +1880,7 @@ input, textarea, [contenteditable] {
 
 .achievement-detail-date {
   font-size: 0.8rem;
-  color: var(--color-sidebar-bg);
+  color: var(--color-burgundy);
   font-weight: 600;
   font-family: var(--font-mono);
   margin-bottom: 20px;
@@ -1917,7 +1917,7 @@ input, textarea, [contenteditable] {
   color: var(--color-sidebar-text-hover);
   font-size: 0.85rem;
   font-weight: 600;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   cursor: pointer;
   transition: background var(--duration-fast) ease, transform var(--duration-fast) ease;
 }

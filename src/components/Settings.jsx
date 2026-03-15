@@ -183,7 +183,7 @@ export default function Settings() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Total XP</div>
                     </Card>
                     <Card className="text-center p-4">
@@ -196,16 +196,16 @@ export default function Settings() {
                                 yesterday.setDate(yesterday.getDate() - 1);
                                 return state.lastActiveDate === yesterday.toISOString().split('T')[0] ? 'at-risk' : 'inactive';
                             })()} size={22} />
-                            <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
                         </div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Day Streak</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Cards Learned</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Lessons Complete</div>
                     </Card>
                 </div>
@@ -213,19 +213,19 @@ export default function Settings() {
                 {(totalSeconds > 0 || todaySeconds > 0) && (
                     <Card className="mb-4 p-4">
                         <div className="flex items-center gap-2 mb-3">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-sidebar-bg)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                                 <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                             </svg>
                             <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Study Time</span>
                         </div>
                         <div className="flex items-center justify-around">
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-sidebar-bg)' }}>{todayTimeStr}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{todayTimeStr}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Today</span>
                             </div>
                             <div style={{ width: 1, height: 28, backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }} />
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-ink)' }}>{studyTimeStr}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{studyTimeStr}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Total</span>
                             </div>
                         </div>
@@ -237,15 +237,15 @@ export default function Settings() {
                         <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-mono)' }}>Mastery Breakdown</div>
                         <div className="flex items-center justify-around w-full">
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-success)' }}>{greenCount}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-success)', fontFamily: 'var(--font-display)' }}>{greenCount}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Mastered</span>
                             </div>
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-warning)' }}>{yellowCount}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-warning)', fontFamily: 'var(--font-display)' }}>{yellowCount}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Learning</span>
                             </div>
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-error)' }}>{redCount}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-error)', fontFamily: 'var(--font-display)' }}>{redCount}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Needs Work</span>
                             </div>
                         </div>
@@ -278,6 +278,7 @@ export default function Settings() {
                                                     backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-card)',
                                                     color: isActive ? '#F0EBE5' : 'var(--color-ink-secondary)',
                                                     border: isActive ? 'none' : '1px solid rgba(var(--color-ink-rgb), 0.08)',
+                                                    fontFamily: 'var(--font-mono)',
                                                 }}
                                             >
                                                 {label}
@@ -403,6 +404,7 @@ export default function Settings() {
                                         color: state.themeMode === opt.value ? '#F0EBE5' : 'var(--color-ink-muted)',
                                         border: 'none',
                                         cursor: 'pointer',
+                                        fontFamily: 'var(--font-mono)',
                                     }}
                                 >
                                     {opt.label}
@@ -490,7 +492,7 @@ export default function Settings() {
                     <button
                         onClick={() => { feedback.tap(); exportProgress(state); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
-                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
+                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
@@ -500,7 +502,7 @@ export default function Settings() {
                     <button
                         onClick={() => { feedback.tap(); fileInputRef.current?.click(); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
-                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
+                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
@@ -531,7 +533,7 @@ export default function Settings() {
                     <button
                         onClick={() => window.open('https://forms.gle/JDUzvYqq5dVxo5vL9', '_blank')}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
-                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
+                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -541,7 +543,7 @@ export default function Settings() {
                     <button
                         onClick={() => window.open('https://buymeacoffee.com/elsadonnat0', '_blank')}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
-                        style={{ color: 'var(--color-sidebar-bg)', backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '1px solid rgba(92, 81, 74, 0.15)' }}
+                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" /><line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />

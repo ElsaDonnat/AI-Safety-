@@ -121,7 +121,7 @@ export default function WeekTracker({ onClose }) {
                 <div className="px-5 pt-5 pb-3 text-center">
                     <div className="flex items-center justify-center gap-3 mb-2">
                         <StreakFlame status={streakStatus} size={28} />
-                        <span className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: streakStatus === 'inactive' ? 'var(--color-ink-faint)' : 'var(--color-sidebar-bg)' }}>
+                        <span className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: streakStatus === 'inactive' ? 'var(--color-ink-faint)' : 'var(--color-burgundy)' }}>
                             {state.currentStreak}
                         </span>
                     </div>
@@ -139,20 +139,20 @@ export default function WeekTracker({ onClose }) {
                             return (
                                 <div key={i} className="flex flex-col items-center gap-1">
                                     <span className="text-[10px] font-medium" style={{
-                                        color: day.isToday ? 'var(--color-sidebar-bg)' : 'var(--color-ink-faint)',
+                                        color: day.isToday ? 'var(--color-burgundy)' : 'var(--color-ink-faint)',
                                         fontFamily: 'var(--font-mono)',
                                     }}>
                                         {day.label}
                                     </span>
                                     <div className="w-8 h-8 rounded-[3px] flex items-center justify-center" style={{
                                         backgroundColor: day.isFuture ? 'rgba(var(--color-ink-rgb), 0.02)' :
-                                            hasActivity ? 'rgba(92, 81, 74, 0.08)' : 'var(--color-card)',
-                                        border: day.isToday ? '2px solid var(--color-sidebar-bg)' :
-                                            hasActivity ? '2px solid rgba(92, 81, 74, 0.2)' : '1px solid rgba(var(--color-ink-rgb), 0.06)',
+                                            hasActivity ? 'rgba(212, 114, 106, 0.08)' : 'var(--color-card)',
+                                        border: day.isToday ? '2px solid var(--color-burgundy)' :
+                                            hasActivity ? '2px solid rgba(212, 114, 106, 0.2)' : '1px solid rgba(var(--color-ink-rgb), 0.06)',
                                         boxShadow: hasActivity ? 'none' : 'var(--shadow-card)',
                                     }}>
                                         {hasActivity ? (
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-sidebar-bg)" strokeWidth="3">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="3">
                                                 <polyline points="20 6 9 17 4 12" />
                                             </svg>
                                         ) : day.isFuture ? null : (
@@ -173,7 +173,7 @@ export default function WeekTracker({ onClose }) {
                 <div className="px-5 pb-3">
                     <div className="grid grid-cols-3 gap-2">
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-sidebar-bg)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
                                 {stats.totalSessions}
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>
@@ -181,13 +181,13 @@ export default function WeekTracker({ onClose }) {
                             </div>
                         </div>
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-sidebar-bg)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
                                 {stats.totalQuestions}
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>questions</div>
                         </div>
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-sidebar-bg)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
                                 {formatTime(stats.totalSeconds)}
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>study time</div>
@@ -203,17 +203,17 @@ export default function WeekTracker({ onClose }) {
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round">
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-warning)" stroke="var(--color-warning)" opacity="0.7" />
                                 </svg>
-                                <div className="text-sm font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{state.totalXP} XP</div>
+                                <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP} XP</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>total earned</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                             <div className="flex items-center gap-1.5">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-sidebar-bg)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                 </svg>
-                                <div className="text-sm font-bold" style={{ color: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-display)' }}>{cardsLearned}</div>
+                                <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{cardsLearned}</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>concepts learned</div>
                         </div>
@@ -257,7 +257,7 @@ export default function WeekTracker({ onClose }) {
                                 await shareText({ title: 'AI Safety', text: lines.join('\n') });
                             }}
                             className="w-full flex items-center justify-center gap-2 mb-2 py-2.5 rounded-[3px] text-sm font-semibold transition-colors cursor-pointer"
-                            style={{ color: '#F0EBE5', backgroundColor: 'var(--color-sidebar-bg)' }}
+                            style={{ color: '#F0EBE5', backgroundColor: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-mono)' }}
                         >
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
@@ -269,7 +269,7 @@ export default function WeekTracker({ onClose }) {
                     )}
                     <button
                         className="w-full py-2.5 rounded-[3px] text-sm font-semibold cursor-pointer"
-                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}
+                        style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)', fontFamily: 'var(--font-mono)' }}
                         onClick={onClose}
                     >
                         Got it

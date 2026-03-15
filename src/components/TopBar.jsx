@@ -136,8 +136,8 @@ export default function TopBar() {
                         <div id="xp-star-target" className="topbar-stat"
                             onClick={() => window.dispatchEvent(new Event('openWeekTracker'))}
                             style={{ cursor: 'pointer' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-burgundy)" stroke="var(--color-burgundy)" opacity="0.2" />
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-ink-muted)" stroke="var(--color-ink-muted)" opacity="0.2" />
                             </svg>
                             <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
                                 {displayXP}

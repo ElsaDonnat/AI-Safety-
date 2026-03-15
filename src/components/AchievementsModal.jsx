@@ -41,7 +41,7 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
             <div className="achievement-detail-content">
                 <div
                     className="achievement-detail-emoji-wrap"
-                    style={isUnlocked ? { background: 'rgba(92, 81, 74, 0.08)' } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
+                    style={isUnlocked ? { background: 'rgba(212, 114, 106, 0.08)' } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
                 >
                     <span className={`achievement-detail-emoji ${isUnlocked ? '' : 'achievement-emoji--locked'}`}>
                         {achievement.emoji}
@@ -131,7 +131,7 @@ export default function AchievementsModal({ onClose }) {
                             className="h-full rounded-[2px] transition-all duration-700 ease-out"
                             style={{
                                 width: `${(totalUnlocked / (ACHIEVEMENTS.length + BONUS_ACHIEVEMENTS.length)) * 100}%`,
-                                backgroundColor: 'var(--color-sidebar-bg)',
+                                backgroundColor: 'var(--color-burgundy)',
                             }}
                         />
                     </div>
