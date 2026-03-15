@@ -356,7 +356,7 @@ input, textarea, [contenteditable] {
   color: var(--color-sidebar-text);
   font-size: 0.9rem;
   font-weight: 400;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   transition: all var(--duration-fast) ease;
   width: 100%;
   text-align: left;
@@ -473,7 +473,7 @@ input, textarea, [contenteditable] {
   color: var(--color-ink-muted);
   font-size: 0.8rem;
   font-weight: 500;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   transition: all var(--duration-fast) ease;
 }
 

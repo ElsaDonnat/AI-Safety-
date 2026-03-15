@@ -39,8 +39,8 @@ export default function Sidebar({ activeTab, onTabChange }) {
 
             <div className="sidebar-progress">
                 <div className="sidebar-progress-label">
-                    <span style={{ fontFamily: 'var(--font-mono)' }}>Progress</span>
-                    <span style={{ fontFamily: 'var(--font-mono)' }}>{learnedCount}/{totalConcepts}</span>
+                    <span>Progress</span>
+                    <span>{learnedCount}/{totalConcepts}</span>
                 </div>
                 <div className="sidebar-progress-bar">
                     <div
@@ -48,7 +48,7 @@ export default function Sidebar({ activeTab, onTabChange }) {
                         style={{ width: `${progressPct}%` }}
                     />
                 </div>
-                <p className="sidebar-progress-text" style={{ fontFamily: 'var(--font-mono)' }}>
+                <p className="sidebar-progress-text">
                     {learnedCount === 0
                         ? 'Start your first lesson'
                         : `${progressPct}% of concepts discovered`
