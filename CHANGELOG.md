@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.3.1 — Content quality improvements
+
+### Fixed
+- c105 → c305 link relationship from 'a type includes' to 'includes'
+- c303 description: removed inaccurate claim that LLM pre-training is unsupervised learning; refocused on clustering and dimensionality reduction
+- c303 quizDescription updated to match corrected description
+- c301 quizDescription: spelled out "ML" abbreviation to "machine learning"
+- c101, c103, c104, c106 quizDescriptions rewritten with distinct sentence structures to prevent pattern-matching
+
+### Added
+- Cross-topic links: c304 → c201 ('used to align'), c304 ↔ c303 ('contrasts with')
+- Safety hooks in descriptions for c104 (NLP), c106 (Computer Vision), c205 (Emergent Abilities)
+- Description distractors for all 18 Foundations cards (hardCorrect + 3 difficulty-tiered distractors each)
+- True/false statements for all 18 Foundations cards with misconceptions and corrections
+- challengeQuiz.js now uses static true/false statements from trueFalseStatements.js
+
+### Changed
+- Lesson rebalance: lesson-ai-concepts-b-0 reduced from 4 to 3 cards; c304 moved to lesson-ai-concepts-b-1 (now 3 cards each)
+- c204 (Benchmarks) importance raised from 2 to 1; c205 (Emergent Abilities) lowered from 1 to 2
+- c206 (AI Labs) category changed from 'technical' to 'policy'
+
 ## 0.3.0 — AI Progress topic
 
 ### Added
