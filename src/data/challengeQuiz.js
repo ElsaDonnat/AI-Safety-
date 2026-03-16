@@ -11,6 +11,7 @@
 
 import { ALL_CONCEPTS, CATEGORY_CONFIG } from './concepts';
 import { shuffle } from './quiz';
+import { TRUE_FALSE_STATEMENTS } from './trueFalseStatements';
 
 // ─── Tier Configuration ──────────────────────────────
 export const TIERS = [
@@ -63,8 +64,29 @@ function generateTrueOrFalse() {
     if (pool.length === 0) return null;
 
     const concept = pool[Math.floor(Math.random() * pool.length)];
+    const statements = TRUE_FALSE_STATEMENTS[concept.id];
 
-    // 50% chance of true statement, 50% false
+    // Use static statements when available
+    if (statements) {
+        if (Math.random() < 0.5) {
+            return {
+                type: 'trueOrFalse',
+                statement: `${concept.title}: ${statements.trueStatement}`,
+                isTrue: true,
+                concept,
+                correction: null,
+            };
+        }
+        return {
+            type: 'trueOrFalse',
+            statement: `${concept.title}: ${statements.falseStatement}`,
+            isTrue: false,
+            concept,
+            correction: statements.correction,
+        };
+    }
+
+    // Fallback: generate dynamically from descriptions
     if (Math.random() < 0.5) {
         return {
             type: 'trueOrFalse',
@@ -75,7 +97,6 @@ function generateTrueOrFalse() {
         };
     }
 
-    // False statement: swap description with another concept's
     const others = pool.filter(c => c.id !== concept.id);
     if (others.length === 0) return null;
     const wrong = others[Math.floor(Math.random() * others.length)];
