@@ -110,7 +110,7 @@ export default function TopBar() {
                     {/* Logo — left */}
                     <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '24px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
                         <span>a</span>
-                        <span style={{ display: 'inline-block', width: '5px', height: '5px', backgroundColor: 'var(--color-bronze)', flexShrink: 0 }} />
+                        <span style={{ display: 'inline-block', width: '0.18em', height: '0.18em', backgroundColor: 'var(--color-bronze)', borderRadius: '50%', flexShrink: 0 }} />
                     </h1>
 
                     {/* Spacer — center */}

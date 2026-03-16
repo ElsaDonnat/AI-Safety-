@@ -49,9 +49,9 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
       const next = prev.map((charState, i) => {
         if (charState.resolved) { resolvedThisTick[i] = true; return charState; }
 
-        // If this is the dot (last char) and dotElement is used, don't iterate —
+        // If this is the dot (last char) and dotElement/dotColor is used, don't iterate —
         // resolve it instantly once the previous char has resolved
-        const isLastDot = dotElement && text.endsWith('.') && i === prev.length - 1;
+        const isLastDot = (dotElement || dotColor) && text.endsWith('.') && i === prev.length - 1;
         if (isLastDot) {
           const prevResolved = i === 0 || prev[i - 1].resolved || resolvedThisTick[i - 1];
           if (prevResolved) {
@@ -78,7 +78,7 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
 
       return next;
     });
-  }, [text, dotElement]);
+  }, [text, dotElement, dotColor]);
 
   useEffect(() => {
     if (!shouldAnimate) return;
@@ -105,14 +105,18 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
     }
   }, [charStates, onComplete]);
 
-  const useDotElement = dotElement && text.endsWith('.');
+  const useDotElement = (dotElement || dotColor) && text.endsWith('.');
 
   return (
     <span className={className} style={style}>
       {charStates.map((charState, i) => {
         const isLastChar = i === charStates.length - 1;
         if (useDotElement && isLastChar && charState.resolved) {
-          return <span key={i}>{dotElement}</span>;
+          if (dotElement) return <span key={i}>{dotElement}</span>;
+          // Render a circle dot positioned at the baseline (bottom of text)
+          return (
+            <span key={i} style={{ display: 'inline-block', width: '0.16em', height: '0.16em', backgroundColor: dotColor, borderRadius: '50%', verticalAlign: '-0.04em', marginLeft: '0.02em' }} />
+          );
         }
         if (!charState.started && !charState.resolved) {
           return (
@@ -121,9 +125,8 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
             </span>
           );
         }
-        const isDot = dotColor && isLastChar && text.endsWith('.');
         return (
-          <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : undefined, color: isDot && charState.resolved ? dotColor : undefined }}>
+          <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : undefined }}>
             {charState.display}
           </span>
         );
