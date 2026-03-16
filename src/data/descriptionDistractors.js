@@ -170,3 +170,171 @@ DESCRIPTION_DISTRACTORS['c306'] = {
         { text: 'The process of further training a pretrained model on task-specific data, which always requires as much compute and data as the original training run.', d: 3 },
     ]
 };
+
+// ─── AI Regulation (c701–c706) ──────────────────────────
+
+DESCRIPTION_DISTRACTORS['c701'] = {
+    hardCorrect: 'The body of government-enacted requirements and restrictions that determine how AI technologies may be created, evaluated, and made available for public use.',
+    distractors: [
+        { text: 'A collection of software tools that automatically scan AI models for errors and fix safety problems before they can be released to the public.', d: 1 },
+        { text: 'Formal evaluations conducted prior to an AI system\'s release that examine how it might negatively affect people\'s rights, welfare, and access to fair treatment.', d: 2 },
+        { text: 'Government-enacted requirements and restrictions for AI technologies, applying only once systems have caused documented harm to users rather than preventing harm in advance.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c702'] = {
+    hardCorrect: 'A tiered oversight model that categorizes AI applications by the severity of potential harm they pose, subjecting higher-risk systems to more demanding requirements.',
+    distractors: [
+        { text: 'A method of ranking AI research papers by their scientific impact and novelty to help funding agencies decide which projects deserve financial support.', d: 1 },
+        { text: 'Controlled regulatory environments that allow innovators to test AI applications under temporarily relaxed rules while authorities gain firsthand insight into the technology.', d: 2 },
+        { text: 'A tiered oversight model that categorizes AI applications by their technical complexity and computational cost, with more resource-intensive systems subject to greater scrutiny.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c703'] = {
+    hardCorrect: 'A landmark piece of European legislation that imposes legally binding obligations on AI providers and users, organized around a hierarchy of application risk levels.',
+    distractors: [
+        { text: 'A voluntary code of conduct published by European technology companies that recommends best practices for AI development without any legal enforcement mechanisms.', d: 1 },
+        { text: 'The collective effort by governments and multilateral organizations to harmonize policies and set shared expectations for AI development across national boundaries.', d: 2 },
+        { text: 'A landmark piece of European legislation that imposes legally binding obligations on AI providers, limited to systems that are both developed and deployed within EU borders.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c704'] = {
+    hardCorrect: 'Formal evaluations conducted prior to an AI system\'s release that examine how it might negatively affect people\'s rights, welfare, and access to fair treatment.',
+    distractors: [
+        { text: 'Automated benchmarking suites that measure how quickly an AI model can process data and generate outputs across a range of computational tasks.', d: 1 },
+        { text: 'The systems of verification, penalties, and oversight that give regulatory requirements their practical force and ensure AI developers actually follow the rules.', d: 2 },
+        { text: 'Formal evaluations conducted after an AI system has been deployed to production, analyzing its actual negative effects on individuals and communities over time.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c705'] = {
+    hardCorrect: 'Controlled regulatory environments that allow innovators to test AI applications under temporarily relaxed rules while authorities gain firsthand insight into the technology.',
+    distractors: [
+        { text: 'Isolated computing environments where AI models are trained exclusively on synthetic data to prevent them from ever accessing real personal information.', d: 1 },
+        { text: 'A tiered oversight model that categorizes AI applications by the severity of potential harm they pose, subjecting higher-risk systems to more demanding requirements.', d: 2 },
+        { text: 'Controlled regulatory environments where innovators can deploy AI applications permanently under relaxed rules while authorities observe their long-term behavior.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c706'] = {
+    hardCorrect: 'The systems of verification, penalties, and oversight that give regulatory requirements their practical force and ensure AI developers actually follow the rules.',
+    distractors: [
+        { text: 'Marketing certifications that AI companies display on their products to signal quality and safety to consumers in competitive retail markets.', d: 1 },
+        { text: 'Formal evaluations conducted prior to an AI system\'s release that examine how it might negatively affect people\'s rights, welfare, and access to fair treatment.', d: 2 },
+        { text: 'The systems of verification and oversight that ensure AI developers follow regulatory requirements, relying primarily on self-reported compliance data from the companies themselves.', d: 3 },
+    ]
+};
+
+// ─── Global AI Governance (c801–c806) ────────────────────
+
+DESCRIPTION_DISTRACTORS['c801'] = {
+    hardCorrect: 'The collective effort by governments and multilateral organizations to harmonize policies and set shared expectations for AI development across national boundaries.',
+    distractors: [
+        { text: 'Bilateral trade agreements between countries that set tariffs and quotas on the import and export of consumer electronics and computing hardware.', d: 1 },
+        { text: 'Self-imposed safety obligations adopted by companies building the most advanced AI, covering areas such as pre-release testing and safety information sharing.', d: 2 },
+        { text: 'The collective effort by governments and multilateral organizations to harmonize policies for AI development, with agreements that carry binding legal force in all participating nations.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c802'] = {
+    hardCorrect: 'Major diplomatic events where heads of state, technologists, and civil society convene to address the challenges posed by the most capable AI systems.',
+    distractors: [
+        { text: 'Annual academic conferences where machine learning researchers present new algorithms, share benchmark results, and compete for best paper awards.', d: 1 },
+        { text: 'Formally published specifications from recognized bodies that translate high-level governance goals into precise, implementable requirements for AI system development.', d: 2 },
+        { text: 'Major diplomatic events where heads of state and industry leaders convene to address AI challenges, producing legally binding treaties that all participating nations must follow.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c803'] = {
+    hardCorrect: 'Formally published specifications from recognized bodies that translate high-level governance goals into precise, implementable requirements for AI system development.',
+    distractors: [
+        { text: 'Open-source software libraries that developers use to build and train neural networks more efficiently across different hardware platforms and programming languages.', d: 1 },
+        { text: 'Major diplomatic events where heads of state, technologists, and civil society convene to address the challenges posed by the most capable AI systems.', d: 2 },
+        { text: 'Formally published specifications from recognized bodies that define requirements for AI system development, automatically carrying the force of law in all participating countries.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c804'] = {
+    hardCorrect: 'A strategy for shaping AI development by exerting control over the scarce, high-performance processing infrastructure that large-scale model training depends on.',
+    distractors: [
+        { text: 'A cloud computing pricing model that charges AI developers per hour of GPU usage based on the size and complexity of their training runs.', d: 1 },
+        { text: 'A governance philosophy that insists on broad participation from government, industry, academia, and civil society in decisions about how AI should be regulated.', d: 2 },
+        { text: 'A strategy for shaping AI development by controlling access to specialized hardware, effectively preventing any organization without government approval from building AI systems of any size.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c805'] = {
+    hardCorrect: 'Self-imposed safety obligations adopted by organizations at the frontier of AI development, intended to bridge the gap until binding regulations are established.',
+    distractors: [
+        { text: 'Legally binding international treaties that set maximum capability thresholds for AI models, with economic sanctions imposed on countries that exceed the agreed limits.', d: 1 },
+        { text: 'The collective effort by governments and multilateral organizations to harmonize policies and set shared expectations for AI development across national boundaries.', d: 2 },
+        { text: 'Self-imposed safety obligations adopted by companies building advanced AI, with independent regulators verifying compliance and imposing penalties for violations.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c806'] = {
+    hardCorrect: 'A governance philosophy that insists on broad participation — from government and industry to academia and civil society — in decisions about how AI should be regulated.',
+    distractors: [
+        { text: 'A project management methodology used by software teams to coordinate the development and deployment of AI products across multiple departments.', d: 1 },
+        { text: 'A strategy for shaping AI development by exerting control over the scarce, high-performance processing infrastructure that large-scale model training depends on.', d: 2 },
+        { text: 'A governance philosophy that brings together government, industry, and academia to shape AI decisions, giving each participating group equal decision-making authority.', d: 3 },
+    ]
+};
+
+// ─── Accountability & Oversight (c901–c906) ──────────────
+
+DESCRIPTION_DISTRACTORS['c901'] = {
+    hardCorrect: 'The expectation that those who create or operate AI systems bear responsibility for the consequences, and that people harmed by AI have meaningful paths to redress.',
+    distractors: [
+        { text: 'A performance metric that measures how accurately an AI model completes assigned tasks compared to human experts in controlled laboratory experiments.', d: 1 },
+        { text: 'Systematic, independent examination of AI systems to verify they satisfy applicable requirements for fairness, reliability, and safety.', d: 2 },
+        { text: 'The expectation that those who create AI systems bear responsibility for consequences, applying only when the developer intended the system to cause the specific harm in question.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c902'] = {
+    hardCorrect: 'An external review process that holds AI developers accountable by checking their systems against benchmarks for bias, security, and regulatory compliance.',
+    distractors: [
+        { text: 'The process of archiving old versions of AI models in secure databases to maintain a historical record of how the technology has evolved over time.', d: 1 },
+        { text: 'Rules compelling organizations to publicly disclose specific details about their AI systems, from the data they were trained on to the way they reach decisions.', d: 2 },
+        { text: 'Systematic examination of AI systems to verify they satisfy requirements for fairness, reliability, and safety, conducted by the same team that developed the system.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c903'] = {
+    hardCorrect: 'Obligations that make the inner workings of AI systems visible to outside parties, empowering regulators and affected individuals to scrutinize and challenge automated decisions.',
+    distractors: [
+        { text: 'User interface design principles that ensure AI-powered applications are visually clear, easy to navigate, and accessible to users with disabilities.', d: 1 },
+        { text: 'The body of legal rules that determines who must compensate for damages when an AI system\'s outputs or actions cause injury or loss.', d: 2 },
+        { text: 'Rules compelling organizations to disclose details about their AI systems\' decision-making processes, limited to systems that interact directly with individual consumers.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c904'] = {
+    hardCorrect: 'The body of legal rules that determines who must compensate for damages when an AI system\'s outputs or actions cause injury or loss.',
+    distractors: [
+        { text: 'Insurance policies that AI companies purchase to protect themselves from financial losses caused by stock market fluctuations and changing regulations.', d: 1 },
+        { text: 'Continuous observation of AI systems in live environments, intended to surface performance degradation, emerging biases, or unexpected behaviors after launch.', d: 2 },
+        { text: 'The body of legal rules that determines who must compensate for AI-caused damages, placing accountability exclusively on the end user who chose to rely on the system.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c905'] = {
+    hardCorrect: 'Continuous observation of AI systems in live environments, intended to surface performance degradation, emerging biases, or unexpected behaviors after launch.',
+    distractors: [
+        { text: 'The phase of machine learning where a model\'s internal parameters are adjusted through exposure to large datasets before it is put into use.', d: 1 },
+        { text: 'Systematic, independent examination of AI systems to verify they satisfy applicable requirements for fairness, reliability, and safety.', d: 2 },
+        { text: 'Observation of AI systems in live environments during an initial period after launch, after which monitoring is discontinued once the system is considered stable.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c906'] = {
+    hardCorrect: 'Legal measures shielding employees and insiders who flag dangerous or unethical AI practices from punishment by their employers.',
+    distractors: [
+        { text: 'Cybersecurity protocols that protect AI systems from being hacked, manipulated, or taken offline by malicious external actors or nation-state adversaries.', d: 1 },
+        { text: 'The body of legal rules that determines who must compensate for damages when an AI system\'s outputs or actions cause injury or loss.', d: 2 },
+        { text: 'Legal measures shielding individuals who flag dangerous AI practices from punishment, available only to senior executives with direct knowledge of company strategy.', d: 3 },
+    ]
+};

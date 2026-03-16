@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0 — Governance domain
+
+### Added
+- New domain: Governance (3 topics, 18 cards, 6 lessons)
+- Topic: AI Regulation (c701–c706) — government rules, risk-based regulation, EU AI Act, impact assessments, sandboxes, enforcement
+- Topic: Global AI Governance (c801–c806) — international coordination, AI safety summits, technical standards, compute governance, frontier commitments, multi-stakeholder governance
+- Topic: Accountability & Oversight (c901–c906) — AI accountability, auditing, transparency, liability, post-deployment monitoring, whistleblower protections
+- Description distractors for all 18 governance cards (hardCorrect + 3 difficulty-tiered distractors each)
+- True/false statements for all 18 governance cards with real misconceptions and corrections
+- 7 fun facts related to governance concepts (ff6–ff12)
+- Cross-domain links to Foundations cards (c203, c204, c206)
+
+### Changed
+- Removed comingSoon flag from Governance domain — domain is now playable
+
 ## 0.3.1 — Content quality improvements
 
 ### Fixed

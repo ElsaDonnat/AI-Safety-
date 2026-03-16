@@ -115,3 +115,117 @@ TRUE_FALSE_STATEMENTS['c306'] = {
     falseStatement: 'Fine-tuning a model requires just as much data and compute as training the original model from scratch.',
     correction: 'Fine-tuning is specifically valuable because it requires far less data and compute — it builds on knowledge the model already learned during pretraining.',
 };
+
+// ─── AI Regulation (c701–c706) ──────────────────────────
+
+TRUE_FALSE_STATEMENTS['c701'] = {
+    trueStatement: 'AI regulations can require companies to meet specific safety standards before they are allowed to deploy an AI system to the public.',
+    falseStatement: 'AI regulation is unnecessary because market competition naturally ensures that companies build safe and fair AI systems.',
+    correction: 'Market incentives alone do not guarantee safety — companies may cut corners to gain competitive advantages, which is why external regulation is considered necessary.',
+};
+
+TRUE_FALSE_STATEMENTS['c702'] = {
+    trueStatement: 'Under risk-based regulation, an AI system used to filter spam emails would face fewer regulatory requirements than one used to make medical diagnoses.',
+    falseStatement: 'Under risk-based regulation, an AI system that assists doctors with diagnoses would be classified the same as one that recommends restaurants, since both process personal data.',
+    correction: 'Risk-based regulation specifically differentiates by potential harm — a medical diagnosis system poses much higher risk than a restaurant recommender and would face stricter requirements.',
+};
+
+TRUE_FALSE_STATEMENTS['c703'] = {
+    trueStatement: 'The EU AI Act can apply to AI companies based outside Europe if their systems are used by people within the EU.',
+    falseStatement: 'The EU AI Act only applies to AI companies that are headquartered within European Union member states.',
+    correction: 'The EU AI Act has extraterritorial reach — it applies to any AI system placed on the EU market or whose output is used within the EU, regardless of where the provider is based.',
+};
+
+TRUE_FALSE_STATEMENTS['c704'] = {
+    trueStatement: 'An algorithmic impact assessment can reveal potential biases in an AI system before it is deployed and affects real people.',
+    falseStatement: 'Algorithmic impact assessments are only relevant for AI systems that make fully autonomous decisions without any human involvement.',
+    correction: 'Impact assessments are valuable for any AI system that affects people, including those that assist human decision-makers — even advisory AI can introduce bias into decisions.',
+};
+
+TRUE_FALSE_STATEMENTS['c705'] = {
+    trueStatement: 'Regulatory sandboxes allow regulators to learn how new AI technology works in practice, which helps them write better-informed rules.',
+    falseStatement: 'Companies that test their AI in regulatory sandboxes are permanently exempt from future regulations on those systems.',
+    correction: 'Sandboxes are temporary and time-limited — once the testing period ends, the AI system must comply with all applicable regulations like any other system.',
+};
+
+TRUE_FALSE_STATEMENTS['c706'] = {
+    trueStatement: 'Effective enforcement of AI regulations may require regulators to develop technical expertise in machine learning and AI systems.',
+    falseStatement: 'AI regulations are self-enforcing because AI companies always have strong incentives to comply voluntarily.',
+    correction: 'Without enforcement mechanisms like audits, fines, and penalties, companies may ignore regulations — especially when compliance is costly and violations are hard to detect.',
+};
+
+// ─── Global AI Governance (c801–c806) ────────────────────
+
+TRUE_FALSE_STATEMENTS['c801'] = {
+    trueStatement: 'A country with strict AI regulations could see companies relocate to countries with weaker rules, which is one reason international coordination matters.',
+    falseStatement: 'International AI governance is unnecessary because each country can fully regulate AI within its own borders.',
+    correction: 'AI systems operate across borders — a model trained in one country can be deployed worldwide — so purely national regulation leaves gaps that only international coordination can address.',
+};
+
+TRUE_FALSE_STATEMENTS['c802'] = {
+    trueStatement: 'AI Safety Summits can help build political momentum for AI regulation even when they do not produce legally binding agreements.',
+    falseStatement: 'AI Safety Summits produce legally binding international treaties that all participating countries must follow.',
+    correction: 'AI Safety Summits produce declarations and voluntary commitments, not binding treaties — they build political consensus but do not create enforceable international law.',
+};
+
+TRUE_FALSE_STATEMENTS['c803'] = {
+    trueStatement: 'Technical standards help translate broad regulatory goals like "AI must be fair" into specific, measurable requirements that engineers can implement.',
+    falseStatement: 'Technical standards for AI are only useful for the companies that help write them and offer no benefit to smaller organizations.',
+    correction: 'Standards benefit organizations of all sizes by providing shared benchmarks — smaller companies especially benefit from ready-made frameworks rather than developing their own.',
+};
+
+TRUE_FALSE_STATEMENTS['c804'] = {
+    trueStatement: 'Because training frontier AI models requires enormous computing resources, controlling access to compute can influence who is able to build the most powerful systems.',
+    falseStatement: 'Compute governance will become less relevant over time as AI models become more efficient and require less hardware to train.',
+    correction: 'While efficiency improvements are real, frontier AI training continues to demand ever-larger compute budgets — and governance also covers deployment infrastructure, not just training.',
+};
+
+TRUE_FALSE_STATEMENTS['c805'] = {
+    trueStatement: 'Voluntary commitments by AI companies can help establish safety norms even in areas where formal regulation has not yet been developed.',
+    falseStatement: 'Voluntary commitments from AI companies provide the same level of accountability as legally binding regulations.',
+    correction: 'Voluntary commitments lack legal enforcement mechanisms — companies can change or abandon them without facing penalties, which is why critics argue they are insufficient on their own.',
+};
+
+TRUE_FALSE_STATEMENTS['c806'] = {
+    trueStatement: 'Including affected communities in AI governance decisions can surface risks and harms that developers and policymakers might otherwise overlook.',
+    falseStatement: 'AI governance decisions should be made exclusively by technical experts because non-experts cannot understand the issues well enough to contribute.',
+    correction: 'AI governance involves ethical, social, and economic questions that go beyond technical expertise — affected communities bring essential perspectives on real-world impacts.',
+};
+
+// ─── Accountability & Oversight (c901–c906) ──────────────
+
+TRUE_FALSE_STATEMENTS['c901'] = {
+    trueStatement: 'Clear accountability structures can incentivize AI developers to invest more in safety and testing before deploying their systems.',
+    falseStatement: 'Since AI systems generate their own outputs, responsibility for harmful decisions rests with the AI itself rather than with the developers or deployers.',
+    correction: 'AI systems have no legal personhood — accountability frameworks assign responsibility to the humans and organizations that design, build, and deploy them.',
+};
+
+TRUE_FALSE_STATEMENTS['c902'] = {
+    trueStatement: 'An independent AI audit can reveal safety or fairness problems that the system\'s own developers may have missed or underestimated.',
+    falseStatement: 'AI systems only need to be audited once before deployment, after which they can be trusted to perform consistently without further review.',
+    correction: 'AI systems can change as data distributions shift and user patterns evolve — ongoing or periodic auditing is necessary to catch problems that emerge after deployment.',
+};
+
+TRUE_FALSE_STATEMENTS['c903'] = {
+    trueStatement: 'Requiring organizations to disclose how their AI makes decisions can help affected individuals challenge outcomes they believe are unfair.',
+    falseStatement: 'Full transparency about an AI system\'s inner workings would automatically make the system safe and fair for everyone.',
+    correction: 'Transparency is necessary but not sufficient — knowing how a system works does not fix its flaws; separate action is needed to address the problems transparency reveals.',
+};
+
+TRUE_FALSE_STATEMENTS['c904'] = {
+    trueStatement: 'When AI developers know they could face legal liability for harms caused by their systems, they have stronger incentives to invest in thorough safety testing.',
+    falseStatement: 'Existing liability laws designed for traditional products work perfectly for AI systems without any adaptation.',
+    correction: 'Traditional liability law assumes human decision-makers and predictable product behavior — AI\'s autonomy, opacity, and evolving behavior create novel challenges requiring adapted frameworks.',
+};
+
+TRUE_FALSE_STATEMENTS['c905'] = {
+    trueStatement: 'An AI system that performs well during testing can behave differently in the real world because production conditions often differ from test environments.',
+    falseStatement: 'If an AI system passes all pre-deployment tests, there is no need to monitor it after release.',
+    correction: 'Pre-deployment testing cannot anticipate all real-world conditions — user behavior, data patterns, and edge cases in production can cause problems that only emerge after release.',
+};
+
+TRUE_FALSE_STATEMENTS['c906'] = {
+    trueStatement: 'Employees at AI companies may be among the first to notice safety risks that are not visible to outside regulators or the public.',
+    falseStatement: 'Whistleblower protections are unnecessary in the AI industry because all major AI companies already have strong internal safety cultures.',
+    correction: 'Even companies with safety cultures can face pressures that suppress internal dissent — legal protections provide a safety net for employees who face retaliation for raising concerns.',
+};
