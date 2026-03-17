@@ -47,7 +47,7 @@ export const FUN_FACTS = [
     },
     {
         id: 'ff10',
-        text: 'In 2023, a group of current and former employees at major AI labs published an open letter calling for stronger whistleblower protections, arguing that the people closest to the technology are often least able to speak about its risks.',
+        text: 'In 2024, a group of current and former employees at major AI labs published an open letter calling for stronger whistleblower protections, arguing that the people closest to the technology are often least able to speak about its risks.',
         relatedCardIds: ['c906', 'c901'],
     },
     {
