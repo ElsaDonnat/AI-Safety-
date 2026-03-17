@@ -1,19 +1,21 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame } from '../data/challengeQuiz';
+import { ALL_CONCEPTS } from '../data/concepts';
 import { Button } from '../components/shared';
 import Mascot from '../components/Mascot';
-import { Heart, Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Clock, Landmark as LandmarkIcon } from 'lucide-react';
+import { Heart, Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Cog, Trophy, Star, Target, Gamepad2, Medal } from 'lucide-react';
 import * as feedback from '../services/feedback';
 import StreakCelebration from '../components/StreakCelebration';
 import FunFactsFlow from '../components/FunFactsFlow';
 import { getFunFactsForSeenCards } from '../data/funFacts';
+import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // ─── Tier display helpers ─────────────────────────────────────
 // Build display info for each tier (colors, icons, flavors) for the UI
 const TIER_DISPLAY = TIERS.map((t, i) => {
     const colors = ['#4A90D9', '#2E7D32', '#E65100', '#8E24AA', '#C62828', '#FF6F00'];
-    const icons = ['\uD83D\uDD25', '\uD83D\uDCDA', '\uD83C\uDF93', '\u2699\uFE0F', '\uD83C\uDFC6', '\u26A1'];
+    const iconComponents = [Flame, BookOpen, GraduationCap, Cog, Trophy, Zap];
     const flavors = [
         'The journey begins...',
         'Knowledge grows deeper.',
@@ -27,7 +29,7 @@ const TIER_DISPLAY = TIERS.map((t, i) => {
         label: t.name,
         questions: t.count,
         color: colors[i] || '#666',
-        icon: icons[i] || '',
+        IconComponent: iconComponents[i] || null,
         flavor: flavors[i] || '',
     };
 });
@@ -71,8 +73,8 @@ const TIER_ICONS = {
     beginner: Flame,
     amateur: BookOpen,
     advanced: GraduationCap,
-    expert: Clock,
-    master: LandmarkIcon,
+    expert: Cog,
+    master: Trophy,
     visionary: Zap,
 };
 const TierIcon = ({ tierId, size = 24, color = '#666' }) => {
@@ -767,7 +769,10 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     // ─── Derived data ────────────────────────────────
 
     const ch = state.challenge || {};
-    const seenCardsForFacts = useMemo(() => state.seenCards || [], [state.seenCards]);
+    const seenCardsForFacts = useMemo(() => {
+        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS.map(c => c.id);
+        return state.seenCards || [];
+    }, [state.seenCards]);
     const availableFunFacts = useMemo(() => getFunFactsForSeenCards(seenCardsForFacts), [seenCardsForFacts]);
     const seenFunFactCount = useMemo(() => {
         const availableIds = new Set(availableFunFacts.map(f => f.id));
@@ -878,13 +883,13 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                             {tier.label.slice(0, 3)}
                                         </span>
                                         <span style={{
-                                            fontSize: '1.03rem', lineHeight: 1,
+                                            lineHeight: 1,
                                             borderRadius: '50%',
                                             width: 30, height: 30,
                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                             opacity: reached ? 1 : 0.75,
                                         }}>
-                                            {tier.icon}
+                                            {tier.IconComponent && <tier.IconComponent size={18} color={tier.color} strokeWidth={2} />}
                                         </span>
                                     </div>
                                 );
@@ -1023,28 +1028,28 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                 {ch.soloHighScore || 0}
                             </p>
-                            <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\u2B50'} Best</p>
+                            <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}><Star size={10} /> Best</p>
                         </div>
                         {allTimeAccuracy !== null && (
                             <div style={{ textAlign: 'center' }}>
                                 <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                     {allTimeAccuracy}%
                                 </p>
-                                <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAF'} Accuracy</p>
+                                <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}><Target size={10} /> Accuracy</p>
                             </div>
                         )}
                         <div style={{ textAlign: 'center' }}>
                             <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                 {ch.multiplayerVictories || 0}
                             </p>
-                            <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFC6'} Victories</p>
+                            <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}><Trophy size={10} /> Victories</p>
                         </div>
                         {(ch.soloGamesPlayed > 0 || ch.multiplayerGamesPlayed > 0) && (
                             <div style={{ textAlign: 'center' }}>
                                 <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
                                     {(ch.soloGamesPlayed || 0) + (ch.multiplayerGamesPlayed || 0)}
                                 </p>
-                                <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAE'} Games</p>
+                                <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}><Gamepad2 size={10} /> Games</p>
                             </div>
                         )}
                     </div>
@@ -1514,7 +1519,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 style={{ height: podiumHeights[displayIdx] || 60, order: i }}
                             >
                                 <span style={{ fontSize: '1.4rem' }}>
-                                    {displayIdx === 0 ? '\uD83E\uDD47' : displayIdx === 1 ? '\uD83E\uDD48' : '\uD83E\uDD49'}
+                                    <Medal size={22} color={displayIdx === 0 ? '#FFD700' : displayIdx === 1 ? '#C0C0C0' : '#CD7F32'} strokeWidth={2} />
                                 </span>
                                 <span style={{ fontSize: '0.82rem', fontWeight: 700 }}>{p.name}</span>
                                 <span style={{ fontSize: '0.75rem' }}>{p.score} pts</span>

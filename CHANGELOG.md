@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.0 — AI Safety & Alignment domain
+
+### Added
+- New domain: **AI Safety & Alignment** (unlocked, no longer "coming soon")
+- 3 new topics: Alignment Fundamentals, AI Risk, Safety Techniques
+- 18 new cards (c401–c406, c501–c506, c601–c606) at beginner difficulty
+- 6 new lessons across 3 topics, grouped into 3 cards each
+- 9 new chapters (beginner unlocked, amateur/advanced coming soon)
+- Description distractors for all 18 new cards (hardCorrect + 3 difficulty-tiered distractors each)
+- True/false statements for all 18 new cards with misconceptions and corrections
+- 6 new fun facts related to alignment, risk, and safety concepts
+- Cross-domain links connecting safety cards to foundations cards (e.g., c601→c304, c604→c204, c603→c105)
+
+### Cards by topic
+- **Alignment Fundamentals**: The Alignment Problem, Instrumental Convergence, Goodhart's Law, Corrigibility, Mesa-Optimization, Reward Hacking
+- **AI Risk**: Existential Risk from AI, Misuse & Dual-Use, Deceptive Alignment, Specification Gaming, Power-Seeking AI, Catastrophic Risk
+- **Safety Techniques**: RLHF, Constitutional AI, Interpretability, Red Teaming, Scalable Oversight, AI Governance
+
 ## 0.3.1 — Content quality improvements
 
 ### Fixed

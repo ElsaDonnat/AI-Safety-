@@ -4,7 +4,7 @@ import { getFunFactsForSeenCards, getNextFunFact } from '../data/funFacts';
 import { getConceptById } from '../data/concepts';
 import { Button, CategoryTag } from './shared';
 import * as feedback from '../services/feedback';
-import { ChevronLeft, Check, X as XIcon } from 'lucide-react';
+import { ChevronLeft, Check, X as XIcon, Lightbulb } from 'lucide-react';
 
 function shuffleOptions(correct, wrongs) {
     const options = [
@@ -83,7 +83,7 @@ export default function FunFactsFlow({ onExit }) {
                     </button>
                 </div>
                 <div className="text-center mt-16">
-                    <div className="text-4xl mb-4">💡</div>
+                    <div className="mb-4"><Lightbulb size={40} color="var(--color-ink-muted)" strokeWidth={1.5} /></div>
                     <h2 className="text-lg font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>No Fun Facts Yet</h2>
                     <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
                         Learn more concepts in lessons to unlock fun facts!
@@ -105,7 +105,7 @@ export default function FunFactsFlow({ onExit }) {
                 <div className="flex items-center gap-2">
                     <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
                         style={{ backgroundColor: 'rgba(234, 179, 8, 0.15)', color: '#92400E' }}>
-                        💡 Fun Fact
+                        <Lightbulb size={12} strokeWidth={2} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 2 }} /> Fun Fact
                     </span>
                     <span className="text-sm font-medium" style={{ color: 'var(--color-ink-muted)' }}>
                         {seenCount}/{availableFacts.length}
@@ -180,7 +180,7 @@ export default function FunFactsFlow({ onExit }) {
                     <div className="mt-5 animate-fade-in">
                         <div className="p-4 rounded-[3px]" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
                             <div className="flex items-center gap-1.5 mb-2">
-                                <span className="text-sm">💡</span>
+                                <Lightbulb size={14} strokeWidth={2} color="#92400E" />
                                 <span className="text-[10px] uppercase tracking-wider font-bold" style={{ color: '#92400E' }}>
                                     Did you know?
                                 </span>

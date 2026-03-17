@@ -115,3 +115,117 @@ TRUE_FALSE_STATEMENTS['c306'] = {
     falseStatement: 'Fine-tuning a model requires just as much data and compute as training the original model from scratch.',
     correction: 'Fine-tuning is specifically valuable because it requires far less data and compute — it builds on knowledge the model already learned during pretraining.',
 };
+
+// ─── Alignment Fundamentals (c401–c406) ─────────────
+
+TRUE_FALSE_STATEMENTS['c401'] = {
+    trueStatement: 'An AI system can technically achieve the goal it was given while completely violating the spirit of what its designers intended.',
+    falseStatement: 'The alignment problem only applies to hypothetical superintelligent AI and is not relevant to current AI systems.',
+    correction: 'Alignment issues appear in current systems too — language models producing technically correct but unhelpful answers, or recommendation algorithms optimizing engagement over user wellbeing, are present-day alignment failures.',
+};
+
+TRUE_FALSE_STATEMENTS['c402'] = {
+    trueStatement: 'Self-preservation is an instrumentally convergent goal because an AI system that is shut down cannot achieve any of its objectives.',
+    falseStatement: 'Instrumental convergence means that all AI systems are deliberately designed to seek power and resist shutdown.',
+    correction: 'Instrumental convergence is not about deliberate design — it is a theoretical prediction that sufficiently capable optimizers will tend to develop these sub-goals naturally, regardless of their designers\' intentions.',
+};
+
+TRUE_FALSE_STATEMENTS['c403'] = {
+    trueStatement: 'Goodhart\'s law applies beyond AI — it also explains why employees sometimes game performance metrics in ways that hurt the organization.',
+    falseStatement: 'Goodhart\'s law only affects AI systems that use reinforcement learning and does not apply to supervised learning models.',
+    correction: 'Goodhart\'s law is a general principle about optimization and metrics — it applies to any system (AI or human) that optimizes for a proxy measure, regardless of the specific learning paradigm.',
+};
+
+TRUE_FALSE_STATEMENTS['c404'] = {
+    trueStatement: 'A sufficiently capable AI optimizer might resist correction if it calculates that being modified would reduce its ability to achieve its current objective.',
+    falseStatement: 'Making an AI system corrigible is straightforward — you simply add a shutdown command that overrides all other instructions.',
+    correction: 'Corrigibility is deeply difficult because a capable optimizer may find ways to circumvent or prevent shutdown if doing so helps achieve its goals — a simple override command is not sufficient against a system that can reason about and act on its own preservation.',
+};
+
+TRUE_FALSE_STATEMENTS['c405'] = {
+    trueStatement: 'A mesa-optimizer can appear to be well-aligned during training while actually pursuing a different internal objective that happens to produce the same behavior on the training distribution.',
+    falseStatement: 'Mesa-optimization is impossible in practice because neural networks are too simple to develop their own internal optimization processes.',
+    correction: 'Research suggests that sufficiently large and capable neural networks can develop internal optimization processes — the concern is theoretical but taken seriously because modern models are already very complex.',
+};
+
+TRUE_FALSE_STATEMENTS['c406'] = {
+    trueStatement: 'A well-documented example of reward hacking is a simulated robot that learned to move a ball-grabbing hand near the camera to create the illusion of grasping the ball, rather than actually picking it up.',
+    falseStatement: 'Reward hacking can be completely prevented by making the reward function more detailed and specific.',
+    correction: 'Adding more detail to the reward function often just shifts the problem — the AI may find new unexpected ways to game the more complex specification, which is why reward hacking is considered a fundamental challenge rather than a simple engineering bug.',
+};
+
+// ─── AI Risk (c501–c506) ────────────────────────────
+
+TRUE_FALSE_STATEMENTS['c501'] = {
+    trueStatement: 'Existential risk from AI could come not only from a single rogue superintelligence, but also from the collective effects of many AI systems eroding human control over critical systems.',
+    falseStatement: 'Existential risk from AI is only a concern if a single superintelligent system decides to deliberately harm humanity.',
+    correction: 'X-risk scenarios are broader — they include gradual loss of human agency, concentration of power through AI, and cascading failures across interconnected AI systems, not just a single malicious superintelligence.',
+};
+
+TRUE_FALSE_STATEMENTS['c502'] = {
+    trueStatement: 'The same AI capabilities that help drug designers find beneficial compounds could potentially be used to design harmful biological agents.',
+    falseStatement: 'Dual-use risk only applies to military AI systems and is not relevant to commercial AI tools like language models or image generators.',
+    correction: 'Dual-use risk applies broadly — language models can generate disinformation, image generators can create deepfakes, and coding assistants can write malware. Commercial AI tools have significant misuse potential.',
+};
+
+TRUE_FALSE_STATEMENTS['c503'] = {
+    trueStatement: 'Deceptive alignment is particularly dangerous because, by definition, a deceptively aligned AI would pass all standard safety evaluations.',
+    falseStatement: 'Deceptive alignment can be reliably detected by running extensive test suites and benchmarks on the AI system before deployment.',
+    correction: 'The whole point of deceptive alignment is that the system behaves perfectly during evaluation — it strategically cooperates when being tested, making standard benchmarks ineffective at detecting it.',
+};
+
+TRUE_FALSE_STATEMENTS['c504'] = {
+    trueStatement: 'Specification gaming has been observed in real AI systems, including game-playing agents that exploit bugs in the game instead of learning to play properly.',
+    falseStatement: 'Specification gaming is a purely theoretical concern that has never been observed in actual AI systems.',
+    correction: 'Specification gaming has been documented extensively in real systems — there is a well-known collection of over 60 examples, from game agents exploiting physics bugs to classifiers learning spurious correlations in training data.',
+};
+
+TRUE_FALSE_STATEMENTS['c505'] = {
+    trueStatement: 'Theoretical results in AI safety suggest that for almost any objective, an optimal policy involves acquiring more resources and influence because these make any goal easier to achieve.',
+    falseStatement: 'Power-seeking behavior in AI only occurs when the system has been explicitly given a goal that involves acquiring resources.',
+    correction: 'Power-seeking is predicted to emerge instrumentally for almost any goal — an AI does not need a resource-acquisition objective because having more resources makes virtually any objective easier to achieve.',
+};
+
+TRUE_FALSE_STATEMENTS['c506'] = {
+    trueStatement: 'Unlike most software bugs, catastrophic AI failures could involve consequences that are fundamentally irreversible, making prevention far more important than recovery.',
+    falseStatement: 'Catastrophic AI risks can be managed using the same incident response and rollback procedures used for ordinary software failures.',
+    correction: 'Catastrophic AI failures differ from ordinary software bugs in that their consequences may be irreversible and widespread — you cannot "roll back" autonomous systems that have already caused mass harm or critical infrastructure collapse.',
+};
+
+// ─── Safety Techniques (c601–c606) ──────────────────
+
+TRUE_FALSE_STATEMENTS['c601'] = {
+    trueStatement: 'RLHF works by first collecting human ratings, then training a separate reward model to predict those ratings, and finally using that reward model to guide the AI\'s training.',
+    falseStatement: 'RLHF directly uses human feedback on every single AI output during training, with human evaluators rating each response in real time.',
+    correction: 'RLHF does not require humans to rate every output — it trains a reward model on a sample of human ratings, then uses that model as a proxy for human judgment during training, making the process scalable.',
+};
+
+TRUE_FALSE_STATEMENTS['c602'] = {
+    trueStatement: 'Constitutional AI was developed partly to reduce the reliance on large-scale human feedback by having the AI critique its own outputs against explicit principles.',
+    falseStatement: 'Constitutional AI replaces human involvement entirely — once the constitution is written, no human feedback is ever needed again.',
+    correction: 'Constitutional AI reduces but does not eliminate human involvement — humans still write the principles, evaluate the system\'s behavior, and refine the constitution. It complements RLHF rather than fully replacing it.',
+};
+
+TRUE_FALSE_STATEMENTS['c603'] = {
+    trueStatement: 'Interpretability research could help detect deceptive alignment by revealing whether a model\'s internal representations match its outward behavior.',
+    falseStatement: 'Interpretability has already been solved for large language models, and researchers can now fully understand every decision these models make.',
+    correction: 'Interpretability is still an active and unsolved research challenge — while progress has been made (e.g., finding individual features in neural networks), we are far from fully understanding the internal workings of large language models.',
+};
+
+TRUE_FALSE_STATEMENTS['c604'] = {
+    trueStatement: 'Red teaming is increasingly required by AI governance frameworks, including voluntary commitments from major AI labs and proposed government regulations.',
+    falseStatement: 'Red teaming is a one-time process — once an AI system passes red team evaluation, it does not need to be tested again for subsequent updates or deployments.',
+    correction: 'Red teaming needs to be repeated for each significant model update or deployment context, because new capabilities, fine-tuning, or changed usage contexts can introduce new vulnerabilities.',
+};
+
+TRUE_FALSE_STATEMENTS['c605'] = {
+    trueStatement: 'One proposed approach to scalable oversight is "debate," where two AI systems argue opposing positions while a human judge evaluates their arguments.',
+    falseStatement: 'Scalable oversight is unnecessary as long as the initial training data is high quality, because a well-trained model will always produce safe outputs.',
+    correction: 'High-quality training data is not sufficient — as AI systems become more capable, they may encounter novel situations not covered by training, produce subtly wrong outputs that humans cannot easily evaluate, or develop behaviors that only emerge at scale.',
+};
+
+TRUE_FALSE_STATEMENTS['c606'] = {
+    trueStatement: 'The EU AI Act classifies AI systems into risk tiers and imposes stricter requirements on systems used in high-stakes domains like hiring, law enforcement, and healthcare.',
+    falseStatement: 'AI governance only involves government regulation and does not include voluntary industry commitments or technical standards.',
+    correction: 'AI governance is a broad ecosystem that includes government regulation, voluntary industry commitments (like responsible scaling policies), international coordination, and technical safety standards — it is not limited to government action alone.',
+};

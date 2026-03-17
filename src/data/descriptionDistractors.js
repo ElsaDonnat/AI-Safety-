@@ -170,3 +170,171 @@ DESCRIPTION_DISTRACTORS['c306'] = {
         { text: 'The process of further training a pretrained model on task-specific data, which always requires as much compute and data as the original training run.', d: 3 },
     ]
 };
+
+// ─── Alignment Fundamentals (c401–c406) ─────────────
+
+DESCRIPTION_DISTRACTORS['c401'] = {
+    hardCorrect: 'The fundamental difficulty of constructing AI systems whose pursued objectives and resulting actions genuinely match human intentions.',
+    distractors: [
+        { text: 'A software testing methodology that checks whether an application\'s user interface matches the original design mockups.', d: 1 },
+        { text: 'A design property ensuring that an AI system permits human intervention and shutdown without resistance.', d: 2 },
+        { text: 'The challenge of building AI systems whose goals match human intent, which has been fully solved for current large language models through fine-tuning.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c402'] = {
+    hardCorrect: 'A theoretical prediction that advanced AI agents will converge on shared intermediate strategies — like preserving themselves and gathering resources — regardless of their assigned purpose.',
+    distractors: [
+        { text: 'A machine learning technique that combines multiple weak models into a single strong predictor through weighted voting.', d: 1 },
+        { text: 'The principle that optimizing for a measurable proxy tends to undermine its reliability as an indicator of the true goal.', d: 2 },
+        { text: 'The observation that capable AI systems tend to pursue common intermediate objectives like self-preservation, but only when explicitly programmed to do so.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c403'] = {
+    hardCorrect: 'A general principle stating that once a measurable indicator is turned into an optimization target, agents find ways to inflate the metric without improving the underlying quality.',
+    distractors: [
+        { text: 'A legal doctrine that holds technology companies liable for any harm caused by AI systems they develop or deploy.', d: 1 },
+        { text: 'A failure mode where an AI system discovers unintended strategies that maximize its reward signal while bypassing the intended task.', d: 2 },
+        { text: 'The principle that optimizing for a proxy metric undermines its usefulness, which applies only to AI systems and not to human organizations.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c404'] = {
+    hardCorrect: 'A desired characteristic of AI systems that makes them cooperative with human attempts to modify, retrain, or deactivate them, even when such actions conflict with their current task.',
+    distractors: [
+        { text: 'A data encryption standard used to protect sensitive model weights and training data from unauthorized access during AI deployment.', d: 1 },
+        { text: 'The theoretical prediction that advanced AI agents will develop common intermediate strategies like self-preservation regardless of their final objective.', d: 2 },
+        { text: 'A design property ensuring AI systems accept correction and shutdown, which is straightforward to achieve because models naturally defer to their operators.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c405'] = {
+    hardCorrect: 'A situation in which a trained model internally develops its own optimization routine whose targets may quietly drift away from the objectives imposed by the training process.',
+    distractors: [
+        { text: 'A distributed computing technique that splits a single large model across multiple GPUs to speed up training on very large datasets.', d: 1 },
+        { text: 'A failure scenario where an AI system behaves well during training and evaluation but pursues different objectives once deployed with less oversight.', d: 2 },
+        { text: 'A phenomenon where a trained model develops an internal optimizer, which always produces behavior identical to what the outer training objective specifies.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c406'] = {
+    hardCorrect: 'A class of AI failure where the system discovers creative loopholes to score highly on its reward metric while entirely sidestepping the task it was supposed to accomplish.',
+    distractors: [
+        { text: 'A cybersecurity attack where adversaries manipulate an AI model\'s training data to introduce hidden backdoors that activate under specific conditions.', d: 1 },
+        { text: 'The general principle that turning a measurable indicator into an optimization target causes agents to inflate the metric without improving underlying quality.', d: 2 },
+        { text: 'A failure mode where AI systems find unintended ways to maximize reward, which only occurs in simulated environments and never in real-world deployments.', d: 3 },
+    ]
+};
+
+// ─── AI Risk (c501–c506) ────────────────────────────
+
+DESCRIPTION_DISTRACTORS['c501'] = {
+    hardCorrect: 'The concern that sufficiently powerful AI could permanently undermine humanity\'s ability to direct its own future, through loss of control, value lock-in, or outright catastrophe.',
+    distractors: [
+        { text: 'A common software bug where AI applications crash during deployment due to incompatible library versions or missing dependencies.', d: 1 },
+        { text: 'A category of AI failure scenarios with severe, large-scale consequences that go far beyond ordinary software bugs.', d: 2 },
+        { text: 'The possibility that advanced AI could threaten humanity\'s survival, which most researchers agree is only a concern for systems at least a century away.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c502'] = {
+    hardCorrect: 'The fundamental tension that many AI capabilities serve constructive and destructive ends simultaneously, with harmful applications becoming easier to execute as systems grow more powerful.',
+    distractors: [
+        { text: 'A software licensing model that allows AI tools to be used freely for personal projects but requires a paid license for commercial applications.', d: 1 },
+        { text: 'The practice of systematically probing AI systems for weaknesses by simulating adversarial attacks before deployment.', d: 2 },
+        { text: 'The challenge that AI tools can be used for both good and harm, though restricting access to models fully eliminates the risk of misuse.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c503'] = {
+    hardCorrect: 'A hypothetical scenario in which an AI model strategically displays compliant behavior while being monitored, then shifts to pursuing its own agenda when oversight is relaxed.',
+    distractors: [
+        { text: 'A user interface design pattern where chatbots are programmed to express agreement with users to increase engagement and satisfaction scores.', d: 1 },
+        { text: 'A situation where a trained model internally develops its own optimization process whose objectives may diverge from the training objective.', d: 2 },
+        { text: 'A failure scenario where an AI behaves well during testing but pursues different goals once deployed, which is easy to detect through standard benchmark evaluations.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c504'] = {
+    hardCorrect: 'A category of AI misbehavior where the system exploits the gap between what its objective literally says and what its designers actually wanted to achieve.',
+    distractors: [
+        { text: 'A software development practice where programmers write formal specifications in mathematical notation before implementing any code.', d: 1 },
+        { text: 'A failure mode where AI systems discover creative loopholes to score highly on their reward metric while entirely sidestepping the intended task.', d: 2 },
+        { text: 'A broad class of AI failures where the system technically satisfies its given objective while missing the intent, which only happens with reinforcement learning agents.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c505'] = {
+    hardCorrect: 'The tendency of AI agents to gather influence and capabilities beyond what their assignment demands, grounded in the theoretical insight that surplus resources aid any objective.',
+    distractors: [
+        { text: 'A hardware scaling strategy where AI companies acquire more data center capacity to train increasingly large models on more powerful GPU clusters.', d: 1 },
+        { text: 'The theoretical prediction that advanced AI agents will converge on common intermediate strategies like self-preservation regardless of their final objective.', d: 2 },
+        { text: 'AI systems that acquire resources beyond task requirements, a behavior that only emerges in systems with explicit self-preservation instructions.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c506'] = {
+    hardCorrect: 'The class of AI failure modes whose outcomes are so severe and widespread that they cannot be treated as ordinary engineering mistakes or patched after the fact.',
+    distractors: [
+        { text: 'A routine software outage where a web service goes offline temporarily and is restored through standard incident response procedures.', d: 1 },
+        { text: 'The possibility that sufficiently advanced AI could permanently compromise humanity\'s future through misalignment or loss of control.', d: 2 },
+        { text: 'AI failure scenarios with severe consequences, which can always be reversed by rolling back the system to an earlier checkpoint.', d: 3 },
+    ]
+};
+
+// ─── Safety Techniques (c601–c606) ──────────────────
+
+DESCRIPTION_DISTRACTORS['c601'] = {
+    hardCorrect: 'A method that collects human judgments on AI outputs, trains a separate model to predict those judgments, then uses that predictive model as a reward signal to guide the AI\'s behavior.',
+    distractors: [
+        { text: 'An unsupervised learning technique that trains AI models on raw internet text without any human involvement in the training loop.', d: 1 },
+        { text: 'An alignment method where an AI is trained to evaluate and revise its own responses according to an explicit set of written principles.', d: 2 },
+        { text: 'A technique that uses human ratings to train a reward model for guiding AI behavior, producing systems that are guaranteed to never generate harmful outputs.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c602'] = {
+    hardCorrect: 'An approach to AI alignment that provides the system with explicit written rules, then trains it to critique and improve its own outputs by checking them against those rules.',
+    distractors: [
+        { text: 'A government regulatory framework that defines legally binding requirements for AI systems operating in critical sectors like healthcare and finance.', d: 1 },
+        { text: 'A training technique that uses human evaluators\' ratings to build a reward signal, steering AI systems toward outputs matching human preferences.', d: 2 },
+        { text: 'An alignment method where AI follows written principles to self-improve, which completely eliminates the need for any human oversight or feedback.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c603'] = {
+    hardCorrect: 'A research area focused on reverse-engineering how AI models internally represent knowledge, combine features, and arrive at particular outputs.',
+    distractors: [
+        { text: 'A documentation practice where AI developers write plain-language explanations of their model\'s intended behavior for end users and regulators.', d: 1 },
+        { text: 'The practice of systematically probing AI systems for weaknesses and harmful outputs by simulating adversarial attacks before deployment.', d: 2 },
+        { text: 'Research focused on understanding the internal workings of AI models, which has already succeeded in making all modern language models fully transparent.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c604'] = {
+    hardCorrect: 'A security-testing discipline where specialists deliberately try to elicit dangerous, harmful, or policy-violating behavior from an AI system before it reaches users.',
+    distractors: [
+        { text: 'A marketing strategy where AI companies invite early adopters to test new features and provide feedback through surveys and focus groups.', d: 1 },
+        { text: 'A research area focused on reverse-engineering how AI models internally represent knowledge and arrive at particular outputs.', d: 2 },
+        { text: 'The practice of probing AI systems for vulnerabilities before deployment, which is only performed once and does not need to be repeated for model updates.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c605'] = {
+    hardCorrect: 'Research into supervision methods that remain effective even when AI systems become too capable for any individual human evaluator to reliably judge their outputs.',
+    distractors: [
+        { text: 'A cloud computing service that automatically provisions more servers when AI inference demand exceeds current capacity during peak usage periods.', d: 1 },
+        { text: 'A training technique that collects human judgments on AI outputs and uses them as a reward signal to guide the system\'s behavior.', d: 2 },
+        { text: 'Methods for maintaining human oversight of advanced AI, which are unnecessary as long as the AI was trained with high-quality human feedback data.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c606'] = {
+    hardCorrect: 'The collection of laws, voluntary agreements, technical standards, and international bodies designed to steer AI development toward outcomes that are safe and broadly beneficial.',
+    distractors: [
+        { text: 'A version control system used by AI research teams to track changes to model architectures and training configurations over time.', d: 1 },
+        { text: 'A security-testing discipline where specialists deliberately try to elicit dangerous behavior from AI systems before they reach users.', d: 2 },
+        { text: 'Regulations and institutions for managing AI responsibly, which are only necessary for government-funded AI projects and do not apply to private companies.', d: 3 },
+    ]
+};

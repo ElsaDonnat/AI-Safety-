@@ -3,8 +3,9 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
-import { Star } from 'lucide-react';
+import { Star, BookOpen } from 'lucide-react';
 import { cardImage } from '../utils/images';
+import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 export default function LibraryPage() {
     const { state, dispatch } = useApp();
@@ -17,6 +18,7 @@ export default function LibraryPage() {
     const seenCards = useMemo(() => state.seenCards || [], [state.seenCards]);
 
     const discoveredConcepts = useMemo(() => {
+        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS;
         return ALL_CONCEPTS.filter(c => seenCards.includes(c.id));
     }, [seenCards]);
 
@@ -46,7 +48,7 @@ export default function LibraryPage() {
     if (discoveredConcepts.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-                <div className="text-4xl mb-4">📚</div>
+                <div className="mb-4"><BookOpen size={40} color="var(--color-ink-muted)" strokeWidth={1.5} /></div>
                 <h2 className="text-lg font-bold mb-2" style={{ color: 'var(--color-ink)', fontFamily: 'var(--font-display)' }}>
                     No cards discovered yet
                 </h2>

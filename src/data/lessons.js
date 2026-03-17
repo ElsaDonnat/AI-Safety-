@@ -27,7 +27,6 @@ export const DOMAINS = [
         icon: 'ai-safety',
         color: '#B99EDB',
         order: 2,
-        comingSoon: true,
     },
 ];
 
@@ -60,6 +59,34 @@ export const TOPICS = [
         color: '#9B7EC8',
         order: 2,
     },
+    // ─── AI Safety & Alignment ─────────────────────────────
+    {
+        id: 'alignment-fundamentals',
+        domain: 'ai-safety',
+        title: 'Alignment Fundamentals',
+        description: 'Core concepts behind the challenge of aligning AI with human intent',
+        icon: 'alignment',
+        color: '#9B7EC8',
+        order: 0,
+    },
+    {
+        id: 'ai-risk',
+        domain: 'ai-safety',
+        title: 'AI Risk',
+        description: 'Types of risk posed by advanced AI systems',
+        icon: 'risk',
+        color: '#C44D4D',
+        order: 1,
+    },
+    {
+        id: 'safety-techniques',
+        domain: 'ai-safety',
+        title: 'Safety Techniques',
+        description: 'Methods and approaches for making AI systems safer',
+        icon: 'safety',
+        color: '#5A9E6F',
+        order: 2,
+    },
 ];
 
 // ─── Chapters (difficulty tiers within topics) ──────────────
@@ -76,6 +103,18 @@ export const CHAPTERS = [
     { id: 'ai-concepts-beginner', topic: 'ai-concepts', title: 'Beginner', difficulty: 'beginner', order: 0 },
     { id: 'ai-concepts-amateur', topic: 'ai-concepts', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
     { id: 'ai-concepts-advanced', topic: 'ai-concepts', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // Alignment Fundamentals
+    { id: 'alignment-fundamentals-beginner', topic: 'alignment-fundamentals', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'alignment-fundamentals-amateur', topic: 'alignment-fundamentals', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'alignment-fundamentals-advanced', topic: 'alignment-fundamentals', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // AI Risk
+    { id: 'ai-risk-beginner', topic: 'ai-risk', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'ai-risk-amateur', topic: 'ai-risk', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'ai-risk-advanced', topic: 'ai-risk', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // Safety Techniques
+    { id: 'safety-techniques-beginner', topic: 'safety-techniques', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'safety-techniques-amateur', topic: 'safety-techniques', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'safety-techniques-advanced', topic: 'safety-techniques', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
 ];
 
 // Difficulty badge colors
@@ -157,6 +196,78 @@ export const LESSONS = [
         topic: 'ai-concepts',
         isFoundational: false,
         cardIds: ['c304', 'c305', 'c306'],
+    },
+
+    // ─── Alignment Fundamentals / Beginner ────────────────
+    {
+        id: 'lesson-alignment-b-0',
+        number: 0,
+        title: 'The Alignment Challenge',
+        subtitle: 'Why making AI do what we want is surprisingly hard',
+        mood: 'The most important problem you\'ve never heard of\u2026',
+        chapter: 'alignment-fundamentals-beginner',
+        topic: 'alignment-fundamentals',
+        isFoundational: true,
+        cardIds: ['c401', 'c403', 'c406'],
+    },
+    {
+        id: 'lesson-alignment-b-1',
+        number: 1,
+        title: 'Dangerous Tendencies',
+        subtitle: 'Instrumental convergence, corrigibility, and mesa-optimization',
+        mood: 'What happens when AI systems develop goals of their own?',
+        chapter: 'alignment-fundamentals-beginner',
+        topic: 'alignment-fundamentals',
+        isFoundational: false,
+        cardIds: ['c402', 'c404', 'c405'],
+    },
+
+    // ─── AI Risk / Beginner ───────────────────────────────
+    {
+        id: 'lesson-risk-b-0',
+        number: 0,
+        title: 'Why AI Risk Matters',
+        subtitle: 'Existential risk, catastrophe, and what could go wrong',
+        mood: 'Let\'s talk about what keeps AI researchers up at night\u2026',
+        chapter: 'ai-risk-beginner',
+        topic: 'ai-risk',
+        isFoundational: true,
+        cardIds: ['c501', 'c506', 'c504'],
+    },
+    {
+        id: 'lesson-risk-b-1',
+        number: 1,
+        title: 'How Things Go Wrong',
+        subtitle: 'Misuse, deception, and power-seeking',
+        mood: 'The failure modes that matter most\u2026',
+        chapter: 'ai-risk-beginner',
+        topic: 'ai-risk',
+        isFoundational: false,
+        cardIds: ['c502', 'c503', 'c505'],
+    },
+
+    // ─── Safety Techniques / Beginner ─────────────────────
+    {
+        id: 'lesson-safety-b-0',
+        number: 0,
+        title: 'Training AI to Be Safe',
+        subtitle: 'RLHF, constitutional AI, and red teaming',
+        mood: 'How do we actually make AI systems behave?',
+        chapter: 'safety-techniques-beginner',
+        topic: 'safety-techniques',
+        isFoundational: true,
+        cardIds: ['c601', 'c602', 'c604'],
+    },
+    {
+        id: 'lesson-safety-b-1',
+        number: 1,
+        title: 'Keeping Control',
+        subtitle: 'Interpretability, oversight, and governance',
+        mood: 'The tools and institutions for a safer AI future\u2026',
+        chapter: 'safety-techniques-beginner',
+        topic: 'safety-techniques',
+        isFoundational: false,
+        cardIds: ['c603', 'c605', 'c606'],
     },
 ];
 
