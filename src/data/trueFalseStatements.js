@@ -24,8 +24,8 @@ TRUE_FALSE_STATEMENTS['c103'] = {
 
 TRUE_FALSE_STATEMENTS['c104'] = {
     trueStatement: 'NLP systems can both understand existing text and generate new text that was not in their training data.',
-    falseStatement: 'Natural language processing works by looking up pre-written responses from a database rather than generating new text.',
-    correction: 'Modern NLP systems, powered by deep learning, generate novel text by predicting likely sequences of words — they do not simply retrieve pre-written responses.',
+    falseStatement: 'Modern NLP systems understand the meaning of words in the same way that humans do, with genuine comprehension of grammar and semantics.',
+    correction: 'Modern NLP systems process language through statistical pattern recognition, not human-like comprehension — they can produce fluent text without understanding meaning the way people do.',
 };
 
 TRUE_FALSE_STATEMENTS['c105'] = {
@@ -36,8 +36,8 @@ TRUE_FALSE_STATEMENTS['c105'] = {
 
 TRUE_FALSE_STATEMENTS['c106'] = {
     trueStatement: 'Computer vision systems can be trained to detect objects, recognize faces, and read text from images.',
-    falseStatement: 'Computer vision has always performed as well as it does today, even before the rise of deep learning.',
-    correction: 'Deep learning transformed computer vision — before it, traditional techniques performed far worse on complex visual tasks like object recognition.',
+    falseStatement: 'Computer vision systems that perform well on benchmark datasets can be trusted to work reliably in all real-world conditions, including unusual lighting or angles.',
+    correction: 'CV systems often struggle with conditions outside their training distribution — unusual lighting, occlusion, or adversarial inputs can cause failures that benchmarks do not capture.',
 };
 
 // ─── AI Progress (c201–c206) ──────────────────────────
@@ -74,8 +74,8 @@ TRUE_FALSE_STATEMENTS['c205'] = {
 
 TRUE_FALSE_STATEMENTS['c206'] = {
     trueStatement: 'The safety practices and governance decisions of major AI labs have an outsized impact on the direction of AI development.',
-    falseStatement: 'Any organization with a standard laptop can build and train frontier AI models comparable to those from major AI labs.',
-    correction: 'Frontier AI models require massive compute resources — thousands of specialized GPUs and millions of dollars — that only well-funded AI labs can access.',
+    falseStatement: 'Open-source AI models have eliminated the advantage that major AI labs hold, since anyone can now replicate frontier capabilities.',
+    correction: 'While open-source models have narrowed the gap, frontier AI development still requires massive compute budgets and specialized talent that only well-funded labs can sustain.',
 };
 
 // ─── AI Concepts (c301–c306) ──────────────────────────
@@ -120,8 +120,8 @@ TRUE_FALSE_STATEMENTS['c306'] = {
 
 TRUE_FALSE_STATEMENTS['c701'] = {
     trueStatement: 'AI regulations can require companies to meet specific safety standards before they are allowed to deploy an AI system to the public.',
-    falseStatement: 'AI regulation is unnecessary because market competition naturally ensures that companies build safe and fair AI systems.',
-    correction: 'Market incentives alone do not guarantee safety — companies may cut corners to gain competitive advantages, which is why external regulation is considered necessary.',
+    falseStatement: 'AI regulation is most effective when it focuses on regulating the underlying technology rather than the specific applications and contexts in which AI is used.',
+    correction: 'Most AI regulation targets applications and use cases rather than the technology itself, because the same model can be harmless in one context and dangerous in another.',
 };
 
 TRUE_FALSE_STATEMENTS['c702'] = {
@@ -150,8 +150,8 @@ TRUE_FALSE_STATEMENTS['c705'] = {
 
 TRUE_FALSE_STATEMENTS['c706'] = {
     trueStatement: 'Effective enforcement of AI regulations may require regulators to develop technical expertise in machine learning and AI systems.',
-    falseStatement: 'AI regulations are self-enforcing because AI companies always have strong incentives to comply voluntarily.',
-    correction: 'Without enforcement mechanisms like audits, fines, and penalties, companies may ignore regulations — especially when compliance is costly and violations are hard to detect.',
+    falseStatement: 'Publishing AI regulations is sufficient to ensure compliance — the existence of clear rules means companies will follow them without active enforcement.',
+    correction: 'Rules without enforcement lack teeth — companies may deprioritize compliance when it is costly, hard to verify, or when regulators lack technical capacity to detect violations.',
 };
 
 // ─── Global AI Governance (c801–c806) ────────────────────
@@ -170,8 +170,8 @@ TRUE_FALSE_STATEMENTS['c802'] = {
 
 TRUE_FALSE_STATEMENTS['c803'] = {
     trueStatement: 'Technical standards help translate broad regulatory goals like "AI must be fair" into specific, measurable requirements that engineers can implement.',
-    falseStatement: 'Technical standards for AI are only useful for the companies that help write them and offer no benefit to smaller organizations.',
-    correction: 'Standards benefit organizations of all sizes by providing shared benchmarks — smaller companies especially benefit from ready-made frameworks rather than developing their own.',
+    falseStatement: 'Technical standards for AI carry the force of law — once a standard is published, companies are legally required to comply with it.',
+    correction: 'Standards are typically voluntary unless a government adopts them into binding regulation — many companies follow standards for market credibility, not legal obligation.',
 };
 
 TRUE_FALSE_STATEMENTS['c804'] = {
@@ -188,8 +188,8 @@ TRUE_FALSE_STATEMENTS['c805'] = {
 
 TRUE_FALSE_STATEMENTS['c806'] = {
     trueStatement: 'Including affected communities in AI governance decisions can surface risks and harms that developers and policymakers might otherwise overlook.',
-    falseStatement: 'AI governance decisions should be made exclusively by technical experts because non-experts cannot understand the issues well enough to contribute.',
-    correction: 'AI governance involves ethical, social, and economic questions that go beyond technical expertise — affected communities bring essential perspectives on real-world impacts.',
+    falseStatement: 'Multi-stakeholder governance slows down AI progress because including too many voices in policy-making makes it harder to reach agreement on anything.',
+    correction: 'While broader participation can take longer, it produces more robust and legitimate policy — decisions made without affected communities often overlook real-world harms and face later resistance.',
 };
 
 // ─── Accountability & Oversight (c901–c906) ──────────────
@@ -213,7 +213,7 @@ TRUE_FALSE_STATEMENTS['c903'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c904'] = {
-    trueStatement: 'When AI developers know they could face legal liability for harms caused by their systems, they have stronger incentives to invest in thorough safety testing.',
+    trueStatement: 'Applying traditional product liability law to AI is complicated because AI systems can change their behavior after deployment as they encounter new data and situations.',
     falseStatement: 'Existing liability laws designed for traditional products work perfectly for AI systems without any adaptation.',
     correction: 'Traditional liability law assumes human decision-makers and predictable product behavior — AI\'s autonomy, opacity, and evolving behavior create novel challenges requiring adapted frameworks.',
 };
@@ -226,6 +226,6 @@ TRUE_FALSE_STATEMENTS['c905'] = {
 
 TRUE_FALSE_STATEMENTS['c906'] = {
     trueStatement: 'Employees at AI companies may be among the first to notice safety risks that are not visible to outside regulators or the public.',
-    falseStatement: 'Whistleblower protections are unnecessary in the AI industry because all major AI companies already have strong internal safety cultures.',
-    correction: 'Even companies with safety cultures can face pressures that suppress internal dissent — legal protections provide a safety net for employees who face retaliation for raising concerns.',
+    falseStatement: 'Employees who raise safety concerns at AI companies are adequately protected by existing employment law, making AI-specific whistleblower protections redundant.',
+    correction: 'General employment law often lacks protections tailored to the unique risks of AI — employees may face retaliation through reassignment or termination, and AI-specific harms may not fit neatly into existing legal categories.',
 };

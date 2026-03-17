@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.1 — Content quality audit
+
+### Added
+- `confusionNote` field on 9 cards that overlap with other concepts (c103, c201, c202, c301, c703, c706, c902, c904) — explains how similar cards differ
+- Cross-domain `linkedCards`: c201→c304 (RLHF), c202→c201, c701→c703
+- `safety` tag added to c203 (Scaling Laws) and c205 (Emergent Abilities)
+- `governance` tag added to c706, c802, c803, c805
+- `regulation` tag added to c704
+
+### Fixed
+- c201 (LLMs): qualified "reason" claim — now says "reasoning-like tasks" with debate acknowledged
+- c205 (Emergent Abilities): acknowledged Schaeffer et al. debate on whether emergence is a measurement artifact
+- c203 (Scaling Laws): fixed misleading claim about predicting dangerous capability timelines
+- Rewrote 8 false statements that used absolute giveaway words (always, all, only, exclusively, unnecessary) — now use plausible misconceptions
+- c802 d:3 distractor: no longer repeats c801 d:3 theme (binding vs non-binding)
+- c904 true statement: no longer repeats c901 true (both were about "incentivizes safety")
+- c102 quizDescription: rewritten to avoid near-identical phrasing with its description
+- c201 hardCorrect distractor: removed unqualified "reasoning" claim
+
 ## 0.4.0 — Governance domain
 
 ### Added

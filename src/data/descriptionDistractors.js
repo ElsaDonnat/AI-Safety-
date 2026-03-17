@@ -62,7 +62,7 @@ DESCRIPTION_DISTRACTORS['c106'] = {
 // ─── AI Progress (c201–c206) ──────────────────────────
 
 DESCRIPTION_DISTRACTORS['c201'] = {
-    hardCorrect: 'Massive neural networks trained on enormous text corpora that can generate coherent language, answer questions, and perform reasoning across diverse domains.',
+    hardCorrect: 'Massive neural networks trained on enormous text corpora that can generate coherent language, answer questions, and tackle complex tasks across diverse domains.',
     distractors: [
         { text: 'Small, efficient models designed to run on mobile devices that translate between exactly two languages with high accuracy.', d: 1 },
         { text: 'General-purpose AI systems pretrained on broad datasets that can be adapted to many downstream tasks through fine-tuning or prompting.', d: 2 },
@@ -74,7 +74,7 @@ DESCRIPTION_DISTRACTORS['c202'] = {
     hardCorrect: 'Large-scale AI systems trained once on diverse data, then repurposed for a wide variety of downstream applications without full retraining.',
     distractors: [
         { text: 'Specialized AI models that are each built from scratch for a single narrow task, like classifying images or filtering spam emails.', d: 1 },
-        { text: 'AI systems trained on massive text datasets to generate, understand, and reason with human language across a wide range of tasks.', d: 2 },
+        { text: 'AI systems trained on massive text datasets that generate fluent language and perform complex tasks across many domains, from coding to analysis.', d: 2 },
         { text: 'Large AI systems trained on broad data that can be adapted to many tasks, though they always require full retraining for each new application.', d: 3 },
     ]
 };
@@ -243,7 +243,7 @@ DESCRIPTION_DISTRACTORS['c802'] = {
     distractors: [
         { text: 'Annual academic conferences where machine learning researchers present new algorithms, share benchmark results, and compete for best paper awards.', d: 1 },
         { text: 'Formally published specifications from recognized bodies that translate high-level governance goals into precise, implementable requirements for AI system development.', d: 2 },
-        { text: 'Major diplomatic events where heads of state and industry leaders convene to address AI challenges, producing legally binding treaties that all participating nations must follow.', d: 3 },
+        { text: 'Major diplomatic events organized by a single host nation that set the global AI safety agenda, with the host country retaining authority over which commitments participants adopt.', d: 3 },
     ]
 };
 
