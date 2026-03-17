@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { LESSONS, TOPICS } from '../data/lessons';
 import { generateWhatOptions, generateDescriptionOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
+import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
 import Mascot from '../components/Mascot';
@@ -327,9 +328,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     <div className="flex items-center justify-center mb-4 relative">
                         <button onClick={() => setShowExitConfirm(true)} className="text-sm flex items-center gap-1 absolute left-0"
                             style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <polyline points="15 18 9 12 15 6" />
-                            </svg>
+                            <ChevronLeft size={16} strokeWidth={2} />
                             Exit
                         </button>
                         <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
@@ -507,11 +506,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
                         style={{ color: 'var(--color-primary)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }}
                     >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                            <polyline points="16 6 12 2 8 6" />
-                            <line x1="12" y1="2" x2="12" y2="15" />
-                        </svg>
+                        <Share2 size={16} strokeWidth={2} />
                         Share Result
                     </button>
                     {shareToast && (
@@ -552,9 +547,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     <div className="flex items-center justify-between mb-4">
                         <button onClick={() => { setView(VIEW.HUB); setSelectedLessons([]); }}
                             className="text-sm flex items-center gap-1" style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <polyline points="15 18 9 12 15 6" />
-                            </svg>
+                            <ChevronLeft size={16} strokeWidth={2} />
                             Back
                         </button>
                         <span className="text-sm font-medium" style={{ color: 'var(--color-ink-muted)' }}>
@@ -735,9 +728,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                             </div>
                         )}
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2" className="mt-2 flex-shrink-0">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
+                    <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2} className="mt-2 flex-shrink-0" />
                 </div>
             </Card>
 
@@ -772,9 +763,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                             </button>
                         )}
                         {starredConcepts.length > 0 && (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2" className="mt-0">
-                                <polyline points="9 18 15 12 9 6" />
-                            </svg>
+                            <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2} className="mt-0" />
                         )}
                     </div>
                 </div>
@@ -804,9 +793,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                             Pick lessons to combine into a custom session
                         </p>
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2" className="mt-2 flex-shrink-0">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
+                    <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2} className="mt-2 flex-shrink-0" />
                 </div>
             </Card>
 
@@ -1029,11 +1016,9 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: concept.id })}
                                                     size={16}
                                                 />
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2"
+                                                <ChevronDown size={12} color="var(--color-ink-faint)" strokeWidth={2}
                                                     className="transition-transform duration-200"
-                                                    style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                                                    <polyline points="6 9 12 15 18 9" />
-                                                </svg>
+                                                    style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }} />
                                             </div>
                                         </div>
 

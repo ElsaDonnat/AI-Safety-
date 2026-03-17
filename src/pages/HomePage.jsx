@@ -2,6 +2,7 @@ import { useApp } from '../context/AppContext';
 import { DOMAINS, LESSONS } from '../data/lessons';
 import MatrixTextReveal from '../components/MatrixTextReveal';
 import { NAV_ICONS } from '../components/layout/NavIcons';
+import { ChevronRight } from 'lucide-react';
 
 const SECTIONS = [
     {
@@ -180,9 +181,7 @@ export default function HomePage({ onTabChange }) {
                                 {section.description}
                             </p>
                         </div>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)" strokeWidth="2" strokeLinecap="round">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
+                        <ChevronRight size={14} color="var(--color-ink-faint)" strokeWidth={2} />
                     </button>
                 ))}
             </div>

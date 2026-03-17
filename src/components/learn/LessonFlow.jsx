@@ -7,24 +7,16 @@ import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmMo
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS, CHAPTERS, DIFFICULTY_COLORS } from '../../data/lessons';
+import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, Star, Share2 } from 'lucide-react';
 
-// Monoline topic icons — matches LearnPage ICON_SVG
-const TOPIC_ICON = {
-    'ai-basics': (color) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="4" y="4" width="16" height="16" rx="2" /><line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="2.5" /><line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="2.5" /><path d="M9 15h6" />
-        </svg>
-    ),
-    'ai-progress': (color) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
-        </svg>
-    ),
-    'ai-concepts': (color) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
-        </svg>
-    ),
+// Maps topic icon IDs to Lucide components — matches LearnPage ICON_MAP
+const TOPIC_ICON_MAP = {
+    'ai-basics': Bot,
+    'ai-progress': TrendingUp,
+    'ai-concepts': Brain,
+    foundations: Lightbulb,
+    governance: Landmark,
+    'ai-safety': ShieldCheck,
 };
 
 // Highlight key AI terms in coral
@@ -241,7 +233,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 <div className="flex-shrink-0 pt-3" style={{ position: 'relative', zIndex: 1 }}>
                     <button onClick={onComplete} className="flex items-center gap-1 text-sm"
                         style={{ color: 'var(--color-ink-muted)' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                        <ChevronLeft size={16} strokeWidth={2} />
                         Back
                     </button>
                 </div>
@@ -292,7 +284,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                         {topic && (
                             <div className="flex items-start gap-3 px-4 py-3 mb-4 rounded-[3px]"
                                 style={{ backgroundColor: `${topic.color}08`, borderLeft: `3px solid ${topic.color}` }}>
-                                <span className="flex-shrink-0 mt-0.5">{TOPIC_ICON[topic.icon]?.(topic.color)}</span>
+                                <span className="flex-shrink-0 mt-0.5">{(() => { const IC = TOPIC_ICON_MAP[topic.icon]; return IC ? <IC size={18} color={topic.color} strokeWidth={1.8} /> : null; })()}</span>
                                 <div className="min-w-0">
                                     <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{topic.title}</p>
                                     <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>{topic.description}</p>
@@ -355,7 +347,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 <div className="flex-shrink-0 pt-4">
                     <div className="flex items-center justify-center mb-3 relative">
                         <button onClick={handleExit} className="text-sm flex items-center gap-1 absolute left-0" style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                            <ChevronLeft size={16} strokeWidth={2} />
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
@@ -454,7 +446,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 <div className="flex-shrink-0 pt-4">
                     <div className="flex items-center justify-center mb-2 relative">
                         <button onClick={handleExit} className="text-sm flex items-center gap-1 absolute left-0" style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                            <ChevronLeft size={16} strokeWidth={2} />
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
@@ -533,7 +525,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 <div className="flex-shrink-0 pt-4">
                     <div className="flex items-center justify-center mb-2 relative">
                         <button onClick={handleExit} className="text-sm flex items-center gap-1 absolute left-0" style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                            <ChevronLeft size={16} strokeWidth={2} />
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
@@ -665,9 +657,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <Divider />
                             <div className="flex items-center justify-center gap-6 mt-3">
                                 <div id="xp-earned-display" className="flex items-center gap-2 animate-xp-pop" style={{ animationDelay: '500ms' }}>
-                                    <svg className="animate-xp-glow" style={{ animationDelay: '700ms' }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-bronze)" strokeWidth="2">
-                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-bronze-light)" />
-                                    </svg>
+                                    <Star className="animate-xp-glow" style={{ animationDelay: '700ms' }} size={20} color="var(--color-bronze)" fill="var(--color-bronze-light)" strokeWidth={2} />
                                     <div className="text-left">
                                         <AnimatedCounter value={xp} prefix="+" duration={600} delay={1050} className="text-xl font-bold leading-none" style={{ color: 'var(--color-burgundy)' }} />
                                         <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-faint)' }}>XP earned</div>
@@ -700,9 +690,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                         if (result === 'copied') setShareToast(true);
                     }} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
                         style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
-                        </svg>
+                        <Share2 size={16} strokeWidth={2} />
                         Share Result
                     </button>
                     {shareToast && <p className="text-xs text-center animate-fade-in" style={{ color: 'var(--color-success)' }}>Copied to clipboard!</p>}

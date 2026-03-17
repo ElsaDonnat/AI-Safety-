@@ -9,44 +9,22 @@ import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
+import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock } from 'lucide-react';
 
-// Simple monoline SVG icons for domains and topics
-const ICON_SVG = {
-    foundations: (color) => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="3" /><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-        </svg>
-    ),
-    governance: (color) => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="3" x2="12" y2="21" /><polyline points="5 8 12 3 19 8" /><path d="M5 8v4c0 2 3 4 7 4s7-2 7-4V8" />
-        </svg>
-    ),
-    'ai-safety': (color) => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-    ),
-    'ai-basics': (color) => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="4" y="4" width="16" height="16" rx="2" /><line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="2.5" /><line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="2.5" /><path d="M9 15h6" />
-        </svg>
-    ),
-    'ai-progress': (color) => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
-        </svg>
-    ),
-    'ai-concepts': (color) => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
-        </svg>
-    ),
+// Maps domain/topic icon IDs to Lucide components
+const ICON_MAP = {
+    foundations: Lightbulb,
+    governance: Landmark,
+    'ai-safety': ShieldCheck,
+    'ai-basics': Bot,
+    'ai-progress': TrendingUp,
+    'ai-concepts': Brain,
 };
 
 function TopicIcon({ iconId, color }) {
-    const render = ICON_SVG[iconId];
-    return render ? render(color || 'currentColor') : null;
+    const IconComponent = ICON_MAP[iconId];
+    if (!IconComponent) return null;
+    return <IconComponent size={20} color={color || 'currentColor'} strokeWidth={1.8} />;
 }
 
 // ─── "This Week" card session tracking ───
@@ -201,9 +179,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
                             style={{ backgroundColor: 'rgba(212, 160, 74, 0.12)' }}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-warning)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
-                            </svg>
+                            <Calendar size={20} color="var(--color-warning)" strokeWidth={1.8} />
                         </div>
                         <div className="flex-1">
                             <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
@@ -213,10 +189,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                 Test your knowledge today
                             </p>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-faint)"
-                            strokeWidth="2" strokeLinecap="round">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
+                        <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2} />
                     </div>
                 </Card>
             )}
@@ -305,14 +278,10 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                             {completedTopicLessons.length}/{allTopicLessons.length} lessons
                                         </p>
                                     </div>
-                                    <svg
-                                        width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                        stroke="var(--color-ink-faint)" strokeWidth="2" strokeLinecap="round"
+                                    <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2}
                                         className="flex-shrink-0 transition-transform duration-200"
                                         style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                                    >
-                                        <polyline points="9 18 15 12 9 6" />
-                                    </svg>
+                                    />
                                 </div>
 
                                 {/* Expanded: chapters and lessons */}
@@ -400,9 +369,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                             }}
                                                                         >
                                                                             {isCompleted ? (
-                                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-                                                                                    <polyline points="20 6 9 17 4 12" />
-                                                                                </svg>
+                                                                                <Check size={14} strokeWidth={3} />
                                                                             ) : (
                                                                                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{idx + 1}</span>
                                                                             )}
@@ -425,19 +392,12 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
 
                                                                         {/* Arrow for next */}
                                                                         {isNext && !isCompleted && (
-                                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                                                stroke={topic.color} strokeWidth="2.5" strokeLinecap="round">
-                                                                                <polyline points="9 18 15 12 9 6" />
-                                                                            </svg>
+                                                                            <ChevronRight size={14} color={topic.color} strokeWidth={2.5} />
                                                                         )}
 
                                                                         {/* Lock for locked */}
                                                                         {!isUnlocked && (
-                                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                                                stroke="var(--color-ink-faint)" strokeWidth="2" strokeLinecap="round">
-                                                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                                                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                                                            </svg>
+                                                                            <Lock size={14} color="var(--color-ink-faint)" strokeWidth={2} />
                                                                         )}
                                                                     </div>
                                                                 );

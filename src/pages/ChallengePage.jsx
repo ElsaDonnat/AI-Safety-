@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame } from '../data/challengeQuiz';
 import { Button } from '../components/shared';
 import Mascot from '../components/Mascot';
+import { Heart, Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Clock, Landmark as LandmarkIcon } from 'lucide-react';
 import * as feedback from '../services/feedback';
 import StreakCelebration from '../components/StreakCelebration';
 import FunFactsFlow from '../components/FunFactsFlow';
@@ -65,18 +66,19 @@ function getTierProgress(qIdx) {
     };
 }
 
-// SVG tier icons — replace emoji to avoid rendering issues on Android
+// Tier icons using Lucide for clean, consistent look
+const TIER_ICONS = {
+    beginner: Flame,
+    amateur: BookOpen,
+    advanced: GraduationCap,
+    expert: Clock,
+    master: LandmarkIcon,
+    visionary: Zap,
+};
 const TierIcon = ({ tierId, size = 24, color = '#666' }) => {
-    const s = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: '1.8', strokeLinecap: 'round', strokeLinejoin: 'round' };
-    const icons = {
-        beginner: <svg {...s}><path d="M12 22c-1-3-5-5-5-10a5 5 0 0 1 10 0c0 5-4 7-5 10z" fill={color} opacity="0.12" /><path d="M12 22c-1-3-5-5-5-10a5 5 0 0 1 10 0c0 5-4 7-5 10z" /><line x1="12" y1="8" x2="12" y2="14" /><path d="M10 11h4" /></svg>,
-        amateur: <svg {...s}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill={color} opacity="0.08" /><line x1="9" y1="8" x2="16" y2="8" /><line x1="9" y1="12" x2="14" y2="12" /></svg>,
-        advanced: <svg {...s}><path d="M12 3L2 9l10 6 10-6-10-6z" fill={color} opacity="0.1" /><path d="M2 9l10 6 10-6" /><path d="M6 11.5v5c0 2 3 3.5 6 3.5s6-1.5 6-3.5v-5" /><line x1="22" y1="9" x2="22" y2="15" /></svg>,
-        expert: <svg {...s}><circle cx="12" cy="12" r="9" fill={color} opacity="0.1" /><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>,
-        master: <svg {...s}><path d="M3 21h18M5 21V7l7-4 7 4v14" fill={color} opacity="0.1" /><line x1="9" y1="21" x2="9" y2="10" /><line x1="15" y1="21" x2="15" y2="10" /><path d="M5 7l7-4 7 4" /><line x1="3" y1="21" x2="21" y2="21" /></svg>,
-        visionary: <svg {...s}><polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill={color} opacity="0.15" /><polygon points="13,2 3,14 12,14 11,22 21,10 12,10" /></svg>,
-    };
-    return icons[tierId] || null;
+    const IconComponent = TIER_ICONS[tierId];
+    if (!IconComponent) return null;
+    return <IconComponent size={size} color={color} strokeWidth={1.8} />;
 };
 
 // ─── Views ───────────────────────────────────────────────────
@@ -90,14 +92,12 @@ function Hearts({ current, max = MAX_HEARTS, losingIndex = -1 }) {
                 const isFilled = i < current;
                 const isLosing = i === losingIndex;
                 return (
-                    <svg key={i} width="24" height="24" viewBox="0 0 24 24"
+                    <Heart key={i} size={24}
                         fill={isFilled ? '#E05555' : 'none'}
-                        stroke={isFilled ? '#E05555' : 'var(--color-ink-faint)'}
-                        strokeWidth="2"
+                        color={isFilled ? '#E05555' : 'var(--color-ink-faint)'}
+                        strokeWidth={2}
                         className={isLosing ? 'challenge-heart--losing' : isFilled ? 'challenge-heart--alive' : ''}
-                    >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
+                    />
                 );
             })}
         </div>
@@ -924,9 +924,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                     >
                         <div style={{ flexShrink: 0 }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1E3A5F)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                            </svg>
+                            <Zap size={28} color="var(--color-primary, #1E3A5F)" strokeWidth={2} />
                         </div>
                         <div style={{ minWidth: 0 }}>
                             <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
@@ -936,9 +934,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 {TIER_DISPLAY.length} tiers, {TOTAL_CHALLENGE_QUESTIONS} questions. Best: <strong>{ch.soloHighScore || 0}/{TOTAL_CHALLENGE_QUESTIONS}</strong>
                             </p>
                         </div>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" style={{ marginLeft: 'auto', flexShrink: 0 }}>
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
+                        <ChevronRight size={18} color="var(--color-ink-muted)" strokeWidth={2} style={{ marginLeft: 'auto', flexShrink: 0 }} />
                     </button>
 
                     {/* Multiplayer card */}
@@ -962,12 +958,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                     >
                         <div style={{ flexShrink: 0 }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1E3A5F)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                <circle cx="9" cy="7" r="4" />
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                            </svg>
+                            <Users size={28} color="var(--color-primary, #1E3A5F)" strokeWidth={2} />
                         </div>
                         <div style={{ minWidth: 0 }}>
                             <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
@@ -977,9 +968,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 1-5 players, pass the phone
                             </p>
                         </div>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" style={{ marginLeft: 'auto', flexShrink: 0 }}>
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
+                        <ChevronRight size={18} color="var(--color-ink-muted)" strokeWidth={2} style={{ marginLeft: 'auto', flexShrink: 0 }} />
                     </button>
 
                     {/* Fun Facts card */}
@@ -1001,11 +990,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                     >
                         <div style={{ flexShrink: 0 }}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1E3A5F)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M9 18h6" />
-                                <path d="M10 22h4" />
-                                <path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z" />
-                            </svg>
+                            <Lightbulb size={28} color="var(--color-primary, #1E3A5F)" strokeWidth={2} />
                         </div>
                         <div style={{ minWidth: 0 }}>
                             <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
@@ -1019,9 +1004,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </p>
                         </div>
                         {availableFunFacts.length > 0 && (
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" style={{ marginLeft: 'auto', flexShrink: 0 }}>
-                                <polyline points="9 18 15 12 9 6" />
-                            </svg>
+                            <ChevronRight size={18} color="var(--color-ink-muted)" strokeWidth={2} style={{ marginLeft: 'auto', flexShrink: 0 }} />
                         )}
                     </button>
                 </div>

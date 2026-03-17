@@ -10,6 +10,7 @@ import {
     requestNotificationPermission,
 } from '../services/notifications';
 import * as feedback from '../services/feedback';
+import { X, Clock, Sun, Volume2, Music, Smartphone, Download, Upload, MessageCircle, Coffee } from 'lucide-react';
 
 const STORAGE_KEY = 'aisafety-state-v1';
 
@@ -126,9 +127,7 @@ export default function Settings() {
                             Privacy Policy
                         </h2>
                         <button onClick={() => setShowPrivacy(false)} className="p-1 rounded-[3px]" style={{ color: 'var(--color-ink-muted)' }}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
+                            <X size={20} strokeWidth={2} />
                         </button>
                     </div>
                     <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--color-ink-secondary)' }}>
@@ -174,9 +173,7 @@ export default function Settings() {
                         className="absolute right-0 p-1 rounded-[3px]"
                         style={{ color: 'var(--color-ink-muted)' }}
                     >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
+                        <X size={20} strokeWidth={2} />
                     </button>
                 </div>
 
@@ -213,9 +210,7 @@ export default function Settings() {
                 {(totalSeconds > 0 || todaySeconds > 0) && (
                     <Card className="mb-4 p-4">
                         <div className="flex items-center gap-2 mb-3">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-                                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-                            </svg>
+                            <Clock size={16} color="var(--color-ink-muted)" strokeWidth={2} className="flex-shrink-0" />
                             <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Study Time</span>
                         </div>
                         <div className="flex items-center justify-around">
@@ -385,9 +380,7 @@ export default function Settings() {
                 <Card className="mb-3 p-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-ink-muted)' }}>
-                                <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                            </svg>
+                            <Sun size={16} color="var(--color-ink-muted)" strokeWidth={2} />
                             <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Appearance</span>
                         </div>
                         <div className="flex rounded-[3px] overflow-hidden" style={{ border: '1px solid rgba(var(--color-ink-rgb), 0.1)' }}>
@@ -420,7 +413,7 @@ export default function Settings() {
                     <div>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>
+                                <Volume2 size={16} color="var(--color-ink-muted)" strokeWidth={2} />
                                 <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Sound effects</span>
                             </div>
                             <span className="text-xs tabular-nums" style={{ color: 'var(--color-ink-muted)', minWidth: '2.5rem', textAlign: 'right' }}>
@@ -442,7 +435,7 @@ export default function Settings() {
                     <div className="pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /></svg>
+                                <Music size={16} color="var(--color-ink-muted)" strokeWidth={2} />
                                 <div>
                                     <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Ambient music</span>
                                     <div className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Ambient soundscape</div>
@@ -466,7 +459,7 @@ export default function Settings() {
                     {/* Haptic feedback toggle */}
                     <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                         <div className="flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2" /><line x1="1" y1="8" x2="1" y2="16" /><line x1="23" y1="8" x2="23" y2="16" /></svg>
+                            <Smartphone size={16} color="var(--color-ink-muted)" strokeWidth={2} />
                             <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Haptic feedback</span>
                         </div>
                         <button
@@ -494,9 +487,7 @@ export default function Settings() {
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
                         style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
+                        <Download size={13} strokeWidth={2} />
                         Export
                     </button>
                     <button
@@ -504,9 +495,7 @@ export default function Settings() {
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
                         style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
-                        </svg>
+                        <Upload size={13} strokeWidth={2} />
                         Import
                     </button>
                     <input ref={fileInputRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
@@ -535,9 +524,7 @@ export default function Settings() {
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
                         style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                        </svg>
+                        <MessageCircle size={13} strokeWidth={2} />
                         Feedback
                     </button>
                     <button
@@ -545,9 +532,7 @@ export default function Settings() {
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
                         style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" /><line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />
-                        </svg>
+                        <Coffee size={13} strokeWidth={2} />
                         Buy Me a Coffee
                     </button>
                 </div>
