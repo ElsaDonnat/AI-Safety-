@@ -346,11 +346,11 @@ export const CORE_CONCEPT_COUNT = CORE_CONCEPTS.length;
 // Edit this array to add, remove, or reorder categories.
 // Each concept's `category` field should match one of these IDs.
 export const CATEGORIES = [
-    { id: 'technical', label: 'Technical', color: '#7BAFCC', icon: 'gear' },
-    { id: 'alignment', label: 'Alignment', color: '#9B7EC8', icon: 'compass' },
-    { id: 'policy', label: 'Policy', color: '#7BA3CC', icon: 'building' },
+    { id: 'technical', label: 'Technical', color: '#7BAFCC', icon: 'cpu' },
+    { id: 'alignment', label: 'Alignment', color: '#9B7EC8', icon: 'target' },
+    { id: 'policy', label: 'Policy', color: '#7BA3CC', icon: 'landmark' },
     { id: 'ethics', label: 'Ethics', color: '#5A9E6F', icon: 'heart' },
-    { id: 'risks', label: 'Risks', color: '#C44D4D', icon: 'warning' },
+    { id: 'risks', label: 'Risks', color: '#C44D4D', icon: 'alert-triangle' },
 ];
 
 // Derived lookup — components use this for quick access by ID.

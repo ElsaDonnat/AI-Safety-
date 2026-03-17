@@ -4,6 +4,7 @@ import AchievementsModal from './AchievementsModal';
 import StreakFlame from './StreakFlame';
 import { FLAME_COUNT_COLORS } from '../utils/streakColors';
 import MatrixTextReveal from './MatrixTextReveal';
+import { Star, Trophy, Settings } from 'lucide-react';
 
 function getStreakStatus(lastActiveDate, currentStreak) {
     if (!lastActiveDate || currentStreak === 0) return 'inactive';
@@ -134,9 +135,7 @@ export default function TopBar() {
                         <div id="xp-star-target" className="topbar-stat"
                             onClick={() => window.dispatchEvent(new Event('openWeekTracker'))}
                             style={{ cursor: 'pointer' }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-ink-muted)" stroke="var(--color-ink-muted)" opacity="0.2" />
-                            </svg>
+                            <Star size={16} color="var(--color-ink-muted)" fill="var(--color-ink-muted)" strokeWidth={2} style={{ opacity: 0.2 }} />
                             <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
                                 {displayXP}
                             </span>
@@ -149,14 +148,7 @@ export default function TopBar() {
                             className="topbar-trophy-btn"
                             aria-label="Achievements"
                         >
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-                                <path d="M4 22h16" />
-                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22" />
-                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22" />
-                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-                            </svg>
+                            <Trophy size={17} color="var(--color-ink-muted)" strokeWidth={2} />
                             {hasNewAchievements && <span className="achievement-dot" />}
                         </button>
 
@@ -166,10 +158,7 @@ export default function TopBar() {
                             className="topbar-settings-btn"
                             aria-label="Settings"
                         >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="3" />
-                                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                            </svg>
+                            <Settings size={18} color="var(--color-ink-muted)" strokeWidth={2} />
                         </button>
                     </div>
                 </div>
