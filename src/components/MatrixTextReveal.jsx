@@ -76,6 +76,16 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
         return { display: getRandomChar(), resolved: false, cycleCount: newCycleCount, started: true };
       });
 
+      // Safety: if all chars before the dot are resolved but dot isn't, force-resolve it
+      const hasDot = (dotElement || dotColor) && text.endsWith('.');
+      if (hasDot && next.length > 0) {
+        const dotIdx = next.length - 1;
+        const allOthersResolved = next.slice(0, dotIdx).every(c => c.resolved);
+        if (allOthersResolved && !next[dotIdx].resolved) {
+          next[dotIdx] = { display: text[dotIdx], resolved: true, cycleCount: 0, started: true };
+        }
+      }
+
       return next;
     });
   }, [text, dotElement, dotColor]);
@@ -107,17 +117,24 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
 
   const useDotElement = (dotElement || dotColor) && text.endsWith('.');
 
+  // Dot style — shared between resolved and placeholder states to prevent layout shift
+  const dotStyle = { display: 'inline-block', width: '0.18em', height: '0.18em', backgroundColor: dotColor, borderRadius: '50%', marginLeft: '0.04em', flexShrink: 0 };
+
   return (
-    <span className={className} style={style}>
+    <span className={className} style={{ display: 'inline-flex', alignItems: 'baseline', ...style }}>
       {charStates.map((charState, i) => {
         const isLastChar = i === charStates.length - 1;
-        if (useDotElement && isLastChar && charState.resolved) {
-          if (dotElement) return <span key={i}>{dotElement}</span>;
-          // Render a circle dot positioned at the baseline (bottom of text)
-          return (
-            <span key={i} style={{ display: 'inline-block', width: '0.16em', height: '0.16em', backgroundColor: dotColor, borderRadius: '50%', verticalAlign: '-0.04em', marginLeft: '0.02em' }} />
-          );
+
+        // Dot character (last char when dotElement/dotColor is used)
+        if (useDotElement && isLastChar) {
+          if (charState.resolved) {
+            if (dotElement) return <span key={i}>{dotElement}</span>;
+            return <span key={i} style={dotStyle} />;
+          }
+          // Invisible placeholder with same dimensions — reserves space, prevents layout shift
+          return <span key={i} style={{ ...dotStyle, visibility: 'hidden' }} />;
         }
+
         if (!charState.started && !charState.resolved) {
           return (
             <span key={i} style={{ display: 'inline-block', minWidth: text[i] === ' ' ? '0.25em' : '0.5em', visibility: 'hidden' }}>
