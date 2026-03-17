@@ -850,12 +850,12 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         {bestTierReached < 0 ? 'Tier Progression' : `Best: ${TIER_DISPLAY[bestTierReached].label}`}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative', padding: '0 2px' }}>
-                        {/* Track line — behind circles */}
+                        {/* Track line — behind circles, from center of first to center of last */}
                         <div style={{
                             position: 'absolute',
                             top: 18,
-                            left: 28,
-                            right: 28,
+                            left: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
+                            right: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
                             height: '2px',
                             background: 'rgba(var(--color-ink-rgb), 0.10)',
                             zIndex: 0,
@@ -865,8 +865,8 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <div style={{
                                 position: 'absolute',
                                 top: 18,
-                                left: 28,
-                                width: `${(bestTierReached / (TIER_DISPLAY.length - 1)) * (100 - 10)}%`,
+                                left: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
+                                width: `calc(${bestTierReached / (TIER_DISPLAY.length - 1)} * (100% - 100% / ${TIER_DISPLAY.length}))`,
                                 height: '2px',
                                 background: 'var(--color-burgundy)',
                                 transition: 'width 0.4s ease',
