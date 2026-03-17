@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ACHIEVEMENTS, BONUS_ACHIEVEMENTS } from '../data/achievements';
 import { shareText, buildAchievementShareText } from '../services/share';
+import { ChevronLeft, Share2, X as XIcon } from 'lucide-react';
 
 const CATEGORY_LABELS = {
     learning: 'Learning',
@@ -33,9 +34,7 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
     return (
         <div className="achievement-detail animate-fade-in">
             <button onClick={onBack} className="achievement-detail-back" aria-label="Back">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
+                <ChevronLeft size={20} strokeWidth={2} />
             </button>
 
             <div className="achievement-detail-content">
@@ -71,11 +70,7 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
 
                 {isUnlocked && (
                     <button onClick={handleShare} className="achievement-detail-share">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                            <polyline points="16 6 12 2 8 6" />
-                            <line x1="12" y1="2" x2="12" y2="15" />
-                        </svg>
+                        <Share2 size={16} strokeWidth={2} />
                         Share Achievement
                     </button>
                 )}
@@ -115,10 +110,7 @@ export default function AchievementsModal({ onClose }) {
                             Achievements
                         </h2>
                         <button onClick={onClose} className="absolute right-0 p-1 rounded-[3px]" style={{ color: 'var(--color-ink-muted)' }} aria-label="Close">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
+                            <XIcon size={20} strokeWidth={2} />
                         </button>
                     </div>
                     <p className="text-[11px] text-center mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>

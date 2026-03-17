@@ -4,6 +4,7 @@ import { getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { shareText } from '../services/share';
 import StreakFlame from './StreakFlame';
 import { FLAME_COUNT_COLORS } from '../utils/streakColors';
+import { Check, Star, BookOpen, Share2 } from 'lucide-react';
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
@@ -152,9 +153,7 @@ export default function WeekTracker({ onClose }) {
                                         boxShadow: hasActivity ? 'none' : 'var(--shadow-card)',
                                     }}>
                                         {hasActivity ? (
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="3">
-                                                <polyline points="20 6 9 17 4 12" />
-                                            </svg>
+                                            <Check size={14} color="var(--color-burgundy)" strokeWidth={3} />
                                         ) : day.isFuture ? null : (
                                             <div className="w-1.5 h-1.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-ink-faint)', opacity: 0.3 }} />
                                         )}
@@ -200,19 +199,14 @@ export default function WeekTracker({ onClose }) {
                     <div className="flex gap-2">
                         <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                             <div className="flex items-center gap-1.5">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="var(--color-warning)" stroke="var(--color-warning)" opacity="0.7" />
-                                </svg>
+                                <Star size={16} fill="var(--color-warning)" color="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
                                 <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP} XP</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>total earned</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                             <div className="flex items-center gap-1.5">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-burgundy)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                                </svg>
+                                <BookOpen size={16} color="var(--color-burgundy)" strokeWidth={2} />
                                 <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{cardsLearned}</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>concepts learned</div>
@@ -259,11 +253,7 @@ export default function WeekTracker({ onClose }) {
                             className="w-full flex items-center justify-center gap-2 mb-2 py-2.5 rounded-[3px] text-sm font-semibold transition-colors cursor-pointer"
                             style={{ color: '#F0EBE5', backgroundColor: 'var(--color-sidebar-bg)', fontFamily: 'var(--font-mono)' }}
                         >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                                <polyline points="16 6 12 2 8 6" />
-                                <line x1="12" y1="2" x2="12" y2="15" />
-                            </svg>
+                            <Share2 size={16} strokeWidth={2} />
                             Share Progress
                         </button>
                     )}

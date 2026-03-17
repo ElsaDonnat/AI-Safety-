@@ -4,6 +4,7 @@ import { getFunFactsForSeenCards, getNextFunFact } from '../data/funFacts';
 import { getConceptById } from '../data/concepts';
 import { Button, CategoryTag } from './shared';
 import * as feedback from '../services/feedback';
+import { ChevronLeft, Check, X as XIcon } from 'lucide-react';
 
 function shuffleOptions(correct, wrongs) {
     const options = [
@@ -77,7 +78,7 @@ export default function FunFactsFlow({ onExit }) {
                 <div className="flex-shrink-0 pt-3">
                     <button onClick={onExit} className="flex items-center gap-1 text-sm"
                         style={{ color: 'var(--color-ink-muted)' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                        <ChevronLeft size={16} strokeWidth={2} />
                         Back
                     </button>
                 </div>
@@ -98,7 +99,7 @@ export default function FunFactsFlow({ onExit }) {
             <div className="flex items-center justify-between mb-4">
                 <button onClick={onExit} className="flex items-center gap-1 text-sm"
                     style={{ color: 'var(--color-ink-muted)' }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                    <ChevronLeft size={16} strokeWidth={2} />
                     Back
                 </button>
                 <div className="flex items-center gap-2">
@@ -148,21 +149,12 @@ export default function FunFactsFlow({ onExit }) {
                                 bg = 'rgba(34, 197, 94, 0.1)';
                                 border = '1.5px solid var(--color-success)';
                                 textColor = 'var(--color-success)';
-                                icon = (
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" strokeWidth="2.5">
-                                        <polyline points="20 6 9 17 4 12" />
-                                    </svg>
-                                );
+                                icon = <Check size={16} color="var(--color-success)" strokeWidth={2.5} />;
                             } else if (selectedOption === i) {
                                 bg = 'rgba(239, 68, 68, 0.1)';
                                 border = '1.5px solid var(--color-error)';
                                 textColor = 'var(--color-error)';
-                                icon = (
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-error)" strokeWidth="2.5">
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-                                );
+                                icon = <XIcon size={16} color="var(--color-error)" strokeWidth={2.5} />;
                             } else {
                                 opacity = 0.4;
                             }

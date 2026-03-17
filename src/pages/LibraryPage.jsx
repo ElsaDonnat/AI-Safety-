@@ -4,6 +4,7 @@ import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
 import { formatTag } from '../utils/formatTag';
+import { Star } from 'lucide-react';
 import { cardImage } from '../utils/images';
 
 export default function LibraryPage() {
@@ -74,9 +75,7 @@ export default function LibraryPage() {
                         color: showStarredOnly ? '#8B6914' : 'var(--color-ink-muted)',
                     }}
                 >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill={showStarredOnly ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
+                    <Star size={14} fill={showStarredOnly ? 'currentColor' : 'none'} strokeWidth={2} />
                     {starredCards.length > 0 && <span>{starredCards.length}</span>}
                 </button>
             <input
