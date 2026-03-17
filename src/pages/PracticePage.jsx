@@ -1006,8 +1006,8 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     <MasteryDots mastery={mastery} />
                                                     <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
                                                         {collectionSort === 'success'
-                                                            ? `${successRate}% success`
-                                                            : `${timesReviewed} time${timesReviewed !== 1 ? 's' : ''} seen`
+                                                            ? <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span> success</>
+                                                            : <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{timesReviewed}</span> time{timesReviewed !== 1 ? 's' : ''} seen</>
                                                         }
                                                     </span>
                                                 </div>
@@ -1045,11 +1045,11 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                 <div className="flex items-center gap-4 mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Reviewed: </span>
-                                                        <span className="font-bold">{timesReviewed}x</span>
+                                                        <span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{timesReviewed}x</span>
                                                     </div>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Success: </span>
-                                                        <span className="font-bold">{successRate}%</span>
+                                                        <span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span>
                                                     </div>
                                                     <div className="text-[10px] flex items-center gap-1">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Mastery: </span>
