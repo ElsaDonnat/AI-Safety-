@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
+import { formatTag } from '../utils/formatTag';
 import { cardImage } from '../utils/images';
 
 export default function LibraryPage() {
@@ -188,7 +189,7 @@ export default function LibraryPage() {
                                             {concept.tags.map(tag => (
                                                 <span key={tag} className="px-2 py-0.5 rounded text-[10px] font-medium"
                                                     style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-muted)' }}>
-                                                    {tag}
+                                                    {formatTag(tag)}
                                                 </span>
                                             ))}
                                         </div>

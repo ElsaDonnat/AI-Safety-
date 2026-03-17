@@ -386,7 +386,43 @@ export function TabSelector({ tabs, activeTab, onChange }) {
     );
 }
 
-/** Shows linked cards for a concept. */
+/** Clickable card chip used inside prose sentences. */
+function CardChip({ concept, onClick }) {
+    const catColor = CATEGORY_CONFIG[concept.category]?.color || 'var(--color-ink-muted)';
+    return (
+        <button
+            onClick={onClick ? (e) => { e.stopPropagation(); onClick(concept.id); } : undefined}
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] text-xs font-semibold transition-all duration-150 align-baseline"
+            style={{
+                backgroundColor: 'var(--color-card)',
+                border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                borderLeft: `3px solid ${catColor}`,
+                color: 'var(--color-ink)',
+                cursor: onClick ? 'pointer' : 'default',
+                lineHeight: '1.4',
+            }}
+        >
+            {concept.title}
+        </button>
+    );
+}
+
+/** Determines if a relationship string needs "is" prepended for grammatical correctness. */
+function needsIsPrefix(rel) {
+    if (!rel) return false;
+    // Relationships starting with articles or past participles need "is"
+    if (/^(a |an |the )/.test(rel)) return true;
+    // Past participles used as adjectives
+    const pastParticiples = [
+        'built on', 'powered by', 'exemplified by', 'observed in', 'aligned with',
+        'enforced through', 'implemented via', 'adapted via', 'required by', 'trained using',
+        'measured against', 'practiced at', 'discussed at', 'announced at', 'mandated by',
+        'included in', 'applied to', 'made by', 'supported by', 'achieved through',
+    ];
+    return pastParticiples.includes(rel);
+}
+
+/** Shows linked cards for a concept as prose sentences with clickable card chips. */
 export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
     const concept = allConcepts.find(c => c.id === cardId);
     if (!concept || !concept.linkedCards || concept.linkedCards.length === 0) return null;
@@ -401,35 +437,43 @@ export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
 
     if (linkedEntries.length === 0) return null;
 
+    // Group by relationship
+    const groups = [];
+    const seen = new Set();
+    for (const entry of linkedEntries) {
+        const rel = entry.relationship || 'related to';
+        if (!seen.has(rel)) {
+            seen.add(rel);
+            groups.push({ relationship: rel, cards: linkedEntries.filter(e => (e.relationship || 'related to') === rel) });
+        }
+    }
+
+    // Build prose fragments: "{Title} {verb} [Card1] and [Card2]"
+    const fragments = groups.map(({ relationship, cards }) => {
+        const verb = needsIsPrefix(relationship) ? `is ${relationship}` : relationship;
+        return { verb, cards };
+    });
+
     return (
         <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
-            <p className="text-[11px] uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>
+            <p className="text-[11px] uppercase tracking-wider font-semibold mb-2.5" style={{ color: 'var(--color-ink-faint)' }}>
                 Related Concepts
             </p>
-            {linkedEntries.map(conn => (
-                <div
-                    key={conn.id}
-                    className={`flex items-start gap-2 text-xs py-1.5 ${onCardClick ? 'cursor-pointer active:opacity-70' : ''}`}
-                    style={{ color: 'var(--color-ink-muted)' }}
-                    onClick={onCardClick ? (e) => { e.stopPropagation(); onCardClick(conn.id); } : undefined}
-                >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                        stroke={CATEGORY_CONFIG[conn.category]?.color || '#999'}
-                        strokeWidth="2.5" strokeLinecap="round" className="flex-shrink-0 mt-0.5">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                    <div>
-                        <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
-                            {conn.title}
-                        </span>
-                        {conn.relationship && (
-                            <span className="text-[10px] ml-1 px-1.5 py-0.5 rounded-[2px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-faint)' }}>
-                                {conn.relationship}
+            <div className="text-xs leading-relaxed space-y-2" style={{ color: 'var(--color-ink-muted)' }}>
+                {fragments.map(({ verb, cards }, fi) => (
+                    <p key={fi} className="flex flex-wrap items-baseline gap-1">
+                        <span className="font-semibold" style={{ color: 'var(--color-ink)' }}>{concept.title}</span>
+                        <span>{verb}</span>
+                        {cards.map((card, ci) => (
+                            <span key={card.id} className="inline-flex items-baseline gap-1">
+                                <CardChip concept={card} onClick={onCardClick} />
+                                {ci < cards.length - 2 && <span>,</span>}
+                                {ci === cards.length - 2 && <span>and</span>}
                             </span>
-                        )}
-                    </div>
-                </div>
-            ))}
+                        ))}
+                    </p>
+                ))}
+            </div>
         </div>
     );
 }

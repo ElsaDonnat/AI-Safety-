@@ -4,6 +4,7 @@ import { getConceptById, getConceptsByIds, ALL_CONCEPTS, CATEGORY_CONFIG } from 
 import { generateWhatOptions, generateDescriptionOptions, calculateXP, SCORE_COLORS, shuffle } from '../../data/quiz';
 import { calculateNextReview } from '../../data/spacedRepetition';
 import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
+import { formatTag } from '../../utils/formatTag';
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS, CHAPTERS, DIFFICULTY_COLORS } from '../../data/lessons';
@@ -414,7 +415,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                 <div className="flex items-center gap-1.5 flex-wrap mb-3">
                                     {concept.tags.map(tag => (
                                         <span key={tag} className="text-[10px] px-2 py-0.5 rounded-[2px] font-medium"
-                                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-muted)' }}>{tag}</span>
+                                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-muted)' }}>{formatTag(tag)}</span>
                                     ))}
                                 </div>
                             )}

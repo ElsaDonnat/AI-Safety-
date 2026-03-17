@@ -14,7 +14,7 @@ const CORE_CONCEPTS = [
         secondaryTopic: null,
         category: 'technical',
         difficulty: 1,
-        tags: ['ai', 'foundations', 'overview'],
+        tags: ['foundations', 'overview'],
         linkedCards: [
             { id: 'c102', relationship: 'includes' },
             { id: 'c103', relationship: 'includes' },
