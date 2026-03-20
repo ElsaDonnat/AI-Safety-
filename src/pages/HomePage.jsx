@@ -38,7 +38,6 @@ export default function HomePage({ onTabChange }) {
     const learnedCards = state.seenCards?.length || 0;
     const progressPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-    // Find next lesson to continue
     const hasStarted = completedCount > 0;
 
     return (
@@ -82,44 +81,42 @@ export default function HomePage({ onTabChange }) {
 
             {/* Progress summary (only if started) */}
             {hasStarted && (
-                <div className="mb-8 px-4 py-4 rounded-[3px]" style={{
-                    backgroundColor: '#FFFFFF',
-                    border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
-                    boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
+                <div className="mb-6 px-4 py-4 rounded-[3px]" style={{
+                    backgroundColor: 'var(--color-bronze)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink)' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-sidebar-bg)' }}>
                             Your Progress
                         </span>
-                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: '#fff' }}>
                             {progressPct}%
                         </span>
                     </div>
-                    <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
+                    <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'rgba(255, 255, 255, 0.25)' }}>
                         <div style={{ height: '100%', width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-burgundy)', transition: 'width 0.5s ease-out' }} />
                     </div>
                     <div className="flex justify-between mt-3">
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: '#fff' }}>
                                 {completedCount}
                             </span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
                                 lessons
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: '#fff' }}>
                                 {learnedCards}
                             </span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
                                 concepts
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: '#fff' }}>
                                 {state.currentStreak}
                             </span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
                                 day streak
                             </span>
                         </div>
@@ -127,21 +124,26 @@ export default function HomePage({ onTabChange }) {
                 </div>
             )}
 
-            {/* CTA */}
-            <button
-                onClick={() => onTabChange('learn')}
-                className="w-full mb-8 py-3.5 rounded-[3px] text-sm font-semibold transition-all active:scale-[0.99]"
-                style={{
-                    fontFamily: 'var(--font-display)',
-                    backgroundColor: 'var(--color-bronze)',
-                    color: '#fff',
-                    border: 'none',
-                    cursor: 'pointer',
-                    letterSpacing: '-0.01em',
-                }}
-            >
-                {hasStarted ? 'Continue Learning' : 'Start Learning'}
-            </button>
+            {/* Domain buttons — 3 in a row */}
+            <div className="flex gap-2 mb-8">
+                {DOMAINS.map(domain => (
+                    <button
+                        key={domain.id}
+                        onClick={() => onTabChange('learn')}
+                        className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
+                        style={{
+                            backgroundColor: domain.color,
+                            border: 'none',
+                            cursor: domain.comingSoon ? 'default' : 'pointer',
+                            opacity: domain.comingSoon ? 0.5 : 1,
+                        }}
+                    >
+                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px', color: 'var(--color-sidebar-bg)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
+                            {domain.title}
+                        </p>
+                    </button>
+                ))}
+            </div>
 
             {/* Warm divider */}
             <div className="my-2" style={{ height: '1px', backgroundColor: 'var(--color-warm)' }} />
@@ -184,47 +186,6 @@ export default function HomePage({ onTabChange }) {
                         <ChevronRight size={14} color="var(--color-ink-faint)" strokeWidth={2} />
                     </button>
                 ))}
-            </div>
-
-            {/* Domains preview — warm panel */}
-            <div className="mt-10 -mx-4 px-4 py-6 rounded-[3px]" style={{ backgroundColor: 'var(--color-dark-panel)' }}>
-                <p style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '10px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
-                    color: 'var(--color-dark-panel-muted)',
-                    marginBottom: '12px',
-                }}>
-                    Domains
-                </p>
-                <div className="space-y-2">
-                    {DOMAINS.map(domain => (
-                        <div
-                            key={domain.id}
-                            className="flex items-center gap-3 px-4 py-3 rounded-[3px]"
-                            style={{
-                                backgroundColor: `${domain.color}35`,
-                                border: `1px solid ${domain.color}50`,
-                            }}
-                        >
-                            <div className="w-2 h-2 rounded-[1px] flex-shrink-0" style={{ backgroundColor: domain.color }} />
-                            <div className="flex-1">
-                                <p style={{ fontFamily: 'var(--font-mono)', fontWeight: 400, fontSize: '13px', color: 'var(--color-dark-panel-text)' }}>
-                                    {domain.title}
-                                </p>
-                                <p className="text-xs" style={{ color: 'var(--color-dark-panel-muted)' }}>
-                                    {domain.description}
-                                </p>
-                            </div>
-                            {domain.comingSoon && (
-                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', color: '#8C7E74' }}>
-                                    Soon
-                                </span>
-                            )}
-                        </div>
-                    ))}
-                </div>
             </div>
 
             {/* Footer */}

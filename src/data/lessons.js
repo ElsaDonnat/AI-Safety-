@@ -16,7 +16,7 @@ export const DOMAINS = [
         title: 'Governance',
         description: 'Policy, regulation, and international coordination',
         icon: 'governance',
-        color: '#C2DDE8',
+        color: '#7CBFB5',
         order: 1,
     },
     {
