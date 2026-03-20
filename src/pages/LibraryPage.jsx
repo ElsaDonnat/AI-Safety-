@@ -1,17 +1,199 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
-import { TOPICS } from '../data/lessons';
+import { TOPICS, DOMAINS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
-import { Star, BookOpen } from 'lucide-react';
+import { Star, BookOpen, ChevronDown, X } from 'lucide-react';
 import { cardImage } from '../utils/images';
 import { DEV_UNLOCK_ALL } from '../config/devFlags';
+
+const DIFFICULTY_OPTIONS = [
+    { id: 1, label: 'Beginner', color: '#5A9E6F' },
+    { id: 2, label: 'Amateur', color: '#D4A026' },
+    { id: 3, label: 'Advanced', color: '#C44D4D' },
+];
+
+function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColor = null }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (!open) return;
+        function handleClick(e) {
+            if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+        }
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, [open]);
+
+    const selected = options.find(o => o.id === value);
+    const displayLabel = selected ? selected.label : allLabel;
+
+    return (
+        <div ref={ref} className="relative flex-1 min-w-0">
+            <button
+                onClick={() => setOpen(o => !o)}
+                className="w-full flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-semibold transition-all truncate"
+                style={{
+                    backgroundColor: selected && activeColor
+                        ? `${activeColor}18`
+                        : 'var(--color-card)',
+                    border: selected && activeColor
+                        ? `1px solid ${activeColor}40`
+                        : '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                    color: selected && activeColor ? activeColor : 'var(--color-ink-muted)',
+                }}
+            >
+                {selected && activeColor && (
+                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: activeColor }} />
+                )}
+                <span className="truncate">{displayLabel}</span>
+                <ChevronDown size={12} className="flex-shrink-0 ml-auto" style={{
+                    transform: open ? 'rotate(180deg)' : 'none',
+                    transition: 'transform 0.15s',
+                }} />
+            </button>
+            {open && (
+                <div
+                    className="absolute top-full left-0 right-0 mt-1 rounded-[3px] shadow-lg overflow-auto"
+                    style={{
+                        backgroundColor: 'var(--color-card)',
+                        border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                        zIndex: 50,
+                        maxHeight: 260,
+                    }}
+                >
+                    <button
+                        onClick={() => { onChange(null); setOpen(false); }}
+                        className="w-full text-left px-3 py-2 text-xs font-medium transition-colors"
+                        style={{
+                            backgroundColor: !value ? 'rgba(var(--color-ink-rgb), 0.06)' : 'transparent',
+                            color: !value ? 'var(--color-ink)' : 'var(--color-ink-muted)',
+                        }}
+                    >
+                        {allLabel}
+                    </button>
+                    {options.map(opt => (
+                        <button
+                            key={opt.id}
+                            onClick={() => { onChange(opt.id); setOpen(false); }}
+                            className="w-full text-left px-3 py-2 text-xs font-medium transition-colors flex items-center gap-2"
+                            style={{
+                                backgroundColor: value === opt.id ? 'rgba(var(--color-ink-rgb), 0.06)' : 'transparent',
+                                color: value === opt.id ? 'var(--color-ink)' : 'var(--color-ink-muted)',
+                            }}
+                        >
+                            {opt.color && (
+                                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: opt.color }} />
+                            )}
+                            <span className="truncate">{opt.label}</span>
+                            {opt.subtitle && (
+                                <span className="text-[10px] ml-auto flex-shrink-0" style={{ color: 'var(--color-ink-faint)' }}>{opt.subtitle}</span>
+                            )}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function GroupedFilterDropdown({ value, groups, onChange, allLabel = 'All' }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (!open) return;
+        function handleClick(e) {
+            if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+        }
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, [open]);
+
+    const allOptions = groups.flatMap(g => g.items);
+    const selected = allOptions.find(o => o.id === value);
+    const displayLabel = selected ? selected.label : allLabel;
+    const resolvedColor = selected ? selected.color : null;
+
+    return (
+        <div ref={ref} className="relative flex-1 min-w-0">
+            <button
+                onClick={() => setOpen(o => !o)}
+                className="w-full flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-semibold transition-all truncate"
+                style={{
+                    backgroundColor: selected && resolvedColor
+                        ? `${resolvedColor}18`
+                        : 'var(--color-card)',
+                    border: selected && resolvedColor
+                        ? `1px solid ${resolvedColor}40`
+                        : '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                    color: selected && resolvedColor ? resolvedColor : 'var(--color-ink-muted)',
+                }}
+            >
+                {selected && resolvedColor && (
+                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: resolvedColor }} />
+                )}
+                <span className="truncate">{displayLabel}</span>
+                <ChevronDown size={12} className="flex-shrink-0 ml-auto" style={{
+                    transform: open ? 'rotate(180deg)' : 'none',
+                    transition: 'transform 0.15s',
+                }} />
+            </button>
+            {open && (
+                <div
+                    className="absolute top-full left-0 right-0 mt-1 rounded-[3px] shadow-lg overflow-auto"
+                    style={{
+                        backgroundColor: 'var(--color-card)',
+                        border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                        zIndex: 50,
+                        maxHeight: 300,
+                    }}
+                >
+                    <button
+                        onClick={() => { onChange(null); setOpen(false); }}
+                        className="w-full text-left px-3 py-2 text-xs font-medium transition-colors"
+                        style={{
+                            backgroundColor: !value ? 'rgba(var(--color-ink-rgb), 0.06)' : 'transparent',
+                            color: !value ? 'var(--color-ink)' : 'var(--color-ink-muted)',
+                        }}
+                    >
+                        {allLabel}
+                    </button>
+                    {groups.map(group => (
+                        <div key={group.label}>
+                            <div className="px-3 pt-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider"
+                                style={{ color: 'var(--color-ink-faint)' }}>
+                                {group.label}
+                            </div>
+                            {group.items.map(opt => (
+                                <button
+                                    key={opt.id}
+                                    onClick={() => { onChange(opt.id); setOpen(false); }}
+                                    className="w-full text-left px-3 py-2 text-xs font-medium transition-colors flex items-center gap-2"
+                                    style={{
+                                        backgroundColor: value === opt.id ? 'rgba(var(--color-ink-rgb), 0.06)' : 'transparent',
+                                        color: value === opt.id ? 'var(--color-ink)' : 'var(--color-ink-muted)',
+                                    }}
+                                >
+                                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: opt.color }} />
+                                    <span className="truncate">{opt.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
 
 export default function LibraryPage() {
     const { state, dispatch } = useApp();
     const [search, setSearch] = useState('');
     const [topicFilter, setTopicFilter] = useState(null);
     const [categoryFilter, setCategoryFilter] = useState(null);
+    const [difficultyFilter, setDifficultyFilter] = useState(null);
     const [expandedCard, setExpandedCard] = useState(null);
     const [showStarredOnly, setShowStarredOnly] = useState(false);
 
@@ -23,6 +205,28 @@ export default function LibraryPage() {
     }, [seenCards]);
 
     const starredCards = useMemo(() => state.starredCards || [], [state.starredCards]);
+
+    // Build topic groups by domain, filtering by selected category if applicable
+    const topicGroups = useMemo(() => {
+        const sortedDomains = [...DOMAINS].sort((a, b) => a.order - b.order);
+        return sortedDomains.map(d => ({
+            label: d.title,
+            items: TOPICS
+                .filter(t => t.domain === d.id)
+                .sort((a, b) => a.order - b.order)
+                .map(t => ({ id: t.id, label: t.title, color: t.color })),
+        })).filter(g => g.items.length > 0);
+    }, []);
+
+    // Category options with colors
+    const categoryOptions = useMemo(() =>
+        CATEGORIES.map(c => ({ id: c.id, label: c.label, color: c.color })),
+    []);
+
+    // When category changes, reset topic if it doesn't belong
+    const handleCategoryChange = useCallback((catId) => {
+        setCategoryFilter(catId);
+    }, []);
 
     const filtered = useMemo(() => {
         let result = discoveredConcepts;
@@ -42,8 +246,21 @@ export default function LibraryPage() {
         if (categoryFilter) {
             result = result.filter(c => c.category === categoryFilter);
         }
+        if (difficultyFilter) {
+            result = result.filter(c => c.difficulty === difficultyFilter);
+        }
         return result;
-    }, [discoveredConcepts, search, topicFilter, categoryFilter, showStarredOnly, starredCards]);
+    }, [discoveredConcepts, search, topicFilter, categoryFilter, difficultyFilter, showStarredOnly, starredCards]);
+
+    const activeFilterCount = [topicFilter, categoryFilter, difficultyFilter].filter(Boolean).length;
+
+    const clearAllFilters = () => {
+        setTopicFilter(null);
+        setCategoryFilter(null);
+        setDifficultyFilter(null);
+        setShowStarredOnly(false);
+        setSearch('');
+    };
 
     if (discoveredConcepts.length === 0) {
         return (
@@ -59,18 +276,22 @@ export default function LibraryPage() {
         );
     }
 
+    const selectedCategory = CATEGORIES.find(c => c.id === categoryFilter);
+    const selectedTopic = TOPICS.find(t => t.id === topicFilter);
+
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto">
             <h2 className="text-xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                 Library
             </h2>
 
-            {/* Starred toggle + Search */}
-            <div className="flex gap-2 mb-4">
+            {/* Row 1: Star toggle + Search — same height */}
+            <div className="flex gap-2 mb-3">
                 <button
                     onClick={() => setShowStarredOnly(s => !s)}
-                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-[3px] text-sm font-semibold transition-all flex-shrink-0"
+                    className="flex items-center justify-center gap-1.5 px-3 rounded-[3px] text-sm font-semibold transition-all flex-shrink-0"
                     style={{
+                        height: 38,
                         backgroundColor: showStarredOnly ? 'rgba(230, 168, 23, 0.12)' : 'var(--color-card)',
                         border: showStarredOnly ? '1px solid rgba(230, 168, 23, 0.3)' : '1px solid rgba(var(--color-ink-rgb), 0.1)',
                         color: showStarredOnly ? '#8B6914' : 'var(--color-ink-muted)',
@@ -79,65 +300,98 @@ export default function LibraryPage() {
                     <Star size={14} fill={showStarredOnly ? 'currentColor' : 'none'} strokeWidth={2} />
                     {starredCards.length > 0 && <span>{starredCards.length}</span>}
                 </button>
-            <input
-                type="text"
-                placeholder="Search cards..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-[3px] text-sm mb-4"
-                style={{
-                    backgroundColor: 'var(--color-card)',
-                    border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
-                    color: 'var(--color-ink)',
-                    outline: 'none',
-                    flex: 1,
-                }}
-            />
-            </div>
-
-            {/* Topic filter chips */}
-            <div className="flex flex-wrap gap-2 mb-3">
-                <button
-                    onClick={() => setTopicFilter(null)}
-                    className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
+                <input
+                    type="text"
+                    placeholder="Search cards..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className="px-3 rounded-[3px] text-sm"
                     style={{
-                        backgroundColor: !topicFilter ? 'var(--color-primary)' : 'rgba(var(--color-ink-rgb), 0.06)',
-                        color: !topicFilter ? '#fff' : 'var(--color-ink-muted)',
+                        height: 38,
+                        backgroundColor: 'var(--color-card)',
+                        border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
+                        color: 'var(--color-ink)',
+                        outline: 'none',
+                        flex: 1,
+                        minWidth: 0,
                     }}
-                >
-                    All Topics
-                </button>
-                {TOPICS.map(t => (
-                    <button
-                        key={t.id}
-                        onClick={() => setTopicFilter(topicFilter === t.id ? null : t.id)}
-                        className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
-                        style={{
-                            backgroundColor: topicFilter === t.id ? t.color : 'rgba(var(--color-ink-rgb), 0.06)',
-                            color: topicFilter === t.id ? '#fff' : 'var(--color-ink-muted)',
-                        }}
-                    >
-                        {t.title}
-                    </button>
-                ))}
+                />
             </div>
 
-            {/* Category filter chips */}
-            <div className="flex flex-wrap gap-2 mb-4">
-                {CATEGORIES.map(cat => (
-                    <button
-                        key={cat.id}
-                        onClick={() => setCategoryFilter(categoryFilter === cat.id ? null : cat.id)}
-                        className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
-                        style={{
-                            backgroundColor: categoryFilter === cat.id ? cat.color : 'rgba(var(--color-ink-rgb), 0.06)',
-                            color: categoryFilter === cat.id ? '#fff' : 'var(--color-ink-muted)',
-                        }}
-                    >
-                        {cat.label}
-                    </button>
-                ))}
+            {/* Row 2: Three filter dropdowns */}
+            <div className="flex gap-2 mb-3">
+                <FilterDropdown
+                    label="Category"
+                    value={categoryFilter}
+                    options={categoryOptions}
+                    onChange={handleCategoryChange}
+                    allLabel="All Categories"
+                    activeColor={selectedCategory?.color}
+                />
+                <GroupedFilterDropdown
+                    label="Topic"
+                    value={topicFilter}
+                    groups={topicGroups}
+                    onChange={setTopicFilter}
+                    allLabel="All Topics"
+                    activeColor={selectedTopic?.color}
+                />
+                <FilterDropdown
+                    label="Difficulty"
+                    value={difficultyFilter}
+                    options={DIFFICULTY_OPTIONS}
+                    onChange={setDifficultyFilter}
+                    allLabel="All Levels"
+                    activeColor={DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color}
+                />
             </div>
+
+            {/* Active filter summary + clear */}
+            {activeFilterCount > 0 && (
+                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: 'var(--color-ink-faint)' }}>
+                        Filters:
+                    </span>
+                    {categoryFilter && selectedCategory && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                            style={{ backgroundColor: `${selectedCategory.color}18`, color: selectedCategory.color }}>
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedCategory.color }} />
+                            {selectedCategory.label}
+                            <button onClick={() => setCategoryFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
+                        </span>
+                    )}
+                    {topicFilter && selectedTopic && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                            style={{ backgroundColor: `${selectedTopic.color}18`, color: selectedTopic.color }}>
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedTopic.color }} />
+                            {selectedTopic.title}
+                            <button onClick={() => setTopicFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
+                        </span>
+                    )}
+                    {difficultyFilter && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                            style={{
+                                backgroundColor: `${DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color}18`,
+                                color: DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color,
+                            }}>
+                            {DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.label}
+                            <button onClick={() => setDifficultyFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
+                        </span>
+                    )}
+                    <button
+                        onClick={clearAllFilters}
+                        className="text-[10px] font-semibold ml-auto"
+                        style={{ color: 'var(--color-ink-muted)' }}
+                    >
+                        Clear all
+                    </button>
+                </div>
+            )}
+
+            {/* Result count */}
+            <p className="text-[11px] font-medium mb-3" style={{ color: 'var(--color-ink-faint)' }}>
+                {filtered.length} card{filtered.length !== 1 ? 's' : ''}
+            </p>
 
             {/* Cards */}
             <div className="space-y-3">
