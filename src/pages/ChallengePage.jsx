@@ -391,9 +391,9 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                     const label = val ? 'True' : 'False';
                     const isSelected = selected === val;
                     const isCorrect = val === question.isTrue;
-                    let bg = 'var(--color-parchment-dark)';
-                    let border = '1px solid var(--color-warm)';
-                    let color = 'var(--color-ink)';
+                    let bg = 'var(--color-sidebar-bg)';
+                    let border = '1px solid var(--color-sidebar-border)';
+                    let color = 'var(--color-sidebar-text)';
 
                     if (answered) {
                         if (isCorrect) {
