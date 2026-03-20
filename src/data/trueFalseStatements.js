@@ -229,3 +229,79 @@ TRUE_FALSE_STATEMENTS['c606'] = {
     falseStatement: 'AI governance only involves government regulation and does not include voluntary industry commitments or technical standards.',
     correction: 'AI governance is a broad ecosystem that includes government regulation, voluntary industry commitments (like responsible scaling policies), international coordination, and technical safety standards — it is not limited to government action alone.',
 };
+
+// ─── AI Ethics (c701–c706) ──────────────────────────
+
+TRUE_FALSE_STATEMENTS['c701'] = {
+    trueStatement: 'AI ethics addresses harms caused by AI systems that work exactly as designed — such as a recommendation algorithm that increases engagement but also amplifies extremism.',
+    falseStatement: 'AI ethics and AI safety are the same field, both focused on preventing AI systems from behaving in unintended ways.',
+    correction: 'AI ethics and AI safety overlap but are distinct — AI safety focuses on preventing catastrophic failures and misalignment, while AI ethics addresses broader societal harms like bias, fairness, and erosion of autonomy, including in systems that function as intended.',
+};
+
+TRUE_FALSE_STATEMENTS['c702'] = {
+    trueStatement: 'A facial recognition system trained primarily on lighter-skinned faces will tend to have higher error rates on darker-skinned faces — a well-documented form of algorithmic bias.',
+    falseStatement: 'Algorithmic bias is always caused by prejudiced developers deliberately programming discrimination into AI systems.',
+    correction: 'Algorithmic bias usually arises unintentionally — from unrepresentative training data, historical biases encoded in datasets, or flawed problem framing — not from developers deliberately programming discrimination.',
+};
+
+TRUE_FALSE_STATEMENTS['c703'] = {
+    trueStatement: 'It is mathematically proven that certain fairness criteria — like equal false positive rates across groups and equal positive predictive values — cannot all be satisfied simultaneously in most real-world scenarios.',
+    falseStatement: 'There is one universally accepted mathematical definition of AI fairness that, if met, guarantees a system treats all groups equitably.',
+    correction: 'There are many competing mathematical definitions of fairness, and key impossibility results show that several desirable fairness criteria are mutually exclusive — making fairness an inherently values-laden design choice, not a single technical benchmark.',
+};
+
+TRUE_FALSE_STATEMENTS['c704'] = {
+    trueStatement: 'AI transparency includes not just understanding how a model works internally, but also disclosing when AI is being used to make decisions about people.',
+    falseStatement: 'AI transparency and AI interpretability are the same thing — both refer to understanding the internal workings of neural networks.',
+    correction: 'Interpretability is a subset of transparency — it focuses on the technical challenge of understanding model internals, while transparency also includes disclosing AI use, publishing training data information, explaining decisions in plain language, and acknowledging system limitations.',
+};
+
+TRUE_FALSE_STATEMENTS['c705'] = {
+    trueStatement: 'The question of AI accountability becomes especially challenging for autonomous systems where no human directly approves each individual decision.',
+    falseStatement: 'AI accountability is straightforward because the company that built the AI is always legally responsible for any harm it causes.',
+    correction: 'Accountability is far more complex — liability may fall on developers, deployers, users, or some combination, and most legal systems were not designed for autonomous decision-making agents. Allocating responsibility requires new governance frameworks.',
+};
+
+TRUE_FALSE_STATEMENTS['c706'] = {
+    trueStatement: 'The same generative AI techniques that create deepfakes also power legitimate applications like film special effects, language dubbing, and accessibility tools.',
+    falseStatement: 'Deepfakes can always be reliably detected by current AI detection tools, making them a manageable rather than serious threat.',
+    correction: 'Deepfake detection is an arms race — as detection tools improve, generation techniques also improve, and current detectors have significant error rates, especially on high-quality deepfakes. There is no reliable universal detector.',
+};
+
+// ─── Global AI Policy (c801–c806) ────────────────────
+
+TRUE_FALSE_STATEMENTS['c801'] = {
+    trueStatement: 'Different countries are taking fundamentally different regulatory approaches to AI — the EU favors comprehensive legislation, the US uses sector-specific guidance, and China mandates algorithm registration.',
+    falseStatement: 'AI regulation is unnecessary because market competition naturally incentivizes companies to build safe AI systems.',
+    correction: 'Market incentives alone do not guarantee safety — companies may cut safety corners to ship faster, externalize risks to users and society, or underinvest in safety research that has no immediate commercial return, which is why regulation exists to set minimum standards.',
+};
+
+TRUE_FALSE_STATEMENTS['c802'] = {
+    trueStatement: 'The EU AI Act bans certain AI uses entirely — including government social scoring systems and most real-time biometric surveillance in public spaces.',
+    falseStatement: 'The EU AI Act applies only to AI companies headquartered in the European Union and does not affect foreign companies selling AI products in EU markets.',
+    correction: 'Like the GDPR, the EU AI Act has extraterritorial scope — it applies to any AI system placed on the EU market or whose outputs are used in the EU, regardless of where the company is headquartered.',
+};
+
+TRUE_FALSE_STATEMENTS['c803'] = {
+    trueStatement: 'Responsible scaling policies require AI labs to define specific capability thresholds and corresponding safety measures that must be met before training more powerful models.',
+    falseStatement: 'Responsible scaling policies are legally binding regulations enforced by governments with penalties for non-compliance.',
+    correction: 'Responsible scaling policies are voluntary, self-imposed commitments by AI labs — they are not government regulations. Their effectiveness depends entirely on labs\' genuine commitment to following through, though they may inform future regulation.',
+};
+
+TRUE_FALSE_STATEMENTS['c804'] = {
+    trueStatement: 'The UK established the world\'s first government AI Safety Institute in 2023, followed by the US and other countries launching their own safety evaluation bodies.',
+    falseStatement: 'AI Safety Institutes are internal departments within AI companies like OpenAI and Anthropic, not independent government organizations.',
+    correction: 'AI Safety Institutes are government-established, publicly accountable bodies — distinct from AI labs\' internal safety teams. Their independence from the companies they evaluate is a core design feature.',
+};
+
+TRUE_FALSE_STATEMENTS['c805'] = {
+    trueStatement: 'Over 30 nations signed the 2023 Bletchley Declaration acknowledging that frontier AI risks require international cooperation, though the declaration is non-binding.',
+    falseStatement: 'International AI coordination has already produced a comprehensive, binding global treaty that all major AI-developing nations have signed and ratified.',
+    correction: 'No binding global AI treaty exists — international coordination so far consists of non-binding declarations, voluntary commitments, and discussion forums. Achieving binding agreements is difficult because nations have competing economic and strategic interests in AI leadership.',
+};
+
+TRUE_FALSE_STATEMENTS['c806'] = {
+    trueStatement: 'The open vs. closed debate intensified when Meta released the Llama model weights publicly, demonstrating that open-weight models can approach the performance of proprietary systems.',
+    falseStatement: 'Open-weight AI models are always safer than closed models because more people can inspect them for safety issues.',
+    correction: 'Openness creates a tradeoff — while independent researchers can audit open models, bad actors also get unrestricted access. A model that enables both safety research and malicious use is not automatically safer than one with controlled access.',
+};

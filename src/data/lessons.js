@@ -18,7 +18,6 @@ export const DOMAINS = [
         icon: 'governance',
         color: '#C2DDE8',
         order: 1,
-        comingSoon: true,
     },
     {
         id: 'ai-safety',
@@ -87,6 +86,25 @@ export const TOPICS = [
         color: '#5A9E6F',
         order: 2,
     },
+    // ─── Governance ──────────────────────────────────────
+    {
+        id: 'ai-ethics',
+        domain: 'governance',
+        title: 'AI Ethics',
+        description: 'Fairness, bias, transparency, and accountability in AI',
+        icon: 'ethics',
+        color: '#5A9E6F',
+        order: 0,
+    },
+    {
+        id: 'global-ai-policy',
+        domain: 'governance',
+        title: 'Global AI Policy',
+        description: 'Regulation, international coordination, and policy debates',
+        icon: 'policy',
+        color: '#7BA3CC',
+        order: 1,
+    },
 ];
 
 // ─── Chapters (difficulty tiers within topics) ──────────────
@@ -115,6 +133,14 @@ export const CHAPTERS = [
     { id: 'safety-techniques-beginner', topic: 'safety-techniques', title: 'Beginner', difficulty: 'beginner', order: 0 },
     { id: 'safety-techniques-amateur', topic: 'safety-techniques', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
     { id: 'safety-techniques-advanced', topic: 'safety-techniques', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // AI Ethics
+    { id: 'ai-ethics-beginner', topic: 'ai-ethics', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'ai-ethics-amateur', topic: 'ai-ethics', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'ai-ethics-advanced', topic: 'ai-ethics', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // Global AI Policy
+    { id: 'global-ai-policy-beginner', topic: 'global-ai-policy', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'global-ai-policy-amateur', topic: 'global-ai-policy', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'global-ai-policy-advanced', topic: 'global-ai-policy', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
 ];
 
 // Difficulty badge colors
@@ -268,6 +294,54 @@ export const LESSONS = [
         topic: 'safety-techniques',
         isFoundational: false,
         cardIds: ['c603', 'c605', 'c606'],
+    },
+
+    // ─── AI Ethics / Beginner ───────────────────────────
+    {
+        id: 'lesson-ethics-b-0',
+        number: 0,
+        title: 'The Ethics of AI',
+        subtitle: 'Bias, fairness, and why AI ethics matters',
+        mood: 'AI works as designed — but is the design fair?',
+        chapter: 'ai-ethics-beginner',
+        topic: 'ai-ethics',
+        isFoundational: true,
+        cardIds: ['c701', 'c702', 'c703'],
+    },
+    {
+        id: 'lesson-ethics-b-1',
+        number: 1,
+        title: 'Trust & Responsibility',
+        subtitle: 'Transparency, accountability, and deepfakes',
+        mood: 'Who answers when AI gets it wrong?',
+        chapter: 'ai-ethics-beginner',
+        topic: 'ai-ethics',
+        isFoundational: false,
+        cardIds: ['c704', 'c705', 'c706'],
+    },
+
+    // ─── Global AI Policy / Beginner ────────────────────
+    {
+        id: 'lesson-policy-b-0',
+        number: 0,
+        title: 'Governing AI',
+        subtitle: 'Regulation, the EU AI Act, and open vs. closed models',
+        mood: 'The rules of the road for the AI age\u2026',
+        chapter: 'global-ai-policy-beginner',
+        topic: 'global-ai-policy',
+        isFoundational: true,
+        cardIds: ['c801', 'c802', 'c806'],
+    },
+    {
+        id: 'lesson-policy-b-1',
+        number: 1,
+        title: 'Safety Beyond Labs',
+        subtitle: 'Responsible scaling, safety institutes, and global coordination',
+        mood: 'Can the world agree on how to govern AI?',
+        chapter: 'global-ai-policy-beginner',
+        topic: 'global-ai-policy',
+        isFoundational: false,
+        cardIds: ['c803', 'c804', 'c805'],
     },
 ];
 

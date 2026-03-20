@@ -54,6 +54,36 @@ export const FUN_FACTS = [
         text: 'In 2023, over 30 countries signed the Bletchley Declaration at the UK AI Safety Summit, agreeing that frontier AI risks require international cooperation to manage.',
         relatedCardIds: ['c606', 'c506'],
     },
+    {
+        id: 'ff12',
+        text: 'A landmark 2018 study by Joy Buolamwini and Timnit Gebru found that commercial facial recognition systems had error rates up to 34% higher for darker-skinned women compared to lighter-skinned men.',
+        relatedCardIds: ['c702', 'c106'],
+    },
+    {
+        id: 'ff13',
+        text: 'There are at least 21 different mathematical definitions of algorithmic fairness — and key impossibility theorems prove that many of them cannot be satisfied simultaneously.',
+        relatedCardIds: ['c703', 'c702'],
+    },
+    {
+        id: 'ff14',
+        text: 'The EU AI Act took over three years to negotiate, with the final text running to over 400 pages. It creates a new European AI Office to enforce the rules.',
+        relatedCardIds: ['c802', 'c801'],
+    },
+    {
+        id: 'ff15',
+        text: 'Anthropic\'s Responsible Scaling Policy defines "AI Safety Levels" (ASL) — inspired by biosafety levels used in labs handling dangerous pathogens.',
+        relatedCardIds: ['c803', 'c206'],
+    },
+    {
+        id: 'ff16',
+        text: 'In early 2024, a deepfake video call impersonating a company\'s CFO convinced an employee to transfer $25 million — one of the largest known deepfake fraud cases.',
+        relatedCardIds: ['c706', 'c502'],
+    },
+    {
+        id: 'ff17',
+        text: 'Meta\'s decision to release the Llama model weights sparked intense debate — some researchers praised the move for democratizing AI, while others warned it was like "giving everyone a loaded gun."',
+        relatedCardIds: ['c806', 'c502'],
+    },
 ];
 
 export function getFunFactsForSeenCards() {

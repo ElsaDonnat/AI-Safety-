@@ -338,3 +338,115 @@ DESCRIPTION_DISTRACTORS['c606'] = {
         { text: 'Regulations and institutions for managing AI responsibly, which are only necessary for government-funded AI projects and do not apply to private companies.', d: 3 },
     ]
 };
+
+// ─── AI Ethics (c701–c706) ──────────────────────────
+
+DESCRIPTION_DISTRACTORS['c701'] = {
+    hardCorrect: 'The discipline that investigates the moral implications of building and deploying AI — including fairness, accountability, and societal impact — distinct from the technical focus of AI safety.',
+    distractors: [
+        { text: 'A branch of computer science focused on optimizing the energy efficiency of data centers that train large AI models.', d: 1 },
+        { text: 'The challenge of ensuring AI systems\' objectives and behavior match what their designers actually want, preventing catastrophic misalignment.', d: 2 },
+        { text: 'The field of applied ethics examining the moral dimensions of AI, which is only relevant once AI systems reach human-level general intelligence.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c702'] = {
+    hardCorrect: 'Consistent, directional errors in AI outputs that disproportionately affect specific demographic groups, typically traced to unrepresentative training data or flawed design choices.',
+    distractors: [
+        { text: 'A hardware manufacturing defect where computer chips produce slightly inaccurate floating-point calculations during neural network training.', d: 1 },
+        { text: 'The research area focused on defining and measuring equitable treatment by AI systems, complicated by multiple incompatible mathematical fairness definitions.', d: 2 },
+        { text: 'Systematic errors in AI outputs that disadvantage certain groups, which can be fully eliminated by using a sufficiently large and diverse training dataset.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c703'] = {
+    hardCorrect: 'The goal of building AI systems that treat people equitably, complicated by the mathematical reality that different formal definitions of fairness cannot all be satisfied simultaneously.',
+    distractors: [
+        { text: 'A user interface design methodology that ensures AI applications are equally accessible to users with different screen sizes and devices.', d: 1 },
+        { text: 'Systematic, directional errors in AI outputs that consistently disadvantage particular demographic groups, arising from biased data or flawed design.', d: 2 },
+        { text: 'The goal of designing equitable AI systems, which is straightforward because there is one universally accepted mathematical definition of fairness.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c704'] = {
+    hardCorrect: 'The principle that AI systems should be open to external scrutiny — including disclosing AI use, explaining decisions, and publishing data and limitation details — going beyond the technical problem of model interpretability.',
+    distractors: [
+        { text: 'A rendering technique that makes AI-generated images look more realistic by improving lighting and shadow calculations in 3D scenes.', d: 1 },
+        { text: 'The research discipline dedicated to opening the "black box" of AI models to understand their internal representations and decision-making processes.', d: 2 },
+        { text: 'The principle that AI systems should be open to scrutiny, which only requires publishing the model\'s source code and does not involve explaining individual decisions.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c705'] = {
+    hardCorrect: 'The principle of establishing clear responsibility chains for AI-caused harm, requiring governance structures that determine whether liability falls on developers, deployers, or end users.',
+    distractors: [
+        { text: 'An accounting practice where AI companies report the financial costs of training large models to shareholders in quarterly earnings statements.', d: 1 },
+        { text: 'The principle that AI systems should be open to scrutiny, including disclosure of AI use, explanations of decisions, and information about training data.', d: 2 },
+        { text: 'The principle of assigning clear responsibility for AI harms, which is automatically resolved because the developer is always legally liable for any AI system output.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c706'] = {
+    hardCorrect: 'Synthetic media produced by generative AI models that convincingly depict fabricated scenes, threatening information integrity and demonstrating the dual-use nature of generative technology.',
+    distractors: [
+        { text: 'A digital watermarking technique that embeds invisible tracking codes in photographs to verify their authenticity and prevent unauthorized copying.', d: 1 },
+        { text: 'The inherent challenge that many AI capabilities serve both constructive and destructive purposes, with misuse potential growing alongside capability improvements.', d: 2 },
+        { text: 'AI-generated synthetic media designed to convincingly depict fabricated events, which can always be detected by current AI detection tools with near-perfect accuracy.', d: 3 },
+    ]
+};
+
+// ─── Global AI Policy (c801–c806) ────────────────────
+
+DESCRIPTION_DISTRACTORS['c801'] = {
+    hardCorrect: 'Government-enacted, legally binding frameworks governing the development and use of AI systems, carrying enforcement penalties — distinct from industry self-regulation or voluntary commitments.',
+    distractors: [
+        { text: 'A software development methodology where code is reviewed and approved by multiple team members before being merged into the main branch.', d: 1 },
+        { text: 'The ecosystem of regulations, standards, voluntary commitments, and international institutions created to ensure AI is developed and deployed responsibly.', d: 2 },
+        { text: 'Legally binding government rules for AI development, which are consistent and harmonized across all countries worldwide.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c802'] = {
+    hardCorrect: 'The EU\'s 2024 horizontal AI law that sorts systems into risk categories — banning social scoring and real-time biometric surveillance, and imposing strict requirements on high-risk applications across all sectors.',
+    distractors: [
+        { text: 'A European Union regulation that standardizes the format of data privacy consent popups displayed on websites and mobile applications.', d: 1 },
+        { text: 'Legally binding government rules governing AI development and deployment, carrying enforcement consequences for non-compliance.', d: 2 },
+        { text: 'The EU\'s comprehensive AI regulation that classifies systems by risk tier, applying only to AI companies headquartered within EU member states.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c803'] = {
+    hardCorrect: 'Voluntary frameworks adopted by AI labs that require demonstrating adequate safety measures before training more capable models — self-imposed gates rather than government mandates.',
+    distractors: [
+        { text: 'A cloud infrastructure strategy where companies gradually increase server capacity to handle growing numbers of AI inference requests from customers.', d: 1 },
+        { text: 'Government-established organizations that independently evaluate frontier AI safety, develop testing frameworks, and share findings internationally.', d: 2 },
+        { text: 'Voluntary commitments by AI labs to gate capability increases on safety requirements, which are legally enforceable in all jurisdictions where the lab operates.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c804'] = {
+    hardCorrect: 'National agencies created by governments to independently test frontier AI models, develop safety evaluation methods, and share results across borders — separate from AI labs\' own safety teams.',
+    distractors: [
+        { text: 'Private research foundations funded by philanthropists that award grants to university researchers working on theoretical machine learning problems.', d: 1 },
+        { text: 'Voluntary frameworks adopted by AI labs that require demonstrating adequate safety measures before training more capable models.', d: 2 },
+        { text: 'Government bodies dedicated to evaluating AI safety, which have the legal authority to shut down any AI lab that fails their evaluations.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c805'] = {
+    hardCorrect: 'Multilateral diplomatic processes — including summits, treaties, and proposals for oversight bodies — aimed at preventing a regulatory "race to the bottom" as nations compete in AI.',
+    distractors: [
+        { text: 'A standardized API specification that allows different AI models from different companies to communicate and share data with each other seamlessly.', d: 1 },
+        { text: 'The EU\'s 2024 comprehensive AI law that classifies systems by risk tier and imposes requirements across all industries within member states.', d: 2 },
+        { text: 'International efforts to align AI governance approaches, which have already produced a binding global treaty that all major AI-developing nations have ratified.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c806'] = {
+    hardCorrect: 'The policy debate over whether publicly releasing AI model weights — enabling broad access and independent safety research — or keeping them proprietary better serves safety and innovation.',
+    distractors: [
+        { text: 'A licensing model that determines whether AI software uses a subscription-based or one-time purchase pricing structure for enterprise customers.', d: 1 },
+        { text: 'The inherent challenge that many AI capabilities serve both constructive and destructive purposes, with misuse potential growing alongside capability improvements.', d: 2 },
+        { text: 'The debate over releasing AI model weights, which has been settled in favor of open-weight models because independent researchers always find and fix safety issues.', d: 3 },
+    ]
+};
