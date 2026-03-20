@@ -332,7 +332,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             Exit
                         </button>
                         <span className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded"
-                            style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}>
+                            style={{ backgroundColor: '#1E3A5F', color: 'white' }}>
                             {sessionMode} · {currentIndex + 1}/{sessionQuestions.length}
                         </span>
                     </div>
