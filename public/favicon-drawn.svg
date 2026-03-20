@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <!-- Transparent background -->
-  <!-- Bold "a" closely matching the logo -->
-  <path d="M75 104V56.5C75 36 61 24 43 24C27 24 15 34 12.5 46L26 49C27 42 34 35 43 35C53 35 61 42 61 56V62C56 58 49 55 41 55C24 55 12 66 12 80C12 94 25 103 41 103C51 103 59 98 63 93V104H75ZM61 81C61 91 53 96 43 96C34 96 26 90 26 80C26 71 34 65 43 65C51 65 57 67 61 72V81Z" fill="#2C2420"/>
-  <!-- Blue dot with space -->
-  <circle cx="100" cy="94" r="13" fill="#A8C8D8"/>
-</svg>
