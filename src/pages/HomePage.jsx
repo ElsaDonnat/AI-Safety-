@@ -82,7 +82,7 @@ export default function HomePage({ onTabChange }) {
             {/* Progress summary (only if started) */}
             {hasStarted && (
                 <div className="mb-6 px-4 py-4 rounded-[3px]" style={{
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: 'var(--color-card)',
                     border: '1px solid var(--color-warm)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
@@ -150,7 +150,7 @@ export default function HomePage({ onTabChange }) {
                             onClick={() => onTabChange('learn')}
                             className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
                             style={{
-                                backgroundColor: '#FFFFFF',
+                                backgroundColor: 'var(--color-card)',
                                 border: `1px solid ${domain.color}50`,
                                 boxShadow: '0 1px 3px rgba(44, 36, 32, 0.06)',
                                 cursor: domain.comingSoon ? 'default' : 'pointer',
@@ -194,7 +194,7 @@ export default function HomePage({ onTabChange }) {
                         onClick={() => onTabChange(section.id)}
                         className="w-full flex items-center gap-4 px-4 py-3.5 rounded-[3px] text-left transition-all active:scale-[0.995]"
                         style={{
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: 'var(--color-card)',
                             border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
                             boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
                             cursor: 'pointer',
