@@ -60,6 +60,18 @@ export const TOTAL_CHALLENGE_QUESTIONS = TIERS.reduce((sum, t) => sum + t.count,
 // ─── Hearts / Lives ──────────────────────────────────
 export const MAX_HEARTS = 3;
 
+// ─── Active concept pool (can be overridden for course mode) ───
+let _activeConcepts = ALL_CONCEPTS;
+
+/**
+ * Set the active concepts pool for question generation.
+ * Call with resolved concepts when course mode is active.
+ * Call with no arguments (or ALL_CONCEPTS) to reset.
+ */
+export function setActiveConcepts(concepts = ALL_CONCEPTS) {
+    _activeConcepts = concepts;
+}
+
 // ─── Question Generators ─────────────────────────────
 
 /**
@@ -67,7 +79,7 @@ export const MAX_HEARTS = 3;
  * Returns { type, statement, isTrue, concept, correction }
  */
 function generateTrueOrFalse() {
-    const pool = ALL_CONCEPTS.filter(c => c.description);
+    const pool = _activeConcepts.filter(c => c.description);
     if (pool.length === 0) return null;
 
     const concept = pool[Math.floor(Math.random() * pool.length)];
@@ -122,7 +134,7 @@ function generateTrueOrFalse() {
  * from same-category concepts for harder distractors.
  */
 function generateHardMCQWhat() {
-    const pool = ALL_CONCEPTS.filter(c => c.description);
+    const pool = _activeConcepts.filter(c => c.description);
     if (pool.length < 2) return null;
 
     const concept = pool[Math.floor(Math.random() * pool.length)];
@@ -164,7 +176,7 @@ function generateHardMCQWhat() {
  * @param {number} difficulty - 1 (easy), 2 (medium), 3 (hard/subtle)
  */
 function generateHardMCQDescription(difficulty = 1) {
-    const pool = ALL_CONCEPTS.filter(c => c.description);
+    const pool = _activeConcepts.filter(c => c.description);
     if (pool.length < 2) return null;
 
     const concept = pool[Math.floor(Math.random() * pool.length)];
@@ -172,7 +184,7 @@ function generateHardMCQDescription(difficulty = 1) {
 
     // Use curated distractors when available
     if (custom) {
-        const options = generateDescriptionOptions(concept, ALL_CONCEPTS, difficulty);
+        const options = generateDescriptionOptions(concept, _activeConcepts, difficulty);
         // Find the distractor entries to attach explanations for d:3
         const explanations = [];
         if (difficulty >= 3) {
@@ -231,7 +243,7 @@ function generateHardMCQDescription(difficulty = 1) {
 function generateOddOneOut() {
     // Group by category
     const byCategory = {};
-    for (const c of ALL_CONCEPTS) {
+    for (const c of _activeConcepts) {
         if (!byCategory[c.category]) byCategory[c.category] = [];
         byCategory[c.category].push(c);
     }
@@ -244,7 +256,7 @@ function generateOddOneOut() {
     const group = shuffle(concepts).slice(0, 3);
 
     // Pick an outlier from a different category
-    const outlierPool = ALL_CONCEPTS.filter(c => c.category !== category);
+    const outlierPool = _activeConcepts.filter(c => c.category !== category);
     if (outlierPool.length === 0) return null;
     const outlier = outlierPool[Math.floor(Math.random() * outlierPool.length)];
 
@@ -271,18 +283,18 @@ function generateOddOneOut() {
  */
 function generateConceptRelationship() {
     // Find concepts with linkedCards
-    const withLinks = ALL_CONCEPTS.filter(c => c.linkedCards && c.linkedCards.length > 0);
+    const withLinks = _activeConcepts.filter(c => c.linkedCards && c.linkedCards.length > 0);
     if (withLinks.length === 0) return null;
 
     const concept = withLinks[Math.floor(Math.random() * withLinks.length)];
     const linkedEntry = concept.linkedCards[Math.floor(Math.random() * concept.linkedCards.length)];
     const linkedId = typeof linkedEntry === 'string' ? linkedEntry : linkedEntry.id;
-    const linkedConcept = ALL_CONCEPTS.find(c => c.id === linkedId);
+    const linkedConcept = _activeConcepts.find(c => c.id === linkedId);
     if (!linkedConcept) return null;
 
     // Get distractors (not linked)
     const linkedIds = concept.linkedCards.map(lc => typeof lc === 'string' ? lc : lc.id);
-    const distractorPool = ALL_CONCEPTS.filter(
+    const distractorPool = _activeConcepts.filter(
         c => c.id !== concept.id && !linkedIds.includes(c.id)
     );
     const distractors = shuffle(distractorPool).slice(0, 3);

@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { getConceptById, getConceptsByIds, ALL_CONCEPTS, CATEGORY_CONFIG } from '../../data/concepts';
 import { generateWhatOptions, generateDescriptionOptions, generateWhyOptions, calculateXP, SCORE_COLORS, shuffle } from '../../data/quiz';
+import { resolveCard, resolveAllConcepts } from '../../data/courses/index';
 import { calculateNextReview } from '../../data/spacedRepetition';
 import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
 import { flyXPToStar } from '../../utils/xpAnimation';
@@ -64,7 +65,12 @@ const QUESTION_TYPES = ['what', 'why', 'how'];
 export default function LessonFlow({ lesson, onComplete }) {
     const { state, dispatch } = useApp();
     const recapPerCard = state.recapPerCard ?? 1;
-    const concepts = useMemo(() => getConceptsByIds(lesson.cardIds || []), [lesson]);
+    // Resolve concepts with course overrides applied
+    const resolvedAllConcepts = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
+    const concepts = useMemo(() => {
+        const base = getConceptsByIds(lesson.cardIds || []);
+        return base.map(c => resolveCard(c, state.courseMode));
+    }, [lesson, state.courseMode]);
     const topic = useMemo(() => TOPICS.find(t => t.id === lesson.topic), [lesson]);
     const chapter = useMemo(() => CHAPTERS.find(ch => ch.id === lesson.chapter), [lesson]);
 
@@ -425,7 +431,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     ))}
                                 </div>
                             )}
-                            <CardConnections cardId={concept.id} seenCardIds={state.seenCards || []} allConcepts={ALL_CONCEPTS} />
+                            <CardConnections cardId={concept.id} seenCardIds={state.seenCards || []} allConcepts={resolvedAllConcepts} />
                             {concept.whyItMatters && <WhyToggle text={concept.whyItMatters} />}
                         </Card>
                     </div>
@@ -476,6 +482,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 </div>
                 <div className="flex-1 min-h-0 overflow-y-auto mt-4" key={`learn-q-${cardIndex}-${learnQuizIndex}`}>
                     <QuizQuestion question={q} lessonCardIds={lesson.cardIds} descriptionDifficulty={1}
+                        allConcepts={resolvedAllConcepts}
                         onAnswer={(score) => recordAnswer(q.concept.id, q.type, score)}
                         onNext={() => handleNext(() => setLearnQuizIndex(i => i + 1), q.concept,
                             (isLastOfCard && cardIndex < concepts.length - 1)
@@ -555,6 +562,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                 </div>
                 <div className="flex-1 min-h-0 overflow-y-auto mt-4" key={`recap-${recapIndex}`}>
                     <QuizQuestion question={q} lessonCardIds={lesson.cardIds} descriptionDifficulty={2}
+                        allConcepts={resolvedAllConcepts}
                         onAnswer={(score) => recordAnswer(q.concept.id, q.type, score)}
                         onNext={() => handleNext(() => setRecapIndex(i => i + 1), q.concept, false)}
                         onBack={recapIndex > 0 ? () => setRecapIndex(i => i - 1) : null}
@@ -782,14 +790,14 @@ function WhyToggle({ text }) {
 // ═══════════════════════════════════════════════════════
 // MCQ QUIZ QUESTION (what, why, how)
 // ═══════════════════════════════════════════════════════
-function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSkip, descriptionDifficulty = null }) {
+function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSkip, descriptionDifficulty = null, allConcepts = ALL_CONCEPTS }) {
     const { concept, type } = question;
     const [answered, setAnswered] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [score, setScore] = useState(null);
-    const [whatOptions] = useState(() => generateWhatOptions(concept, lessonCardIds));
-    const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, ALL_CONCEPTS, descriptionDifficulty));
-    const [whyOptions] = useState(() => concept.whyItMatters ? generateWhyOptions(concept, ALL_CONCEPTS) : null);
+    const [whatOptions] = useState(() => generateWhatOptions(concept, lessonCardIds, allConcepts));
+    const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, allConcepts, descriptionDifficulty));
+    const [whyOptions] = useState(() => concept.whyItMatters ? generateWhyOptions(concept, allConcepts) : null);
 
     const handleAnswer = useCallback((answer, correct) => {
         if (answered) return;
