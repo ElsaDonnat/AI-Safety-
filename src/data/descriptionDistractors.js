@@ -369,29 +369,29 @@ DESCRIPTION_DISTRACTORS['c703'] = {
 };
 
 DESCRIPTION_DISTRACTORS['c704'] = {
-    hardCorrect: 'The principle that AI systems should be open to external scrutiny — including disclosing AI use, explaining decisions, and publishing data and limitation details — going beyond the technical problem of model interpretability.',
+    hardCorrect: 'The governance concern that advanced AI could let a small number of human actors — companies, governments, or individuals — accumulate unprecedented societal control, distinct from the AI itself seeking power.',
     distractors: [
-        { text: 'A rendering technique that makes AI-generated images look more realistic by improving lighting and shadow calculations in 3D scenes.', d: 1 },
-        { text: 'The research discipline dedicated to opening the "black box" of AI models to understand their internal representations and decision-making processes.', d: 2 },
-        { text: 'The principle that AI systems should be open to scrutiny, which only requires publishing the model\'s source code and does not involve explaining individual decisions.', d: 3 },
+        { text: 'A cloud computing pricing model where larger customers receive volume discounts on GPU rental for training AI models.', d: 1 },
+        { text: 'The observable behavior of AI systems that accumulate influence and resources beyond their task requirements, as a practical manifestation of instrumental convergence.', d: 2 },
+        { text: 'The risk that AI concentrates power among a few actors, which only applies to military applications and does not affect commercial AI development.', d: 3 },
     ]
 };
 
 DESCRIPTION_DISTRACTORS['c705'] = {
-    hardCorrect: 'The principle of establishing clear responsibility chains for AI-caused harm, requiring governance structures that determine whether liability falls on developers, deployers, or end users.',
+    hardCorrect: 'The competitive dynamic where AI developers feel pressured to advance capabilities faster than rivals, potentially deprioritizing safety — a structural risk even among well-intentioned actors.',
     distractors: [
-        { text: 'An accounting practice where AI companies report the financial costs of training large models to shareholders in quarterly earnings statements.', d: 1 },
-        { text: 'The principle that AI systems should be open to scrutiny, including disclosure of AI use, explanations of decisions, and information about training data.', d: 2 },
-        { text: 'The principle of assigning clear responsibility for AI harms, which is automatically resolved because the developer is always legally liable for any AI system output.', d: 3 },
+        { text: 'A sprint planning methodology used by software teams to estimate development velocity and allocate engineering resources across features.', d: 1 },
+        { text: 'Voluntary commitments by AI labs to only scale model capabilities after demonstrating that adequate safety measures exist for each new capability level.', d: 2 },
+        { text: 'Competitive pressure between AI developers to advance capabilities at the expense of safety, which only occurs between nations and does not affect companies within the same country.', d: 3 },
     ]
 };
 
 DESCRIPTION_DISTRACTORS['c706'] = {
-    hardCorrect: 'Synthetic media produced by generative AI models that convincingly depict fabricated scenes, threatening information integrity and demonstrating the dual-use nature of generative technology.',
+    hardCorrect: 'The existential governance risk that AI systems could embed a particular set of values or power structures so deeply that future generations cannot reverse or update them.',
     distractors: [
-        { text: 'A digital watermarking technique that embeds invisible tracking codes in photographs to verify their authenticity and prevent unauthorized copying.', d: 1 },
-        { text: 'The inherent challenge that many AI capabilities serve both constructive and destructive purposes, with misuse potential growing alongside capability improvements.', d: 2 },
-        { text: 'AI-generated synthetic media designed to convincingly depict fabricated events, which can always be detected by current AI detection tools with near-perfect accuracy.', d: 3 },
+        { text: 'A software versioning practice where legacy APIs are maintained indefinitely to avoid breaking backward compatibility with older client applications.', d: 1 },
+        { text: 'The core challenge of building AI systems whose objectives and actions faithfully reflect the intentions of their human designers.', d: 2 },
+        { text: 'The risk that AI systems permanently encode particular values, which is only a concern for superintelligent systems and irrelevant to current narrow AI.', d: 3 },
     ]
 };
 

@@ -76,12 +76,12 @@ export const FUN_FACTS = [
     },
     {
         id: 'ff16',
-        text: 'In early 2024, a deepfake video call impersonating a company\'s CFO convinced an employee to transfer $25 million — one of the largest known deepfake fraud cases.',
-        relatedCardIds: ['c706', 'c502'],
+        text: 'Philosopher Nick Bostrom warned that an AI locked into maximizing paperclip production could convert all available matter — including humans — into paperclips, illustrating the value lock-in problem.',
+        relatedCardIds: ['c706', 'c401'],
     },
     {
         id: 'ff17',
-        text: 'Meta\'s decision to release the Llama model weights sparked intense debate — some researchers praised the move for democratizing AI, while others warned it was like "giving everyone a loaded gun."',
+        text: 'Meta\'s decision to release the Llama model weights sparked intense debate — some researchers praised the move for democratizing AI, while others warned it gave unrestricted access to dangerous capabilities.',
         relatedCardIds: ['c806', 'c502'],
     },
 ];

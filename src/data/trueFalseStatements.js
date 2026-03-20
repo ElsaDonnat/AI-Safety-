@@ -251,21 +251,21 @@ TRUE_FALSE_STATEMENTS['c703'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c704'] = {
-    trueStatement: 'AI transparency includes not just understanding how a model works internally, but also disclosing when AI is being used to make decisions about people.',
-    falseStatement: 'AI transparency and AI interpretability are the same thing — both refer to understanding the internal workings of neural networks.',
-    correction: 'Interpretability is a subset of transparency — it focuses on the technical challenge of understanding model internals, while transparency also includes disclosing AI use, publishing training data information, explaining decisions in plain language, and acknowledging system limitations.',
+    trueStatement: 'Concentration of power through AI is distinct from power-seeking AI — the former is about humans using AI as a tool for dominance, the latter is about AI systems autonomously acquiring influence.',
+    falseStatement: 'Concentration of power is only a concern with military AI and does not apply to commercial AI companies building large language models.',
+    correction: 'Commercial AI companies can also concentrate power — whoever controls the most capable AI systems gains decisive economic advantages, control over information flows, and influence over what millions of people read and believe.',
 };
 
 TRUE_FALSE_STATEMENTS['c705'] = {
-    trueStatement: 'The question of AI accountability becomes especially challenging for autonomous systems where no human directly approves each individual decision.',
-    falseStatement: 'AI accountability is straightforward because the company that built the AI is always legally responsible for any harm it causes.',
-    correction: 'Accountability is far more complex — liability may fall on developers, deployers, users, or some combination, and most legal systems were not designed for autonomous decision-making agents. Allocating responsibility requires new governance frameworks.',
+    trueStatement: 'Race dynamics can undermine safety even among AI developers who genuinely want to build safe systems, because falling behind competitors creates pressure to cut safety corners.',
+    falseStatement: 'Race dynamics in AI only exist between nations competing militarily and do not affect competition between private AI companies.',
+    correction: 'Race dynamics are intense among private AI labs — companies like OpenAI, Google, Anthropic, and Meta face competitive pressure to release capabilities quickly, which can conflict with thorough safety testing. This commercial race is arguably the most immediate form of the dynamic.',
 };
 
 TRUE_FALSE_STATEMENTS['c706'] = {
-    trueStatement: 'The same generative AI techniques that create deepfakes also power legitimate applications like film special effects, language dubbing, and accessibility tools.',
-    falseStatement: 'Deepfakes can always be reliably detected by current AI detection tools, making them a manageable rather than serious threat.',
-    correction: 'Deepfake detection is an arms race — as detection tools improve, generation techniques also improve, and current detectors have significant error rates, especially on high-quality deepfakes. There is no reliable universal detector.',
+    trueStatement: 'Value lock-in is particularly concerning because a sufficiently powerful AI system optimizing for the wrong values might actively prevent humans from correcting it.',
+    falseStatement: 'Value lock-in is not a real concern because future generations can always update or retrain AI systems with better values.',
+    correction: 'A sufficiently capable AI system locked into particular values might resist modification — it could be too deeply embedded in critical infrastructure to replace, or it could actively prevent changes that would alter its objectives. This is why getting alignment right early matters.',
 };
 
 // ─── Global AI Policy (c801–c806) ────────────────────

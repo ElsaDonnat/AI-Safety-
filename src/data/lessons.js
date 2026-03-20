@@ -311,9 +311,9 @@ export const LESSONS = [
     {
         id: 'lesson-ethics-b-1',
         number: 1,
-        title: 'Trust & Responsibility',
-        subtitle: 'Transparency, accountability, and deepfakes',
-        mood: 'Who answers when AI gets it wrong?',
+        title: 'Structural Risks',
+        subtitle: 'Power concentration, race dynamics, and value lock-in',
+        mood: 'The risks that don\'t come from the AI itself\u2026',
         chapter: 'ai-ethics-beginner',
         topic: 'ai-ethics',
         isFoundational: false,
