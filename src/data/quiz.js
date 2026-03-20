@@ -37,12 +37,18 @@ export function generateWhatOptions(correctConcept, lessonCardIds, allConcepts =
     const otherConcepts = allConcepts.filter(c => !lessonCardIds.includes(c.id) && c.id !== correctConcept.id);
 
     const shuffledLesson = shuffle(lessonConcepts);
-    const shuffledOther = shuffle(otherConcepts);
-
     for (const c of shuffledLesson) {
         if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.quizDescription || c.description });
     }
-    for (const c of shuffledOther) {
+
+    // Prefer same-category distractors to make questions harder
+    const sameCategory = shuffle(otherConcepts.filter(c => c.category === correctConcept.category));
+    const diffCategory = shuffle(otherConcepts.filter(c => c.category !== correctConcept.category));
+
+    for (const c of sameCategory) {
+        if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.quizDescription || c.description });
+    }
+    for (const c of diffCategory) {
         if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.quizDescription || c.description });
     }
 

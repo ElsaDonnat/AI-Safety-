@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1 — Smarter "What" quiz distractors
+
+### Changed
+- "What is this concept?" questions now prefer same-category distractors (e.g., all `technique` cards) to make title identification harder
+- Falls back to random distractors when not enough same-category cards are available
+
 ## 0.6.0 — Add dedicated "Why It Matters" dimension
 
 ### Added
