@@ -83,8 +83,7 @@ export default function HomePage({ onTabChange }) {
             {hasStarted && (
                 <div className="mb-6 px-4 py-4 rounded-[3px]" style={{
                     backgroundColor: '#FFFFFF',
-                    border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
-                    boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
+                    border: '1px solid var(--color-warm)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink-secondary)' }}>
@@ -126,29 +125,48 @@ export default function HomePage({ onTabChange }) {
                 </div>
             )}
 
-            {/* Domain buttons — 3 in a row */}
-            <div className="flex gap-2 mb-8">
-                {DOMAINS.map(domain => (
-                    <button
-                        key={domain.id}
-                        onClick={() => onTabChange('learn')}
-                        className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
-                        style={{
-                            backgroundColor: '#FFFFFF',
-                            border: `1px solid ${domain.color}`,
-                            boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
-                            cursor: domain.comingSoon ? 'default' : 'pointer',
-                            opacity: domain.comingSoon ? 0.5 : 1,
-                        }}
-                    >
-                        <span style={{
-                            fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px',
-                            color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3,
-                        }}>
-                            {domain.title}<span style={{ color: domain.color }}>.</span>
-                        </span>
-                    </button>
-                ))}
+            {/* Continue learning — domain buttons group */}
+            <div className="mb-8 rounded-[3px]" style={{
+                backgroundColor: 'rgba(168, 200, 216, 0.12)',
+                border: '1px solid var(--color-warm)',
+                padding: '12px',
+            }}>
+                {/* Banner */}
+                <div className="mb-2.5 rounded-[2px]" style={{
+                    backgroundColor: 'var(--color-bronze-light)',
+                    padding: '5px 12px',
+                }}>
+                    <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 600,
+                        color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.06em',
+                    }}>
+                        Continue learning...
+                    </span>
+                </div>
+                {/* Domain buttons */}
+                <div className="flex gap-2">
+                    {DOMAINS.map(domain => (
+                        <button
+                            key={domain.id}
+                            onClick={() => onTabChange('learn')}
+                            className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
+                            style={{
+                                backgroundColor: '#FFFFFF',
+                                border: '1px solid var(--color-warm)',
+                                boxShadow: '0 1px 3px rgba(44, 36, 32, 0.06)',
+                                cursor: domain.comingSoon ? 'default' : 'pointer',
+                                opacity: domain.comingSoon ? 0.5 : 1,
+                            }}
+                        >
+                            <span style={{
+                                fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px',
+                                color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3,
+                            }}>
+                                {domain.title}<span style={{ color: domain.color }}>.</span>
+                            </span>
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* Warm divider */}
