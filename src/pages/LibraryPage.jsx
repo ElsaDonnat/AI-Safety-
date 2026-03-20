@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
 import { TOPICS, DOMAINS } from '../data/lessons';
@@ -87,100 +87,7 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                                 <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: opt.color }} />
                             )}
                             <span className="truncate">{opt.label}</span>
-                            {opt.subtitle && (
-                                <span className="text-[10px] ml-auto flex-shrink-0" style={{ color: 'var(--color-ink-faint)' }}>{opt.subtitle}</span>
-                            )}
                         </button>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-}
-
-function GroupedFilterDropdown({ value, groups, onChange, allLabel = 'All' }) {
-    const [open, setOpen] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        if (!open) return;
-        function handleClick(e) {
-            if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-        }
-        document.addEventListener('mousedown', handleClick);
-        return () => document.removeEventListener('mousedown', handleClick);
-    }, [open]);
-
-    const allOptions = groups.flatMap(g => g.items);
-    const selected = allOptions.find(o => o.id === value);
-    const displayLabel = selected ? selected.label : allLabel;
-    const resolvedColor = selected ? selected.color : null;
-
-    return (
-        <div ref={ref} className="relative flex-1 min-w-0">
-            <button
-                onClick={() => setOpen(o => !o)}
-                className="w-full flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-semibold transition-all truncate"
-                style={{
-                    backgroundColor: selected && resolvedColor
-                        ? `${resolvedColor}18`
-                        : 'var(--color-card)',
-                    border: selected && resolvedColor
-                        ? `1px solid ${resolvedColor}40`
-                        : '1px solid rgba(var(--color-ink-rgb), 0.1)',
-                    color: selected && resolvedColor ? resolvedColor : 'var(--color-ink-muted)',
-                }}
-            >
-                {selected && resolvedColor && (
-                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: resolvedColor }} />
-                )}
-                <span className="truncate">{displayLabel}</span>
-                <ChevronDown size={12} className="flex-shrink-0 ml-auto" style={{
-                    transform: open ? 'rotate(180deg)' : 'none',
-                    transition: 'transform 0.15s',
-                }} />
-            </button>
-            {open && (
-                <div
-                    className="absolute top-full left-0 right-0 mt-1 rounded-[3px] shadow-lg overflow-auto"
-                    style={{
-                        backgroundColor: 'var(--color-card)',
-                        border: '1px solid rgba(var(--color-ink-rgb), 0.1)',
-                        zIndex: 50,
-                        maxHeight: 300,
-                    }}
-                >
-                    <button
-                        onClick={() => { onChange(null); setOpen(false); }}
-                        className="w-full text-left px-3 py-2 text-xs font-medium transition-colors"
-                        style={{
-                            backgroundColor: !value ? 'rgba(var(--color-ink-rgb), 0.06)' : 'transparent',
-                            color: !value ? 'var(--color-ink)' : 'var(--color-ink-muted)',
-                        }}
-                    >
-                        {allLabel}
-                    </button>
-                    {groups.map(group => (
-                        <div key={group.label}>
-                            <div className="px-3 pt-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider"
-                                style={{ color: 'var(--color-ink-faint)' }}>
-                                {group.label}
-                            </div>
-                            {group.items.map(opt => (
-                                <button
-                                    key={opt.id}
-                                    onClick={() => { onChange(opt.id); setOpen(false); }}
-                                    className="w-full text-left px-3 py-2 text-xs font-medium transition-colors flex items-center gap-2"
-                                    style={{
-                                        backgroundColor: value === opt.id ? 'rgba(var(--color-ink-rgb), 0.06)' : 'transparent',
-                                        color: value === opt.id ? 'var(--color-ink)' : 'var(--color-ink-muted)',
-                                    }}
-                                >
-                                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: opt.color }} />
-                                    <span className="truncate">{opt.label}</span>
-                                </button>
-                            ))}
-                        </div>
                     ))}
                 </div>
             )}
@@ -191,6 +98,7 @@ function GroupedFilterDropdown({ value, groups, onChange, allLabel = 'All' }) {
 export default function LibraryPage() {
     const { state, dispatch } = useApp();
     const [search, setSearch] = useState('');
+    const [domainFilter, setDomainFilter] = useState(null);
     const [topicFilter, setTopicFilter] = useState(null);
     const [categoryFilter, setCategoryFilter] = useState(null);
     const [difficultyFilter, setDifficultyFilter] = useState(null);
@@ -206,27 +114,36 @@ export default function LibraryPage() {
 
     const starredCards = useMemo(() => state.starredCards || [], [state.starredCards]);
 
-    // Build topic groups by domain, filtering by selected category if applicable
-    const topicGroups = useMemo(() => {
-        const sortedDomains = [...DOMAINS].sort((a, b) => a.order - b.order);
-        return sortedDomains.map(d => ({
-            label: d.title,
-            items: TOPICS
-                .filter(t => t.domain === d.id)
-                .sort((a, b) => a.order - b.order)
-                .map(t => ({ id: t.id, label: t.title, color: t.color })),
-        })).filter(g => g.items.length > 0);
-    }, []);
+    // Domain options with colors
+    const domainOptions = useMemo(() =>
+        [...DOMAINS].sort((a, b) => a.order - b.order).map(d => ({ id: d.id, label: d.title, color: d.color })),
+    []);
+
+    // Topic options filtered by selected domain
+    const topicOptions = useMemo(() => {
+        if (!domainFilter) return [];
+        return TOPICS
+            .filter(t => t.domain === domainFilter)
+            .sort((a, b) => a.order - b.order)
+            .map(t => ({ id: t.id, label: t.title, color: t.color }));
+    }, [domainFilter]);
 
     // Category options with colors
     const categoryOptions = useMemo(() =>
         CATEGORIES.map(c => ({ id: c.id, label: c.label, color: c.color })),
     []);
 
-    // When category changes, reset topic if it doesn't belong
-    const handleCategoryChange = useCallback((catId) => {
-        setCategoryFilter(catId);
-    }, []);
+    // When domain changes, reset topic
+    const handleDomainChange = (domainId) => {
+        setDomainFilter(domainId);
+        setTopicFilter(null);
+    };
+
+    // Get all topic IDs for the selected domain (for filtering)
+    const domainTopicIds = useMemo(() => {
+        if (!domainFilter) return null;
+        return TOPICS.filter(t => t.domain === domainFilter).map(t => t.id);
+    }, [domainFilter]);
 
     const filtered = useMemo(() => {
         let result = discoveredConcepts;
@@ -242,6 +159,8 @@ export default function LibraryPage() {
         }
         if (topicFilter) {
             result = result.filter(c => c.topic === topicFilter);
+        } else if (domainTopicIds) {
+            result = result.filter(c => domainTopicIds.includes(c.topic));
         }
         if (categoryFilter) {
             result = result.filter(c => c.category === categoryFilter);
@@ -250,11 +169,12 @@ export default function LibraryPage() {
             result = result.filter(c => c.difficulty === difficultyFilter);
         }
         return result;
-    }, [discoveredConcepts, search, topicFilter, categoryFilter, difficultyFilter, showStarredOnly, starredCards]);
+    }, [discoveredConcepts, search, topicFilter, domainTopicIds, categoryFilter, difficultyFilter, showStarredOnly, starredCards]);
 
-    const activeFilterCount = [topicFilter, categoryFilter, difficultyFilter].filter(Boolean).length;
+    const activeFilterCount = [domainFilter, topicFilter, categoryFilter, difficultyFilter].filter(Boolean).length;
 
     const clearAllFilters = () => {
+        setDomainFilter(null);
         setTopicFilter(null);
         setCategoryFilter(null);
         setDifficultyFilter(null);
@@ -276,8 +196,9 @@ export default function LibraryPage() {
         );
     }
 
-    const selectedCategory = CATEGORIES.find(c => c.id === categoryFilter);
+    const selectedDomain = DOMAINS.find(d => d.id === domainFilter);
     const selectedTopic = TOPICS.find(t => t.id === topicFilter);
+    const selectedCategory = CATEGORIES.find(c => c.id === categoryFilter);
 
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto">
@@ -318,26 +239,36 @@ export default function LibraryPage() {
                 />
             </div>
 
-            {/* Row 2: Three filter dropdowns */}
+            {/* Row 2: Domain + Topic (appears when domain selected) */}
+            <div className="flex gap-2 mb-2">
+                <FilterDropdown
+                    value={domainFilter}
+                    options={domainOptions}
+                    onChange={handleDomainChange}
+                    allLabel="All Domains"
+                    activeColor={selectedDomain?.color}
+                />
+                {domainFilter && (
+                    <FilterDropdown
+                        value={topicFilter}
+                        options={topicOptions}
+                        onChange={setTopicFilter}
+                        allLabel="All Topics"
+                        activeColor={selectedTopic?.color}
+                    />
+                )}
+            </div>
+
+            {/* Row 3: Category + Difficulty */}
             <div className="flex gap-2 mb-3">
                 <FilterDropdown
-                    label="Category"
                     value={categoryFilter}
                     options={categoryOptions}
-                    onChange={handleCategoryChange}
-                    allLabel="All Categories"
+                    onChange={setCategoryFilter}
+                    allLabel="All Types"
                     activeColor={selectedCategory?.color}
                 />
-                <GroupedFilterDropdown
-                    label="Topic"
-                    value={topicFilter}
-                    groups={topicGroups}
-                    onChange={setTopicFilter}
-                    allLabel="All Topics"
-                    activeColor={selectedTopic?.color}
-                />
                 <FilterDropdown
-                    label="Difficulty"
                     value={difficultyFilter}
                     options={DIFFICULTY_OPTIONS}
                     onChange={setDifficultyFilter}
@@ -352,12 +283,12 @@ export default function LibraryPage() {
                     <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: 'var(--color-ink-faint)' }}>
                         Filters:
                     </span>
-                    {categoryFilter && selectedCategory && (
+                    {domainFilter && selectedDomain && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
-                            style={{ backgroundColor: `${selectedCategory.color}18`, color: selectedCategory.color }}>
-                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedCategory.color }} />
-                            {selectedCategory.label}
-                            <button onClick={() => setCategoryFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
+                            style={{ backgroundColor: `${selectedDomain.color}18`, color: selectedDomain.color }}>
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedDomain.color }} />
+                            {selectedDomain.title}
+                            <button onClick={() => handleDomainChange(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
                         </span>
                     )}
                     {topicFilter && selectedTopic && (
@@ -366,6 +297,14 @@ export default function LibraryPage() {
                             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedTopic.color }} />
                             {selectedTopic.title}
                             <button onClick={() => setTopicFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
+                        </span>
+                    )}
+                    {categoryFilter && selectedCategory && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                            style={{ backgroundColor: `${selectedCategory.color}18`, color: selectedCategory.color }}>
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedCategory.color }} />
+                            {selectedCategory.label}
+                            <button onClick={() => setCategoryFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
                         </span>
                     )}
                     {difficultyFilter && (

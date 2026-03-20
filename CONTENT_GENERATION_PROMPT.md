@@ -64,7 +64,7 @@ This means every field on a card is directly shown to or quizzed against the use
                                 // Must NOT be so different that it describes something else.
   topic: 'alignment-fundamentals',  // REQUIRED. Must match a TOPICS[].id exactly.
   secondaryTopic: null,         // Optional. A second topic ID, or null.
-  category: 'alignment',        // REQUIRED. One of: 'technical', 'alignment', 'policy', 'ethics', 'risks'
+  category: 'concept',           // REQUIRED. One of: 'concept', 'technique', 'risk', 'regulation', 'practice', 'proposal', 'other'
   difficulty: 1,                // REQUIRED. 1 = beginner, 2 = intermediate, 3 = advanced.
   tags: ['alignment-problem', 'agi', 'corrigibility'],
                                 // REQUIRED. 2-5 kebab-case tags. Used for:
@@ -223,17 +223,26 @@ For **every** card, provide a true statement, a false statement, and a correctio
 
 ---
 
-## 3. Categories (for visual styling)
+## 3. Categories (cross-cutting concept types)
 
-Every card must have exactly one of these categories:
+Every card must have exactly one of these categories. Categories classify cards by the **type of knowledge** they represent — they are independent of domain/topic:
 
-| Category | `category` value | What it covers |
-|----------|-----------------|----------------|
-| Technical | `'technical'` | ML concepts, architectures, capabilities, training methods |
-| Alignment | `'alignment'` | Alignment techniques, goals, corrigibility, reward modeling |
-| Policy | `'policy'` | Regulation, governance, international coordination, standards |
-| Ethics | `'ethics'` | Bias, fairness, rights, societal impact, accountability |
-| Risks | `'risks'` | Existential risk, misuse, dual-use, catastrophic scenarios |
+| Category | `category` value | What goes here | Examples |
+|----------|-----------------|----------------|----------|
+| Concept | `'concept'` | Core ideas, theories, phenomena, definitions — what something IS | Artificial Intelligence, Instrumental Convergence, Goodhart's Law, AGI |
+| Technique | `'technique'` | Methods, tools, approaches, processes — how to DO something | RLHF, Constitutional AI, Supervised Learning, Red Teaming |
+| Risk | `'risk'` | Threats, failure modes, dangers, vulnerabilities — what can go WRONG | Deceptive Alignment, Reward Hacking, Hallucination, Prompt Injection |
+| Regulation | `'regulation'` | Laws, rules, treaties, formal mandates — what is legally REQUIRED | EU AI Act, (future: US Executive Orders, China's algorithm rules) |
+| Practice | `'practice'` | Voluntary standards, industry norms, evaluation methods — what is DONE by choice | Responsible Scaling, Benchmarks, International Coordination |
+| Proposal | `'proposal'` | Safety or governance proposals, frameworks, or visions — what is SUGGESTED | CERN for AI, Law-Following AI, Windfall Clause |
+| Other | `'other'` | Institutions, organizations, or items that don't fit above — use sparingly | AI Labs, AI Safety Institutes |
+
+**Key distinctions:**
+- **Concept vs. Technique:** If the card describes what something IS or a theoretical idea, it's a concept. If it describes HOW to do something, it's a technique.
+- **Risk vs. Concept:** If the primary point is "this is a bad thing that can happen," it's a risk. If it's a neutral theoretical idea that has safety implications, it's a concept (e.g., "Instrumental Convergence" is a concept; "Power-Seeking AI" is a risk).
+- **Regulation vs. Practice:** Regulations are legally mandated and carry enforcement consequences. Practices are voluntary — organizations choose to adopt them. If a government requires it, it's regulation. If an AI lab commits to it voluntarily, it's a practice.
+- **Proposal vs. Practice:** Proposals are ideas or frameworks that have been *suggested* but not widely adopted (e.g., "CERN for AI", "Law-Following AI"). Practices are norms already in use by organizations. If it's an aspirational vision or a suggested governance/safety structure, it's a proposal. If it's already standard industry behavior, it's a practice.
+- **Other:** Use only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things. Don't use as a catchall — try harder to fit into the six main categories first.
 
 ---
 
@@ -339,65 +348,105 @@ The app already has these cards. Your new content must not duplicate these conce
 ### AI Basics (topic: `ai-basics`, domain: `foundations`)
 | ID | Title | Category |
 |----|-------|----------|
-| c101 | Artificial Intelligence | technical |
-| c102 | Machine Learning | technical |
-| c103 | Deep Learning | technical |
-| c104 | Natural Language Processing | technical |
-| c105 | Neural Networks | technical |
-| c106 | Computer Vision | technical |
+| c101 | Artificial Intelligence | concept |
+| c102 | Machine Learning | concept |
+| c103 | Deep Learning | concept |
+| c104 | Natural Language Processing | concept |
+| c105 | Neural Networks | concept |
+| c106 | Computer Vision | concept |
 
 ### AI Progress (topic: `ai-progress`, domain: `foundations`)
 | ID | Title | Category |
 |----|-------|----------|
-| c201 | Large Language Models | technical |
-| c202 | Foundation Models | technical |
-| c203 | Scaling Laws | technical |
-| c204 | Benchmarks | technical |
-| c205 | Emergent Abilities | technical |
-| c206 | AI Labs | policy |
+| c201 | Large Language Models | concept |
+| c202 | Foundation Models | concept |
+| c203 | Scaling Laws | concept |
+| c204 | Benchmarks | practice |
+| c205 | Emergent Abilities | concept |
+| c206 | AI Labs | other |
 
 ### AI Concepts (topic: `ai-concepts`, domain: `foundations`)
 | ID | Title | Category |
 |----|-------|----------|
-| c301 | Training and Inference | technical |
-| c302 | Supervised Learning | technical |
-| c303 | Unsupervised Learning | technical |
-| c304 | Reinforcement Learning | technical |
-| c305 | Transformers | technical |
-| c306 | Fine-Tuning | technical |
+| c301 | Training and Inference | concept |
+| c302 | Supervised Learning | technique |
+| c303 | Unsupervised Learning | technique |
+| c304 | Reinforcement Learning | technique |
+| c305 | Transformers | concept |
+| c306 | Fine-Tuning | technique |
 
 ### Alignment Fundamentals (topic: `alignment-fundamentals`, domain: `ai-safety`)
 | ID | Title | Category |
 |----|-------|----------|
-| c401 | The Alignment Problem | alignment |
-| c402 | Instrumental Convergence | alignment |
-| c403 | Goodhart's Law | alignment |
-| c404 | Corrigibility | alignment |
-| c405 | Mesa-Optimization | alignment |
-| c406 | Reward Hacking | alignment |
+| c401 | The Alignment Problem | concept |
+| c402 | Instrumental Convergence | concept |
+| c403 | Goodhart's Law | concept |
+| c404 | Corrigibility | concept |
+| c405 | Mesa-Optimization | concept |
+| c406 | Reward Hacking | risk |
 
 ### AI Risk (topic: `ai-risk`, domain: `ai-safety`)
 | ID | Title | Category |
 |----|-------|----------|
-| c501 | Existential Risk from AI | risks |
-| c502 | Misuse & Dual-Use | risks |
-| c503 | Deceptive Alignment | risks |
-| c504 | Specification Gaming | risks |
-| c505 | Power-Seeking AI | risks |
-| c506 | Catastrophic Risk | risks |
+| c501 | Existential Risk from AI | concept |
+| c502 | Misuse & Dual-Use | risk |
+| c503 | Deceptive Alignment | risk |
+| c504 | Specification Gaming | risk |
+| c505 | Power-Seeking AI | risk |
+| c506 | Catastrophic Risk | risk |
 
 ### Safety Techniques (topic: `safety-techniques`, domain: `ai-safety`)
 | ID | Title | Category |
 |----|-------|----------|
-| c601 | RLHF | alignment |
-| c602 | Constitutional AI | alignment |
-| c603 | Interpretability | alignment |
-| c604 | Red Teaming | alignment |
-| c605 | Scalable Oversight | alignment |
-| c606 | AI Governance | policy |
+| c601 | RLHF | technique |
+| c602 | Constitutional AI | technique |
+| c603 | Interpretability | technique |
+| c604 | Red Teaming | practice |
+| c605 | Scalable Oversight | technique |
+| c606 | AI Governance | concept |
 
-Existing domains: `foundations`, `ai-safety`, `governance` (coming soon)
-Existing topics: `ai-basics`, `ai-progress`, `ai-concepts`, `alignment-fundamentals`, `ai-risk`, `safety-techniques`
+### AI Ethics (topic: `ai-ethics`, domain: `governance`)
+| ID | Title | Category |
+|----|-------|----------|
+| c701 | AI Ethics | concept |
+| c702 | Algorithmic Bias | risk |
+| c703 | AI Fairness | concept |
+| c704 | Concentration of Power | risk |
+| c705 | Race Dynamics | risk |
+| c706 | Value Lock-in | risk |
+
+### Global AI Policy (topic: `global-ai-policy`, domain: `governance`)
+| ID | Title | Category |
+|----|-------|----------|
+| c801 | AI Regulation | concept |
+| c802 | EU AI Act | regulation |
+| c803 | Responsible Scaling | practice |
+| c804 | AI Safety Institutes | other |
+| c805 | International AI Coordination | practice |
+| c806 | Open vs. Closed AI | concept |
+
+### Advanced AI (topic: `advanced-ai`, domain: `foundations`)
+| ID | Title | Category |
+|----|-------|----------|
+| c207 | Artificial General Intelligence | concept |
+| c208 | Superintelligence | concept |
+| c209 | Narrow AI | concept |
+| c210 | AI Agents | concept |
+| c211 | Frontier Models | concept |
+| c212 | Compute | concept |
+
+### AI Security (topic: `ai-security`, domain: `ai-safety`)
+| ID | Title | Category |
+|----|-------|----------|
+| c901 | AI Robustness | concept |
+| c902 | Hallucination | risk |
+| c903 | Adversarial Examples | risk |
+| c904 | Prompt Injection | risk |
+| c905 | Jailbreaking | risk |
+| c906 | Distribution Shift | risk |
+
+Existing domains: `foundations`, `ai-safety`, `governance`
+Existing topics: `ai-basics`, `ai-progress`, `ai-concepts`, `advanced-ai`, `alignment-fundamentals`, `ai-risk`, `safety-techniques`, `ai-security`, `ai-ethics`, `global-ai-policy`
 
 **ID ranges for new content:**
 - Cards: start at `c701` (use ranges like c701–c799 for a topic)

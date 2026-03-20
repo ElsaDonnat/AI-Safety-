@@ -85,7 +85,7 @@ Each card teaches one concept. Data shape:
   quizDescription: 'Alternative description used in quiz questions...',
   topic: 'alignment',          // primary topic
   secondaryTopic: null,        // optional second topic (or null)
-  category: 'technical',       // for visual styling (see categories)
+  category: 'concept',         // cross-cutting type (see categories)
   difficulty: 1,               // 1-3
   tags: ['alignment-problem', 'agi'],  // free-form tags for filtering & linking
   linkedCards: ['c5', 'c12'],  // explicit links to related cards
@@ -96,15 +96,25 @@ Each card teaches one concept. Data shape:
 
 > **No year, yearEnd, location, lat, lng fields.** Those are history-specific and must be removed.
 
-#### Categories (for visual styling — replace history categories)
+#### Categories (cross-cutting concept types)
 
-| Category | What it covers | Suggested color |
-|----------|---------------|-----------------|
-| `technical` | ML concepts, architectures, capabilities | Teal |
-| `alignment` | Alignment techniques, interpretability, RLHF | Purple |
-| `policy` | Regulation, governance, international coordination | Blue |
-| `ethics` | Bias, fairness, rights, societal impact | Green |
-| `risks` | Existential risk, misuse, dual-use, catastrophic scenarios | Red/Orange |
+Categories classify cards by the **type of knowledge** they represent, cutting across all domains/topics:
+
+| Category | `category` value | What goes here | Color |
+|----------|-----------------|----------------|-------|
+| Concept | `'concept'` | Core ideas, theories, phenomena, definitions — what something IS | Blue `#5B8DEF` |
+| Technique | `'technique'` | Methods, tools, approaches, processes — how to DO something | Teal `#2BA89E` |
+| Risk | `'risk'` | Threats, failure modes, dangers, vulnerabilities — what can go WRONG | Red `#D45B5B` |
+| Regulation | `'regulation'` | Laws, rules, treaties, formal mandates — what is legally REQUIRED | Indigo `#6366B8` |
+| Practice | `'practice'` | Voluntary standards, industry norms, evaluation methods — what is DONE by choice (not law) | Amber `#D4A026` |
+| Proposal | `'proposal'` | Safety or governance proposals, frameworks, or visions for improving the field — what is SUGGESTED | Purple `#9370DB` |
+| Other | `'other'` | Institutions, organizations, or concepts that don't fit the above — use sparingly | Gray `#8B95A5` |
+
+**Key distinction — Practice vs. Regulation:** Practices are voluntary (e.g., Responsible Scaling Policies), regulations are legally mandated (e.g., EU AI Act). If a concept is about what an organization chooses to do, it's a practice. If it's about what governments require, it's a regulation.
+
+**Key distinction — Proposal vs. Practice:** Proposals are ideas or frameworks that have been *suggested* but not widely adopted yet (e.g., "CERN for AI", "Law-Following AI"). Practices are norms that organizations already follow. If it's an aspirational vision or a suggested governance structure, it's a proposal. If it's already standard industry behavior, it's a practice.
+
+**When to use "other":** Only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things rather than a concept, method, risk, rule, or proposal. When in doubt, prefer a more specific category. If many cards end up in "other", consider creating a new category.
 
 #### Tags
 Tags are free-form strings attached to cards. Uses:

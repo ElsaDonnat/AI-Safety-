@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, forwardRef } from 'react';
 import { CATEGORY_CONFIG } from '../data/concepts';
 import * as feedback from '../services/feedback';
-import { Cpu, Target, Landmark, Heart, AlertTriangle, HelpCircle, Star, Calendar, ChevronRight } from 'lucide-react';
+import { Lightbulb, Wrench, AlertTriangle, Scale, ClipboardCheck, FileText, HelpCircle, Star, Calendar, ChevronRight } from 'lucide-react';
 
 /** Truncates text to `lines` lines with a "Read more / Less" toggle. */
 export function ExpandableText({ children, lines = 3, className = '', style = {}, footerLeft = null }) {
@@ -59,7 +59,7 @@ export function CategoryTag({ category }) {
     return (
         <span
             className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-[2px]"
-            style={{ color: config.color, backgroundColor: config.bg, fontFamily: 'var(--font-mono)' }}
+            style={{ color: config.color, backgroundColor: `${config.color}18`, fontFamily: 'var(--font-mono)' }}
         >
             {config.label}
         </span>
@@ -68,11 +68,13 @@ export function CategoryTag({ category }) {
 
 // Maps category icon keys to Lucide components
 const ICON_COMPONENTS = {
-    cpu: Cpu,
-    target: Target,
-    landmark: Landmark,
-    heart: Heart,
+    lightbulb: Lightbulb,
+    wrench: Wrench,
     'alert-triangle': AlertTriangle,
+    scale: Scale,
+    'clipboard-check': ClipboardCheck,
+    'file-text': FileText,
+    'help-circle': HelpCircle,
 };
 
 export function CategoryIcon({ category, size = 16, color }) {

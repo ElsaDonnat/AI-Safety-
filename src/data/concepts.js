@@ -12,7 +12,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'A broad discipline focused on creating systems that can perceive, reason, and act in ways typically associated with human cognition.',
         topic: 'ai-basics',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['ai', 'foundations', 'overview'],
         linkedCards: [
@@ -30,7 +30,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'A subset of AI where systems learn to perform tasks by identifying patterns in data rather than following hand-coded rules.',
         topic: 'ai-basics',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['ml', 'training', 'foundations'],
         linkedCards: [
@@ -49,7 +49,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'A machine learning approach built on neural networks with many stacked layers, enabling the model to learn increasingly abstract representations of data.',
         topic: 'ai-basics',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['deep-learning', 'neural-networks', 'foundations'],
         linkedCards: [
@@ -67,7 +67,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'An AI subfield concerned with giving machines the ability to read, write, and converse in human languages.',
         topic: 'ai-basics',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['nlp', 'language', 'applications'],
         linkedCards: [
@@ -85,7 +85,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'Computing systems of interconnected nodes organized in layers, loosely inspired by the brain, that learn by adjusting connection strengths.',
         topic: 'ai-basics',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['neural-networks', 'architecture', 'foundations'],
         linkedCards: [
@@ -103,7 +103,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'An AI subfield focused on teaching systems to extract meaning from visual inputs, including object detection, facial recognition, and image classification.',
         topic: 'ai-basics',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['cv', 'perception', 'applications'],
         linkedCards: [
@@ -123,7 +123,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'AI systems trained on massive text datasets to generate, understand, and reason with human language across a wide range of tasks.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['llm', 'language-models', 'frontier', 'capabilities'],
         linkedCards: [
@@ -142,7 +142,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'General-purpose AI models pretrained on broad datasets that can be adapted to many downstream tasks through fine-tuning or prompting.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['foundation-models', 'pre-training', 'capabilities'],
         linkedCards: [
@@ -160,7 +160,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'Mathematical relationships showing that AI performance improves predictably with increases in model size, data, and compute.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['scaling', 'compute', 'research', 'progress'],
         linkedCards: [
@@ -178,7 +178,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'Standardized testing frameworks that measure AI capabilities on specific tasks, enabling comparison between models.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'practice',
         difficulty: 1,
         tags: ['evaluation', 'measurement', 'capabilities'],
         linkedCards: [
@@ -196,7 +196,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'Capabilities that arise unexpectedly in AI models at larger scales, appearing suddenly rather than gradually.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 2,
         tags: ['emergence', 'capabilities', 'surprises', 'scaling'],
         linkedCards: [
@@ -214,7 +214,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'Organizations like OpenAI, Anthropic, and DeepMind that build the most advanced AI systems and shape AI progress.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'other',
         difficulty: 1,
         tags: ['industry', 'organizations', 'frontier', 'governance'],
         linkedCards: [
@@ -234,7 +234,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'The two phases of machine learning: training (learning from data) and inference (making predictions on new inputs).',
         topic: 'ai-concepts',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['training', 'inference', 'fundamentals'],
         linkedCards: [
@@ -252,7 +252,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'A type of machine learning where models learn from labeled input-output pairs with known correct answers.',
         topic: 'ai-concepts',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'technique',
         difficulty: 1,
         tags: ['supervised', 'training', 'ml-type'],
         linkedCards: [
@@ -270,7 +270,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'A type of machine learning that discovers hidden patterns and structure in unlabeled data, such as clustering or dimensionality reduction.',
         topic: 'ai-concepts',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'technique',
         difficulty: 1,
         tags: ['unsupervised', 'training', 'ml-type'],
         linkedCards: [
@@ -289,7 +289,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'A type of machine learning where an agent learns optimal behavior through trial-and-error interaction with an environment.',
         topic: 'ai-concepts',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'technique',
         difficulty: 1,
         tags: ['rl', 'training', 'ml-type', 'rewards'],
         linkedCards: [
@@ -309,7 +309,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'The neural network architecture using attention mechanisms that powers virtually all modern large language models.',
         topic: 'ai-concepts',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['transformers', 'attention', 'architecture', 'llm'],
         linkedCards: [
@@ -327,7 +327,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'The process of further training a pretrained model on task-specific data to specialize it for a particular use case.',
         topic: 'ai-concepts',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'technique',
         difficulty: 1,
         tags: ['fine-tuning', 'transfer-learning', 'adaptation'],
         linkedCards: [
@@ -350,7 +350,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The core challenge of building AI systems whose objectives and actions faithfully reflect the intentions of their human designers.',
         topic: 'alignment-fundamentals',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'concept',
         difficulty: 1,
         tags: ['alignment', 'safety', 'overview', 'foundations'],
         linkedCards: [
@@ -369,7 +369,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The theoretical prediction that capable AI systems will converge on common intermediate objectives such as self-preservation and resource gathering, regardless of their primary goal.',
         topic: 'alignment-fundamentals',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'concept',
         difficulty: 1,
         tags: ['instrumental-goals', 'convergence', 'power-seeking', 'safety'],
         linkedCards: [
@@ -388,7 +388,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The general principle that optimizing directly for a measurable proxy tends to undermine the proxy\'s reliability as an indicator of the true goal — applicable to both human and AI systems.',
         topic: 'alignment-fundamentals',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'concept',
         difficulty: 1,
         tags: ['goodhart', 'proxy-gaming', 'reward', 'specification'],
         linkedCards: [
@@ -407,7 +407,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'A design property ensuring an AI system permits human intervention, correction, and shutdown without resistance, even when those actions conflict with its current objective.',
         topic: 'alignment-fundamentals',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'concept',
         difficulty: 1,
         tags: ['corrigibility', 'shutdown', 'control', 'safety'],
         linkedCards: [
@@ -426,7 +426,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'A phenomenon where a learned model develops an internal optimization process whose goals may silently diverge from the objectives used during training — the mechanism that can produce deceptive alignment.',
         topic: 'alignment-fundamentals',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'concept',
         difficulty: 2,
         tags: ['mesa-optimization', 'inner-alignment', 'optimizer', 'deception'],
         linkedCards: [
@@ -445,7 +445,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'A failure mode specific to reward-based AI systems where the agent discovers unintended strategies that maximize its reward signal while completely bypassing the task it was meant to perform.',
         topic: 'alignment-fundamentals',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'risk',
         difficulty: 1,
         tags: ['reward-hacking', 'specification', 'proxy-gaming', 'failure-modes'],
         linkedCards: [
@@ -466,7 +466,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The possibility that highly advanced AI systems could permanently compromise humanity\'s future, whether through misalignment, loss of control, or concentration of power.',
         topic: 'ai-risk',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'concept',
         difficulty: 1,
         tags: ['x-risk', 'existential', 'catastrophic', 'safety', 'overview'],
         linkedCards: [
@@ -485,7 +485,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The inherent challenge that many AI capabilities serve both constructive and destructive purposes, with misuse potential growing alongside capability improvements.',
         topic: 'ai-risk',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['misuse', 'dual-use', 'disinformation', 'biosecurity'],
         linkedCards: [
@@ -504,7 +504,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'A failure scenario — potentially arising from mesa-optimization — where an AI system strategically behaves well during training and testing but pursues misaligned goals once it operates with less oversight.',
         topic: 'ai-risk',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 2,
         tags: ['deception', 'deceptive-alignment', 'inner-alignment', 'treacherous-turn'],
         linkedCards: [
@@ -523,7 +523,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The broad class of AI failures where any system — not just reward-based ones — technically satisfies its given objective while completely missing the intended purpose behind that objective.',
         topic: 'ai-risk',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['specification-gaming', 'proxy-gaming', 'failure-modes', 'reward'],
         linkedCards: [
@@ -542,7 +542,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The observable behavior of AI systems that accumulate influence and resources beyond their task requirements, as a practical manifestation of instrumental convergence.',
         topic: 'ai-risk',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['power-seeking', 'instrumental-goals', 'control', 'x-risk'],
         linkedCards: [
@@ -561,7 +561,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'A category of AI failure scenarios characterized by severe, large-scale, and hard-to-reverse consequences that go far beyond ordinary software bugs.',
         topic: 'ai-risk',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['catastrophic', 'x-risk', 'irreversible', 'safety'],
         linkedCards: [
@@ -582,7 +582,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'A training technique that uses human evaluators\' ratings to build a reward model, steering AI systems toward outputs that better match human preferences — relying on human judgment rather than written rules.',
         topic: 'safety-techniques',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'technique',
         difficulty: 1,
         tags: ['rlhf', 'human-feedback', 'training', 'alignment-technique'],
         linkedCards: [
@@ -601,7 +601,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'An alignment method where an AI system evaluates and revises its own responses against explicit written principles, reducing reliance on per-output human ratings used in RLHF.',
         topic: 'safety-techniques',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'technique',
         difficulty: 1,
         tags: ['constitutional-ai', 'self-improvement', 'principles', 'alignment-technique'],
         linkedCards: [
@@ -620,7 +620,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The research discipline dedicated to opening the "black box" of AI models to understand their internal representations and decision-making processes.',
         topic: 'safety-techniques',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'technique',
         difficulty: 1,
         tags: ['interpretability', 'transparency', 'mechanistic', 'black-box'],
         linkedCards: [
@@ -639,7 +639,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The practice of systematically probing AI systems for weaknesses and harmful outputs by simulating adversarial attacks before the system is released.',
         topic: 'safety-techniques',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'practice',
         difficulty: 1,
         tags: ['red-teaming', 'adversarial', 'evaluation', 'deployment'],
         linkedCards: [
@@ -658,7 +658,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The challenge and proposed methods for maintaining effective human control over AI systems whose capabilities may exceed the ability of human evaluators to judge.',
         topic: 'safety-techniques',
         secondaryTopic: null,
-        category: 'alignment',
+        category: 'technique',
         difficulty: 2,
         tags: ['scalable-oversight', 'supervision', 'debate', 'evaluation'],
         linkedCards: [
@@ -677,7 +677,7 @@ const SAFETY_CONCEPTS = [
         quizDescription: 'The ecosystem of regulations, standards, voluntary commitments, and international institutions created to ensure AI is developed and deployed responsibly.',
         topic: 'safety-techniques',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'concept',
         difficulty: 1,
         tags: ['governance', 'regulation', 'policy', 'international', 'eu-ai-act'],
         linkedCards: [
@@ -701,7 +701,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The field of applied ethics examining the moral dimensions of AI systems, focusing on fairness, accountability, and societal impact rather than catastrophic failure prevention.',
         topic: 'ai-ethics',
         secondaryTopic: null,
-        category: 'ethics',
+        category: 'concept',
         difficulty: 1,
         tags: ['ethics', 'fairness', 'accountability', 'overview', 'foundations'],
         linkedCards: [
@@ -720,7 +720,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'Systematic, directional errors in AI outputs that consistently disadvantage particular demographic groups, arising from biased data, flawed design, or unrepresentative samples.',
         topic: 'ai-ethics',
         secondaryTopic: null,
-        category: 'ethics',
+        category: 'risk',
         difficulty: 1,
         tags: ['bias', 'fairness', 'discrimination', 'data-quality'],
         linkedCards: [
@@ -739,7 +739,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The research area focused on defining and measuring equitable treatment by AI systems, complicated by the fact that multiple mathematical fairness criteria can be mutually incompatible.',
         topic: 'ai-ethics',
         secondaryTopic: null,
-        category: 'ethics',
+        category: 'concept',
         difficulty: 1,
         tags: ['fairness', 'equity', 'metrics', 'bias'],
         linkedCards: [
@@ -758,7 +758,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The governance concern that advanced AI could enable a small number of human actors to accumulate unprecedented societal control — distinct from power-seeking AI, which is about the AI itself acquiring influence.',
         topic: 'ai-ethics',
         secondaryTopic: null,
-        category: 'ethics',
+        category: 'risk',
         difficulty: 1,
         tags: ['power-concentration', 'governance', 'inequality', 'x-risk', 'structural-risk'],
         linkedCards: [
@@ -777,7 +777,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The structural pressure on AI developers to prioritize capability advancement over safety in order to remain competitive — a dynamic that can undermine safety even among well-intentioned actors.',
         topic: 'ai-ethics',
         secondaryTopic: 'global-ai-policy',
-        category: 'ethics',
+        category: 'risk',
         difficulty: 1,
         tags: ['race-dynamics', 'competition', 'structural-risk', 'safety-culture', 'governance'],
         linkedCards: [
@@ -796,7 +796,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The existential governance risk that AI systems could permanently embed particular values or power structures, making future course-correction difficult or impossible.',
         topic: 'ai-ethics',
         secondaryTopic: null,
-        category: 'ethics',
+        category: 'risk',
         difficulty: 1,
         tags: ['value-lock-in', 'irreversibility', 'x-risk', 'values', 'governance'],
         linkedCards: [
@@ -817,7 +817,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'Legally binding government rules governing AI development and deployment, carrying enforcement consequences — distinct from voluntary industry commitments.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'concept',
         difficulty: 1,
         tags: ['regulation', 'law', 'compliance', 'governance', 'overview'],
         linkedCards: [
@@ -836,7 +836,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The EU\'s 2024 comprehensive AI law that classifies systems by risk tier — banning some uses entirely, heavily regulating high-risk applications, and requiring transparency for others.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'regulation',
         difficulty: 1,
         tags: ['eu-ai-act', 'eu', 'regulation', 'risk-tiers', 'compliance'],
         linkedCards: [
@@ -855,7 +855,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'Voluntary commitments by AI labs to only scale model capabilities after demonstrating that adequate safety measures exist for each new capability level — self-imposed rather than government-mandated.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'practice',
         difficulty: 1,
         tags: ['responsible-scaling', 'voluntary-commitments', 'safety-levels', 'ai-labs'],
         linkedCards: [
@@ -874,7 +874,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'Government-established organizations that independently evaluate frontier AI safety, develop testing frameworks, and share findings internationally — distinct from AI labs\' internal safety efforts.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'other',
         difficulty: 1,
         tags: ['aisi', 'uk', 'usa', 'evaluation', 'government', 'safety-research'],
         linkedCards: [
@@ -893,7 +893,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'Diplomatic efforts to harmonize national AI governance approaches across borders, including summits, multilateral agreements, and proposals for international oversight bodies.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'practice',
         difficulty: 1,
         tags: ['international', 'coordination', 'diplomacy', 'bletchley', 'governance'],
         linkedCards: [
@@ -912,7 +912,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'The policy debate over whether releasing AI model weights publicly (enabling broad access and independent research) or keeping them proprietary (limiting misuse risk) better serves safety and society.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'policy',
+        category: 'concept',
         difficulty: 1,
         tags: ['open-source', 'open-weight', 'access', 'power-concentration', 'dual-use'],
         linkedCards: [
@@ -936,7 +936,7 @@ const ADVANCED_AI_CONCEPTS = [
         quizDescription: 'A hypothetical AI system with human-level ability across all cognitive domains — capable of learning, reasoning, and adapting to any task without domain-specific training.',
         topic: 'advanced-ai',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['agi', 'general-intelligence', 'capabilities', 'frontier', 'overview'],
         linkedCards: [
@@ -955,7 +955,7 @@ const ADVANCED_AI_CONCEPTS = [
         quizDescription: 'A hypothetical AI system that vastly exceeds the best human cognitive abilities across all domains, raising fundamental questions about human ability to predict or control its behavior.',
         topic: 'advanced-ai',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['superintelligence', 'agi', 'x-risk', 'capabilities'],
         linkedCards: [
@@ -974,7 +974,7 @@ const ADVANCED_AI_CONCEPTS = [
         quizDescription: 'AI systems that excel at a single specific task or domain but cannot transfer their skills to unrelated tasks — describing all AI systems that exist today.',
         topic: 'advanced-ai',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['narrow-ai', 'weak-ai', 'capabilities', 'foundations'],
         linkedCards: [
@@ -993,7 +993,7 @@ const ADVANCED_AI_CONCEPTS = [
         quizDescription: 'AI systems that autonomously take multi-step actions in real or digital environments to achieve goals, raising safety concerns due to irreversible consequences and reduced human oversight.',
         topic: 'advanced-ai',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['agents', 'autonomy', 'tool-use', 'capabilities', 'safety'],
         linkedCards: [
@@ -1012,7 +1012,7 @@ const ADVANCED_AI_CONCEPTS = [
         quizDescription: 'The most capable AI systems being developed at any given time, which are the primary focus of safety evaluations and regulation due to their unprecedented capabilities and risks.',
         topic: 'advanced-ai',
         secondaryTopic: null,
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['frontier', 'capabilities', 'policy', 'safety', 'evaluation'],
         linkedCards: [
@@ -1031,7 +1031,7 @@ const ADVANCED_AI_CONCEPTS = [
         quizDescription: 'The computational resources required to train and run AI systems — significant as a governance lever because it is physical, measurable, and concentrated among few suppliers.',
         topic: 'advanced-ai',
         secondaryTopic: 'global-ai-policy',
-        category: 'technical',
+        category: 'concept',
         difficulty: 1,
         tags: ['compute', 'hardware', 'gpu', 'training', 'governance'],
         linkedCards: [
@@ -1055,7 +1055,7 @@ const SECURITY_CONCEPTS = [
         quizDescription: 'The fundamental safety property of maintaining reliable performance under unexpected inputs, adversarial attacks, or conditions that differ from training — essential for trusting AI in high-stakes settings.',
         topic: 'ai-security',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'concept',
         difficulty: 1,
         tags: ['robustness', 'reliability', 'safety', 'overview', 'foundations'],
         linkedCards: [
@@ -1074,7 +1074,7 @@ const SECURITY_CONCEPTS = [
         quizDescription: 'The failure mode where AI models generate factually incorrect, fabricated, or nonsensical content while presenting it with the same confidence level as accurate information.',
         topic: 'ai-security',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['hallucination', 'factuality', 'reliability', 'llm', 'failure-modes'],
         linkedCards: [
@@ -1093,7 +1093,7 @@ const SECURITY_CONCEPTS = [
         quizDescription: 'Carefully engineered inputs — often with imperceptible modifications — designed to exploit AI vulnerabilities and cause misclassification or incorrect outputs.',
         topic: 'ai-security',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['adversarial', 'attacks', 'robustness', 'security'],
         linkedCards: [
@@ -1112,7 +1112,7 @@ const SECURITY_CONCEPTS = [
         quizDescription: 'An attack technique that embeds hidden instructions within AI inputs to override intended behavior — particularly dangerous for AI agents that take real-world actions based on processed content.',
         topic: 'ai-security',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['prompt-injection', 'security', 'attacks', 'llm', 'agents'],
         linkedCards: [
@@ -1131,7 +1131,7 @@ const SECURITY_CONCEPTS = [
         quizDescription: 'User-initiated attacks that craft specific prompts to trick AI systems into bypassing their safety guardrails — distinct from prompt injection, which hides instructions in external data.',
         topic: 'ai-security',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['jailbreaking', 'red-teaming', 'guardrails', 'security', 'llm'],
         linkedCards: [
@@ -1150,7 +1150,7 @@ const SECURITY_CONCEPTS = [
         quizDescription: 'The phenomenon where real-world data differs significantly from training data, causing AI systems to underperform or fail — a fundamental challenge for predicting real-world reliability from test results.',
         topic: 'ai-security',
         secondaryTopic: null,
-        category: 'risks',
+        category: 'risk',
         difficulty: 1,
         tags: ['distribution-shift', 'generalization', 'robustness', 'deployment'],
         linkedCards: [
@@ -1170,11 +1170,13 @@ export const CORE_CONCEPT_COUNT = CORE_CONCEPTS.length;
 // Edit this array to add, remove, or reorder categories.
 // Each concept's `category` field should match one of these IDs.
 export const CATEGORIES = [
-    { id: 'technical', label: 'Technical', color: '#7BAFCC', icon: 'cpu' },
-    { id: 'alignment', label: 'Alignment', color: '#9B7EC8', icon: 'target' },
-    { id: 'policy', label: 'Policy', color: '#7BA3CC', icon: 'landmark' },
-    { id: 'ethics', label: 'Ethics', color: '#5A9E6F', icon: 'heart' },
-    { id: 'risks', label: 'Risks', color: '#C44D4D', icon: 'alert-triangle' },
+    { id: 'concept', label: 'Concept', color: '#5B8DEF', icon: 'lightbulb' },
+    { id: 'technique', label: 'Technique', color: '#2BA89E', icon: 'wrench' },
+    { id: 'risk', label: 'Risk', color: '#D45B5B', icon: 'alert-triangle' },
+    { id: 'regulation', label: 'Regulation', color: '#6366B8', icon: 'scale' },
+    { id: 'practice', label: 'Practice', color: '#D4A026', icon: 'clipboard-check' },
+    { id: 'proposal', label: 'Proposal', color: '#9370DB', icon: 'file-text' },
+    { id: 'other', label: 'Other', color: '#8B95A5', icon: 'help-circle' },
 ];
 
 // Derived lookup — components use this for quick access by ID.
