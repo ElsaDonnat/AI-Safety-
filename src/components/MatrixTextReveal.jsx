@@ -118,7 +118,7 @@ export default function MatrixTextReveal({ text = '', className, style, onComple
   const useDotElement = (dotElement || dotColor) && text.endsWith('.');
 
   // Dot style — shared between resolved and placeholder states to prevent layout shift
-  const dotStyle = { display: 'inline-block', width: '0.18em', height: '0.18em', backgroundColor: dotColor, borderRadius: '50%', marginLeft: '0.04em', flexShrink: 0 };
+  const dotStyle = { display: 'inline-block', width: '0.2em', height: '0.2em', backgroundColor: dotColor, borderRadius: '50%', marginLeft: '0.12em', flexShrink: 0 };
 
   return (
     <span className={className} style={{ display: 'inline-flex', alignItems: 'baseline', ...style }}>

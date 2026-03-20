@@ -131,8 +131,8 @@ export default function HomePage({ onTabChange }) {
                 padding: '6px 14px',
             }}>
                 <span style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 600,
-                    color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.06em',
+                    fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500,
+                    color: '#FFFFFF', letterSpacing: '0.01em',
                 }}>
                     Continue learning...
                 </span>
@@ -151,7 +151,7 @@ export default function HomePage({ onTabChange }) {
                             className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
                             style={{
                                 backgroundColor: '#FFFFFF',
-                                border: '1px solid var(--color-warm)',
+                                border: `1px solid ${domain.color}50`,
                                 boxShadow: '0 1px 3px rgba(44, 36, 32, 0.06)',
                                 cursor: domain.comingSoon ? 'default' : 'pointer',
                                 opacity: domain.comingSoon ? 0.5 : 1,
@@ -160,8 +160,13 @@ export default function HomePage({ onTabChange }) {
                             <span style={{
                                 fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px',
                                 color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3,
+                                display: 'inline-flex', alignItems: 'center', gap: '4px',
                             }}>
-                                {domain.title}<span style={{ color: domain.color }}>.</span>
+                                {domain.title}
+                                <span style={{
+                                    display: 'inline-block', width: '7px', height: '7px',
+                                    borderRadius: '50%', backgroundColor: domain.color, flexShrink: 0,
+                                }} />
                             </span>
                         </button>
                     ))}
@@ -214,7 +219,7 @@ export default function HomePage({ onTabChange }) {
             {/* Footer */}
             <div className="mt-12 mb-8 text-center">
                 <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)' }}>
-                    alignd<span style={{ color: 'var(--color-bronze)' }}>.</span>
+                    alignd<span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--color-bronze)', marginLeft: '4px', verticalAlign: 'baseline', position: 'relative', top: '-1px' }} />
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     alignd — ai safety companion
