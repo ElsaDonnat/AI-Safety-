@@ -331,12 +331,12 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             <ChevronLeft size={16} strokeWidth={2} />
                             Exit
                         </button>
-                        <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
-                            style={{ backgroundColor: 'var(--color-accent)', color: 'white' }}>
+                        <span className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded"
+                            style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}>
                             {sessionMode} · {currentIndex + 1}/{sessionQuestions.length}
                         </span>
                     </div>
-                    <ProgressBar value={currentIndex + 1} max={sessionQuestions.length} />
+                    <ProgressBar value={currentIndex + 1} max={sessionQuestions.length} color="#E07B5C" />
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto mt-4" key={`practice-${currentIndex}`}>
