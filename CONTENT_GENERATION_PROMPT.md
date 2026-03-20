@@ -603,7 +603,36 @@ Before returning your content, verify:
 
 ---
 
-## 10. Your Task
+## 10. Course Mode — Content Targeting
+
+The app supports an optional **course companion mode**. When a course is active (e.g., "ML for Good" / ML4G), the same cards are used but lessons may be reordered, filtered, or grouped differently to match a specific course syllabus.
+
+### What this means for content generation
+
+Before generating content, clarify whether you are creating:
+
+1. **General content** — for all users, not tied to any course. This is the default.
+2. **Course-specific content** — tailored to a specific course curriculum (e.g., ML4G). If so, ask which course and which week/module the content maps to.
+
+### Course-specific considerations
+
+When generating content for a course:
+
+- **Tag cards with the course ID** — e.g., add `ml4g` to the `tags` array for cards relevant to that course
+- **Tag cards with week/module** — e.g., `ml4g-week-1`, `ml4g-module-intro` to enable per-week filtering
+- **Lesson ordering** may differ from the general app — the course may introduce concepts in a specific pedagogical sequence
+- **Card content stays the same** — do not create duplicate cards with different text for the same concept. If a concept needs different framing for a course, note this as a future consideration but generate the standard version
+- **The course password for ML4G is `ml4g2026`** — this is set in `src/data/courseConfig.js`
+
+### Currently supported courses
+
+| Course ID | Name | Status |
+|-----------|------|--------|
+| `ml4g` | ML for Good | UI ready, content not yet tailored |
+
+---
+
+## 11. Your Task
 
 I want you to generate content for the following topics/curriculum areas:
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.7.0 — Course companion mode
+
+### Added
+- **Course Mode** in Settings — users can unlock a password-gated course companion mode that tailors the app to a specific course curriculum
+- `src/data/courseConfig.js` — course definitions (ID, name, description, password hash), password validation, and helper functions
+- ML4G (ML for Good) as the first supported course (password: `ml4g2026`)
+- Settings UI: course selector dropdown, password input, activate/deactivate flow with confirmation modal
+- `ACTIVATE_COURSE` and `DEACTIVATE_COURSE` reducer actions in AppContext
+- `courseMode` state field (`null` for general mode, `{ courseId, unlockedAt }` when active)
+- State migration for `courseMode` (existing users get `null`)
+- Course mode documentation in CLAUDE.md (architecture, state shape, future plans)
+- Section 10 in CONTENT_GENERATION_PROMPT.md explaining course-targeted content generation
+
+### Changed
+- Settings.jsx now imports GraduationCap, Lock, Check, ChevronDown icons from Lucide
 ## 0.6.2 — Improve "Why It Matters" quiz quality
 
 ### Changed
