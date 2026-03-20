@@ -4,25 +4,11 @@ import { getFunFactsForSeenCards, getNextFunFact } from '../data/funFacts';
 import { getConceptById } from '../data/concepts';
 import { Button, CategoryTag } from './shared';
 import * as feedback from '../services/feedback';
-import { ChevronLeft, Check, X as XIcon, Lightbulb } from 'lucide-react';
-
-function shuffleOptions(correct, wrongs) {
-    const options = [
-        { text: correct, isCorrect: true },
-        ...wrongs.map(t => ({ text: t, isCorrect: false })),
-    ];
-    for (let i = options.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [options[i], options[j]] = [options[j], options[i]];
-    }
-    return options;
-}
+import { ChevronLeft, Lightbulb } from 'lucide-react';
 
 export default function FunFactsFlow({ onExit }) {
     const { state, dispatch } = useApp();
     const [factIndex, setFactIndex] = useState(0);
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [answered, setAnswered] = useState(false);
 
     const availableFacts = useMemo(
         () => getFunFactsForSeenCards(state.seenCards || []),
@@ -35,44 +21,29 @@ export default function FunFactsFlow({ onExit }) {
         [availableFacts, factIndex]
     );
 
-    const event = currentFact ? getConceptById(currentFact.cardId) : null;
-
-    const shuffledOptions = useMemo(
-        () => currentFact ? shuffleOptions(currentFact.correctAnswer, currentFact.wrongAnswers) : [],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [currentFact?.id, factIndex]
-    );
+    // Look up related cards from relatedCardIds
+    const relatedCards = useMemo(() => {
+        if (!currentFact || !currentFact.relatedCardIds) return [];
+        return currentFact.relatedCardIds
+            .map(id => getConceptById(id))
+            .filter(Boolean);
+    }, [currentFact]);
 
     const seenCount = useMemo(() => {
         const availableIds = new Set(availableFacts.map(f => f.id));
         return (state.seenFunFacts || []).filter(id => availableIds.has(id)).length;
     }, [state.seenFunFacts, availableFacts]);
 
-    const handleAnswer = useCallback((optIndex) => {
-        if (answered) return;
-        feedback.select();
-        setSelectedOption(optIndex);
-        setAnswered(true);
-
-        const isCorrect = shuffledOptions[optIndex].isCorrect;
-        setTimeout(() => {
-            if (isCorrect) feedback.correct();
-            else feedback.wrong();
-        }, 150);
-
+    const handleNext = useCallback(() => {
         if (currentFact) {
             dispatch({ type: 'MARK_FUN_FACT_SEEN', funFactId: currentFact.id });
         }
-    }, [answered, shuffledOptions, currentFact, dispatch]);
-
-    const handleNext = useCallback(() => {
-        setSelectedOption(null);
-        setAnswered(false);
+        feedback.select();
         setFactIndex(i => i + 1);
-    }, []);
+    }, [currentFact, dispatch]);
 
     // ─── Empty state ───
-    if (!currentFact || !event) {
+    if (!currentFact) {
         return (
             <div className="py-6 animate-fade-in">
                 <div className="flex-shrink-0 pt-3">
@@ -113,90 +84,47 @@ export default function FunFactsFlow({ onExit }) {
                 </div>
             </div>
 
-            {/* Event reference */}
-            <div className="text-center mb-5 animate-fade-in">
-                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: 'var(--color-ink-faint)' }}>
-                    Related to
-                </p>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
-                    <CategoryTag category={event.category} />
-                    <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                        {event.title}
-                    </span>
-                </div>
-            </div>
-
-            {/* Question */}
+            {/* Fun fact content */}
             <div className="animate-slide-in-right" key={`q-${factIndex}`}>
-                <div className="text-center mb-6 px-2">
-                    <h2 className="text-base font-bold leading-relaxed" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                        {currentFact.question}
-                    </h2>
+                {/* Fun fact text */}
+                <div className="p-5 rounded-[3px] mb-5" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
+                    <div className="flex items-center gap-1.5 mb-3">
+                        <Lightbulb size={16} strokeWidth={2} color="#92400E" />
+                        <span className="text-[10px] uppercase tracking-wider font-bold" style={{ color: '#92400E' }}>
+                            Did you know?
+                        </span>
+                    </div>
+                    <p className="text-[0.95rem] leading-relaxed font-medium" style={{ color: 'var(--color-ink)', fontFamily: 'var(--font-display)' }}>
+                        {currentFact.text}
+                    </p>
                 </div>
 
-                {/* Options */}
-                <div className="space-y-2.5">
-                    {shuffledOptions.map((opt, i) => {
-                        let bg = 'var(--color-card)';
-                        let border = '1.5px solid var(--color-ink-faint)';
-                        let textColor = 'var(--color-ink)';
-                        let opacity = 1;
-                        let icon = null;
-
-                        if (answered) {
-                            if (opt.isCorrect) {
-                                bg = 'rgba(34, 197, 94, 0.1)';
-                                border = '1.5px solid var(--color-success)';
-                                textColor = 'var(--color-success)';
-                                icon = <Check size={16} color="var(--color-success)" strokeWidth={2.5} />;
-                            } else if (selectedOption === i) {
-                                bg = 'rgba(239, 68, 68, 0.1)';
-                                border = '1.5px solid var(--color-error)';
-                                textColor = 'var(--color-error)';
-                                icon = <XIcon size={16} color="var(--color-error)" strokeWidth={2.5} />;
-                            } else {
-                                opacity = 0.4;
-                            }
-                        }
-
-                        return (
-                            <button
-                                key={i}
-                                onClick={() => handleAnswer(i)}
-                                disabled={answered}
-                                className="w-full text-left px-4 py-3 rounded-[3px] flex items-center justify-between gap-2 transition-all active:scale-[0.98]"
-                                style={{ backgroundColor: bg, border, color: textColor, opacity }}
-                            >
-                                <span className="text-sm font-medium">{opt.text}</span>
-                                {icon}
-                            </button>
-                        );
-                    })}
-                </div>
-
-                {/* Explanation (after answering) */}
-                {answered && (
-                    <div className="mt-5 animate-fade-in">
-                        <div className="p-4 rounded-[3px]" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
-                            <div className="flex items-center gap-1.5 mb-2">
-                                <Lightbulb size={14} strokeWidth={2} color="#92400E" />
-                                <span className="text-[10px] uppercase tracking-wider font-bold" style={{ color: '#92400E' }}>
-                                    Did you know?
-                                </span>
-                            </div>
-                            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink)' }}>
-                                {currentFact.explanation}
-                            </p>
-                        </div>
-
-                        <div className="mt-5">
-                            <Button className="w-full" onClick={handleNext}>
-                                Next Fun Fact →
-                            </Button>
+                {/* Related cards */}
+                {relatedCards.length > 0 && (
+                    <div className="mb-5">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold mb-2.5" style={{ color: 'var(--color-ink-faint)' }}>
+                            Related concepts
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            {relatedCards.map(card => (
+                                <div key={card.id} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+                                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
+                                    <CategoryTag category={card.category} />
+                                    <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                                        {card.title}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 )}
+
+                {/* Next button */}
+                <div className="mt-5">
+                    <Button className="w-full" onClick={handleNext}>
+                        Next Fun Fact
+                    </Button>
+                </div>
             </div>
         </div>
     );
