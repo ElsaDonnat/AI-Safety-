@@ -64,7 +64,7 @@ This means every field on a card is directly shown to or quizzed against the use
                                 // Must NOT be so different that it describes something else.
   topic: 'alignment-fundamentals',  // REQUIRED. Must match a TOPICS[].id exactly.
   secondaryTopic: null,         // Optional. A second topic ID, or null.
-  category: 'concept',           // REQUIRED. One of: 'concept', 'technique', 'risk', 'regulation', 'practice', 'other'
+  category: 'concept',           // REQUIRED. One of: 'concept', 'technique', 'risk', 'regulation', 'practice', 'proposal', 'other'
   difficulty: 1,                // REQUIRED. 1 = beginner, 2 = intermediate, 3 = advanced.
   tags: ['alignment-problem', 'agi', 'corrigibility'],
                                 // REQUIRED. 2-5 kebab-case tags. Used for:
@@ -234,13 +234,15 @@ Every card must have exactly one of these categories. Categories classify cards 
 | Risk | `'risk'` | Threats, failure modes, dangers, vulnerabilities — what can go WRONG | Deceptive Alignment, Reward Hacking, Hallucination, Prompt Injection |
 | Regulation | `'regulation'` | Laws, rules, treaties, formal mandates — what is legally REQUIRED | EU AI Act, (future: US Executive Orders, China's algorithm rules) |
 | Practice | `'practice'` | Voluntary standards, industry norms, evaluation methods — what is DONE by choice | Responsible Scaling, Benchmarks, International Coordination |
+| Proposal | `'proposal'` | Safety or governance proposals, frameworks, or visions — what is SUGGESTED | CERN for AI, Law-Following AI, Windfall Clause |
 | Other | `'other'` | Institutions, organizations, or items that don't fit above — use sparingly | AI Labs, AI Safety Institutes |
 
 **Key distinctions:**
 - **Concept vs. Technique:** If the card describes what something IS or a theoretical idea, it's a concept. If it describes HOW to do something, it's a technique.
 - **Risk vs. Concept:** If the primary point is "this is a bad thing that can happen," it's a risk. If it's a neutral theoretical idea that has safety implications, it's a concept (e.g., "Instrumental Convergence" is a concept; "Power-Seeking AI" is a risk).
 - **Regulation vs. Practice:** Regulations are legally mandated and carry enforcement consequences. Practices are voluntary — organizations choose to adopt them. If a government requires it, it's regulation. If an AI lab commits to it voluntarily, it's a practice.
-- **Other:** Use only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things. Don't use as a catchall — try harder to fit into the five main categories first.
+- **Proposal vs. Practice:** Proposals are ideas or frameworks that have been *suggested* but not widely adopted (e.g., "CERN for AI", "Law-Following AI"). Practices are norms already in use by organizations. If it's an aspirational vision or a suggested governance/safety structure, it's a proposal. If it's already standard industry behavior, it's a practice.
+- **Other:** Use only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things. Don't use as a catchall — try harder to fit into the six main categories first.
 
 ---
 

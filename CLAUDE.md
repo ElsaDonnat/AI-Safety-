@@ -107,11 +107,14 @@ Categories classify cards by the **type of knowledge** they represent, cutting a
 | Risk | `'risk'` | Threats, failure modes, dangers, vulnerabilities — what can go WRONG | Red `#D45B5B` |
 | Regulation | `'regulation'` | Laws, rules, treaties, formal mandates — what is legally REQUIRED | Indigo `#6366B8` |
 | Practice | `'practice'` | Voluntary standards, industry norms, evaluation methods — what is DONE by choice (not law) | Amber `#D4A026` |
+| Proposal | `'proposal'` | Safety or governance proposals, frameworks, or visions for improving the field — what is SUGGESTED | Purple `#9370DB` |
 | Other | `'other'` | Institutions, organizations, or concepts that don't fit the above — use sparingly | Gray `#8B95A5` |
 
-**Key distinction:** Practice vs. Regulation — practices are voluntary (e.g., Responsible Scaling Policies), regulations are legally mandated (e.g., EU AI Act). If a concept is about what an organization chooses to do, it's a practice. If it's about what governments require, it's a regulation.
+**Key distinction — Practice vs. Regulation:** Practices are voluntary (e.g., Responsible Scaling Policies), regulations are legally mandated (e.g., EU AI Act). If a concept is about what an organization chooses to do, it's a practice. If it's about what governments require, it's a regulation.
 
-**When to use "other":** Only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things rather than a concept, method, risk, or rule. When in doubt, prefer a more specific category. If many cards end up in "other", consider creating a new category.
+**Key distinction — Proposal vs. Practice:** Proposals are ideas or frameworks that have been *suggested* but not widely adopted yet (e.g., "CERN for AI", "Law-Following AI"). Practices are norms that organizations already follow. If it's an aspirational vision or a suggested governance structure, it's a proposal. If it's already standard industry behavior, it's a practice.
+
+**When to use "other":** Only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things rather than a concept, method, risk, rule, or proposal. When in doubt, prefer a more specific category. If many cards end up in "other", consider creating a new category.
 
 #### Tags
 Tags are free-form strings attached to cards. Uses:

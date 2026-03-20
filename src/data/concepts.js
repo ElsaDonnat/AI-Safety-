@@ -1175,6 +1175,7 @@ export const CATEGORIES = [
     { id: 'risk', label: 'Risk', color: '#D45B5B', icon: 'alert-triangle' },
     { id: 'regulation', label: 'Regulation', color: '#6366B8', icon: 'scale' },
     { id: 'practice', label: 'Practice', color: '#D4A026', icon: 'clipboard-check' },
+    { id: 'proposal', label: 'Proposal', color: '#9370DB', icon: 'file-text' },
     { id: 'other', label: 'Other', color: '#8B95A5', icon: 'help-circle' },
 ];
 
