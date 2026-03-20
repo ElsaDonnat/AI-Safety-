@@ -7,7 +7,7 @@ import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmMo
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS, CHAPTERS, DIFFICULTY_COLORS } from '../../data/lessons';
-import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, Star, Share2 } from 'lucide-react';
+import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, Zap, Share2 } from 'lucide-react';
 
 // Maps topic icon IDs to Lucide components — matches LearnPage ICON_MAP
 const TOPIC_ICON_MAP = {
@@ -657,7 +657,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <Divider />
                             <div className="flex items-center justify-center gap-6 mt-3">
                                 <div id="xp-earned-display" className="flex items-center gap-2 animate-xp-pop" style={{ animationDelay: '500ms' }}>
-                                    <Star className="animate-xp-glow" style={{ animationDelay: '700ms' }} size={20} color="var(--color-bronze)" fill="var(--color-bronze-light)" strokeWidth={2} />
+                                    <Zap className="animate-xp-glow" style={{ animationDelay: '700ms' }} size={20} color="var(--color-warning)" fill="var(--color-warning)" strokeWidth={2} />
                                     <div className="text-left">
                                         <AnimatedCounter value={xp} prefix="+" duration={600} delay={1050} className="text-xl font-bold leading-none" style={{ color: 'var(--color-burgundy)' }} />
                                         <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-faint)' }}>XP earned</div>
