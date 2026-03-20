@@ -14,7 +14,7 @@ import { DEV_UNLOCK_ALL } from '../config/devFlags';
 // ─── Tier display helpers ─────────────────────────────────────
 // Build display info for each tier (colors, icons, flavors) for the UI
 const TIER_DISPLAY = TIERS.map((t, i) => {
-    const colors = ['#4A90D9', '#2E7D32', '#E65100', '#8E24AA', '#C62828', '#FF6F00'];
+    const colors = ['#7BAFCC', '#5A9E6F', '#D4A04A', '#9B7EC8', '#D4726A', '#E6A817'];
     const iconComponents = [Flame, BookOpen, GraduationCap, Cog, Trophy, Zap];
     const flavors = [
         'The journey begins...',
@@ -94,8 +94,8 @@ function SharpHeart({ size = 18, filled = false, className = '' }) {
             style={{ display: 'block' }}>
             <path
                 d="M10 17L2.5 9.5C0.5 7.5 0.5 4.2 2.5 2.5C4.5 0.8 7.2 1 9 3L10 4.5L11 3C12.8 1 15.5 0.8 17.5 2.5C19.5 4.2 19.5 7.5 17.5 9.5L10 17Z"
-                fill={filled ? 'var(--color-burgundy)' : 'none'}
-                stroke={filled ? 'var(--color-burgundy)' : 'var(--color-ink-faint)'}
+                fill={filled ? 'var(--color-burgundy-dark)' : 'none'}
+                stroke={filled ? 'var(--color-burgundy-dark)' : 'var(--color-ink-faint)'}
                 strokeWidth="1.2"
                 strokeLinejoin="miter"
             />
@@ -212,7 +212,7 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center', letterSpacing: '-0.01em' }}>
+            <p style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)', textAlign: 'center', letterSpacing: '-0.01em', lineHeight: 1.5 }}>
                 {question.prompt || question.question}
             </p>
             {answered && nearMiss && (
@@ -301,7 +301,7 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
 function OddOneOutLayout({ question, selected, answered, onSelect }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center', letterSpacing: '-0.01em' }}>
+            <p style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)', textAlign: 'center', letterSpacing: '-0.01em', lineHeight: 1.5 }}>
                 {question.prompt || question.question}
             </p>
             {question.hint && (
@@ -371,7 +371,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
 function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center' }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>
+            <p style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em', lineHeight: 1.5 }}>
                 {question.prompt || 'True or false?'}
             </p>
             <div style={{
@@ -836,8 +836,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
         const totalGames = (ch.soloGamesPlayed || 0) + (ch.multiplayerGamesPlayed || 0);
         const hasStats = totalGames > 0;
 
-        // Tier-specific accent colors for variety
-        const tierAccents = ['#7BAFCC', '#5A9E6F', '#D4A04A', '#9B7EC8', '#D4726A', '#E6A817'];
+        // Tier accent colors come from TIER_DISPLAY.color
 
         return (
             <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in">
@@ -899,7 +898,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         {TIER_DISPLAY.map((tier, i) => {
                             const reached = i <= bestTierReached;
                             const isBest = i === bestTierReached;
-                            const accentColor = tierAccents[i];
+                            const accentColor = tier.color;
                             return (
                                 <div key={tier.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, zIndex: 1, flex: 1 }}>
                                     <div style={{
@@ -1031,13 +1030,15 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             padding: '14px',
                             border: 'none',
                             cursor: 'pointer',
+                            position: 'relative',
                         }}
                     >
                         <div className="flex items-center gap-2.5 mb-2">
                             <Users size={16} color="rgba(255,255,255,0.85)" strokeWidth={2} />
-                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px', color: '#fff' }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px', color: '#fff', flex: 1 }}>
                                 Multiplayer
                             </p>
+                            <ChevronRight size={14} color="rgba(255,255,255,0.5)" strokeWidth={2} className="hidden min-[500px]:block flex-shrink-0" />
                         </div>
                         <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>
                             Pass the phone, up to 5 players
@@ -1055,13 +1056,15 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             border: 'none',
                             cursor: availableFunFacts.length > 0 ? 'pointer' : 'default',
                             opacity: availableFunFacts.length > 0 ? 1 : 0.5,
+                            position: 'relative',
                         }}
                     >
                         <div className="flex items-center gap-2.5 mb-2">
                             <Lightbulb size={16} color="rgba(255,255,255,0.85)" strokeWidth={2} />
-                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px', color: '#fff' }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px', color: '#fff', flex: 1 }}>
                                 Fun Facts
                             </p>
+                            <ChevronRight size={14} color="rgba(255,255,255,0.5)" strokeWidth={2} className="hidden min-[500px]:block flex-shrink-0" />
                         </div>
                         <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>
                             {availableFunFacts.length > 0
@@ -1343,9 +1346,9 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                             <span
                                 className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-[2px]"
-                                style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)', fontFamily: 'var(--font-mono)' }}
+                                style={{ color: tierInfo.tier.color, backgroundColor: `${tierInfo.tier.color}18`, fontFamily: 'var(--font-mono)' }}
                             >
-                                <TierIcon tierId={tierInfo.tier.id} size={12} color="var(--color-ink-secondary)" /> {tierInfo.tier.label}
+                                <TierIcon tierId={tierInfo.tier.id} size={12} color={tierInfo.tier.color} /> {tierInfo.tier.label}
                             </span>
                             <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', letterSpacing: '0.02em' }}>
                                 {questionIndex + 1} / {TOTAL_CHALLENGE_QUESTIONS}

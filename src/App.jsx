@@ -346,7 +346,7 @@ export default function App() {
           </div>
         </main>
       </div>
-      {!inSession && <div className="hidden min-[900px]:block"><MatrixRain /></div>}
+      <div className="hidden min-[900px]:block"><MatrixRain /></div>
       {!inSession && <MobileTabBar activeTab={activeTab} onTabChange={setActiveTab} />}
       {state.settingsOpen && <Settings />}
       {shouldShowRating && (
