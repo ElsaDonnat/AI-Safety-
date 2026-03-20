@@ -127,7 +127,7 @@ export default function HomePage({ onTabChange }) {
 
             {/* Continue learning banner — full width */}
             <div className="mb-0 rounded-t-[3px]" style={{
-                backgroundColor: 'var(--color-bronze)',
+                backgroundColor: '#B5D1DE',
                 padding: '6px 14px',
             }}>
                 <span style={{
