@@ -230,6 +230,82 @@ TRUE_FALSE_STATEMENTS['c606'] = {
     correction: 'AI governance is a broad ecosystem that includes government regulation, voluntary industry commitments (like responsible scaling policies), international coordination, and technical safety standards — it is not limited to government action alone.',
 };
 
+// ─── Advanced AI (c207–c212) ────────────────────────
+
+TRUE_FALSE_STATEMENTS['c207'] = {
+    trueStatement: 'No AI system that exists today qualifies as AGI — all current systems, including the most advanced large language models, are narrow AI that cannot match humans across all cognitive domains.',
+    falseStatement: 'Modern large language models like GPT-4 and Claude are generally considered to be early forms of AGI because they can perform many different tasks.',
+    correction: 'While modern LLMs are impressively versatile, they still fail at many tasks humans find trivial, lack persistent memory and embodied reasoning, and cannot independently learn new domains — they are powerful narrow AI, not AGI.',
+};
+
+TRUE_FALSE_STATEMENTS['c208'] = {
+    trueStatement: 'Nick Bostrom argued that a superintelligent AI could be the most transformative and dangerous technology ever created because humans would be fundamentally unable to predict or control its behavior.',
+    falseStatement: 'Superintelligence would necessarily be benevolent because a system smarter than all humans would logically converge on morally correct behavior.',
+    correction: 'Intelligence and moral alignment are separate properties — a superintelligent system could be extremely capable at pursuing goals that are harmful to humanity. Superior intelligence implies superior strategic ability, not superior values.',
+};
+
+TRUE_FALSE_STATEMENTS['c209'] = {
+    trueStatement: 'A narrow AI can be superhuman at its specific task — for example, AlphaGo vastly surpassed the best human Go players — while being completely incapable of tasks outside its domain.',
+    falseStatement: 'Narrow AI systems are always less capable than humans at their specific tasks, since they are limited to one domain.',
+    correction: 'Narrow AI can dramatically exceed human performance within its specialized domain — chess engines, protein folders, and image classifiers all outperform the best humans at their specific tasks.',
+};
+
+TRUE_FALSE_STATEMENTS['c210'] = {
+    trueStatement: 'AI agents raise unique safety concerns because their multi-step autonomous actions can have real-world consequences that are difficult or impossible to reverse.',
+    falseStatement: 'AI agents are safer than chatbots because they can directly verify and correct their own mistakes in the real world.',
+    correction: 'AI agents are generally considered riskier than chatbots precisely because they take real actions — a chatbot can give bad advice, but an agent can send emails, delete files, or make purchases, creating consequences that may be irreversible.',
+};
+
+TRUE_FALSE_STATEMENTS['c211'] = {
+    trueStatement: 'The term "frontier model" is used in policy and safety contexts to distinguish the most capable AI systems, which pose the greatest potential risks and are the primary targets of safety regulation.',
+    falseStatement: 'Frontier models are simply the most popular AI models with the most users, regardless of their technical capabilities.',
+    correction: 'Frontier refers to technical capability, not popularity — a frontier model is defined by being at the cutting edge of performance, not by its user count. Many popular AI products use models that are not frontier-level.',
+};
+
+TRUE_FALSE_STATEMENTS['c212'] = {
+    trueStatement: 'Compute is considered one of the most practical governance levers for AI because, unlike algorithms or data, it is physical, measurable, and concentrated among a small number of chip manufacturers.',
+    falseStatement: 'Compute costs for training AI models are dropping so rapidly that any well-funded startup can now train a frontier model on commodity hardware.',
+    correction: 'Training frontier models still costs hundreds of millions of dollars and requires specialized hardware (high-end GPUs) produced by very few companies — compute remains highly concentrated and expensive, which is exactly what makes it a useful governance lever.',
+};
+
+// ─── AI Security (c901–c906) ────────────────────────
+
+TRUE_FALSE_STATEMENTS['c901'] = {
+    trueStatement: 'An AI system that achieves 99% accuracy on its test set may still fail catastrophically in production if it encounters inputs that differ from its training data distribution.',
+    falseStatement: 'An AI system that scores well on comprehensive benchmarks is guaranteed to be robust in real-world deployment.',
+    correction: 'Benchmark performance measures accuracy under controlled conditions — it does not guarantee robustness to distribution shift, adversarial attack, or edge cases that inevitably arise in real-world deployment.',
+};
+
+TRUE_FALSE_STATEMENTS['c902'] = {
+    trueStatement: 'AI hallucinations are especially dangerous because models present fabricated information with the same confident tone as factually accurate responses, making it hard for users to distinguish truth from fiction.',
+    falseStatement: 'AI hallucination has been completely solved in the latest generation of large language models through improved training techniques.',
+    correction: 'Hallucination remains an unsolved problem — while newer models hallucinate less frequently, no current technique eliminates hallucination entirely, and models can still confidently generate false information.',
+};
+
+TRUE_FALSE_STATEMENTS['c903'] = {
+    trueStatement: 'Adversarial examples can be so subtle that they are completely imperceptible to humans — a modified image may look identical to the original while causing an AI to confidently misclassify it.',
+    falseStatement: 'Adversarial examples only work on image classifiers and do not affect language models or other types of AI systems.',
+    correction: 'Adversarial attacks affect all types of AI systems — language models can be manipulated with carefully crafted text, speech recognition can be fooled with inaudible perturbations, and reinforcement learning agents can be deceived by modified environments.',
+};
+
+TRUE_FALSE_STATEMENTS['c904'] = {
+    trueStatement: 'Prompt injection is especially dangerous for AI agents because a compromised prompt can redirect autonomous actions — such as sending unauthorized emails or modifying files.',
+    falseStatement: 'Prompt injection only works when users directly type malicious instructions into the AI and cannot be embedded in external documents or web pages.',
+    correction: 'Indirect prompt injection is the more dangerous variant — malicious instructions can be hidden in emails, web pages, documents, or any content the AI processes, without the user even being aware of the attack.',
+};
+
+TRUE_FALSE_STATEMENTS['c905'] = {
+    trueStatement: 'New jailbreaking techniques are constantly discovered, creating an ongoing cat-and-mouse dynamic between attackers finding bypass methods and safety teams patching vulnerabilities.',
+    falseStatement: 'Jailbreaking and prompt injection are the same attack — both involve users directly crafting prompts to bypass AI safety guardrails.',
+    correction: 'Jailbreaking is a direct user attack where the user themselves crafts prompts to bypass guardrails, while prompt injection involves hiding instructions in external data (emails, web pages, documents) that the AI processes — the attack vectors are fundamentally different.',
+};
+
+TRUE_FALSE_STATEMENTS['c906'] = {
+    trueStatement: 'A self-driving car trained in sunny California conditions may perform dangerously in snowy environments because the visual data distribution is fundamentally different from its training set.',
+    falseStatement: 'Distribution shift only affects models trained on small datasets and is not a concern for large foundation models trained on internet-scale data.',
+    correction: 'Even models trained on massive datasets experience distribution shift — the internet is not a representative sample of all possible real-world conditions, and foundation models can fail when deployed in contexts underrepresented in their training data.',
+};
+
 // ─── AI Ethics (c701–c706) ──────────────────────────
 
 TRUE_FALSE_STATEMENTS['c701'] = {

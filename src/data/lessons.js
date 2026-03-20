@@ -58,7 +58,25 @@ export const TOPICS = [
         color: '#9B7EC8',
         order: 2,
     },
+    {
+        id: 'advanced-ai',
+        domain: 'foundations',
+        title: 'Advanced AI',
+        description: 'AGI, superintelligence, and the frontier of AI capabilities',
+        icon: 'advanced-ai',
+        color: '#D4726A',
+        order: 3,
+    },
     // ─── AI Safety & Alignment ─────────────────────────────
+    {
+        id: 'ai-security',
+        domain: 'ai-safety',
+        title: 'AI Security',
+        description: 'Robustness, adversarial attacks, and practical AI failure modes',
+        icon: 'ai-security',
+        color: '#C44D4D',
+        order: 3,
+    },
     {
         id: 'alignment-fundamentals',
         domain: 'ai-safety',
@@ -121,6 +139,14 @@ export const CHAPTERS = [
     { id: 'ai-concepts-beginner', topic: 'ai-concepts', title: 'Beginner', difficulty: 'beginner', order: 0 },
     { id: 'ai-concepts-amateur', topic: 'ai-concepts', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
     { id: 'ai-concepts-advanced', topic: 'ai-concepts', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // Advanced AI
+    { id: 'advanced-ai-beginner', topic: 'advanced-ai', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'advanced-ai-amateur', topic: 'advanced-ai', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'advanced-ai-advanced', topic: 'advanced-ai', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // AI Security
+    { id: 'ai-security-beginner', topic: 'ai-security', title: 'Beginner', difficulty: 'beginner', order: 0 },
+    { id: 'ai-security-amateur', topic: 'ai-security', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
+    { id: 'ai-security-advanced', topic: 'ai-security', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
     // Alignment Fundamentals
     { id: 'alignment-fundamentals-beginner', topic: 'alignment-fundamentals', title: 'Beginner', difficulty: 'beginner', order: 0 },
     { id: 'alignment-fundamentals-amateur', topic: 'alignment-fundamentals', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
@@ -222,6 +248,54 @@ export const LESSONS = [
         topic: 'ai-concepts',
         isFoundational: false,
         cardIds: ['c304', 'c305', 'c306'],
+    },
+
+    // ─── Advanced AI / Beginner ─────────────────────────────
+    {
+        id: 'lesson-advanced-ai-b-0',
+        number: 0,
+        title: 'The Intelligence Spectrum',
+        subtitle: 'From narrow AI to AGI and superintelligence',
+        mood: 'How smart could AI get?',
+        chapter: 'advanced-ai-beginner',
+        topic: 'advanced-ai',
+        isFoundational: true,
+        cardIds: ['c207', 'c209', 'c208'],
+    },
+    {
+        id: 'lesson-advanced-ai-b-1',
+        number: 1,
+        title: 'The Cutting Edge',
+        subtitle: 'AI agents, frontier models, and the role of compute',
+        mood: 'What defines the most capable AI systems today?',
+        chapter: 'advanced-ai-beginner',
+        topic: 'advanced-ai',
+        isFoundational: false,
+        cardIds: ['c210', 'c211', 'c212'],
+    },
+
+    // ─── AI Security / Beginner ───────────────────────────────
+    {
+        id: 'lesson-security-b-0',
+        number: 0,
+        title: 'When AI Breaks',
+        subtitle: 'Robustness, hallucination, and distribution shift',
+        mood: 'AI systems fail in ways you might not expect\u2026',
+        chapter: 'ai-security-beginner',
+        topic: 'ai-security',
+        isFoundational: true,
+        cardIds: ['c901', 'c902', 'c906'],
+    },
+    {
+        id: 'lesson-security-b-1',
+        number: 1,
+        title: 'Attacking AI',
+        subtitle: 'Adversarial examples, prompt injection, and jailbreaking',
+        mood: 'How do you break an AI on purpose?',
+        chapter: 'ai-security-beginner',
+        topic: 'ai-security',
+        isFoundational: false,
+        cardIds: ['c903', 'c904', 'c905'],
     },
 
     // ─── Alignment Fundamentals / Beginner ────────────────

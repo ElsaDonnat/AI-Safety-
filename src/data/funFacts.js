@@ -84,6 +84,46 @@ export const FUN_FACTS = [
         text: 'Meta\'s decision to release the Llama model weights sparked intense debate — some researchers praised the move for democratizing AI, while others warned it gave unrestricted access to dangerous capabilities.',
         relatedCardIds: ['c806', 'c502'],
     },
+    {
+        id: 'ff18',
+        text: 'In a 2023 survey of AI researchers, median estimates for when AGI would be achieved ranged from 2040 to 2060 — but some predicted it could happen within 10 years.',
+        relatedCardIds: ['c207', 'c208'],
+    },
+    {
+        id: 'ff19',
+        text: 'Training GPT-4 is estimated to have cost over $100 million in compute alone — and the cost of training frontier models roughly triples every year.',
+        relatedCardIds: ['c212', 'c211'],
+    },
+    {
+        id: 'ff20',
+        text: 'In 2024, an AI agent autonomously discovered a zero-day vulnerability in software — demonstrating both the promise and danger of AI systems that can take actions in the world.',
+        relatedCardIds: ['c210', 'c904'],
+    },
+    {
+        id: 'ff21',
+        text: 'Researchers found that adding a single pixel of noise to an image — invisible to the human eye — could cause an AI classifier to confidently identify a cat as a piece of guacamole.',
+        relatedCardIds: ['c903', 'c901'],
+    },
+    {
+        id: 'ff22',
+        text: 'ChatGPT once confidently cited a completely fabricated legal case in a brief prepared by a lawyer — the case, the court, and the judge it referenced did not exist.',
+        relatedCardIds: ['c902', 'c201'],
+    },
+    {
+        id: 'ff23',
+        text: 'Researchers demonstrated "indirect prompt injection" by hiding invisible instructions in a web page that caused an AI assistant to exfiltrate the user\'s private data when summarizing the page.',
+        relatedCardIds: ['c904', 'c210'],
+    },
+    {
+        id: 'ff24',
+        text: 'NVIDIA, the dominant GPU manufacturer, briefly became the world\'s most valuable company in 2024 — illustrating how control of AI compute translates directly into economic power.',
+        relatedCardIds: ['c212', 'c704'],
+    },
+    {
+        id: 'ff25',
+        text: 'IBM\'s Deep Blue beat world chess champion Garry Kasparov in 1997, but it couldn\'t play tic-tac-toe — a perfect example of how narrow AI can be superhuman at one task and useless at another.',
+        relatedCardIds: ['c209', 'c207'],
+    },
 ];
 
 export function getFunFactsForSeenCards() {

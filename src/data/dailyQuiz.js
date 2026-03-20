@@ -16,6 +16,10 @@ const DAILY_QUIZ_DAYS = [
     { dateLabel: 'Trust & Accountability', cards: [{ id: 'c704' }, { id: 'c705' }, { id: 'c706' }] },
     { dateLabel: 'AI Regulation', cards: [{ id: 'c801' }, { id: 'c802' }, { id: 'c806' }] },
     { dateLabel: 'Global AI Safety', cards: [{ id: 'c803' }, { id: 'c804' }, { id: 'c805' }] },
+    { dateLabel: 'Intelligence Spectrum', cards: [{ id: 'c207' }, { id: 'c209' }, { id: 'c208' }] },
+    { dateLabel: 'AI at the Frontier', cards: [{ id: 'c210' }, { id: 'c211' }, { id: 'c212' }] },
+    { dateLabel: 'When AI Breaks', cards: [{ id: 'c901' }, { id: 'c902' }, { id: 'c906' }] },
+    { dateLabel: 'Attacking AI', cards: [{ id: 'c903' }, { id: 'c904' }, { id: 'c905' }] },
 ];
 
 export const DAILY_QUIZ_EVENTS = [];

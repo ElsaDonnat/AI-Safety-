@@ -339,6 +339,118 @@ DESCRIPTION_DISTRACTORS['c606'] = {
     ]
 };
 
+// ─── Advanced AI (c207–c212) ────────────────────────
+
+DESCRIPTION_DISTRACTORS['c207'] = {
+    hardCorrect: 'A hypothetical AI system with human-level ability across all cognitive domains — capable of learning, reasoning, and adapting to any task without domain-specific training.',
+    distractors: [
+        { text: 'A marketing category used by tech companies to describe any AI product that uses deep learning, regardless of how general its capabilities actually are.', d: 1 },
+        { text: 'A hypothetical AI system that vastly exceeds the best human cognitive abilities across all domains, raising questions about human ability to control it.', d: 2 },
+        { text: 'A hypothetical AI system matching human-level general ability, which most researchers agree will be achieved within the next two years.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c208'] = {
+    hardCorrect: 'A hypothetical AI system that vastly exceeds the best human cognitive abilities across all domains, raising fundamental questions about human ability to predict or control its behavior.',
+    distractors: [
+        { text: 'A standard performance tier used in cloud computing to describe servers with the highest available processing speed and memory capacity.', d: 1 },
+        { text: 'A hypothetical AI system with human-level ability across all cognitive tasks, capable of learning and adapting without task-specific training.', d: 2 },
+        { text: 'An AI system that vastly surpasses human intelligence, which would necessarily be benevolent because superior intelligence implies superior moral reasoning.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c209'] = {
+    hardCorrect: 'AI systems that excel at a single specific task or domain but cannot transfer their skills to unrelated tasks — describing all AI systems that exist today.',
+    distractors: [
+        { text: 'A type of neural network architecture that uses fewer parameters than standard models, designed for deployment on mobile phones and edge devices.', d: 1 },
+        { text: 'A hypothetical AI system with human-level ability across all cognitive domains, capable of learning and reasoning about any subject.', d: 2 },
+        { text: 'AI systems limited to one specific task, which are incapable of achieving superhuman performance in their specialized domain.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c210'] = {
+    hardCorrect: 'AI systems that autonomously take multi-step actions in real or digital environments to achieve goals, raising safety concerns due to irreversible consequences and reduced human oversight.',
+    distractors: [
+        { text: 'Virtual characters in video games that follow scripted behavior trees to simulate intelligent responses to player actions.', d: 1 },
+        { text: 'The most powerful AI systems being developed at any given time, pushing the boundaries of what AI can do and requiring the most computational resources.', d: 2 },
+        { text: 'AI systems that take autonomous actions to achieve goals, which are inherently safer than chat-based AI because they can self-correct any mistakes.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c211'] = {
+    hardCorrect: 'The most capable AI systems being developed at any given time, which are the primary focus of safety evaluations and regulation due to their unprecedented capabilities and risks.',
+    distractors: [
+        { text: 'AI models that have been deployed in production for the longest time and have the most established track record of stable performance.', d: 1 },
+        { text: 'General-purpose AI models pretrained on broad datasets that can be adapted to many downstream tasks through fine-tuning or prompting.', d: 2 },
+        { text: 'The most capable AI systems at any given time, which are always open-source and publicly available for safety researchers to study.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c212'] = {
+    hardCorrect: 'The computational resources required to train and run AI systems — significant as a governance lever because it is physical, measurable, and concentrated among few suppliers.',
+    distractors: [
+        { text: 'The mathematical theory underlying neural network training, describing how gradient descent converges to optimal parameter values.', d: 1 },
+        { text: 'Mathematical relationships showing that AI performance improves predictably with increases in model size, data, and processing power.', d: 2 },
+        { text: 'The computational resources needed for AI, which are becoming less important as algorithmic improvements allow frontier models to be trained on consumer hardware.', d: 3 },
+    ]
+};
+
+// ─── AI Security (c901–c906) ────────────────────────
+
+DESCRIPTION_DISTRACTORS['c901'] = {
+    hardCorrect: 'The fundamental safety property of maintaining reliable performance under unexpected inputs, adversarial attacks, or conditions that differ from training — essential for trusting AI in high-stakes settings.',
+    distractors: [
+        { text: 'A hardware reliability metric measuring the mean time between failures for GPU clusters used in large-scale model training.', d: 1 },
+        { text: 'The practice of systematically probing AI systems for weaknesses by simulating adversarial attacks before deployment.', d: 2 },
+        { text: 'The ability of AI systems to perform reliably under any conditions, which modern deep learning systems have fully achieved through large-scale training.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c902'] = {
+    hardCorrect: 'The failure mode where AI models generate factually incorrect, fabricated, or nonsensical content while presenting it with the same confidence level as accurate information.',
+    distractors: [
+        { text: 'A data augmentation technique that generates synthetic training examples to expand limited datasets for machine learning models.', d: 1 },
+        { text: 'Carefully engineered inputs designed to cause AI misclassification — such as imperceptible image modifications that fool image classifiers.', d: 2 },
+        { text: 'AI models generating false information, which can be fully prevented by training on a sufficiently large and carefully curated dataset.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c903'] = {
+    hardCorrect: 'Carefully engineered inputs — often with imperceptible modifications — designed to exploit AI vulnerabilities and cause misclassification or incorrect outputs.',
+    distractors: [
+        { text: 'A machine learning technique where models are trained on intentionally noisy data to improve their ability to handle real-world imperfections.', d: 1 },
+        { text: 'An attack technique that embeds hidden instructions within AI inputs to override intended behavior and redirect the system toward unintended goals.', d: 2 },
+        { text: 'Inputs designed to fool AI systems, which only work on image classifiers and do not affect language models or other AI architectures.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c904'] = {
+    hardCorrect: 'An attack technique that embeds hidden instructions within AI inputs to override intended behavior — particularly dangerous for AI agents that take real-world actions based on processed content.',
+    distractors: [
+        { text: 'A software engineering practice where developers write detailed test prompts to verify that AI systems produce expected outputs during quality assurance.', d: 1 },
+        { text: 'User-initiated attacks that craft specific prompts to trick AI systems into bypassing their safety guardrails — a direct conversation-based technique.', d: 2 },
+        { text: 'An attack where hidden instructions in AI inputs override behavior, which has been fully solved by instruction-tuning techniques used in modern LLMs.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c905'] = {
+    hardCorrect: 'User-initiated attacks that craft specific prompts to trick AI systems into bypassing their safety guardrails — distinct from prompt injection, which hides instructions in external data.',
+    distractors: [
+        { text: 'A hardware modification technique that removes software restrictions from smartphones to allow installation of unauthorized applications.', d: 1 },
+        { text: 'An attack that embeds hidden instructions within AI inputs processed from external sources to override the system\'s intended behavior.', d: 2 },
+        { text: 'Techniques to bypass AI safety guardrails, which only work on older models and are completely ineffective against systems trained with RLHF.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c906'] = {
+    hardCorrect: 'The phenomenon where real-world data differs significantly from training data, causing AI systems to underperform or fail — a fundamental challenge for predicting real-world reliability from test results.',
+    distractors: [
+        { text: 'A data pipeline architecture that distributes training data across multiple servers to speed up the model training process.', d: 1 },
+        { text: 'The failure mode where AI models generate factually incorrect or fabricated content with the same confidence as accurate information.', d: 2 },
+        { text: 'The difference between training and real-world data, which only affects models trained on small datasets and is not a concern for large foundation models.', d: 3 },
+    ]
+};
+
 // ─── AI Ethics (c701–c706) ──────────────────────────
 
 DESCRIPTION_DISTRACTORS['c701'] = {
