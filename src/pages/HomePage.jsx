@@ -98,7 +98,7 @@ export default function HomePage({ onTabChange }) {
                     </div>
                     <div className="flex justify-between mt-3">
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: '#fff' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-sidebar-bg)' }}>
                                 {completedCount}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
@@ -106,7 +106,7 @@ export default function HomePage({ onTabChange }) {
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: '#fff' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-sidebar-bg)' }}>
                                 {learnedCards}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
@@ -114,7 +114,7 @@ export default function HomePage({ onTabChange }) {
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: '#fff' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-sidebar-bg)' }}>
                                 {state.currentStreak}
                             </span>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
