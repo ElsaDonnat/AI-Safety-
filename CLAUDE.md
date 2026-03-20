@@ -82,7 +82,7 @@ Each card teaches one concept. Data shape:
   title: 'Value Alignment',
   summary: 'A brief one-line summary shown on card previews',
   description: 'Detailed explanation shown on learn cards...',
-  quizDescription: 'Alternative description used in quiz questions...',
+  quizDescription: 'Clue-like indirect description used in quizzes (not a definition — uses examples, consequences, or scenarios so the user must recognize the concept)',
   topic: 'alignment',          // primary topic
   secondaryTopic: null,        // optional second topic (or null)
   category: 'concept',         // cross-cutting type (see categories)

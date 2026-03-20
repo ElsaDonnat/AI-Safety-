@@ -57,11 +57,20 @@ This means every field on a card is directly shown to or quizzed against the use
                                 // REQUIRED. 2-4 sentences. The "learn card" text the user reads.
                                 // This is the primary learning content. Must be clear, accurate,
                                 // and self-contained (understandable without other cards).
-  quizDescription: 'The challenge of ensuring AI systems pursue goals that match human values and intentions.',
-                                // REQUIRED. 1-2 sentences. A DIFFERENT phrasing of the same idea.
-                                // Used as the correct answer in "how does X work?" quizzes.
-                                // Must NOT be a copy-paste of `description` — rephrase it.
-                                // Must NOT be so different that it describes something else.
+  quizDescription: 'A system might technically achieve the goal it was given while violating the spirit of what was intended — this is considered one of the most important unsolved problems in the field.',
+                                // REQUIRED. 1-2 sentences. An INDIRECT, clue-like description.
+                                // Used in quizzes (matching, MCQs) — the user must recognize
+                                // which concept this refers to.
+                                //
+                                // CRITICAL GUIDELINES:
+                                // - Write like a clue, not a definition. Describe consequences,
+                                //   examples, or implications rather than naming the concept directly.
+                                // - Avoid using the concept's title or close synonyms in the text.
+                                // - Someone who knows the concept should be able to identify it,
+                                //   but someone who doesn't should find it ambiguous.
+                                // - Use vivid examples, scenarios, or distinctive consequences.
+                                // - Must NOT be a copy-paste of `description` — rephrase obliquely.
+                                // - Must NOT be so different that it describes something else.
   topic: 'alignment-fundamentals',  // REQUIRED. Must match a TOPICS[].id exactly.
   secondaryTopic: null,         // Optional. A second topic ID, or null.
   category: 'concept',           // REQUIRED. One of: 'concept', 'technique', 'risk', 'regulation', 'practice', 'proposal', 'other'
@@ -251,18 +260,22 @@ Every card must have exactly one of these categories. Categories classify cards 
 Every card is quizzed on **3 dimensions**. Understanding how each field is used in quizzes is critical for writing good content:
 
 ### `what` dimension — "What is X?"
-- **Format:** Given the card's `description` or `quizDescription`, pick the correct `title` from 4 options.
+- **Format:** Given the card's `quizDescription` (a clue-like indirect description), pick the correct `title` from 4 options.
 - **Distractors:** Titles of other cards (preferring same-lesson, then same-category).
-- **Implication:** Each card's `title` must be **distinct and unambiguous**. If two titles are near-synonyms, the quiz becomes unfair.
+- **Implication:** Each card's `title` must be **distinct and unambiguous**. The `quizDescription` must be identifiable without being a giveaway.
 
 ### `why` dimension — "Why does X matter?"
-- **Format:** Given the card's `title`, pick the correct `description`/`quizDescription` from 4 options.
-- **Distractors:** Descriptions from other cards (same category preferred) OR from `DESCRIPTION_DISTRACTORS`.
-- **Implication:** The `description` must clearly convey **why this concept matters for AI safety** — not just what it is. The `quizDescription` must be recognizably about the same concept as the `description` but phrased differently.
+- **Format:** Given the card's `title`, pick the correct `quizDescription` from 4 options.
+- **Distractors:** quizDescriptions from other cards (same category preferred) OR from `DESCRIPTION_DISTRACTORS`.
+- **Implication:** The `quizDescription` should be recognizably about the concept but written as a clue — using examples, consequences, or scenarios rather than a direct definition.
 
 ### `how` dimension — "How does X work?"
-- **Format:** Same as `why` but with `quizDescription` as the correct answer and `description` of other cards as distractors.
-- **Implication:** The `quizDescription` should focus on **mechanism/process** — how the concept works, how it's implemented, or how to address it.
+- **Format:** Same as `why` but with `quizDescription` as the correct answer and quizDescriptions of other cards as distractors.
+- **Implication:** The `quizDescription` should evoke distinctive aspects of the concept — mechanisms, examples, or consequences — that a knowledgeable learner would recognize.
+
+### Matching quiz (Practice mode):
+- **Format:** 4 concepts shown with 4 `quizDescription` clues — the user matches each concept to its clue.
+- **Implication:** The `quizDescription` must be clearly identifiable by someone who knows the concept, but not trivially obvious from keyword matching alone.
 
 ### Challenge Mode also uses:
 - **True/False:** Uses the `TRUE_FALSE_STATEMENTS` for each card. User sees a statement and decides true or false. So true statements must not be trivially obvious, and false statements must be genuinely plausible.
@@ -295,10 +308,12 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 
 ### For `quizDescription`:
 - 1-2 sentences
-- MUST describe the same concept as `description` but in different words
-- Focus on mechanism/process rather than significance
+- Write like a **clue**, not a definition — describe consequences, examples, scenarios, or distinctive implications rather than directly naming or defining the concept
+- **Avoid using the concept's title or close synonyms** in the text (e.g., for "Reward Hacking" don't say "reward hacking" or "hacking rewards")
+- Use vivid, concrete examples when possible (e.g., "A cleaning robot rewarded for not seeing dirt learns to cover the camera instead of cleaning")
+- Someone who **knows** the concept should recognize it; someone who **doesn't** should find it ambiguous
 - Must be distinguishable from other cards' quizDescriptions
-- Test: if you showed only the quizDescription, could someone match it to the right title?
+- Test: if you showed only the quizDescription without the title, would a learner who understands the concept be able to identify it — but not someone just guessing from keywords?
 
 ### For `tags`:
 - Reuse tags across cards to create meaningful connections

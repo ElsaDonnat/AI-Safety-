@@ -173,7 +173,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                 type: 'match',
                 concepts: matchConcepts,
                 names: shuffle(matchConcepts.map(c => ({ id: c.id, label: c.title }))),
-                descriptions: shuffle(matchConcepts.map(c => ({ id: c.id, label: c.summary }))),
+                descriptions: shuffle(matchConcepts.map(c => ({ id: c.id, label: c.quizDescription || c.description }))),
                 key: `practice-match-${Date.now()}-${Math.random()}`,
             };
         }

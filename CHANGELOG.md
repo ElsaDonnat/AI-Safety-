@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 — Quiz descriptions rewritten as clues
+
+### Changed
+- All 60 `quizDescription` values rewritten to be indirect and clue-like — they now describe consequences, examples, or scenarios rather than directly defining the concept, making quizzes more challenging
+- Practice matching quiz now uses `quizDescription` instead of `summary`, so matched descriptions require concept knowledge rather than keyword recognition
+- Updated CONTENT_GENERATION_PROMPT.md with new quizDescription guidelines: write like a clue, avoid the concept's title, use vivid examples
+- Updated CLAUDE.md to reflect the clue-style quizDescription approach
+
 ## 0.4.0 — AI Safety & Alignment domain
 
 ### Added
