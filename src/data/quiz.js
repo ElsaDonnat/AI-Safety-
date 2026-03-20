@@ -130,8 +130,13 @@ export function generateWhyOptions(correctConcept, allConcepts = ALL_CONCEPTS) {
         options.push({ id: correctConcept.id, description: custom.distractor, isCorrect: false });
     }
 
-    // Fill remaining slots with whyItMatters from other cards
-    const othersWithWhy = allConcepts.filter(c => c.id !== correctConcept.id && c.whyItMatters);
+    // IDs whose whyItMatters is too similar to the correct card's — must not appear as distractors
+    const similarIds = new Set(correctConcept.similarWhyMatters || []);
+
+    // Fill remaining slots with whyItMatters from other cards, excluding similar ones
+    const othersWithWhy = allConcepts.filter(
+        c => c.id !== correctConcept.id && c.whyItMatters && !similarIds.has(c.id)
+    );
     const shuffledOthers = shuffle(othersWithWhy);
     for (const c of shuffledOthers) {
         if (options.length >= 4) break;
