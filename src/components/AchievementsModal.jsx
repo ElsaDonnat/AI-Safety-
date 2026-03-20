@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ACHIEVEMENTS, BONUS_ACHIEVEMENTS } from '../data/achievements';
 import { shareText, buildAchievementShareText } from '../services/share';
-import { ChevronLeft, Share2, X as XIcon } from 'lucide-react';
+import { ChevronLeft, Share2, X as XIcon, HelpCircle } from 'lucide-react';
 
 const CATEGORY_LABELS = {
     learning: 'Learning',
@@ -15,12 +15,30 @@ const CATEGORY_LABELS = {
     challenge: 'Challenge',
 };
 
+/** Renders a Lucide icon for an achievement with a colored circular background */
+function AchievementIconBadge({ achievement, size = 32, locked = false }) {
+    const IconComponent = achievement.icon;
+    const iconSize = Math.round(size * 0.5);
+    const color = locked ? 'var(--color-ink-muted)' : (achievement.iconColor || 'var(--color-burgundy)');
+    const bgColor = locked ? 'rgba(var(--color-ink-rgb), 0.04)' : `${achievement.iconColor || 'var(--color-burgundy)'}14`;
+
+    return (
+        <div style={{
+            width: size, height: size, borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: bgColor, flexShrink: 0,
+        }}>
+            <IconComponent size={iconSize} color={color} strokeWidth={2} />
+        </div>
+    );
+}
+
 function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBack }) {
     const [shareToast, setShareToast] = useState(null);
     const pct = Math.min((progress.current / progress.target) * 100, 100);
 
     const handleShare = async () => {
-        const text = buildAchievementShareText({ title: achievement.title, emoji: achievement.emoji });
+        const text = buildAchievementShareText({ title: achievement.title, emoji: achievement.shareEmoji || '' });
         const result = await shareText({ title: `AI Safety \u2014 ${achievement.title}`, text });
         if (result === 'copied') {
             setShareToast('Copied to clipboard!');
@@ -40,11 +58,9 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
             <div className="achievement-detail-content">
                 <div
                     className="achievement-detail-emoji-wrap"
-                    style={isUnlocked ? { background: 'rgba(212, 114, 106, 0.08)' } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
+                    style={isUnlocked ? { background: `${achievement.iconColor || 'var(--color-burgundy)'}12` } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
                 >
-                    <span className={`achievement-detail-emoji ${isUnlocked ? '' : 'achievement-emoji--locked'}`}>
-                        {achievement.emoji}
-                    </span>
+                    <AchievementIconBadge achievement={achievement} size={56} locked={!isUnlocked} />
                 </div>
 
                 <h3 className="achievement-detail-title">{achievement.title}</h3>
@@ -165,9 +181,7 @@ export default function AchievementsModal({ onClose }) {
                                                         tabIndex={0}
                                                         onKeyDown={e => e.key === 'Enter' && setSelected(a)}
                                                     >
-                                                        <div className={`achievement-emoji ${isUnlocked ? '' : 'achievement-emoji--locked'}`}>
-                                                            {a.emoji}
-                                                        </div>
+                                                        <AchievementIconBadge achievement={a} size={36} locked={!isUnlocked} />
                                                         <h4 className="achievement-title">{a.title}</h4>
                                                         <p className="achievement-desc">{a.description}</p>
                                                         {!isUnlocked && (
@@ -212,9 +226,7 @@ export default function AchievementsModal({ onClose }) {
                                                     tabIndex={0}
                                                     onKeyDown={e => e.key === 'Enter' && setSelected(a)}
                                                 >
-                                                    <div className="achievement-emoji">
-                                                        {a.emoji}
-                                                    </div>
+                                                    <AchievementIconBadge achievement={a} size={36} />
                                                     <h4 className="achievement-title">{a.title}</h4>
                                                     <p className="achievement-desc">{a.description}</p>
                                                     <p className="achievement-unlock-date">
@@ -227,8 +239,12 @@ export default function AchievementsModal({ onClose }) {
                                         // Hidden — show mystery tile (not clickable)
                                         return (
                                             <div key={a.id} className="achievement-tile achievement-tile--mystery">
-                                                <div className="achievement-emoji achievement-emoji--mystery">
-                                                    ?
+                                                <div style={{
+                                                    width: 36, height: 36, borderRadius: '50%',
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                    background: 'rgba(var(--color-ink-rgb), 0.04)',
+                                                }}>
+                                                    <HelpCircle size={18} color="var(--color-ink-faint)" strokeWidth={2} />
                                                 </div>
                                                 <h4 className="achievement-title" style={{ color: 'var(--color-ink-faint)' }}>???</h4>
                                                 <p className="achievement-desc" style={{ color: 'var(--color-ink-faint)', fontStyle: 'italic' }}>Keep exploring...</p>

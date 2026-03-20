@@ -13,7 +13,7 @@ const DIFFICULTY_OPTIONS = [
     { id: 3, label: 'Advanced', color: DIFFICULTY_COLORS.advanced, bg: DIFFICULTY_BG_COLORS.advanced },
 ];
 
-function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColor = null, activeBg = null }) {
+function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColor = null, activeBg = null, variant = 'default' }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
@@ -29,6 +29,14 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
     const selected = options.find(o => o.id === value);
     const displayLabel = selected ? selected.label : allLabel;
 
+    // Variant styles for beige dropdowns
+    const variantStyles = {
+        default: { bg: 'var(--color-card)', border: 'rgba(var(--color-ink-rgb), 0.1)' },
+        primary: { bg: '#C4B5A4', border: '#A89882' },   // darker beige for Domain
+        secondary: { bg: '#D4C8BD', border: '#B8A99A' },  // lighter beige for others
+    };
+    const vs = variantStyles[variant] || variantStyles.default;
+
     return (
         <div ref={ref} className="relative flex-1 min-w-0">
             <button
@@ -36,12 +44,12 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                 className="w-full flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-semibold transition-all truncate"
                 style={{
                     backgroundColor: selected && activeColor
-                        ? (activeBg || 'var(--color-card)')
-                        : 'var(--color-card)',
+                        ? (activeBg || vs.bg)
+                        : vs.bg,
                     border: selected && activeColor
                         ? `1px solid color-mix(in srgb, ${activeColor || 'transparent'} 25%, transparent)`
-                        : '1px solid rgba(var(--color-ink-rgb), 0.1)',
-                    color: selected && activeColor ? activeColor : 'var(--color-ink-muted)',
+                        : `1px solid ${vs.border}`,
+                    color: selected && activeColor ? activeColor : (variant !== 'default' ? '#5C514A' : 'var(--color-ink-muted)'),
                 }}
             >
                 {selected && activeColor && (
@@ -247,6 +255,7 @@ export default function LibraryPage() {
                     onChange={handleDomainChange}
                     allLabel="All Domains"
                     activeColor={selectedDomain?.color}
+                    variant="primary"
                 />
                 {domainFilter && (
                     <FilterDropdown
@@ -255,6 +264,7 @@ export default function LibraryPage() {
                         onChange={setTopicFilter}
                         allLabel="All Topics"
                         activeColor={selectedTopic?.color}
+                        variant="secondary"
                     />
                 )}
             </div>
@@ -267,6 +277,7 @@ export default function LibraryPage() {
                     onChange={setCategoryFilter}
                     allLabel="All Types"
                     activeColor={selectedCategory?.color}
+                    variant="secondary"
                 />
                 <FilterDropdown
                     value={difficultyFilter}
@@ -275,6 +286,7 @@ export default function LibraryPage() {
                     allLabel="All Levels"
                     activeColor={DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color}
                     activeBg={DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.bg}
+                    variant="secondary"
                 />
             </div>
 
