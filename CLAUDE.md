@@ -83,7 +83,8 @@ Each card teaches one concept. Data shape:
   summary: 'A brief one-line summary shown on card previews',
   description: 'Detailed explanation shown on learn cards...',
   quizDescription: 'Clue-like indirect description used in quizzes (not a definition — uses examples, consequences, or scenarios so the user must recognize the concept). NEVER start with type-categorizing phrases like "This field...", "A system...", "The practice of..." — lead with gerunds, actions, or effects instead.',
-  whyItMatters: 'Optional — explains WHY this concept matters for AI safety. Used in dedicated "why" quiz questions. Only for ~40 cards where the question is meaningful. Clue-like, consequence-focused, must not overlap with quizDescription.',
+  whyItMatters: 'Optional — explains WHY this concept matters for AI safety. Max ONE sentence. Used in dedicated "why" quiz questions. Only for ~40 cards where the question is meaningful. Must be specific to the card, consequence-focused, and must not overlap with quizDescription.',
+  similarWhyMatters: ['c5'],   // optional — IDs of cards whose whyItMatters is thematically too similar to use as quiz distractors (see below)
   topic: 'alignment',          // primary topic
   secondaryTopic: null,        // optional second topic (or null)
   category: 'concept',         // cross-cutting type (see categories)
@@ -96,6 +97,28 @@ Each card teaches one concept. Data shape:
 ```
 
 > **No year, yearEnd, location, lat, lng fields.** Those are history-specific and must be removed.
+
+#### `similarWhyMatters` — Preventing Confusing Quiz Options
+
+The `similarWhyMatters` field is an optional array of card IDs whose `whyItMatters` reasons are thematically too similar to use as distractors in the same "why" quiz question. When generating "why" MCQ options, the quiz engine excludes any card listed in `similarWhyMatters` from the distractor pool.
+
+**When to add this field:** If two concepts matter for a very similar reason (e.g., both are about "irreversibility" or both about "gaming objectives"), add each card's ID to the other's `similarWhyMatters` array. The relationship should be bidirectional — if card A lists B, card B should list A.
+
+**Current similarity groups:**
+- **Resisting shutdown / irreversible control:** c402, c404, c505
+- **Gaming / exploiting objectives:** c304, c403, c406, c504
+- **Hidden goals / deception passing evaluations:** c405, c503
+- **Single point of failure / cascading risk:** c202, c305
+- **Bias in training data/patterns:** c102, c302, c303, c702
+- **Irreversibility:** c506, c706, c806
+- **Power/monopoly concerns:** c206, c704
+- **Independent evaluation / conflict of interest:** c604, c804
+
+**Guidelines for `whyItMatters` text:**
+- **Max ONE sentence** — shorter is better for quiz readability
+- **Specific to the card** — avoid generic statements like "this is important for safety"
+- **Consequence-focused** — explain the downstream effect, not just what the concept is
+- **Distinct from `quizDescription`** — must not overlap or repeat similar phrasing
 
 #### Categories (cross-cutting concept types)
 
