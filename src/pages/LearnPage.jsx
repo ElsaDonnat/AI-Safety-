@@ -10,6 +10,7 @@ import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
 import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock } from 'lucide-react';
+import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // Maps domain/topic icon IDs to Lucide components
 const ICON_MAP = {
@@ -223,7 +224,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             </div>
 
             {/* Coming Soon state for locked domains */}
-            {currentDomain?.comingSoon && (
+            {!DEV_UNLOCK_ALL && currentDomain?.comingSoon && (
                 <div className="text-center py-16">
                     <div className="mb-3"><TopicIcon iconId={currentDomain.icon} color={currentDomain.color} /></div>
                     <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
@@ -239,7 +240,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             )}
 
             {/* Topic list for active domain */}
-            {!currentDomain?.comingSoon && (
+            {(DEV_UNLOCK_ALL || !currentDomain?.comingSoon) && (
                 <div className="space-y-4">
                     {domainTopics.map(topic => {
                         const chapters = getChaptersByTopic(topic.id);
@@ -327,7 +328,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                     </div>
 
                                                     {/* Lessons in chapter */}
-                                                    {!chapter.comingSoon && (
+                                                    {(DEV_UNLOCK_ALL || !chapter.comingSoon) && (
                                                         <div className="space-y-2">
                                                             {chapterLessons.map((lesson, idx) => {
                                                                 const isCompleted = !!state.completedLessons[lesson.id];

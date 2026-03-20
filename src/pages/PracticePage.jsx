@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { LESSONS, TOPICS } from '../data/lessons';
 import { generateWhatOptions, generateDescriptionOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
-import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
 import { formatTag } from '../utils/formatTag';
@@ -11,6 +11,7 @@ import Mascot from '../components/Mascot';
 import * as feedback from '../services/feedback';
 import { shareText, buildPracticeShareText } from '../services/share';
 import StreakCelebration from '../components/StreakCelebration';
+import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // ─── Matching colors (same palette as learn flow) ───
 const MATCH_COLORS = [
@@ -79,6 +80,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 
     // ─── Derived data ────────────────────────────────
     const learnedConcepts = useMemo(() => {
+        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS;
         return (state.seenCards || []).map(id => getConceptById(id)).filter(Boolean);
     }, [state.seenCards]);
 
@@ -533,7 +535,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     // ═══════════════════════════════════════════════════
     if (view === VIEW.LESSON_PICKER) {
         const availableLessons = LESSONS.filter(l =>
-            !l.isFoundational && l.cardIds.some(id => (state.seenCards || []).includes(id))
+            !l.isFoundational && (DEV_UNLOCK_ALL || l.cardIds.some(id => (state.seenCards || []).includes(id)))
         );
 
         const lessonsByTopic = {};
@@ -706,7 +708,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.1)' }}>
-                        <span className="text-lg">&#x1F9E0;</span>
+                        <Brain size={20} color="var(--color-ink)" strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Spaced Review</h3>
@@ -742,7 +744,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(230, 168, 23, 0.1)' }}>
-                        <span className="text-lg">{'\u2B50'}</span>
+                        <Star size={20} color="#E6A817" strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Favorites</h3>
@@ -786,7 +788,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(101, 119, 74, 0.1)' }}>
-                        <span className="text-lg">{'\uD83D\uDCDA'}</span>
+                        <BookOpen size={20} color="#65774A" strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>By Lesson</h3>
@@ -803,7 +805,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(185, 28, 28, 0.08)' }}>
-                        <span className="text-lg">&#x1F4CA;</span>
+                        <BarChart3 size={20} color="#B91C1C" strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>By Difficulty</h3>
@@ -1005,8 +1007,8 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     <MasteryDots mastery={mastery} />
                                                     <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
                                                         {collectionSort === 'success'
-                                                            ? `${successRate}% success`
-                                                            : `${timesReviewed} time${timesReviewed !== 1 ? 's' : ''} seen`
+                                                            ? <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span> success</>
+                                                            : <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{timesReviewed}</span> time{timesReviewed !== 1 ? 's' : ''} seen</>
                                                         }
                                                     </span>
                                                 </div>
@@ -1044,11 +1046,11 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                 <div className="flex items-center gap-4 mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Reviewed: </span>
-                                                        <span className="font-bold">{timesReviewed}x</span>
+                                                        <span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{timesReviewed}x</span>
                                                     </div>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Success: </span>
-                                                        <span className="font-bold">{successRate}%</span>
+                                                        <span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span>
                                                     </div>
                                                     <div className="text-[10px] flex items-center gap-1">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Mastery: </span>

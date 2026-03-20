@@ -1,38 +1,22 @@
 # Changelog
 
-## 0.4.1 — Content quality audit
+## 0.4.0 — AI Safety & Alignment domain
 
 ### Added
-- `confusionNote` field on 9 cards that overlap with other concepts (c103, c201, c202, c301, c703, c706, c902, c904) — explains how similar cards differ
-- Cross-domain `linkedCards`: c201→c304 (RLHF), c202→c201, c701→c703
-- `safety` tag added to c203 (Scaling Laws) and c205 (Emergent Abilities)
-- `governance` tag added to c706, c802, c803, c805
-- `regulation` tag added to c704
+- New domain: **AI Safety & Alignment** (unlocked, no longer "coming soon")
+- 3 new topics: Alignment Fundamentals, AI Risk, Safety Techniques
+- 18 new cards (c401–c406, c501–c506, c601–c606) at beginner difficulty
+- 6 new lessons across 3 topics, grouped into 3 cards each
+- 9 new chapters (beginner unlocked, amateur/advanced coming soon)
+- Description distractors for all 18 new cards (hardCorrect + 3 difficulty-tiered distractors each)
+- True/false statements for all 18 new cards with misconceptions and corrections
+- 6 new fun facts related to alignment, risk, and safety concepts
+- Cross-domain links connecting safety cards to foundations cards (e.g., c601→c304, c604→c204, c603→c105)
 
-### Fixed
-- c201 (LLMs): qualified "reason" claim — now says "reasoning-like tasks" with debate acknowledged
-- c205 (Emergent Abilities): acknowledged Schaeffer et al. debate on whether emergence is a measurement artifact
-- c203 (Scaling Laws): fixed misleading claim about predicting dangerous capability timelines
-- Rewrote 8 false statements that used absolute giveaway words (always, all, only, exclusively, unnecessary) — now use plausible misconceptions
-- c802 d:3 distractor: no longer repeats c801 d:3 theme (binding vs non-binding)
-- c904 true statement: no longer repeats c901 true (both were about "incentivizes safety")
-- c102 quizDescription: rewritten to avoid near-identical phrasing with its description
-- c201 hardCorrect distractor: removed unqualified "reasoning" claim
-
-## 0.4.0 — Governance domain
-
-### Added
-- New domain: Governance (3 topics, 18 cards, 6 lessons)
-- Topic: AI Regulation (c701–c706) — government rules, risk-based regulation, EU AI Act, impact assessments, sandboxes, enforcement
-- Topic: Global AI Governance (c801–c806) — international coordination, AI safety summits, technical standards, compute governance, frontier commitments, multi-stakeholder governance
-- Topic: Accountability & Oversight (c901–c906) — AI accountability, auditing, transparency, liability, post-deployment monitoring, whistleblower protections
-- Description distractors for all 18 governance cards (hardCorrect + 3 difficulty-tiered distractors each)
-- True/false statements for all 18 governance cards with real misconceptions and corrections
-- 7 fun facts related to governance concepts (ff6–ff12)
-- Cross-domain links to Foundations cards (c203, c204, c206)
-
-### Changed
-- Removed comingSoon flag from Governance domain — domain is now playable
+### Cards by topic
+- **Alignment Fundamentals**: The Alignment Problem, Instrumental Convergence, Goodhart's Law, Corrigibility, Mesa-Optimization, Reward Hacking
+- **AI Risk**: Existential Risk from AI, Misuse & Dual-Use, Deceptive Alignment, Specification Gaming, Power-Seeking AI, Catastrophic Risk
+- **Safety Techniques**: RLHF, Constitutional AI, Interpretability, Red Teaming, Scalable Oversight, AI Governance
 
 ## 0.3.1 — Content quality improvements
 

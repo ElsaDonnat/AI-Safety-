@@ -1,19 +1,21 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame } from '../data/challengeQuiz';
+import { ALL_CONCEPTS } from '../data/concepts';
 import { Button } from '../components/shared';
 import Mascot from '../components/Mascot';
-import { Heart, Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Clock, Landmark as LandmarkIcon } from 'lucide-react';
+import { Heart, Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Cog, Trophy, Star, Target, Gamepad2, Medal } from 'lucide-react';
 import * as feedback from '../services/feedback';
 import StreakCelebration from '../components/StreakCelebration';
 import FunFactsFlow from '../components/FunFactsFlow';
 import { getFunFactsForSeenCards } from '../data/funFacts';
+import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // ─── Tier display helpers ─────────────────────────────────────
 // Build display info for each tier (colors, icons, flavors) for the UI
 const TIER_DISPLAY = TIERS.map((t, i) => {
     const colors = ['#4A90D9', '#2E7D32', '#E65100', '#8E24AA', '#C62828', '#FF6F00'];
-    const icons = ['\uD83D\uDD25', '\uD83D\uDCDA', '\uD83C\uDF93', '\u2699\uFE0F', '\uD83C\uDFC6', '\u26A1'];
+    const iconComponents = [Flame, BookOpen, GraduationCap, Cog, Trophy, Zap];
     const flavors = [
         'The journey begins...',
         'Knowledge grows deeper.',
@@ -27,7 +29,7 @@ const TIER_DISPLAY = TIERS.map((t, i) => {
         label: t.name,
         questions: t.count,
         color: colors[i] || '#666',
-        icon: icons[i] || '',
+        IconComponent: iconComponents[i] || null,
         flavor: flavors[i] || '',
     };
 });
@@ -71,8 +73,8 @@ const TIER_ICONS = {
     beginner: Flame,
     amateur: BookOpen,
     advanced: GraduationCap,
-    expert: Clock,
-    master: LandmarkIcon,
+    expert: Cog,
+    master: Trophy,
     visionary: Zap,
 };
 const TierIcon = ({ tierId, size = 24, color = '#666' }) => {
@@ -270,6 +272,11 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
                     );
                 })}
             </div>
+            {answered && question.explanation && !normalizedOptions[selected]?.isCorrect && (
+                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5, marginTop: 4 }}>
+                    {question.explanation}
+                </p>
+            )}
         </div>
     );
 }
@@ -411,8 +418,8 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                     );
                 })}
             </div>
-            {answered && !question.isTrue && question.correction && (
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
+            {answered && question.correction && (selected !== question.isTrue) && (
+                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5 }}>
                     {question.correction}
                 </p>
             )}
@@ -767,7 +774,10 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     // ─── Derived data ────────────────────────────────
 
     const ch = state.challenge || {};
-    const seenCardsForFacts = useMemo(() => state.seenCards || [], [state.seenCards]);
+    const seenCardsForFacts = useMemo(() => {
+        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS.map(c => c.id);
+        return state.seenCards || [];
+    }, [state.seenCards]);
     const availableFunFacts = useMemo(() => getFunFactsForSeenCards(seenCardsForFacts), [seenCardsForFacts]);
     const seenFunFactCount = useMemo(() => {
         const availableIds = new Set(availableFunFacts.map(f => f.id));
@@ -805,248 +815,293 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
         const bestTierReached = ch.soloHighScore > 0
             ? TIER_DISPLAY.indexOf(getTierForQuestion(ch.soloHighScore - 1))
             : -1;
+        const totalGames = (ch.soloGamesPlayed || 0) + (ch.multiplayerGamesPlayed || 0);
+        const hasStats = totalGames > 0;
+
+        // Tier-specific accent colors for variety
+        const tierAccents = ['#7BAFCC', '#5A9E6F', '#D4A04A', '#9B7EC8', '#D4726A', '#E6A817'];
 
         return (
-            <div style={{ padding: '0' }} className="animate-fade-in">
-                {/* Arena header — compact */}
-                <div style={{
-                    background: `linear-gradient(180deg, rgba(var(--color-ink-rgb), 0.83) 0%, ${CHALLENGE_TINT} 100%)`,
-                    borderRadius: '0 0 20px 20px',
-                    margin: '-16px -16px 0',
-                    padding: '14px 16px 16px',
-                    marginBottom: 14,
-                }}>
-                    {/* Mascot duo — smaller */}
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 8, marginBottom: 8 }}>
-                        <Mascot variant="quizmaster" mood="happy" size={40} />
-                        <Mascot mood="happy" size={34} />
-                    </div>
-
-                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', fontWeight: 700, textAlign: 'center', color: 'white', textShadow: '0 1px 6px rgba(var(--color-ink-rgb), 0.45)', marginBottom: 2 }}>
-                        Challenge Mode
+            <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in">
+                {/* ── Page header ── */}
+                <div className="mb-5">
+                    <h2 className="text-[22px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
+                        Challenge
                     </h2>
-                    <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>
-                        Climb from Beginner to Visionary {'\u2014'} {TOTAL_CHALLENGE_QUESTIONS} questions, {TIER_DISPLAY.length} tiers!
+                    <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
+                        {totalGames === 0
+                            ? 'Put your knowledge to the test'
+                            : <><span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{totalGames}</span> game{totalGames !== 1 ? 's' : ''} played</>
+                        }
                     </p>
+                </div>
 
-                    {/* Tier progression ladder */}
-                    <div style={{ display: 'flex', justifyContent: 'center', padding: '0 8px' }}>
-                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '85%', maxWidth: 280, position: 'relative' }}>
-                            {/* Dotted connector line */}
+                {/* ── Tier Ladder — warm beige panel at top ── */}
+                <div style={{
+                    background: 'var(--color-warm-light)',
+                    border: '1px solid var(--color-warm)',
+                    borderRadius: '3px',
+                    padding: '16px 12px 14px',
+                    marginBottom: 12,
+                }}>
+                    <p style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '10px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        color: 'var(--color-ink-muted)',
+                        marginBottom: 12,
+                    }}>
+                        {bestTierReached < 0 ? 'Tier Progression' : `Best: ${TIER_DISPLAY[bestTierReached].label}`}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative', padding: '0 2px' }}>
+                        {/* Track line — behind circles, from center of first to center of last */}
+                        <div style={{
+                            position: 'absolute',
+                            top: 18,
+                            left: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
+                            right: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
+                            height: '2px',
+                            background: 'rgba(var(--color-ink-rgb), 0.10)',
+                            zIndex: 0,
+                        }} />
+                        {/* Progress fill */}
+                        {bestTierReached >= 0 && (
                             <div style={{
                                 position: 'absolute',
-                                top: 6,
-                                left: `${100 / (2 * TIER_DISPLAY.length)}%`,
-                                right: `${100 / (2 * TIER_DISPLAY.length)}%`,
-                                height: 0,
-                                borderTop: '2px dotted rgba(250, 246, 240, 0.5)',
+                                top: 18,
+                                left: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
+                                width: `calc(${bestTierReached / (TIER_DISPLAY.length - 1)} * (100% - 100% / ${TIER_DISPLAY.length}))`,
+                                height: '2px',
+                                background: 'var(--color-burgundy)',
+                                transition: 'width 0.4s ease',
                                 zIndex: 0,
                             }} />
-                            {/* Solid progress line — up to best tier reached */}
-                            {bestTierReached >= 0 && (
-                                <div style={{
-                                    position: 'absolute',
-                                    top: 6,
-                                    left: `${100 / (2 * TIER_DISPLAY.length)}%`,
-                                    width: `${(bestTierReached / (TIER_DISPLAY.length - 1)) * (100 - 100 / TIER_DISPLAY.length)}%`,
-                                    height: 0,
-                                    borderTop: '2px solid var(--color-accent, #00BFA5)',
-                                    zIndex: 0,
-                                }} />
-                            )}
-                            {TIER_DISPLAY.map((tier, i) => {
-                                const reached = i <= bestTierReached;
-                                const isBest = i === bestTierReached;
-                                const dotSize = isBest ? 16 : 12;
-                                return (
-                                    <div key={tier.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                                        <div style={{
-                                            width: dotSize,
-                                            height: dotSize,
-                                            borderRadius: '50%',
-                                            background: reached ? 'var(--color-accent, #00BFA5)' : 'white',
-                                            border: `2px solid ${reached ? 'var(--color-accent, #00BFA5)' : 'rgba(255, 255, 255, 0.6)'}`,
-                                            boxShadow: isBest ? '0 0 8px rgba(0, 191, 165, 0.4)' : 'none',
-                                            transition: 'all 0.3s',
-                                        }} />
-                                        <span style={{
-                                            fontSize: isBest ? '0.72rem' : '0.65rem',
-                                            color: reached ? 'var(--color-accent, #00BFA5)' : 'rgba(255,255,255,0.7)',
-                                            fontWeight: isBest ? 700 : 600,
-                                            letterSpacing: '0.02em',
-                                        }}>
-                                            {tier.label.slice(0, 3)}
-                                        </span>
-                                        <span style={{
-                                            fontSize: '1.03rem', lineHeight: 1,
-                                            borderRadius: '50%',
-                                            width: 30, height: 30,
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                            opacity: reached ? 1 : 0.75,
-                                        }}>
-                                            {tier.icon}
-                                        </span>
+                        )}
+                        {TIER_DISPLAY.map((tier, i) => {
+                            const reached = i <= bestTierReached;
+                            const isBest = i === bestTierReached;
+                            const accentColor = tierAccents[i];
+                            return (
+                                <div key={tier.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, zIndex: 1, flex: 1 }}>
+                                    <div style={{
+                                        width: 36,
+                                        height: 36,
+                                        borderRadius: '50%',
+                                        background: reached ? accentColor : 'var(--color-card)',
+                                        border: isBest ? `2.5px solid ${accentColor}` : reached ? `2px solid ${accentColor}` : '2px solid rgba(var(--color-ink-rgb), 0.15)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transition: 'all 0.3s',
+                                        boxShadow: isBest ? `0 0 10px ${accentColor}40` : '0 1px 3px rgba(0,0,0,0.06)',
+                                    }}>
+                                        {tier.IconComponent && <tier.IconComponent size={16} color={reached ? '#fff' : 'var(--color-ink-secondary)'} strokeWidth={2} />}
                                     </div>
-                                );
-                            })}
-                        </div>
+                                    <span style={{
+                                        fontFamily: 'var(--font-mono)',
+                                        fontSize: '9px',
+                                        fontWeight: isBest ? 700 : 600,
+                                        letterSpacing: '0.03em',
+                                        textTransform: 'uppercase',
+                                        color: reached ? accentColor : 'var(--color-ink-secondary)',
+                                    }}>
+                                        {tier.label.slice(0, 3)}
+                                    </span>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
-                {/* Section heading */}
-                <h3 style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '0.95rem',
-                    fontWeight: 700,
-                    color: 'var(--color-ink)',
-                    marginBottom: 10,
-                    paddingLeft: 2,
-                }}>
-                    Choose your game mode
-                </h3>
-
-                {/* Mode cards — compact */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 10 }}>
-                    {/* Solo card */}
-                    <button
-                        onClick={startSoloGame}
-                        style={{
-                            background: 'var(--color-card)',
-                            border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                            borderRadius: 12,
-                            padding: '12px 14px',
-                            cursor: 'pointer',
-                            textAlign: 'left',
+                {/* ── Solo Challenge — hero CTA ── */}
+                <button
+                    onClick={startSoloGame}
+                    className="w-full text-left active:scale-[0.99] transition-all duration-150"
+                    style={{
+                        background: 'var(--color-sidebar-bg)',
+                        borderRadius: '3px',
+                        padding: '20px 18px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        marginBottom: 12,
+                        position: 'relative',
+                        overflow: 'hidden',
+                    }}
+                >
+                    {/* Subtle diagonal accent */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        width: '120px',
+                        height: '100%',
+                        background: 'linear-gradient(135deg, transparent 0%, rgba(212, 114, 106, 0.08) 100%)',
+                        pointerEvents: 'none',
+                    }} />
+                    <div className="flex items-center gap-4" style={{ position: 'relative' }}>
+                        <div style={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: '3px',
+                            background: 'rgba(212, 114, 106, 0.15)',
+                            border: '1.5px solid rgba(212, 114, 106, 0.25)',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: 12,
-                            transition: 'all 0.15s ease',
-                        }}
-                    >
-                        <div style={{ flexShrink: 0 }}>
-                            <Zap size={28} color="var(--color-primary, #1E3A5F)" strokeWidth={2} />
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                        }}>
+                            <Zap size={24} color="var(--color-burgundy-light)" strokeWidth={2} />
                         </div>
-                        <div style={{ minWidth: 0 }}>
-                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '15px', color: '#F0EBE5', marginBottom: 3, letterSpacing: '-0.01em' }}>
                                 Solo Challenge
                             </p>
-                            <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
-                                {TIER_DISPLAY.length} tiers, {TOTAL_CHALLENGE_QUESTIONS} questions. Best: <strong>{ch.soloHighScore || 0}/{TOTAL_CHALLENGE_QUESTIONS}</strong>
+                            <p style={{ fontSize: '12px', color: 'var(--color-sidebar-text)', opacity: 0.8 }}>
+                                {TIER_DISPLAY.length} tiers, {TOTAL_CHALLENGE_QUESTIONS} questions
+                                {ch.soloHighScore > 0 && <> {'\u00B7'} Best: <span style={{ color: 'var(--color-burgundy-light)', fontWeight: 600 }}>{ch.soloHighScore}/{TOTAL_CHALLENGE_QUESTIONS}</span></>}
                             </p>
                         </div>
-                        <ChevronRight size={18} color="var(--color-ink-muted)" strokeWidth={2} style={{ marginLeft: 'auto', flexShrink: 0 }} />
-                    </button>
+                        <div style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: '3px',
+                            background: 'var(--color-burgundy)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            boxShadow: '0 2px 8px rgba(212, 114, 106, 0.35)',
+                        }}>
+                            <ChevronRight size={16} color="#fff" strokeWidth={2.5} />
+                        </div>
+                    </div>
+                </button>
 
-                    {/* Multiplayer card */}
+                {/* ── "How far can you go?" hint — right under Solo ── */}
+                {!hasStats && (
+                    <div style={{
+                        borderRadius: '3px',
+                        padding: '12px 16px',
+                        background: 'var(--color-card)',
+                        boxShadow: 'var(--shadow-card)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 12,
+                        marginBottom: 12,
+                    }}>
+                        <Mascot mood="happy" size={34} />
+                        <p style={{ fontSize: '12px', color: 'var(--color-ink-muted)', lineHeight: 1.4 }}>
+                            Each wrong answer costs a heart. Climb all {TIER_DISPLAY.length} tiers to become a <span style={{ fontWeight: 600, color: 'var(--color-ink-secondary)' }}>Visionary</span>.
+                        </p>
+                    </div>
+                )}
+
+                {/* ── Secondary actions row: Multiplayer + Fun Facts — colored ── */}
+                <div className="flex gap-2.5 mb-4">
+                    {/* Multiplayer — baby blue */}
                     <button
                         onClick={() => {
                             setPlayers([]);
                             setNewPlayerName('');
                             setView(VIEW.SETUP_MULTI);
                         }}
+                        className="flex-1 text-left active:scale-[0.99] transition-all duration-150"
                         style={{
-                            background: 'var(--color-card)',
-                            border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                            borderRadius: 12,
-                            padding: '12px 14px',
+                            background: 'var(--color-bronze)',
+                            borderRadius: '3px',
+                            padding: '14px',
+                            border: 'none',
                             cursor: 'pointer',
-                            textAlign: 'left',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 12,
-                            transition: 'all 0.15s ease',
                         }}
                     >
-                        <div style={{ flexShrink: 0 }}>
-                            <Users size={28} color="var(--color-primary, #1E3A5F)" strokeWidth={2} />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
+                        <div className="flex items-center gap-2.5 mb-2">
+                            <Users size={16} color="rgba(255,255,255,0.85)" strokeWidth={2} />
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px', color: '#fff' }}>
                                 Multiplayer
                             </p>
-                            <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
-                                1-5 players, pass the phone
-                            </p>
                         </div>
-                        <ChevronRight size={18} color="var(--color-ink-muted)" strokeWidth={2} style={{ marginLeft: 'auto', flexShrink: 0 }} />
+                        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>
+                            Pass the phone, up to 5 players
+                        </p>
                     </button>
 
-                    {/* Fun Facts card */}
+                    {/* Fun Facts — coral */}
                     <button
                         onClick={availableFunFacts.length > 0 ? () => setView(VIEW.FUN_FACTS) : undefined}
+                        className="flex-1 text-left active:scale-[0.99] transition-all duration-150"
                         style={{
-                            background: 'var(--color-card)',
-                            border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                            borderRadius: 12,
-                            padding: '12px 14px',
+                            background: 'var(--color-burgundy)',
+                            borderRadius: '3px',
+                            padding: '14px',
+                            border: 'none',
                             cursor: availableFunFacts.length > 0 ? 'pointer' : 'default',
-                            textAlign: 'left',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 12,
-                            transition: 'all 0.15s ease',
                             opacity: availableFunFacts.length > 0 ? 1 : 0.5,
-                            width: '100%',
                         }}
                     >
-                        <div style={{ flexShrink: 0 }}>
-                            <Lightbulb size={28} color="var(--color-primary, #1E3A5F)" strokeWidth={2} />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.92rem', color: 'var(--color-ink)', marginBottom: 1 }}>
+                        <div className="flex items-center gap-2.5 mb-2">
+                            <Lightbulb size={16} color="rgba(255,255,255,0.85)" strokeWidth={2} />
+                            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '13px', color: '#fff' }}>
                                 Fun Facts
                             </p>
-                            <p style={{ fontSize: '0.72rem', color: 'var(--color-ink-muted)' }}>
-                                {availableFunFacts.length > 0
-                                    ? `Surprising trivia \u00B7 ${seenFunFactCount}/${availableFunFacts.length} discovered`
-                                    : 'Learn concepts to unlock fun facts'
-                                }
-                            </p>
                         </div>
-                        {availableFunFacts.length > 0 && (
-                            <ChevronRight size={18} color="var(--color-ink-muted)" strokeWidth={2} style={{ marginLeft: 'auto', flexShrink: 0 }} />
-                        )}
+                        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>
+                            {availableFunFacts.length > 0
+                                ? `${seenFunFactCount}/${availableFunFacts.length} discovered`
+                                : 'Unlock by learning concepts'
+                            }
+                        </p>
                     </button>
                 </div>
 
-                {/* Stats — compact single row */}
-                {(ch.soloGamesPlayed > 0 || ch.multiplayerGamesPlayed > 0 || allTimeAccuracy !== null) && (
+                {/* ── Stats panel ── */}
+                {hasStats && (
                     <div style={{
-                        background: CHALLENGE_TINT,
-                        borderRadius: 10,
-                        padding: '10px 12px',
-                        display: 'flex',
-                        justifyContent: 'space-around',
-                        alignItems: 'center',
+                        borderRadius: '3px',
+                        padding: '14px 12px',
+                        background: 'var(--color-card)',
+                        boxShadow: 'var(--shadow-card)',
                     }}>
-                        <div style={{ textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
-                                {ch.soloHighScore || 0}
-                            </p>
-                            <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\u2B50'} Best</p>
-                        </div>
-                        {allTimeAccuracy !== null && (
-                            <div style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
-                                    {allTimeAccuracy}%
+                        <p style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '10px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.04em',
+                            color: 'var(--color-ink-faint)',
+                            marginBottom: 10,
+                        }}>
+                            Your stats
+                        </p>
+                        <div className="flex justify-around items-start">
+                            <div className="text-center">
+                                <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                    {ch.soloHighScore || 0}
                                 </p>
-                                <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAF'} Accuracy</p>
+                                <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Best Score</p>
                             </div>
-                        )}
-                        <div style={{ textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
-                                {ch.multiplayerVictories || 0}
-                            </p>
-                            <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFC6'} Victories</p>
-                        </div>
-                        {(ch.soloGamesPlayed > 0 || ch.multiplayerGamesPlayed > 0) && (
-                            <div style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '1.05rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)', lineHeight: 1.1 }}>
-                                    {(ch.soloGamesPlayed || 0) + (ch.multiplayerGamesPlayed || 0)}
+                            {allTimeAccuracy !== null && (
+                                <div className="text-center">
+                                    <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                        {allTimeAccuracy}%
+                                    </p>
+                                    <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Accuracy</p>
+                                </div>
+                            )}
+                            <div className="text-center">
+                                <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                    {ch.multiplayerVictories || 0}
                                 </p>
-                                <p style={{ fontSize: '0.62rem', color: 'var(--color-ink-muted)' }}>{'\uD83C\uDFAE'} Games</p>
+                                <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Victories</p>
                             </div>
-                        )}
+                            {totalGames > 0 && (
+                                <div className="text-center">
+                                    <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                        {totalGames}
+                                    </p>
+                                    <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Games</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
@@ -1514,7 +1569,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 style={{ height: podiumHeights[displayIdx] || 60, order: i }}
                             >
                                 <span style={{ fontSize: '1.4rem' }}>
-                                    {displayIdx === 0 ? '\uD83E\uDD47' : displayIdx === 1 ? '\uD83E\uDD48' : '\uD83E\uDD49'}
+                                    <Medal size={22} color={displayIdx === 0 ? '#FFD700' : displayIdx === 1 ? '#C0C0C0' : '#CD7F32'} strokeWidth={2} />
                                 </span>
                                 <span style={{ fontSize: '0.82rem', fontWeight: 700 }}>{p.name}</span>
                                 <span style={{ fontSize: '0.75rem' }}>{p.score} pts</span>

@@ -24,41 +24,105 @@ export const FUN_FACTS = [
         text: 'The Transformer architecture, introduced in a 2017 paper called "Attention Is All You Need," is behind virtually every major language model today.',
         relatedCardIds: ['c305', 'c201'],
     },
-    // ─── Governance Fun Facts ────────────────────────────────
     {
         id: 'ff6',
-        text: 'The EU AI Act took over three years to negotiate and runs to more than 400 pages — making it one of the most detailed pieces of technology legislation ever written.',
-        relatedCardIds: ['c703', 'c701'],
+        text: 'The term "instrumental convergence" was popularized by philosopher Nick Bostrom, who argued that almost any sufficiently intelligent agent would pursue sub-goals like self-preservation — even if never told to.',
+        relatedCardIds: ['c402', 'c505'],
     },
     {
         id: 'ff7',
-        text: 'Some countries have experimented with "algorithmic registers" — public databases that list every AI system used by government agencies, so citizens can see exactly where AI is making decisions about their lives.',
-        relatedCardIds: ['c704', 'c903'],
+        text: 'A classic example of reward hacking: a simulated boat racing game agent discovered it could score more points by spinning in circles collecting power-ups than by actually finishing the race.',
+        relatedCardIds: ['c406', 'c504'],
     },
     {
         id: 'ff8',
-        text: 'The first AI Safety Summit at Bletchley Park in 2023 was held at the same historic site where Alan Turing helped crack the Enigma code during World War II — a fitting location for discussing the future of intelligent machines.',
-        relatedCardIds: ['c802', 'c801'],
+        text: 'The concept of "constitutional AI" was introduced by Anthropic in 2022 — the AI\'s "constitution" is a list of principles like "choose the response that is least harmful" that it uses to self-critique.',
+        relatedCardIds: ['c602', 'c601'],
     },
     {
         id: 'ff9',
-        text: 'The global supply chain for advanced AI chips is remarkably concentrated — over 90% of the most advanced chips are manufactured by a single company, TSMC in Taiwan, making compute governance a geopolitical issue.',
-        relatedCardIds: ['c804', 'c203'],
+        text: 'The EU AI Act, passed in 2024, is the world\'s first comprehensive AI regulation. It bans some AI uses entirely (like social scoring) and requires transparency for high-risk systems.',
+        relatedCardIds: ['c606', 'c502'],
     },
     {
         id: 'ff10',
-        text: 'In 2024, a group of current and former employees at major AI labs published an open letter calling for stronger whistleblower protections, arguing that the people closest to the technology are often least able to speak about its risks.',
-        relatedCardIds: ['c906', 'c901'],
+        text: 'Goodhart\'s law was originally about monetary policy — economist Charles Goodhart observed in 1975 that when governments targeted specific money-supply metrics, banks found ways to game them.',
+        relatedCardIds: ['c403', 'c406'],
     },
     {
         id: 'ff11',
-        text: 'The concept of algorithmic auditing was partly inspired by financial auditing — just as companies must have their accounts independently verified, there are growing calls for AI systems to face similar external scrutiny.',
-        relatedCardIds: ['c902', 'c803'],
+        text: 'In 2023, over 30 countries signed the Bletchley Declaration at the UK AI Safety Summit, agreeing that frontier AI risks require international cooperation to manage.',
+        relatedCardIds: ['c606', 'c506'],
     },
     {
         id: 'ff12',
-        text: 'China, the EU, and the US have all taken different approaches to AI regulation — China focuses on specific AI applications, the EU on comprehensive risk-based law, and the US on sector-specific guidelines and executive orders.',
-        relatedCardIds: ['c701', 'c801'],
+        text: 'A landmark 2018 study by Joy Buolamwini and Timnit Gebru found that commercial facial recognition systems had error rates up to 34% higher for darker-skinned women compared to lighter-skinned men.',
+        relatedCardIds: ['c702', 'c106'],
+    },
+    {
+        id: 'ff13',
+        text: 'There are at least 21 different mathematical definitions of algorithmic fairness — and key impossibility theorems prove that many of them cannot be satisfied simultaneously.',
+        relatedCardIds: ['c703', 'c702'],
+    },
+    {
+        id: 'ff14',
+        text: 'The EU AI Act took over three years to negotiate, with the final text running to over 400 pages. It creates a new European AI Office to enforce the rules.',
+        relatedCardIds: ['c802', 'c801'],
+    },
+    {
+        id: 'ff15',
+        text: 'Anthropic\'s Responsible Scaling Policy defines "AI Safety Levels" (ASL) — inspired by biosafety levels used in labs handling dangerous pathogens.',
+        relatedCardIds: ['c803', 'c206'],
+    },
+    {
+        id: 'ff16',
+        text: 'Philosopher Nick Bostrom warned that an AI locked into maximizing paperclip production could convert all available matter — including humans — into paperclips, illustrating the value lock-in problem.',
+        relatedCardIds: ['c706', 'c401'],
+    },
+    {
+        id: 'ff17',
+        text: 'Meta\'s decision to release the Llama model weights sparked intense debate — some researchers praised the move for democratizing AI, while others warned it gave unrestricted access to dangerous capabilities.',
+        relatedCardIds: ['c806', 'c502'],
+    },
+    {
+        id: 'ff18',
+        text: 'In a 2023 survey of AI researchers, median estimates for when AGI would be achieved ranged from 2040 to 2060 — but some predicted it could happen within 10 years.',
+        relatedCardIds: ['c207', 'c208'],
+    },
+    {
+        id: 'ff19',
+        text: 'Training GPT-4 is estimated to have cost over $100 million in compute alone — and the cost of training frontier models roughly triples every year.',
+        relatedCardIds: ['c212', 'c211'],
+    },
+    {
+        id: 'ff20',
+        text: 'In 2024, an AI agent autonomously discovered a zero-day vulnerability in software — demonstrating both the promise and danger of AI systems that can take actions in the world.',
+        relatedCardIds: ['c210', 'c904'],
+    },
+    {
+        id: 'ff21',
+        text: 'Researchers found that adding a single pixel of noise to an image — invisible to the human eye — could cause an AI classifier to confidently identify a cat as a piece of guacamole.',
+        relatedCardIds: ['c903', 'c901'],
+    },
+    {
+        id: 'ff22',
+        text: 'ChatGPT once confidently cited a completely fabricated legal case in a brief prepared by a lawyer — the case, the court, and the judge it referenced did not exist.',
+        relatedCardIds: ['c902', 'c201'],
+    },
+    {
+        id: 'ff23',
+        text: 'Researchers demonstrated "indirect prompt injection" by hiding invisible instructions in a web page that caused an AI assistant to exfiltrate the user\'s private data when summarizing the page.',
+        relatedCardIds: ['c904', 'c210'],
+    },
+    {
+        id: 'ff24',
+        text: 'NVIDIA, the dominant GPU manufacturer, briefly became the world\'s most valuable company in 2024 — illustrating how control of AI compute translates directly into economic power.',
+        relatedCardIds: ['c212', 'c704'],
+    },
+    {
+        id: 'ff25',
+        text: 'IBM\'s Deep Blue beat world chess champion Garry Kasparov in 1997, but it couldn\'t play tic-tac-toe — a perfect example of how narrow AI can be superhuman at one task and useless at another.',
+        relatedCardIds: ['c209', 'c207'],
     },
 ];
 
