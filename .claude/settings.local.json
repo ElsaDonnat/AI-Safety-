@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm ls @fontsource/space-grotesk)",
+      "Bash(npm ls)",
+      "Bash(gh run list --limit 5)",
+      "Bash(where gh)",
+      "WebFetch(domain:elsadonnat.github.io)"
+    ]
+  }
+}

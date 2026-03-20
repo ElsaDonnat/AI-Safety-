@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { getTodaysDailyQuiz, DAILY_QUIZ_XP_PER_CORRECT } from '../data/dailyQuiz';
 import { getConceptsByIds } from '../data/concepts';
+import { ALL_CONCEPTS } from '../data/concepts';
 import { Card, Button, ProgressBar, StarButton } from './shared';
 import Mascot from './Mascot';
 import { shareText, buildDailyQuizShareText } from '../services/share';
@@ -10,6 +11,12 @@ import StreakCelebration from './StreakCelebration';
 import { ChevronLeft, Calendar, Check, X as XIcon, Share2 } from 'lucide-react';
 
 const PHASES = { INTRO: 'intro', QUIZ: 'quiz', RESULTS: 'results' };
+
+function generateWrongTitles(correctId, count = 3) {
+    const others = ALL_CONCEPTS.filter(c => c.id !== correctId);
+    const shuffled = [...others].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count).map(c => c.title);
+}
 
 function shuffleOptions(correct, wrongs) {
     const options = [
@@ -40,7 +47,7 @@ export default function DailyQuizFlow({ onComplete }) {
 
     // Shuffle options once per question
     const shuffledOptions = useMemo(() => {
-        return events.map(event => shuffleOptions(event.title, event.wrongTitles));
+        return events.map(event => shuffleOptions(event.title, event.wrongTitles || generateWrongTitles(event.id)));
     }, [events]);
 
     useEffect(() => {

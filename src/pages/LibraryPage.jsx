@@ -1,19 +1,19 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
-import { TOPICS, DOMAINS } from '../data/lessons';
+import { TOPICS, DOMAINS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
 import { Star, BookOpen, ChevronDown, X } from 'lucide-react';
 import { cardImage } from '../utils/images';
 import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 const DIFFICULTY_OPTIONS = [
-    { id: 1, label: 'Beginner', color: '#5A9E6F' },
-    { id: 2, label: 'Amateur', color: '#D4A026' },
-    { id: 3, label: 'Advanced', color: '#C44D4D' },
+    { id: 1, label: 'Beginner', color: DIFFICULTY_COLORS.beginner, bg: DIFFICULTY_BG_COLORS.beginner },
+    { id: 2, label: 'Amateur', color: DIFFICULTY_COLORS.amateur, bg: DIFFICULTY_BG_COLORS.amateur },
+    { id: 3, label: 'Advanced', color: DIFFICULTY_COLORS.advanced, bg: DIFFICULTY_BG_COLORS.advanced },
 ];
 
-function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColor = null }) {
+function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColor = null, activeBg = null }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
@@ -36,10 +36,10 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                 className="w-full flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-semibold transition-all truncate"
                 style={{
                     backgroundColor: selected && activeColor
-                        ? `${activeColor}18`
+                        ? (activeBg || 'var(--color-card)')
                         : 'var(--color-card)',
                     border: selected && activeColor
-                        ? `1px solid ${activeColor}40`
+                        ? `1px solid color-mix(in srgb, ${activeColor || 'transparent'} 25%, transparent)`
                         : '1px solid rgba(var(--color-ink-rgb), 0.1)',
                     color: selected && activeColor ? activeColor : 'var(--color-ink-muted)',
                 }}
@@ -274,6 +274,7 @@ export default function LibraryPage() {
                     onChange={setDifficultyFilter}
                     allLabel="All Levels"
                     activeColor={DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color}
+                    activeBg={DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.bg}
                 />
             </div>
 
@@ -307,16 +308,19 @@ export default function LibraryPage() {
                             <button onClick={() => setCategoryFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
                         </span>
                     )}
-                    {difficultyFilter && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
-                            style={{
-                                backgroundColor: `${DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color}18`,
-                                color: DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.color,
-                            }}>
-                            {DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter)?.label}
-                            <button onClick={() => setDifficultyFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
-                        </span>
-                    )}
+                    {difficultyFilter && (() => {
+                        const opt = DIFFICULTY_OPTIONS.find(d => d.id === difficultyFilter);
+                        return opt ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+                                style={{
+                                    backgroundColor: opt.bg,
+                                    color: opt.color,
+                                }}>
+                                {opt.label}
+                                <button onClick={() => setDifficultyFilter(null)} className="ml-0.5 hover:opacity-70"><X size={10} /></button>
+                            </span>
+                        ) : null;
+                    })()}
                     <button
                         onClick={clearAllFilters}
                         className="text-[10px] font-semibold ml-auto"

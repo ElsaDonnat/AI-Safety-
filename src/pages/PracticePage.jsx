@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
-import { LESSONS, TOPICS } from '../data/lessons';
+import { LESSONS, TOPICS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
 import { generateWhatOptions, generateDescriptionOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
 import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
@@ -813,9 +813,9 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                         </p>
                         <div className="flex flex-wrap gap-1.5">
                             {[
-                                { level: 1, label: 'Beginner', color: '#059669', bg: 'rgba(5, 150, 105, 0.1)' },
-                                { level: 2, label: 'Intermediate', color: '#D97706', bg: 'rgba(217, 119, 6, 0.1)' },
-                                { level: 3, label: 'Advanced', color: '#DC2626', bg: 'rgba(220, 38, 38, 0.1)' },
+                                { level: 1, label: 'Beginner', color: DIFFICULTY_COLORS.beginner, bg: DIFFICULTY_BG_COLORS.beginner },
+                                { level: 2, label: 'Intermediate', color: DIFFICULTY_COLORS.amateur, bg: DIFFICULTY_BG_COLORS.amateur },
+                                { level: 3, label: 'Advanced', color: DIFFICULTY_COLORS.advanced, bg: DIFFICULTY_BG_COLORS.advanced },
                             ].map(({ level, label, color, bg }) => {
                                 const count = learnedConcepts.filter(c => c.difficulty === level).length;
                                 const enabled = count > 0;

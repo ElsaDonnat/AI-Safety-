@@ -6,7 +6,7 @@ import { calculateNextReview } from '../../data/spacedRepetition';
 import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
-import { TOPICS, CHAPTERS, DIFFICULTY_COLORS } from '../../data/lessons';
+import { TOPICS, CHAPTERS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../../data/lessons';
 import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, Zap, Share2 } from 'lucide-react';
 
 // Maps topic icon IDs to Lucide components — matches LearnPage ICON_MAP
@@ -261,6 +261,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             </h1>
                             {chapter && (() => {
                                 const diffColor = DIFFICULTY_COLORS[chapter.difficulty] || '#888';
+                                const diffBg = DIFFICULTY_BG_COLORS[chapter.difficulty] || 'rgba(136,136,136,0.12)';
                                 return (
                                     <span
                                         className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider mt-2"
@@ -269,7 +270,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                             fontSize: '11px',
                                             fontWeight: 500,
                                             letterSpacing: '0.02em',
-                                            backgroundColor: `${diffColor}18`,
+                                            backgroundColor: diffBg,
                                             color: diffColor,
                                         }}
                                     >

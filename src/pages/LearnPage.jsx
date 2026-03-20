@@ -2,14 +2,14 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import {
     DOMAINS, TOPICS, CHAPTERS, LESSONS,
-    DIFFICULTY_COLORS,
+    DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS,
     getTopicsByDomain, getChaptersByTopic, getLessonsByChapter,
 } from '../data/lessons';
 import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
-import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock } from 'lucide-react';
+import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock, Cpu, ShieldAlert, Target, Shield, Scale, Globe } from 'lucide-react';
 import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // Maps domain/topic icon IDs to Lucide components
@@ -20,6 +20,13 @@ const ICON_MAP = {
     'ai-basics': Bot,
     'ai-progress': TrendingUp,
     'ai-concepts': Brain,
+    'advanced-ai': Cpu,
+    'ai-security': ShieldAlert,
+    alignment: Target,
+    risk: ShieldAlert,
+    safety: Shield,
+    ethics: Scale,
+    policy: Globe,
 };
 
 function TopicIcon({ iconId, color }) {
@@ -291,6 +298,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                         {chapters.map((chapter, chIdx) => {
                                             const chapterLessons = getLessonsByChapter(chapter.id);
                                             const diffColor = DIFFICULTY_COLORS[chapter.difficulty] || '#888';
+                                            const diffBg = DIFFICULTY_BG_COLORS[chapter.difficulty] || 'rgba(136,136,136,0.12)';
 
                                             // Chapter unlock: all chapters unlocked for testing
                                             // TODO: restore sequential gating when content is finalized
@@ -313,7 +321,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                                 fontSize: '11px',
                                                                 fontWeight: 500,
                                                                 letterSpacing: '0.02em',
-                                                                backgroundColor: `${diffColor}18`,
+                                                                backgroundColor: diffBg,
                                                                 color: diffColor,
                                                             }}
                                                         >

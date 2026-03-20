@@ -169,11 +169,20 @@ export const CHAPTERS = [
     { id: 'global-ai-policy-advanced', topic: 'global-ai-policy', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
 ];
 
-// Difficulty badge colors
+// Difficulty badge colors — single source of truth
+// Uses CSS variable names; call getComputedStyle() or use var() in JSX.
+// For inline JS styles where var() doesn't work, these hardcoded fallbacks
+// match the CSS variables --color-diff-beginner / amateur / advanced.
 export const DIFFICULTY_COLORS = {
-    beginner: '#A8C8D8',
-    amateur: '#D4A04A',
-    advanced: '#D4726A',
+    beginner: 'var(--color-diff-beginner)',
+    amateur: 'var(--color-diff-amateur)',
+    advanced: 'var(--color-diff-advanced)',
+};
+
+export const DIFFICULTY_BG_COLORS = {
+    beginner: 'var(--color-diff-beginner-bg)',
+    amateur: 'var(--color-diff-amateur-bg)',
+    advanced: 'var(--color-diff-advanced-bg)',
 };
 
 // ─── Lessons ────────────────────────────────────────────────

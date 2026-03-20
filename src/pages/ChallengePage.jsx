@@ -196,48 +196,48 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
     }));
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center', letterSpacing: '-0.01em' }}>
                 {question.prompt || question.question}
             </p>
             {answered && nearMiss && (
                 <p style={{
-                    textAlign: 'center', fontSize: '0.85rem', fontWeight: 600,
-                    color: '#D97706', fontFamily: 'var(--font-sans)',
-                    padding: '4px 12px', background: 'rgba(217, 119, 6, 0.1)',
-                    borderRadius: 8, margin: '0 auto',
+                    textAlign: 'center', fontSize: '0.78rem', fontWeight: 600,
+                    color: 'var(--color-warning)', fontFamily: 'var(--font-mono)',
+                    padding: '4px 12px', background: 'var(--color-warning-light)',
+                    borderRadius: 3, margin: '0 auto', letterSpacing: '0.02em', textTransform: 'uppercase',
                 }}>
                     Close! You were in the right ballpark.
                 </p>
             )}
             {question.context && (
-                <p style={{ fontSize: '0.85rem', color: 'var(--color-ink-secondary)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '0.82rem', color: 'var(--color-ink-secondary)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5 }}>
                     {question.context}
                 </p>
             )}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr',
-                gap: 8,
+                gap: 6,
                 marginTop: 4,
             }}>
                 {normalizedOptions.map((opt, i) => {
                     const isSelected = selected === i;
                     const isCorrect = opt.isCorrect;
                     let bg = 'var(--color-card)';
-                    let border = '1.5px solid var(--color-ink-faint, #E7E5E4)';
+                    let border = '1px solid var(--color-warm)';
                     let color = 'var(--color-ink)';
                     if (answered) {
                         if (isCorrect) {
-                            bg = 'rgba(5, 150, 105, 0.12)';
+                            bg = 'var(--color-success-light)';
                             border = '1.5px solid var(--color-success)';
                             color = 'var(--color-success)';
                         } else if (isSelected) {
-                            bg = 'rgba(166, 61, 61, 0.12)';
+                            bg = 'var(--color-error-light)';
                             border = '1.5px solid var(--color-error)';
                             color = 'var(--color-error)';
                         } else {
-                            bg = 'rgba(0,0,0,0.02)';
+                            bg = 'rgba(var(--color-ink-rgb), 0.02)';
                             color = 'var(--color-ink-muted)';
                         }
                     }
@@ -250,30 +250,30 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
                             style={{
                                 background: bg,
                                 border,
-                                borderRadius: 10,
-                                padding: '12px 16px',
+                                borderRadius: 3,
+                                padding: '11px 14px',
                                 cursor: answered ? 'default' : 'pointer',
                                 textAlign: 'left',
-                                fontSize: question.subtype === 'description' ? '0.78rem' : '0.88rem',
+                                fontSize: question.subtype === 'description' ? '0.78rem' : '0.85rem',
                                 fontFamily: 'var(--font-sans)',
                                 color,
                                 fontWeight: (isSelected || (answered && isCorrect)) ? 600 : 400,
                                 lineHeight: 1.4,
-                                transition: 'all 0.15s ease',
+                                transition: 'all var(--duration-fast) ease',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 8,
                             }}
                         >
-                            {answered && isCorrect && <span>&#10003;</span>}
-                            {answered && isSelected && !isCorrect && <span>&#10007;</span>}
+                            {answered && isCorrect && <span style={{ fontSize: '0.9rem' }}>&#10003;</span>}
+                            {answered && isSelected && !isCorrect && <span style={{ fontSize: '0.9rem' }}>&#10007;</span>}
                             {opt.label}
                         </button>
                     );
                 })}
             </div>
             {answered && question.explanation && !normalizedOptions[selected]?.isCorrect && (
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5, marginTop: 4 }}>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5, marginTop: 4 }}>
                     {question.explanation}
                 </p>
             )}
@@ -285,35 +285,35 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
 
 function OddOneOutLayout({ question, selected, answered, onSelect }) {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', textAlign: 'center', letterSpacing: '-0.01em' }}>
                 {question.prompt || question.question}
             </p>
             {question.hint && (
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
                     {question.hint}
                 </p>
             )}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
                 {question.options.map(opt => {
                     const isOutlier = opt.isOutlier;
                     const isSelected = selected === opt.id;
                     let bg = 'var(--color-card)';
-                    let border = '1.5px solid var(--color-ink-faint, #E7E5E4)';
+                    let border = '1px solid var(--color-warm)';
                     let color = 'var(--color-ink)';
 
                     if (answered) {
                         if (isOutlier) {
-                            bg = 'rgba(5, 150, 105, 0.12)';
+                            bg = 'var(--color-success-light)';
                             border = '1.5px solid var(--color-success)';
                             color = 'var(--color-success)';
                         } else if (isSelected) {
-                            bg = 'rgba(166, 61, 61, 0.12)';
+                            bg = 'var(--color-error-light)';
                             border = '1.5px solid var(--color-error)';
                             color = 'var(--color-error)';
                         } else {
-                            bg = 'rgba(var(--color-ink-rgb), 0.06)';
-                            border = '1.5px solid rgba(var(--color-ink-rgb), 0.2)';
+                            bg = 'rgba(var(--color-ink-rgb), 0.04)';
+                            border = '1px solid rgba(var(--color-ink-rgb), 0.12)';
                         }
                     }
 
@@ -325,7 +325,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                             style={{
                                 background: bg,
                                 border,
-                                borderRadius: 10,
+                                borderRadius: 3,
                                 padding: '12px 10px',
                                 cursor: answered ? 'default' : 'pointer',
                                 fontSize: '0.82rem',
@@ -334,7 +334,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                                 fontWeight: (isSelected || (answered && isOutlier)) ? 600 : 400,
                                 lineHeight: 1.3,
                                 textAlign: 'center',
-                                transition: 'all 0.15s ease',
+                                transition: 'all var(--duration-fast) ease',
                             }}
                         >
                             {opt.title}
@@ -343,7 +343,7 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                 })}
             </div>
             {answered && (
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
                     The other three: {question.sharedTrait}
                 </p>
             )}
@@ -355,38 +355,38 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
 
 function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
-            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center' }}>
+            <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-ink)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>
                 {question.prompt || 'True or false?'}
             </p>
             <div style={{
                 background: 'var(--color-card)',
-                border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                borderRadius: 12,
-                padding: '20px 16px',
+                border: '1px solid var(--color-warm)',
+                borderRadius: 3,
+                padding: '18px 16px',
                 width: '100%',
                 textAlign: 'center',
             }}>
-                <p style={{ fontSize: '0.9rem', fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
+                <p style={{ fontSize: '0.88rem', fontFamily: 'var(--font-sans)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
                     &ldquo;{question.statement}&rdquo;
                 </p>
             </div>
-            <div style={{ display: 'flex', gap: 12, width: '100%' }}>
+            <div style={{ display: 'flex', gap: 8, width: '100%' }}>
                 {[true, false].map(val => {
                     const label = val ? 'True' : 'False';
                     const isSelected = selected === val;
                     const isCorrect = val === question.isTrue;
                     let bg = 'var(--color-card)';
-                    let border = '1.5px solid var(--color-ink-faint, #E7E5E4)';
+                    let border = '1px solid var(--color-warm)';
                     let color = 'var(--color-ink)';
 
                     if (answered) {
                         if (isCorrect) {
-                            bg = 'rgba(5, 150, 105, 0.12)';
+                            bg = 'var(--color-success-light)';
                             border = '1.5px solid var(--color-success)';
                             color = 'var(--color-success)';
                         } else if (isSelected) {
-                            bg = 'rgba(166, 61, 61, 0.12)';
+                            bg = 'var(--color-error-light)';
                             border = '1.5px solid var(--color-error)';
                             color = 'var(--color-error)';
                         }
@@ -401,14 +401,14 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                                 flex: 1,
                                 background: bg,
                                 border,
-                                borderRadius: 10,
-                                padding: '14px',
+                                borderRadius: 3,
+                                padding: '13px',
                                 cursor: answered ? 'default' : 'pointer',
-                                fontSize: '1rem',
+                                fontSize: '0.95rem',
                                 fontWeight: 600,
                                 fontFamily: 'var(--font-display)',
                                 color,
-                                transition: 'all 0.15s ease',
+                                transition: 'all var(--duration-fast) ease',
                             }}
                         >
                             {answered && isCorrect && <span>&#10003; </span>}
@@ -419,7 +419,7 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                 })}
             </div>
             {answered && question.correction && (selected !== question.isTrue) && (
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5 }}>
                     {question.correction}
                 </p>
             )}
@@ -445,27 +445,30 @@ function TierTransition({ tier, onContinue }) {
             className="animate-fade-in"
         >
             <div style={{
-                marginBottom: 16,
-                filter: tier.id === 'visionary' ? 'drop-shadow(0 0 12px rgba(220, 38, 38, 0.5))' : 'none',
+                width: 72, height: 72, borderRadius: 3,
+                background: `${tier.color}12`, border: `1.5px solid ${tier.color}30`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                marginBottom: 20,
+                filter: tier.id === 'visionary' ? 'drop-shadow(0 0 12px rgba(220, 38, 38, 0.4))' : 'none',
             }}>
-                <TierIcon tierId={tier.id} size={48} color={tier.color} />
+                <TierIcon tierId={tier.id} size={36} color={tier.color} />
             </div>
             <p style={{
-                fontSize: '0.7rem', fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase',
-                color: 'var(--color-ink-muted)', marginBottom: 8,
+                fontSize: '10px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
+                color: 'var(--color-ink-muted)', marginBottom: 8, fontFamily: 'var(--font-mono)',
             }}>
                 Level Up
             </p>
             <h2 style={{
-                fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 700,
-                color: tier.color, marginBottom: 8,
+                fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 600,
+                color: tier.color, marginBottom: 8, letterSpacing: '-0.02em',
             }}>
                 {tier.label}
             </h2>
-            <p style={{ fontSize: '0.85rem', color: 'var(--color-ink-muted)', fontStyle: 'italic' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--color-ink-muted)', fontStyle: 'italic', fontFamily: 'var(--font-sans)' }}>
                 {tier.flavor}
             </p>
-            <p style={{ fontSize: '0.7rem', color: 'var(--color-ink-faint)', marginTop: 20 }}>
+            <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)', marginTop: 24, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 Tap to continue
             </p>
         </div>
@@ -1112,10 +1115,13 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
     if (view === VIEW.SETUP_MULTI) {
         return (
-            <div style={{ padding: '16px 0' }} className="animate-fade-in">
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 700, textAlign: 'center', color: 'var(--color-ink)', marginBottom: 16 }}>
+            <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in">
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', fontWeight: 600, textAlign: 'center', color: 'var(--color-ink)', marginBottom: 4, letterSpacing: '-0.02em' }}>
                     Who's playing?
                 </h2>
+                <p style={{ textAlign: 'center', fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 20 }}>
+                    Up to 5 players
+                </p>
 
                 {/* Player input */}
                 <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
@@ -1129,12 +1135,13 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         style={{
                             flex: 1,
                             padding: '10px 14px',
-                            border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                            borderRadius: 10,
-                            fontSize: '0.9rem',
+                            border: '1px solid var(--color-warm)',
+                            borderRadius: 3,
+                            fontSize: '0.88rem',
                             fontFamily: 'var(--font-sans)',
                             background: 'var(--color-card)',
                             outline: 'none',
+                            color: 'var(--color-ink)',
                         }}
                     />
                     <Button
@@ -1146,10 +1153,10 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 </div>
 
                 {/* Player list */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 20 }}>
                     {players.length === 0 && (
                         <p style={{ textAlign: 'center', color: 'var(--color-ink-muted)', fontSize: '0.82rem', padding: 16 }}>
-                            Add 1-5 players to get started
+                            Add 1–5 players to get started
                         </p>
                     )}
                     {players.map((p, i) => (
@@ -1158,14 +1165,15 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             background: 'var(--color-card)',
-                            border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                            borderRadius: 10,
+                            border: '1px solid var(--color-warm)',
+                            borderRadius: 3,
                             padding: '10px 14px',
+                            boxShadow: 'var(--shadow-card)',
                         }}>
-                            <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>{p.name}</span>
+                            <span style={{ fontWeight: 600, fontSize: '0.88rem', fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{p.name}</span>
                             <button
                                 onClick={() => removePlayer(i)}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)', fontSize: '1.2rem', padding: 4 }}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)', fontSize: '1.1rem', padding: 4, lineHeight: 1 }}
                             >
                                 &times;
                             </button>
@@ -1197,11 +1205,11 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <div
                             style={{
                                 background: 'var(--color-card)',
-                                borderRadius: 16,
+                                borderRadius: 3,
                                 padding: '24px 20px',
                                 width: '100%',
                                 maxWidth: 320,
-                                boxShadow: '0 12px 40px rgba(0,0,0,0.2)',
+                                boxShadow: 'var(--shadow-elevated)',
                             }}
                             onClick={e => e.stopPropagation()}
                             className="animate-fade-in"
@@ -1209,17 +1217,18 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <h3 style={{
                                 fontFamily: 'var(--font-display)',
                                 fontSize: '1.05rem',
-                                fontWeight: 700,
+                                fontWeight: 600,
                                 textAlign: 'center',
                                 color: 'var(--color-ink)',
                                 marginBottom: 4,
+                                letterSpacing: '-0.01em',
                             }}>
                                 Which one is you?
                             </h3>
-                            <p style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--color-ink-muted)', marginBottom: 16 }}>
+                            <p style={{ textAlign: 'center', fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                                 We'll track your victories
                             </p>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 }}>
                                 {players.map((p) => (
                                     <button
                                         key={p.name}
@@ -1230,15 +1239,15 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                         }}
                                         style={{
                                             padding: '10px 14px',
-                                            borderRadius: 10,
-                                            border: '1.5px solid var(--color-ink-faint, #E7E5E4)',
-                                            background: 'var(--color-surface, #FFFFFF)',
+                                            borderRadius: 3,
+                                            border: '1px solid var(--color-warm)',
+                                            background: 'var(--color-card)',
                                             fontWeight: 600,
-                                            fontSize: '0.9rem',
+                                            fontSize: '0.88rem',
                                             color: 'var(--color-ink)',
                                             cursor: 'pointer',
-                                            fontFamily: 'var(--font-sans)',
-                                            transition: 'background 0.15s',
+                                            fontFamily: 'var(--font-display)',
+                                            transition: 'background var(--duration-fast)',
                                         }}
                                     >
                                         {p.name}
@@ -1254,7 +1263,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 style={{
                                     width: '100%',
                                     padding: '8px 14px',
-                                    borderRadius: 10,
+                                    borderRadius: 3,
                                     border: 'none',
                                     background: 'none',
                                     fontSize: '0.82rem',
@@ -1277,14 +1286,21 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
     if (view === VIEW.PASS_PHONE) {
         return (
             <div className="pass-phone-overlay animate-fade-in">
-                <Mascot variant="quizmaster" mood="happy" size={70} />
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: 'var(--color-ink)' }}>
+                <Mascot variant="quizmaster" mood="happy" size={64} />
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 600, color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
                     Pass to {currentPlayer?.name}!
                 </h2>
                 <Hearts current={currentPlayer?.hearts || 0} max={Math.max(MAX_HEARTS, currentPlayer?.hearts || 0)} />
-                <p style={{ fontSize: '0.82rem', color: 'var(--color-ink-muted)' }}>
-                    Score: {currentPlayer?.score || 0}
-                </p>
+                <div style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    background: 'var(--color-warm-light)', border: '1px solid var(--color-warm)',
+                    borderRadius: 3, padding: '6px 14px',
+                }}>
+                    <span style={{ fontSize: '0.88rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                        {currentPlayer?.score || 0}
+                    </span>
+                    <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', textTransform: 'uppercase' }}>pts</span>
+                </div>
                 <Button onClick={() => setView(VIEW.GAME)} style={{ marginTop: 8, minWidth: 140 }}>
                     Ready!
                 </Button>
@@ -1308,22 +1324,24 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
             <div style={{ padding: '12px 0', display: 'flex', flexDirection: 'column', minHeight: '100%' }} className="animate-fade-in">
                 {/* Tier badge + progress (solo) */}
                 {mode === 'solo' && tierInfo && (
-                    <div style={{ marginBottom: 8 }}>
+                    <div style={{ marginBottom: 10 }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                             <span style={{
-                                fontSize: '0.7rem', fontWeight: 700, color: tierInfo.tier.color,
-                                background: `${tierInfo.tier.color}15`, padding: '2px 8px', borderRadius: 6,
+                                fontSize: '10px', fontWeight: 600, color: tierInfo.tier.color,
+                                fontFamily: 'var(--font-mono)', letterSpacing: '0.04em', textTransform: 'uppercase',
+                                background: `${tierInfo.tier.color}12`, padding: '3px 8px', borderRadius: 3,
+                                display: 'inline-flex', alignItems: 'center', gap: 4,
                             }}>
-                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><TierIcon tierId={tierInfo.tier.id} size={14} color={tierInfo.tier.color} /> {tierInfo.tier.label}</span>
+                                <TierIcon tierId={tierInfo.tier.id} size={13} color={tierInfo.tier.color} /> {tierInfo.tier.label}
                             </span>
-                            <span style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>
+                            <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', letterSpacing: '0.02em' }}>
                                 {questionIndex + 1} / {TOTAL_CHALLENGE_QUESTIONS}
                             </span>
                         </div>
                         {/* Progress bar */}
-                        <div style={{ height: 3, borderRadius: 2, background: 'rgba(var(--color-ink-rgb), 0.06)', overflow: 'hidden' }}>
+                        <div style={{ height: 2, background: 'rgba(var(--color-ink-rgb), 0.08)', overflow: 'hidden' }}>
                             <div style={{
-                                height: '100%', borderRadius: 2,
+                                height: '100%',
                                 background: tierInfo.tier.color,
                                 width: `${((questionIndex + 1) / TOTAL_CHALLENGE_QUESTIONS) * 100}%`,
                                 transition: 'width 0.3s ease',
@@ -1333,11 +1351,11 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 )}
 
                 {/* Top bar: hearts + score + streak */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
                     <Hearts current={currentPlayer?.hearts || 0} max={Math.max(MAX_HEARTS, currentPlayer?.hearts || 0)} />
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         {mode === 'multiplayer' && (
-                            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-primary, #1E3A5F)' }}>
+                            <span style={{ fontSize: '0.78rem', fontWeight: 600, fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 {currentPlayer?.name}
                             </span>
                         )}
@@ -1345,16 +1363,18 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <span style={{ fontSize: '1.1rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                                 {currentPlayer?.score || 0}
                             </span>
-                            <span style={{ fontSize: '0.7rem', color: 'var(--color-ink-muted)', marginLeft: 2 }}>pts</span>
+                            <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginLeft: 3 }}>pts</span>
                         </div>
                         {consecutiveCorrect >= 2 && (
                             <span style={{
-                                fontSize: '0.75rem',
+                                fontSize: '10px',
                                 fontWeight: 700,
-                                color: '#E05500',
-                                background: 'rgba(224, 85, 0, 0.1)',
+                                fontFamily: 'var(--font-mono)',
+                                color: 'var(--color-burgundy)',
+                                background: 'var(--color-burgundy-soft)',
                                 padding: '2px 8px',
-                                borderRadius: 8,
+                                borderRadius: 3,
+                                letterSpacing: '0.02em',
                             }}>
                                 {consecutiveCorrect}x
                             </span>
@@ -1363,17 +1383,17 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 </div>
 
                 {/* Quizmaster mascot */}
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
                     <Mascot variant="quizmaster" mood={quizmasterMood} size={52} />
                 </div>
 
                 {/* Question card */}
                 <div style={{
-                    background: tierInfo?.tier.id === 'visionary' ? 'rgba(220, 38, 38, 0.06)' : 'var(--color-surface, #F3ECE2)',
-                    borderRadius: 14,
+                    background: tierInfo?.tier.id === 'visionary' ? 'rgba(220, 38, 38, 0.04)' : 'var(--color-warm-light)',
+                    borderRadius: 3,
                     padding: '20px 16px',
                     flex: 1,
-                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.2)' : 'none',
+                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.15)' : '1px solid var(--color-warm)',
                 }}>
                     <ChallengeQuestion
                         key={`q-${questionIndex}-${currentPlayerIndex}`}
@@ -1399,35 +1419,35 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
         if (mode === 'solo') {
             return (
-                <div style={{ padding: '20px 0', textAlign: 'center' }} className="animate-fade-in">
+                <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in" style={{ textAlign: 'center' }}>
                     {/* Mascots */}
                     <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 16 }}>
-                        <Mascot variant="quizmaster" mood={soloScore >= 10 ? 'celebrating' : soloScore >= 5 ? 'happy' : 'thinking'} size={60} />
-                        <Mascot mood={soloScore >= 10 ? 'celebrating' : soloScore >= 5 ? 'happy' : 'sad'} size={52} />
+                        <Mascot variant="quizmaster" mood={soloScore >= 10 ? 'celebrating' : soloScore >= 5 ? 'happy' : 'thinking'} size={56} />
+                        <Mascot mood={soloScore >= 10 ? 'celebrating' : soloScore >= 5 ? 'happy' : 'sad'} size={48} />
                     </div>
 
-                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-ink)', marginBottom: 8 }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)', marginBottom: 8, letterSpacing: '-0.02em' }}>
                         {isPerfect ? 'Perfect Run!' : 'Game Over!'}
                     </h2>
 
                     {/* Tier reached badge */}
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
-                        background: `${reachedTier.color}12`, border: `1.5px solid ${reachedTier.color}30`,
-                        borderRadius: 10, padding: '6px 14px', marginBottom: 16,
+                        background: `${reachedTier.color}12`, border: `1.5px solid ${reachedTier.color}25`,
+                        borderRadius: 3, padding: '5px 12px', marginBottom: 16,
                     }}>
-                        <TierIcon tierId={reachedTier.id} size={20} color={reachedTier.color} />
-                        <span style={{ fontSize: '0.82rem', fontWeight: 700, color: reachedTier.color }}>
+                        <TierIcon tierId={reachedTier.id} size={16} color={reachedTier.color} />
+                        <span style={{ fontSize: '11px', fontWeight: 600, fontFamily: 'var(--font-mono)', color: reachedTier.color, textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                             {reachedTier.label}
                         </span>
                     </div>
 
                     {/* Score */}
                     <div style={{ marginBottom: 16 }}>
-                        <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-primary, #1E3A5F)' }}>
+                        <p style={{ fontSize: '2.2rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', letterSpacing: '-0.02em' }}>
                             {soloScore}/{TOTAL_CHALLENGE_QUESTIONS}
                         </p>
-                        <p style={{ fontSize: '0.82rem', color: 'var(--color-ink-muted)' }}>
+                        <p style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                             questions answered correctly
                         </p>
                     </div>
@@ -1435,14 +1455,15 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     {/* New high score banner */}
                     {isNewHighScore && (
                         <div style={{
-                            background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                            borderRadius: 10,
-                            padding: '10px 16px',
+                            background: 'var(--color-warning)',
+                            borderRadius: 3,
+                            padding: '8px 16px',
                             marginBottom: 16,
                             color: 'white',
-                            fontWeight: 700,
+                            fontWeight: 600,
                             fontFamily: 'var(--font-display)',
-                            fontSize: '0.95rem',
+                            fontSize: '0.88rem',
+                            letterSpacing: '-0.01em',
                         }}>
                             New High Score!
                         </div>
@@ -1450,7 +1471,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                     {/* Tier progress visualization */}
                     <div style={{
-                        display: 'flex', gap: 3, marginBottom: 16, padding: '0 4px',
+                        display: 'flex', gap: 2, marginBottom: 16, padding: '0 4px',
                     }}>
                         {TIER_DISPLAY.map((tier, tierIdx) => {
                             const reachedIdx = TIER_DISPLAY.indexOf(reachedTier);
@@ -1465,13 +1486,13 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             }
                             return (
                                 <div key={tier.id} style={{
-                                    flex: tier.questions, height: 6, borderRadius: 3,
+                                    flex: tier.questions, height: 4,
                                     background: 'rgba(var(--color-ink-rgb), 0.06)',
                                     overflow: 'hidden',
                                 }} title={tier.label}>
                                     {fillPercent > 0 && (
                                         <div style={{
-                                            width: `${fillPercent}%`, height: '100%', borderRadius: 3,
+                                            width: `${fillPercent}%`, height: '100%',
                                             background: tier.color,
                                             transition: 'width 0.3s',
                                         }} />
@@ -1485,28 +1506,29 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-around',
-                        background: CHALLENGE_TINT,
-                        borderRadius: 12,
+                        background: 'var(--color-warm-light)',
+                        border: '1px solid var(--color-warm)',
+                        borderRadius: 3,
                         padding: '14px 12px',
                         marginBottom: 20,
                     }}>
-                        <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
+                        <div className="text-center">
+                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
                                 {bestStreak}
                             </p>
-                            <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>Best Streak</p>
+                            <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Best Streak</p>
                         </div>
-                        <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
+                        <div className="text-center">
+                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
                                 +{soloScore * 8}
                             </p>
-                            <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>XP Earned</p>
+                            <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.03em' }}>XP Earned</p>
                         </div>
-                        <div>
-                            <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
+                        <div className="text-center">
+                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
                                 {questionIndex + 1}
                             </p>
-                            <p style={{ fontSize: '0.68rem', color: 'var(--color-ink-muted)' }}>Questions</p>
+                            <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Questions</p>
                         </div>
                     </div>
 
@@ -1542,14 +1564,14 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
         const podiumHeights = [120, 90, 70];
 
         return (
-            <div style={{ padding: '20px 0', textAlign: 'center' }} className="animate-fade-in">
+            <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in" style={{ textAlign: 'center' }}>
                 {/* Mascots */}
                 <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 16 }}>
-                    <Mascot variant="quizmaster" mood="celebrating" size={56} />
-                    <Mascot mood="celebrating" size={48} />
+                    <Mascot variant="quizmaster" mood="celebrating" size={52} />
+                    <Mascot mood="celebrating" size={44} />
                 </div>
 
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-ink)', marginBottom: 16 }}>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)', marginBottom: 16, letterSpacing: '-0.02em' }}>
                     {sorted[0]?.name} wins!
                 </h2>
 
@@ -1566,35 +1588,36 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             <div
                                 key={displayIdx}
                                 className={`podium-bar ${podiumColors[displayIdx] || ''}`}
-                                style={{ height: podiumHeights[displayIdx] || 60, order: i }}
+                                style={{ height: podiumHeights[displayIdx] || 60, order: i, borderRadius: 3 }}
                             >
-                                <span style={{ fontSize: '1.4rem' }}>
-                                    <Medal size={22} color={displayIdx === 0 ? '#FFD700' : displayIdx === 1 ? '#C0C0C0' : '#CD7F32'} strokeWidth={2} />
+                                <span>
+                                    <Medal size={20} color={displayIdx === 0 ? '#FFD700' : displayIdx === 1 ? '#C0C0C0' : '#CD7F32'} strokeWidth={2} />
                                 </span>
-                                <span style={{ fontSize: '0.82rem', fontWeight: 700 }}>{p.name}</span>
-                                <span style={{ fontSize: '0.75rem' }}>{p.score} pts</span>
+                                <span style={{ fontSize: '0.82rem', fontWeight: 600, fontFamily: 'var(--font-display)' }}>{p.name}</span>
+                                <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.8)' }}>{p.score} pts</span>
                             </div>
                         );
                     })}
                 </div>
 
                 {/* Full leaderboard */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 20 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 20 }}>
                     {sorted.map((p, i) => (
                         <div key={i} style={{
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            background: i === 0 ? 'rgba(255, 215, 0, 0.08)' : 'var(--color-card)',
-                            border: '1px solid var(--color-ink-faint, #E7E5E4)',
-                            borderRadius: 8,
+                            background: i === 0 ? 'rgba(255, 215, 0, 0.06)' : 'var(--color-card)',
+                            border: '1px solid var(--color-warm)',
+                            borderRadius: 3,
                             padding: '8px 14px',
+                            boxShadow: i === 0 ? 'none' : 'var(--shadow-card)',
                         }}>
-                            <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>
+                            <span style={{ fontWeight: 600, fontFamily: 'var(--font-display)', fontSize: '0.88rem', color: 'var(--color-ink)' }}>
                                 {i + 1}. {p.name}
                             </span>
-                            <span style={{ fontWeight: 700, color: 'var(--color-primary, #1E3A5F)', fontFamily: 'var(--font-display)' }}>
-                                {p.score} pts
+                            <span style={{ fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', fontSize: '0.88rem' }}>
+                                {p.score} <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>pts</span>
                             </span>
                         </div>
                     ))}
