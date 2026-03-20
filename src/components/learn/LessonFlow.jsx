@@ -36,7 +36,7 @@ function highlightText(text) {
     const parts = text.split(regex);
     return parts.map((part, i) => {
         if (regex.test(part) || HIGHLIGHT_TERMS.some(t => t.toLowerCase() === part.toLowerCase())) {
-            return <span key={i} style={{ color: 'var(--color-burgundy)', fontWeight: 600 }}>{part}</span>;
+            return <span key={i} style={{ color: 'var(--color-coral)', fontWeight: 600 }}>{part}</span>;
         }
         return part;
     });
@@ -265,7 +265,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <div className="flex justify-center mb-3">
                                 <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
                                     style={{
-                                        backgroundColor: topic?.color || 'var(--color-bronze)',
+                                        backgroundColor: topic?.color || 'var(--color-sky)',
                                         color: '#fff',
                                     }}>
                                     <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600 }}>
@@ -372,7 +372,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
-                            style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                            style={{ backgroundColor: 'var(--color-coral-soft)', color: 'var(--color-coral)' }}>
                             Study {'\u00B7'} {cardIndex + 1}/{concepts.length}
                         </span>
                     </div>
@@ -399,7 +399,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                                 <p><strong style={{ color: 'var(--color-ink)' }}>Tap the star</strong> to save concepts to your favorites.</p>
                                                 <button onClick={(e) => { e.stopPropagation(); dispatch({ type: 'DISMISS_FAVORITE_TIP' }); }}
                                                     className="mt-2 text-xs font-semibold"
-                                                    style={{ color: 'var(--color-burgundy)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                                                    style={{ color: 'var(--color-coral)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                                                     Got it
                                                 </button>
                                             </div>
@@ -472,7 +472,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
-                            style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                            style={{ backgroundColor: 'var(--color-coral-soft)', color: 'var(--color-coral)' }}>
                             Learn Quiz {'\u00B7'} {answeredCount + 1}/{totalQuestions}
                         </span>
                     </div>
@@ -552,7 +552,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             Exit
                         </button>
                         <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
-                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.15)', color: 'var(--color-burgundy)' }}>
+                            style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.15)', color: 'var(--color-coral)' }}>
                             Recap {'\u00B7'} {answeredCount + 1}/{totalQuestions}
                         </span>
                     </div>
@@ -596,7 +596,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                         <Card className="animate-slide-in-right" style={{ borderLeft: `3px solid ${borderColor}` }}>
                             <CategoryTag category={concept.category} />
                             <h2 className="text-xl font-bold mt-3 mb-2" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h2>
-                            {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-burgundy)' }}>{concept.summary}</p>}
+                            {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-coral)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>
                                 {concept.description}
                             </ExpandableText>
@@ -683,7 +683,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                 <div id="xp-earned-display" className="flex items-center gap-2 animate-xp-pop" style={{ animationDelay: '500ms' }}>
                                     <Zap className="animate-xp-glow" style={{ animationDelay: '700ms' }} size={20} color="var(--color-warning)" fill="var(--color-warning)" strokeWidth={2} />
                                     <div className="text-left">
-                                        <AnimatedCounter value={xp} prefix="+" duration={600} delay={1050} className="text-xl font-bold leading-none" style={{ color: 'var(--color-burgundy)' }} />
+                                        <AnimatedCounter value={xp} prefix="+" duration={600} delay={1050} className="text-xl font-bold leading-none" style={{ color: 'var(--color-coral)' }} />
                                         <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-faint)' }}>XP earned</div>
                                     </div>
                                 </div>
@@ -693,7 +693,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                         <StreakFlame status="active" size={28} />
                                     </span>
                                     <div className="text-left">
-                                        <AnimatedCounter value={streak} duration={400} delay={800} className="text-xl font-bold leading-none" style={{ color: 'var(--color-burgundy)' }} />
+                                        <AnimatedCounter value={streak} duration={400} delay={800} className="text-xl font-bold leading-none" style={{ color: 'var(--color-coral)' }} />
                                         <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-faint)' }}>Day streak</div>
                                     </div>
                                 </div>
@@ -713,7 +713,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                         const result = await shareText({ title: 'AI Safety', text });
                         if (result === 'copied') setShareToast(true);
                     }} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-burgundy)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }}>
+                        style={{ color: 'var(--color-coral)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }}>
                         <Share2 size={16} strokeWidth={2} />
                         Share Result
                     </button>
@@ -772,7 +772,7 @@ function WhyToggle({ text }) {
             <button
                 onClick={() => setOpen(o => !o)}
                 className="flex items-center gap-1.5 text-xs font-semibold w-full"
-                style={{ color: 'var(--color-burgundy)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                style={{ color: 'var(--color-coral)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
                 <ChevronDown size={14} style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
                 Why does this matter?
@@ -842,7 +842,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
                                 else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
                             }
                             return (<button key={i} onClick={() => handleAnswer(opt.id, concept.id)} disabled={answered} className="mcq-option"
-                                style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
+                                style={{ borderColor: isSelected && !answered ? 'var(--color-coral)' : undefined, ...optStyle }}>
                                 <span className="font-semibold">{opt.title}</span>
                                 {answered && isCorrect && <span className="ml-2 text-xs" style={{ color: 'var(--color-success)' }}>{'\u2713'}</span>}
                             </button>);
@@ -871,7 +871,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
                                 else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
                             }
                             return (<button key={i} onClick={() => handleAnswer(i, whyOptions.findIndex(o => o.isCorrect))} disabled={answered} className="mcq-option"
-                                style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
+                                style={{ borderColor: isSelected && !answered ? 'var(--color-coral)' : undefined, ...optStyle }}>
                                 <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
                                 {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>{'\u2713 Correct'}</span>}
                             </button>);
@@ -900,7 +900,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
                                 else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
                             }
                             return (<button key={i} onClick={() => handleAnswer(i, descriptionOptions.findIndex(o => o.isCorrect))} disabled={answered} className="mcq-option"
-                                style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
+                                style={{ borderColor: isSelected && !answered ? 'var(--color-coral)' : undefined, ...optStyle }}>
                                 <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
                                 {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>{'\u2713 Correct'}</span>}
                             </button>);
@@ -946,9 +946,9 @@ function ProgressTimeline({ quizResults, conceptsCount, questionsPerCard = 2, re
         return (<div key={`dot-${index}`}
             className={`rounded-full flex-shrink-0 transition-all duration-300 ${isCurrent ? 'timeline-dot-current' : ''} ${isCheckpoint ? 'timeline-dot-stagger' : ''}`}
             style={{ width: size, height: size,
-                backgroundColor: color || (isCurrent ? 'var(--color-burgundy)' : 'rgba(28, 25, 23, 0.15)'),
+                backgroundColor: color || (isCurrent ? 'var(--color-coral)' : 'rgba(28, 25, 23, 0.15)'),
                 opacity: isFuture && !isCurrent ? 0.3 : 1,
-                border: isCurrent ? '2px solid var(--color-burgundy)' : 'none',
+                border: isCurrent ? '2px solid var(--color-coral)' : 'none',
                 ...(isCheckpoint ? { animationDelay: `${index * 50}ms` } : {}),
             }} />);
     };

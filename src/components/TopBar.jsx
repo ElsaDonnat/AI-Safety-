@@ -111,7 +111,7 @@ export default function TopBar() {
                     {/* Logo — left */}
                     <h1 className="topbar-logo" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '24px', letterSpacing: '-0.03em', color: 'var(--color-ink)', transform: 'scaleY(0.92)', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
                         <span>a</span>
-                        <span style={{ display: 'inline-block', width: '0.18em', height: '0.18em', backgroundColor: 'var(--color-bronze)', borderRadius: '50%', flexShrink: 0 }} />
+                        <span style={{ display: 'inline-block', width: '0.18em', height: '0.18em', backgroundColor: 'var(--color-sky)', borderRadius: '50%', flexShrink: 0 }} />
                     </h1>
 
                     {/* Spacer — center */}
@@ -136,7 +136,7 @@ export default function TopBar() {
                             onClick={() => window.dispatchEvent(new Event('openWeekTracker'))}
                             style={{ cursor: 'pointer' }}>
                             <Zap size={16} color="var(--color-warning)" fill="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: 'var(--color-coral)' }}>
                                 {displayXP}
                             </span>
                             <span className="hidden sm:inline" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>XP</span>

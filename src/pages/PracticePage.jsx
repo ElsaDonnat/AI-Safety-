@@ -360,7 +360,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             Exit
                         </button>
                         <span className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded"
-                            style={{ backgroundColor: 'var(--color-bronze)', color: 'white' }}>
+                            style={{ backgroundColor: 'var(--color-sky)', color: 'white' }}>
                             {sessionMode} · {currentIndex + 1}/{sessionQuestions.length}
                         </span>
                     </div>
@@ -1065,8 +1065,8 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     <MasteryDots mastery={mastery} hasWhy={!!concept.whyItMatters} />
                                                     <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
                                                         {collectionSort === 'success'
-                                                            ? <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span> success</>
-                                                            : <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{timesReviewed}</span> time{timesReviewed !== 1 ? 's' : ''} seen</>
+                                                            ? <><span className="font-bold" style={{ color: 'var(--color-coral)' }}>{successRate}%</span> success</>
+                                                            : <><span className="font-bold" style={{ color: 'var(--color-coral)' }}>{timesReviewed}</span> time{timesReviewed !== 1 ? 's' : ''} seen</>
                                                         }
                                                     </span>
                                                 </div>
@@ -1104,11 +1104,11 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                 <div className="flex items-center gap-4 mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Reviewed: </span>
-                                                        <span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{timesReviewed}x</span>
+                                                        <span className="font-bold" style={{ color: 'var(--color-coral)' }}>{timesReviewed}x</span>
                                                     </div>
                                                     <div className="text-[10px]">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Success: </span>
-                                                        <span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span>
+                                                        <span className="font-bold" style={{ color: 'var(--color-coral)' }}>{successRate}%</span>
                                                     </div>
                                                     <div className="text-[10px] flex items-center gap-1">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Mastery: </span>

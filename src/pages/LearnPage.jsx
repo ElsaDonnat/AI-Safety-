@@ -268,7 +268,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                     }}
                                     className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
                                     style={{
-                                        backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-parchment)',
+                                        backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-bg)',
                                         color: isActive ? '#F0EBE5' : 'var(--color-ink-muted)',
                                         border: isActive ? '1px solid var(--color-sidebar-bg)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
                                     }}
@@ -333,7 +333,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                                 <div className="mt-2 w-full overflow-hidden"
                                                     style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
                                                     <div className="h-full transition-all duration-500"
-                                                        style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-burgundy)' }} />
+                                                        style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-coral)' }} />
                                                 </div>
                                                 <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)' }}>
                                                     {completedTopicLessons.length}/{allTopicLessons.length} lessons

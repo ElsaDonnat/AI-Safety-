@@ -7,9 +7,9 @@ export default function StreakFlame({ status = 'inactive', size = 18 }) {
 
     // Color configs per status
     const colors = {
-        active: { stroke: '#D4726A', fill: 'rgba(212, 114, 106, 0.15)', inner: '#F0C060' },
-        'at-risk': { stroke: '#D4A04A', fill: 'rgba(212, 160, 74, 0.12)', inner: '#E8956A' },
-        inactive: { stroke: '#B5A99F', fill: 'rgba(181, 169, 159, 0.08)', inner: '#D1C8BE' },
+        active: { stroke: 'var(--color-coral)', fill: 'var(--color-coral-soft)', inner: '#F0C060' },
+        'at-risk': { stroke: 'var(--color-warning)', fill: 'var(--color-warning-light)', inner: '#E8956A' },
+        inactive: { stroke: 'var(--color-ink-faint)', fill: 'rgba(181, 169, 159, 0.08)', inner: '#D1C8BE' },
     };
 
     const c = colors[status];
