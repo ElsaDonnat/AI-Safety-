@@ -71,6 +71,10 @@ const defaultState = {
     // ─── Fun Facts ───
     seenFunFacts: [],  // IDs of fun facts the user has answered
 
+    // ─── Course Mode ───
+    // null = general mode (no course), or { courseId, unlockedAt }
+    courseMode: null,
+
     // ─── Challenge Mode ───
     challenge: {
         soloHighScore: 0,
@@ -169,6 +173,9 @@ function migrateState(parsed) {
         merged.musicVolume = parsed.musicEnabled === false ? 0 : 1;
     }
     if (parsed.musicPromptDismissed === undefined) merged.musicPromptDismissed = false;
+
+    // Migration: course mode
+    if (parsed.courseMode === undefined) merged.courseMode = null;
 
     // Migration: challenge mode
     if (!parsed.challenge) merged.challenge = {
@@ -509,6 +516,21 @@ function reducer(state, action) {
                     lastPlayedDate: getTodayDate(),
                 },
             };
+        }
+
+        // ─── Course Mode ───
+        case 'ACTIVATE_COURSE': {
+            return {
+                ...state,
+                courseMode: {
+                    courseId: action.courseId,
+                    unlockedAt: new Date().toISOString(),
+                },
+            };
+        }
+
+        case 'DEACTIVATE_COURSE': {
+            return { ...state, courseMode: null };
         }
 
         case 'RESET_PROGRESS': {

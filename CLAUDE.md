@@ -142,6 +142,49 @@ Cards without `whyItMatters` treat null whyScore as 3 points (exempt). MasteryDo
 > Chronos used 4 dimensions (location, date, what, description) with mastery 0–12.
 > Update ALL references to 4 dimensions → 3, and 0–12 → 0–9.
 
+### Course Mode (Password-Gated)
+
+The app supports an optional **course companion mode** that tailors the learning experience to a specific external course curriculum. This is gated behind a password in Settings.
+
+#### How It Works
+
+1. User opens Settings → "Course Mode" section
+2. Clicks "Unlock Course Mode" → selects a course from the dropdown → enters the course password
+3. If the password is correct, `state.courseMode` is set to `{ courseId, unlockedAt }`
+4. The app remains in course mode until the user explicitly deactivates it
+
+#### Available Courses
+
+| Course ID | Name | Full Name | Password |
+|-----------|------|-----------|----------|
+| `ml4g` | ML4G | ML for Good | `ml4g2026` |
+
+#### State Shape
+
+```js
+// null = general mode, or:
+courseMode: {
+  courseId: 'ml4g',           // matches COURSES[].id in courseConfig.js
+  unlockedAt: '2026-03-20T...', // ISO timestamp
+}
+```
+
+#### Architecture (Future)
+
+When course mode is active, the app can:
+- **Reorder/filter lessons** to match the course syllabus
+- **Tag cards** with course-specific tags (e.g., `ml4g-week-1`) to group content by course week/module
+- **Show course-specific lessons** that use the same cards but in a different sequence or with different emphasis
+- **Provide alternate card variants** for concepts that need course-specific framing
+
+The course configuration lives in `src/data/courseConfig.js`. Card/lesson overrides per course are **not yet implemented** — only the Settings UI and state management are in place.
+
+#### Files
+
+- `src/data/courseConfig.js` — Course definitions, password validation
+- `src/components/Settings.jsx` — Course mode UI (unlock, deactivate)
+- `src/context/AppContext.jsx` — `ACTIVATE_COURSE` / `DEACTIVATE_COURSE` actions, `courseMode` state
+
 ### Lesson Flow
 
 Keep the 8-phase flow from Chronos, adapted:
@@ -392,6 +435,8 @@ const defaultState = {
   newAchievements: [],
   // Fun Facts
   seenFunFacts: [],
+  // Course Mode
+  courseMode: null,            // null = general, or { courseId, unlockedAt }
   // Challenge
   challenge: { soloHighScore: 0, soloGamesPlayed: 0, soloBestStreak: 0, totalChallengeCorrect: 0, multiplayerGamesPlayed: 0, multiplayerVictories: 0, lastPlayedDate: null },
   // Rating/tips
@@ -415,6 +460,8 @@ const defaultState = {
 | `COMPLETE_DAILY_QUIZ` | `COMPLETE_DAILY_QUIZ` | Same |
 | `UNLOCK_ACHIEVEMENT` | `UNLOCK_ACHIEVEMENT` | Same |
 | `RECORD_STUDY_SESSION` | `RECORD_STUDY_SESSION` | Same |
+| — | `ACTIVATE_COURSE` | New — sets courseMode `{ courseId, unlockedAt }` |
+| — | `DEACTIVATE_COURSE` | New — resets courseMode to `null` |
 
 ---
 

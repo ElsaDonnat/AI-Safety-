@@ -10,7 +10,8 @@ import {
     requestNotificationPermission,
 } from '../services/notifications';
 import * as feedback from '../services/feedback';
-import { X, Clock, Sun, Volume2, Music, Smartphone, Download, Upload, MessageCircle, Coffee } from 'lucide-react';
+import { X, Clock, Sun, Volume2, Music, Smartphone, Download, Upload, MessageCircle, Coffee, GraduationCap, Lock, Check, ChevronDown } from 'lucide-react';
+import { COURSES, validateCoursePassword, getCourseById } from '../data/courseConfig';
 
 const STORAGE_KEY = 'aisafety-state-v1';
 
@@ -48,6 +49,11 @@ export default function Settings() {
     const [showResetConfirm, setShowResetConfirm] = useState(false);
     const [showPrivacy, setShowPrivacy] = useState(false);
     const [importStatus, setImportStatus] = useState(null); // 'success' | 'error' | null
+    const [showCourseSetup, setShowCourseSetup] = useState(false);
+    const [selectedCourseId, setSelectedCourseId] = useState(COURSES[0]?.id || '');
+    const [coursePassword, setCoursePassword] = useState('');
+    const [courseError, setCourseError] = useState(null);
+    const [showDeactivateConfirm, setShowDeactivateConfirm] = useState(false);
     const fileInputRef = useRef(null);
 
     const learnedCount = (state.seenCards || []).length;
@@ -299,6 +305,137 @@ export default function Settings() {
                     );
                 })()}
 
+                {/* Course Mode */}
+                <Card className="mb-3 p-4">
+                    <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                            <GraduationCap size={16} color="var(--color-ink-muted)" strokeWidth={2} />
+                            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Course Mode</span>
+                        </div>
+                        {state.courseMode ? (
+                            <span className="flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-[3px]" style={{ backgroundColor: 'rgba(0, 191, 165, 0.12)', color: 'var(--color-accent, #00BFA5)' }}>
+                                <Check size={12} strokeWidth={2.5} />
+                                {getCourseById(state.courseMode.courseId)?.name || state.courseMode.courseId}
+                            </span>
+                        ) : (
+                            <span className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>General</span>
+                        )}
+                    </div>
+                    <p className="text-xs mb-3" style={{ color: 'var(--color-ink-muted)' }}>
+                        {state.courseMode
+                            ? `You're in ${getCourseById(state.courseMode.courseId)?.fullName || 'course'} mode. Lessons are tailored to your course curriculum.`
+                            : 'Are you pursuing a course? Unlock a course companion mode for tailored lessons.'}
+                    </p>
+
+                    {state.courseMode ? (
+                        <button
+                            onClick={() => { feedback.tap(); setShowDeactivateConfirm(true); }}
+                            className="w-full py-2 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                            style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-display)' }}
+                        >
+                            Switch to General Mode
+                        </button>
+                    ) : !showCourseSetup ? (
+                        <button
+                            onClick={() => { feedback.tap(); setShowCourseSetup(true); setCourseError(null); setCoursePassword(''); }}
+                            className="w-full py-2 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                            style={{ color: '#F0EBE5', backgroundColor: 'var(--color-sidebar-bg)', border: 'none', fontFamily: 'var(--font-display)' }}
+                        >
+                            Unlock Course Mode
+                        </button>
+                    ) : (
+                        <div className="space-y-2 animate-fade-in">
+                            {/* Course selector */}
+                            <div className="relative">
+                                <select
+                                    value={selectedCourseId}
+                                    onChange={e => { setSelectedCourseId(e.target.value); setCourseError(null); }}
+                                    className="w-full appearance-none rounded-[3px] px-3 py-2 pr-8 text-xs font-semibold"
+                                    style={{
+                                        backgroundColor: 'var(--color-parchment)',
+                                        color: 'var(--color-ink)',
+                                        border: '1px solid rgba(var(--color-ink-rgb), 0.12)',
+                                        fontFamily: 'var(--font-display)',
+                                    }}
+                                >
+                                    {COURSES.map(c => (
+                                        <option key={c.id} value={c.id}>{c.fullName} ({c.name})</option>
+                                    ))}
+                                </select>
+                                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--color-ink-muted)' }} />
+                            </div>
+
+                            {/* Password input */}
+                            <div className="relative">
+                                <Lock size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2" style={{ color: 'var(--color-ink-muted)' }} />
+                                <input
+                                    type="password"
+                                    value={coursePassword}
+                                    onChange={e => { setCoursePassword(e.target.value); setCourseError(null); }}
+                                    placeholder="Enter course password"
+                                    className="w-full rounded-[3px] pl-8 pr-3 py-2 text-xs"
+                                    style={{
+                                        backgroundColor: 'var(--color-parchment)',
+                                        color: 'var(--color-ink)',
+                                        border: courseError ? '1px solid var(--color-error)' : '1px solid rgba(var(--color-ink-rgb), 0.12)',
+                                    }}
+                                    onKeyDown={e => {
+                                        if (e.key === 'Enter' && coursePassword.trim()) {
+                                            if (validateCoursePassword(selectedCourseId, coursePassword)) {
+                                                dispatch({ type: 'ACTIVATE_COURSE', courseId: selectedCourseId });
+                                                setShowCourseSetup(false);
+                                                setCoursePassword('');
+                                                setCourseError(null);
+                                                feedback.correct();
+                                            } else {
+                                                setCourseError('Incorrect password. Please try again.');
+                                                feedback.wrong();
+                                            }
+                                        }
+                                    }}
+                                />
+                            </div>
+
+                            {courseError && (
+                                <p className="text-xs" style={{ color: 'var(--color-error)' }}>{courseError}</p>
+                            )}
+
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => { feedback.tap(); setShowCourseSetup(false); setCoursePassword(''); setCourseError(null); }}
+                                    className="flex-1 py-2 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                                    style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-display)' }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        feedback.tap();
+                                        if (!coursePassword.trim()) {
+                                            setCourseError('Please enter the course password.');
+                                            return;
+                                        }
+                                        if (validateCoursePassword(selectedCourseId, coursePassword)) {
+                                            dispatch({ type: 'ACTIVATE_COURSE', courseId: selectedCourseId });
+                                            setShowCourseSetup(false);
+                                            setCoursePassword('');
+                                            setCourseError(null);
+                                            feedback.correct();
+                                        } else {
+                                            setCourseError('Incorrect password. Please try again.');
+                                            feedback.wrong();
+                                        }
+                                    }}
+                                    className="flex-1 py-2 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
+                                    style={{ color: '#F0EBE5', backgroundColor: 'var(--color-sidebar-bg)', border: 'none', fontFamily: 'var(--font-display)' }}
+                                >
+                                    Activate
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </Card>
+
                 {/* Notifications */}
                 <Card className="mb-3 p-4">
                     <div className="flex items-center justify-between mb-1">
@@ -549,6 +686,21 @@ export default function Settings() {
                     alignd. v{__APP_VERSION__}
                 </p>
             </div>
+
+            {showDeactivateConfirm && (
+                <ConfirmModal
+                    title="Switch to General Mode?"
+                    message="This will deactivate course mode. Your progress is kept — you can reactivate anytime with the course password."
+                    confirmLabel="Switch to General"
+                    cancelLabel="Stay in Course"
+                    onConfirm={() => {
+                        dispatch({ type: 'DEACTIVATE_COURSE' });
+                        setShowDeactivateConfirm(false);
+                        feedback.tap();
+                    }}
+                    onCancel={() => setShowDeactivateConfirm(false)}
+                />
+            )}
 
             {showResetConfirm && (
                 <ConfirmModal
