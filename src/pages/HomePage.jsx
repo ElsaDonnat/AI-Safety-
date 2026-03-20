@@ -125,24 +125,23 @@ export default function HomePage({ onTabChange }) {
                 </div>
             )}
 
-            {/* Continue learning — domain buttons group */}
-            <div className="mb-8 rounded-[3px]" style={{
+            {/* Continue learning banner — full width */}
+            <div className="mb-0 rounded-t-[3px]" style={{
+                backgroundColor: 'var(--color-bronze)',
+                padding: '6px 14px',
+            }}>
+                <span style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 600,
+                    color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.06em',
+                }}>
+                    Continue learning...
+                </span>
+            </div>
+            {/* Domain buttons group — light blue background, no border */}
+            <div className="mb-8 rounded-b-[3px]" style={{
                 backgroundColor: 'rgba(168, 200, 216, 0.12)',
-                border: '1px solid var(--color-warm)',
                 padding: '12px',
             }}>
-                {/* Banner */}
-                <div className="mb-2.5 rounded-[2px]" style={{
-                    backgroundColor: 'var(--color-bronze-light)',
-                    padding: '5px 12px',
-                }}>
-                    <span style={{
-                        fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 600,
-                        color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.06em',
-                    }}>
-                        Continue learning...
-                    </span>
-                </div>
                 {/* Domain buttons */}
                 <div className="flex gap-2">
                     {DOMAINS.map(domain => (
