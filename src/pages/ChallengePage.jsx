@@ -4,7 +4,7 @@ import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame } f
 import { ALL_CONCEPTS } from '../data/concepts';
 import { Button } from '../components/shared';
 import Mascot from '../components/Mascot';
-import { Heart, Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Cog, Trophy, Star, Target, Gamepad2, Medal } from 'lucide-react';
+import { Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Cog, Trophy, Star, Target, Gamepad2, Medal } from 'lucide-react';
 import * as feedback from '../services/feedback';
 import StreakCelebration from '../components/StreakCelebration';
 import FunFactsFlow from '../components/FunFactsFlow';
@@ -86,18 +86,33 @@ const TierIcon = ({ tierId, size = 24, color = '#666' }) => {
 // ─── Views ───────────────────────────────────────────────────
 const VIEW = { HUB: 'hub', SETUP_MULTI: 'setup_multi', GAME: 'game', PASS_PHONE: 'pass_phone', RESULTS: 'results', FUN_FACTS: 'fun_facts' };
 
+// ─── Sharp Heart SVG ─────────────────────────────────────────
+// Angular heart shape to match the site's sharp/editorial aesthetic
+function SharpHeart({ size = 18, filled = false, className = '' }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 20 20" fill="none" className={className}
+            style={{ display: 'block' }}>
+            <path
+                d="M10 17L2.5 9.5C0.5 7.5 0.5 4.2 2.5 2.5C4.5 0.8 7.2 1 9 3L10 4.5L11 3C12.8 1 15.5 0.8 17.5 2.5C19.5 4.2 19.5 7.5 17.5 9.5L10 17Z"
+                fill={filled ? 'var(--color-burgundy)' : 'none'}
+                stroke={filled ? 'var(--color-burgundy)' : 'var(--color-ink-faint)'}
+                strokeWidth="1.2"
+                strokeLinejoin="miter"
+            />
+        </svg>
+    );
+}
+
 // ─── Hearts Component ────────────────────────────────────────
 function Hearts({ current, max = MAX_HEARTS, losingIndex = -1 }) {
     return (
-        <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
             {Array.from({ length: max }, (_, i) => {
                 const isFilled = i < current;
                 const isLosing = i === losingIndex;
                 return (
-                    <Heart key={i} size={20}
-                        fill={isFilled ? 'var(--color-burgundy)' : 'none'}
-                        color={isFilled ? 'var(--color-burgundy)' : 'var(--color-ink-faint)'}
-                        strokeWidth={1.5}
+                    <SharpHeart key={i} size={18}
+                        filled={isFilled}
                         className={isLosing ? 'challenge-heart--losing' : isFilled ? 'challenge-heart--alive' : ''}
                     />
                 );
@@ -224,8 +239,8 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
                 {normalizedOptions.map((opt, i) => {
                     const isSelected = selected === i;
                     const isCorrect = opt.isCorrect;
-                    let bg = 'var(--color-parchment)';
-                    let border = '1px solid rgba(var(--color-ink-rgb), 0.10)';
+                    let bg = 'var(--color-parchment-dark)';
+                    let border = '1px solid var(--color-warm)';
                     let color = 'var(--color-ink)';
                     if (answered) {
                         if (isCorrect) {
@@ -298,8 +313,8 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                 {question.options.map(opt => {
                     const isOutlier = opt.isOutlier;
                     const isSelected = selected === opt.id;
-                    let bg = 'var(--color-parchment)';
-                    let border = '1px solid rgba(var(--color-ink-rgb), 0.10)';
+                    let bg = 'var(--color-parchment-dark)';
+                    let border = '1px solid var(--color-warm)';
                     let color = 'var(--color-ink)';
 
                     if (answered) {
@@ -360,8 +375,8 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                 {question.prompt || 'True or false?'}
             </p>
             <div style={{
-                background: 'var(--color-parchment)',
-                border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                background: 'var(--color-parchment-dark)',
+                border: '1px solid var(--color-warm)',
                 borderRadius: 3,
                 padding: '18px 16px',
                 width: '100%',
@@ -376,8 +391,8 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                     const label = val ? 'True' : 'False';
                     const isSelected = selected === val;
                     const isCorrect = val === question.isTrue;
-                    let bg = 'var(--color-parchment)';
-                    let border = '1px solid rgba(var(--color-ink-rgb), 0.10)';
+                    let bg = 'var(--color-parchment-dark)';
+                    let border = '1px solid var(--color-warm)';
                     let color = 'var(--color-ink)';
 
                     if (answered) {
@@ -1326,13 +1341,11 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 {mode === 'solo' && tierInfo && (
                     <div style={{ marginBottom: 10 }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                            <span style={{
-                                fontSize: '10px', fontWeight: 600, color: 'var(--color-burgundy)',
-                                fontFamily: 'var(--font-mono)', letterSpacing: '0.04em', textTransform: 'uppercase',
-                                background: 'var(--color-burgundy-soft)', padding: '3px 8px', borderRadius: 3,
-                                display: 'inline-flex', alignItems: 'center', gap: 4,
-                            }}>
-                                <TierIcon tierId={tierInfo.tier.id} size={13} color="var(--color-burgundy)" /> {tierInfo.tier.label}
+                            <span
+                                className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-[2px]"
+                                style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)', fontFamily: 'var(--font-mono)' }}
+                            >
+                                <TierIcon tierId={tierInfo.tier.id} size={12} color="var(--color-ink-secondary)" /> {tierInfo.tier.label}
                             </span>
                             <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', letterSpacing: '0.02em' }}>
                                 {questionIndex + 1} / {TOTAL_CHALLENGE_QUESTIONS}
@@ -1389,11 +1402,12 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                 {/* Question card */}
                 <div style={{
-                    background: tierInfo?.tier.id === 'visionary' ? 'rgba(220, 38, 38, 0.04)' : 'var(--color-parchment-dark)',
+                    background: tierInfo?.tier.id === 'visionary' ? 'rgba(220, 38, 38, 0.04)' : 'var(--color-card)',
                     borderRadius: 3,
                     padding: '20px 16px',
                     flex: 1,
-                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.15)' : '1px solid rgba(var(--color-ink-rgb), 0.08)',
+                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.15)' : '1px solid var(--color-warm)',
+                    boxShadow: 'var(--shadow-card)',
                 }}>
                     <ChallengeQuestion
                         key={`q-${questionIndex}-${currentPlayerIndex}`}
