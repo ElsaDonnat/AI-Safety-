@@ -32,7 +32,7 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
     // Variant styles for beige dropdowns
     const variantStyles = {
         default: { bg: 'var(--color-card)', border: 'rgba(var(--color-ink-rgb), 0.1)' },
-        primary: { bg: '#C4B5A4', border: '#A89882' },   // darker beige for Domain
+        primary: { bg: '#5C514A', border: '#4A3F38', text: '#D4C8BD' },   // sidebar brown for Domain
         secondary: { bg: '#D4C8BD', border: '#B8A99A' },  // lighter beige for others
     };
     const vs = variantStyles[variant] || variantStyles.default;
@@ -51,9 +51,9 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                         : (selected && activeColor
                             ? `1px solid color-mix(in srgb, ${activeColor || 'transparent'} 25%, transparent)`
                             : `1px solid ${vs.border}`),
-                    color: selected && activeColor
-                        ? (variant === 'primary' ? '#FFFFFF' : activeColor)
-                        : (variant !== 'default' ? '#5C514A' : 'var(--color-ink-muted)'),
+                    color: variant === 'primary'
+                        ? vs.text
+                        : (selected && activeColor ? activeColor : (variant !== 'default' ? '#5C514A' : 'var(--color-ink-muted)')),
                 }}
             >
                 {selected && activeColor && (
@@ -63,7 +63,7 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                 <ChevronDown size={12} className="flex-shrink-0 ml-auto" style={{
                     transform: open ? 'rotate(180deg)' : 'none',
                     transition: 'transform 0.15s',
-                    color: variant === 'primary' && selected ? '#FFFFFF' : undefined,
+                    color: variant === 'primary' ? '#D4C8BD' : undefined,
                 }} />
             </button>
             {open && (
