@@ -82,17 +82,18 @@ export default function HomePage({ onTabChange }) {
             {/* Progress summary (only if started) */}
             {hasStarted && (
                 <div className="mb-6 px-4 py-4 rounded-[3px]" style={{
-                    backgroundColor: 'var(--color-bronze)',
+                    backgroundColor: 'rgba(168, 200, 216, 0.35)',
+                    border: '1px solid rgba(168, 200, 216, 0.45)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-sidebar-bg)' }}>
                             Your Progress
                         </span>
-                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: '#fff' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
                             {progressPct}%
                         </span>
                     </div>
-                    <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'rgba(255, 255, 255, 0.25)' }}>
+                    <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-parchment)' }}>
                         <div style={{ height: '100%', width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-burgundy)', transition: 'width 0.5s ease-out' }} />
                     </div>
                     <div className="flex justify-between mt-3">
@@ -132,13 +133,13 @@ export default function HomePage({ onTabChange }) {
                         onClick={() => onTabChange('learn')}
                         className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
                         style={{
-                            backgroundColor: domain.color,
-                            border: 'none',
+                            backgroundColor: `${domain.color}60`,
+                            border: `1px solid ${domain.color}80`,
                             cursor: domain.comingSoon ? 'default' : 'pointer',
                             opacity: domain.comingSoon ? 0.5 : 1,
                         }}
                     >
-                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px', color: 'var(--color-sidebar-bg)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
+                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px', color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
                             {domain.title}
                         </p>
                     </button>
