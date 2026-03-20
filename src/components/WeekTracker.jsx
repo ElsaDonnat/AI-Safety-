@@ -4,7 +4,7 @@ import { getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { shareText } from '../services/share';
 import StreakFlame from './StreakFlame';
 import { FLAME_COUNT_COLORS } from '../utils/streakColors';
-import { Check, Star, BookOpen, Share2 } from 'lucide-react';
+import { Check, Zap, BookOpen, Share2 } from 'lucide-react';
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
@@ -199,7 +199,7 @@ export default function WeekTracker({ onClose }) {
                     <div className="flex gap-2">
                         <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                             <div className="flex items-center gap-1.5">
-                                <Star size={16} fill="var(--color-warning)" color="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
+                                <Zap size={16} fill="var(--color-warning)" color="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
                                 <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP} XP</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>total earned</div>

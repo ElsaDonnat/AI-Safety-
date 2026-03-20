@@ -1,5 +1,5 @@
 /**
- * Animate a "+XP" badge from a source element to the TopBar star icon.
+ * Animate a "+XP" badge from a source element to the TopBar XP icon.
  * Uses raw DOM + Web Animations API so it survives React unmounts.
  * Returns a promise that resolves when the animation finishes.
  */
@@ -17,7 +17,7 @@ export function flyXPToStar(sourceEl, amount) {
         const dy = (tr.top + tr.height / 2) - startY;
 
         const flyer = document.createElement('div');
-        flyer.innerHTML = `<span style="display:inline-flex;align-items:center;gap:3px;background:var(--color-parchment);border:2px solid var(--color-bronze);border-radius:20px;padding:4px 10px;font-size:14px;font-weight:700;color:var(--color-burgundy);box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:var(--font-display);">\u2605 +${amount}</span>`;
+        flyer.innerHTML = `<span style="display:inline-flex;align-items:center;gap:3px;background:var(--color-parchment);border:2px solid var(--color-bronze);border-radius:20px;padding:4px 10px;font-size:14px;font-weight:700;color:var(--color-burgundy);box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:var(--font-display);">\u26A1 +${amount}</span>`;
         Object.assign(flyer.style, {
             position: 'fixed',
             left: `${startX}px`,

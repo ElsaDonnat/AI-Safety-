@@ -4,7 +4,7 @@ import AchievementsModal from './AchievementsModal';
 import StreakFlame from './StreakFlame';
 import { FLAME_COUNT_COLORS } from '../utils/streakColors';
 import MatrixTextReveal from './MatrixTextReveal';
-import { Star, Trophy, Settings } from 'lucide-react';
+import { Zap, Trophy, Settings } from 'lucide-react';
 
 function getStreakStatus(lastActiveDate, currentStreak) {
     if (!lastActiveDate || currentStreak === 0) return 'inactive';
@@ -135,7 +135,7 @@ export default function TopBar() {
                         <div id="xp-star-target" className="topbar-stat"
                             onClick={() => window.dispatchEvent(new Event('openWeekTracker'))}
                             style={{ cursor: 'pointer' }}>
-                            <Star size={16} color="var(--color-ink-muted)" fill="var(--color-ink-muted)" strokeWidth={2} style={{ opacity: 0.2 }} />
+                            <Zap size={16} color="var(--color-warning)" fill="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
                             <span style={{ fontFamily: 'var(--font-display)', fontSize: '13px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
                                 {displayXP}
                             </span>
