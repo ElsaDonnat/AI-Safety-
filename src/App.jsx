@@ -36,6 +36,11 @@ export default function App() {
       window.WIDGET_OPEN_TAB = null;
       return 'practice';
     }
+    // Restore tab from history state on reload
+    const saved = window.history.state?.tab;
+    if (saved && ['home', 'learn', 'library', 'practice', 'challenge'].includes(saved)) {
+      return saved;
+    }
     return 'home';
   });
   const activeTabRef = useRef(activeTab);
