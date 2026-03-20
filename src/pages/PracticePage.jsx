@@ -6,6 +6,7 @@ import { generateWhatOptions, generateDescriptionOptions, SCORE_COLORS, getScore
 import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
+import { formatTag } from '../utils/formatTag';
 import Mascot from '../components/Mascot';
 import * as feedback from '../services/feedback';
 import { shareText, buildPracticeShareText } from '../services/share';
@@ -1031,7 +1032,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                         <CategoryTag category={concept.category} />
                                                         {concept.tags && concept.tags.slice(0, 3).map(tag => (
                                                             <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)', color: 'var(--color-ink-muted)' }}>
-                                                                {tag}
+                                                                {formatTag(tag)}
                                                             </span>
                                                         ))}
                                                     </div>
