@@ -46,10 +46,14 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                     backgroundColor: selected && activeColor
                         ? (activeBg || vs.bg)
                         : vs.bg,
-                    border: selected && activeColor
-                        ? `1px solid color-mix(in srgb, ${activeColor || 'transparent'} 25%, transparent)`
-                        : `1px solid ${vs.border}`,
-                    color: selected && activeColor ? activeColor : (variant !== 'default' ? '#5C514A' : 'var(--color-ink-muted)'),
+                    border: variant === 'primary'
+                        ? `1px solid ${vs.border}`
+                        : (selected && activeColor
+                            ? `1px solid color-mix(in srgb, ${activeColor || 'transparent'} 25%, transparent)`
+                            : `1px solid ${vs.border}`),
+                    color: selected && activeColor
+                        ? (variant === 'primary' ? '#FFFFFF' : activeColor)
+                        : (variant !== 'default' ? '#5C514A' : 'var(--color-ink-muted)'),
                 }}
             >
                 {selected && activeColor && (
@@ -59,6 +63,7 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                 <ChevronDown size={12} className="flex-shrink-0 ml-auto" style={{
                     transform: open ? 'rotate(180deg)' : 'none',
                     transition: 'transform 0.15s',
+                    color: variant === 'primary' && selected ? '#FFFFFF' : undefined,
                 }} />
             </button>
             {open && (
