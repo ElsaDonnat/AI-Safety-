@@ -195,7 +195,8 @@ function getInitialState() {
 function calculateOverallMastery(mastery) {
     const scoreMap = { green: 3, yellow: 1, red: 0 };
     const what = scoreMap[mastery.whatScore] ?? 0;
-    const why = scoreMap[mastery.whyScore] ?? 0;
+    // null whyScore = exempt (card has no whyItMatters) → full 3 points
+    const why = mastery.whyScore != null ? (scoreMap[mastery.whyScore] ?? 0) : 3;
     const how = scoreMap[mastery.howScore] ?? 0;
     return what + why + how;
 }

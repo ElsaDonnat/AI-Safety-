@@ -1,13 +1,13 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { getConceptById, getConceptsByIds, ALL_CONCEPTS, CATEGORY_CONFIG } from '../../data/concepts';
-import { generateWhatOptions, generateDescriptionOptions, calculateXP, SCORE_COLORS, shuffle } from '../../data/quiz';
+import { generateWhatOptions, generateDescriptionOptions, generateWhyOptions, calculateXP, SCORE_COLORS, shuffle } from '../../data/quiz';
 import { calculateNextReview } from '../../data/spacedRepetition';
 import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
 import { TOPICS, CHAPTERS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../../data/lessons';
-import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, Zap, Share2 } from 'lucide-react';
+import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, ChevronDown, Zap, Share2 } from 'lucide-react';
 
 // Maps topic icon IDs to Lucide components — matches LearnPage ICON_MAP
 const TOPIC_ICON_MAP = {
@@ -85,9 +85,23 @@ export default function LessonFlow({ lesson, onComplete }) {
     const [shareToast, setShareToast] = useState(false);
     const [streakCelebration, setStreakCelebration] = useState(null);
 
-    const selectedTypes = useMemo(() => {
-        return concepts.map(() => shuffle([...QUESTION_TYPES]));
-    }, [concepts]);
+    const [selectedTypes] = useState(() => {
+        return concepts.map(concept => {
+            if (concept.whyItMatters) {
+                const types = shuffle([...QUESTION_TYPES]);
+                // Bias "why" toward recap slot (position 2) — swap with 60% chance
+                const whyIdx = types.indexOf('why');
+                if (whyIdx < 2 && Math.random() < 0.6) {
+                    [types[whyIdx], types[2]] = [types[2], types[whyIdx]];
+                }
+                return types;
+            }
+            // No whyItMatters — only what/how, pad to 3
+            const types = shuffle(['what', 'how']);
+            types.push(types[Math.floor(Math.random() * 2)]);
+            return types;
+        });
+    });
 
     const learnTypes = useMemo(() => {
         return selectedTypes.map(types => types.slice(0, 2));
@@ -412,6 +426,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                 </div>
                             )}
                             <CardConnections cardId={concept.id} seenCardIds={state.seenCards || []} allConcepts={ALL_CONCEPTS} />
+                            {concept.whyItMatters && <WhyToggle text={concept.whyItMatters} />}
                         </Card>
                     </div>
                 </div>
@@ -650,7 +665,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                     return (
                                         <div key={c.id} className="flex items-center justify-between py-1.5">
                                             <span className="text-xs font-medium truncate flex-1" style={{ color: 'var(--color-ink-secondary)' }}>{c.title}</span>
-                                            <MasteryDots mastery={mastery} size="sm" />
+                                            <MasteryDots mastery={mastery} size="sm" hasWhy={!!c.whyItMatters} />
                                         </div>
                                     );
                                 })}
@@ -740,6 +755,31 @@ function ExitConfirmModal({ show, onConfirm, onCancel }) {
 }
 
 // ═══════════════════════════════════════════════════════
+// WHY IT MATTERS TOGGLE (collapsible on learn card)
+// ═══════════════════════════════════════════════════════
+function WhyToggle({ text }) {
+    const [open, setOpen] = useState(false);
+    return (
+        <div className="mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+            <button
+                onClick={() => setOpen(o => !o)}
+                className="flex items-center gap-1.5 text-xs font-semibold w-full"
+                style={{ color: 'var(--color-burgundy)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
+                <ChevronDown size={14} style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+                Why does this matter?
+            </button>
+            {open && (
+                <p className="text-sm leading-relaxed mt-2 px-3 py-2.5 rounded-[3px] animate-fade-in"
+                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)', color: 'var(--color-ink-secondary)' }}>
+                    {text}
+                </p>
+            )}
+        </div>
+    );
+}
+
+// ═══════════════════════════════════════════════════════
 // MCQ QUIZ QUESTION (what, why, how)
 // ═══════════════════════════════════════════════════════
 function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSkip, descriptionDifficulty = null }) {
@@ -749,6 +789,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
     const [score, setScore] = useState(null);
     const [whatOptions] = useState(() => generateWhatOptions(concept, lessonCardIds));
     const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, ALL_CONCEPTS, descriptionDifficulty));
+    const [whyOptions] = useState(() => concept.whyItMatters ? generateWhyOptions(concept, ALL_CONCEPTS) : null);
 
     const handleAnswer = useCallback((answer, correct) => {
         if (answered) return;
@@ -805,15 +846,15 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
         );
     }
 
-    if (type === 'why') {
+    if (type === 'why' && whyOptions) {
         return (
             <div className="animate-slide-in-right">
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>Why does this matter?</p>
                     <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h3>
-                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>Which description best explains this concept?</p>
+                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>Why does this matter for AI safety?</p>
                     <div className="mcq-options">
-                        {descriptionOptions.map((opt, i) => {
+                        {whyOptions.map((opt, i) => {
                             const isCorrect = opt.isCorrect;
                             const isSelected = selectedAnswer === i;
                             let optStyle = {};
@@ -821,7 +862,7 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
                                 if (isCorrect) optStyle = { backgroundColor: 'rgba(5, 150, 105, 0.1)', borderColor: 'var(--color-success)' };
                                 else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
                             }
-                            return (<button key={i} onClick={() => handleAnswer(i, descriptionOptions.findIndex(o => o.isCorrect))} disabled={answered} className="mcq-option"
+                            return (<button key={i} onClick={() => handleAnswer(i, whyOptions.findIndex(o => o.isCorrect))} disabled={answered} className="mcq-option"
                                 style={{ borderColor: isSelected && !answered ? 'var(--color-burgundy)' : undefined, ...optStyle }}>
                                 <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
                                 {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>{'\u2713 Correct'}</span>}

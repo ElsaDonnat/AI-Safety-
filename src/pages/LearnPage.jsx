@@ -6,6 +6,7 @@ import {
     getTopicsByDomain, getChaptersByTopic, getLessonsByChapter,
 } from '../data/lessons';
 import { getTodaysDailyQuiz } from '../data/dailyQuiz';
+import { getConceptById } from '../data/concepts';
 import { Card, Button, MasteryDots } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
@@ -396,7 +397,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
 
                                                                         {/* Mastery dots for completed */}
                                                                         {isCompleted && lesson.cardIds.length > 0 && (
-                                                                            <MasteryDots mastery={state.cardMastery?.[lesson.cardIds[0]]} size="sm" />
+                                                                            <MasteryDots mastery={state.cardMastery?.[lesson.cardIds[0]]} size="sm" hasWhy={!!getConceptById(lesson.cardIds[0])?.whyItMatters} />
                                                                         )}
 
                                                                         {/* Arrow for next */}

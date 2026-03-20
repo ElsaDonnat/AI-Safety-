@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.0 — Add dedicated "Why It Matters" dimension
+
+### Added
+- New optional `whyItMatters` field on ~53 cards — explains why each concept matters for AI safety, written as indirect clues (same style as quizDescription)
+- "Why does this matter?" expandable toggle on learn cards (only for cards with `whyItMatters`)
+- New `generateWhyOptions()` quiz function with dedicated `WHY_DISTRACTORS` — one plausible-but-wrong distractor per card
+- "Why" quiz questions now use `whyItMatters` content instead of reusing `quizDescription`
+- MasteryDots shows 2 dots (What, How) for cards without `whyItMatters`, 3 dots for cards with it
+
+### Changed
+- Cards without `whyItMatters` are exempt from "why" quiz dimension — null whyScore treated as 3 points in mastery calculation
+- Lesson flow only assigns "why" question type to cards that have `whyItMatters`; biases "why" toward recap slot (60% probability)
+- Practice mode only generates "why" questions for cards with `whyItMatters`
+- Updated CLAUDE.md, CONTENT_GENERATION_PROMPT.md with `whyItMatters` documentation
+
 ## 0.5.4 — Add "Actor" category for organizations and institutions
 
 ### Added

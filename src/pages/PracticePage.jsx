@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { LESSONS, TOPICS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
-import { generateWhatOptions, generateDescriptionOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
+import { generateWhatOptions, generateDescriptionOptions, generateWhyOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
 import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
@@ -182,11 +182,9 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 
         for (const concept of pool) {
             const mastery = state.cardMastery[concept.id];
-            const scores = {
-                what: mastery?.whatScore,
-                why: mastery?.whyScore,
-                how: mastery?.howScore,
-            };
+            const scores = concept.whyItMatters
+                ? { what: mastery?.whatScore, why: mastery?.whyScore, how: mastery?.howScore }
+                : { what: mastery?.whatScore, how: mastery?.howScore };
 
             const scoreOrder = { red: 0, null: 1, undefined: 1, yellow: 2, green: 3 };
             const types = Object.entries(scores)
@@ -882,7 +880,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                                             {concept.title}
                                         </h4>
                                         <div className="flex items-center gap-3 mt-1">
-                                            <MasteryDots mastery={mastery} />
+                                            <MasteryDots mastery={mastery} hasWhy={!!concept.whyItMatters} />
                                             <CategoryTag category={concept.category} />
                                         </div>
                                     </div>
@@ -1003,7 +1001,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     {concept.title}
                                                 </h4>
                                                 <div className="flex items-center gap-3 mt-1">
-                                                    <MasteryDots mastery={mastery} />
+                                                    <MasteryDots mastery={mastery} hasWhy={!!concept.whyItMatters} />
                                                     <span className="text-[10px]" style={{ color: 'var(--color-ink-faint)' }}>
                                                         {collectionSort === 'success'
                                                             ? <><span className="font-bold" style={{ color: 'var(--color-burgundy)' }}>{successRate}%</span> success</>
@@ -1053,7 +1051,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     </div>
                                                     <div className="text-[10px] flex items-center gap-1">
                                                         <span style={{ color: 'var(--color-ink-faint)' }}>Mastery: </span>
-                                                        <MasteryDots mastery={mastery} />
+                                                        <MasteryDots mastery={mastery} hasWhy={!!concept.whyItMatters} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -1256,13 +1254,13 @@ function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAn
     const descDifficulty = (() => {
         if (!cardMastery) return 2;
         const scoreMap = { green: 3, yellow: 1, red: 0 };
-        const overall = (scoreMap[cardMastery.whatScore] ?? 0)
-            + (scoreMap[cardMastery.whyScore] ?? 0)
-            + (scoreMap[cardMastery.howScore] ?? 0);
+        const why = cardMastery.whyScore != null ? (scoreMap[cardMastery.whyScore] ?? 0) : 3;
+        const overall = (scoreMap[cardMastery.whatScore] ?? 0) + why + (scoreMap[cardMastery.howScore] ?? 0);
         return overall >= 5 ? 3 : 2;
     })();
     const [whatOptions] = useState(() => generateWhatOptions(concept, ALL_CONCEPTS.map(c => c.id)));
     const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, ALL_CONCEPTS, descDifficulty));
+    const [whyOptions] = useState(() => concept.whyItMatters ? generateWhyOptions(concept, ALL_CONCEPTS) : null);
 
     const handleMCQ = (answer, correct) => {
         if (answered) return;
@@ -1316,6 +1314,46 @@ function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAn
                                     style={{ ...optStyle }}>
                                     <span className="font-semibold">{opt.title}</span>
                                     {answered && isCorrect && <span className="ml-2 text-xs" style={{ color: 'var(--color-success)' }}>{'\u2713'}</span>}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    {renderFeedback()}
+                </Card>
+                {answered ? (
+                    <div className="pinned-footer flex gap-3">
+                        {onBack && <Button variant="secondary" onClick={onBack}>{'\u2190'} Back</Button>}
+                        <Button className="flex-1" onClick={onNext}>Continue {'\u2192'}</Button>
+                    </div>
+                ) : (
+                    onBack && <div className="pinned-footer"><Button variant="secondary" className="w-full" onClick={onBack}>{'\u2190'} Back</Button></div>
+                )}
+            </div>
+        );
+    }
+
+    if (type === 'why' && whyOptions) {
+        return (
+            <div className="animate-slide-in-right">
+                <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
+                    <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>Why does this matter?</p>
+                    <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h3>
+                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>Why does this matter for AI safety?</p>
+                    <div className="mcq-options">
+                        {whyOptions.map((opt, i) => {
+                            const isCorrect = opt.isCorrect;
+                            const isSelected = selectedAnswer === i;
+                            let optStyle = {};
+                            if (answered) {
+                                if (isCorrect) optStyle = { backgroundColor: 'rgba(5, 150, 105, 0.1)', borderColor: 'var(--color-success)' };
+                                else if (isSelected && !isCorrect) optStyle = { backgroundColor: 'rgba(166, 61, 61, 0.1)', borderColor: 'var(--color-error)' };
+                            }
+                            return (
+                                <button key={i} onClick={() => handleMCQ(i, whyOptions.findIndex(o => o.isCorrect))} disabled={answered}
+                                    className="mcq-option"
+                                    style={{ borderColor: isSelected && !answered ? 'var(--color-primary)' : undefined, ...optStyle }}>
+                                    <span className="leading-relaxed text-sm block" style={{ color: 'var(--color-ink-secondary)' }}>{opt.description}</span>
+                                    {answered && isCorrect && <span className="ml-2 text-xs font-bold mt-1 block" style={{ color: 'var(--color-success)' }}>{'\u2713'} Correct</span>}
                                 </button>
                             );
                         })}

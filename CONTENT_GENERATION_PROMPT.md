@@ -79,6 +79,20 @@ This means every field on a card is directly shown to or quizzed against the use
                                 // - Use vivid examples, scenarios, or distinctive consequences.
                                 // - Must NOT be a copy-paste of `description` — rephrase obliquely.
                                 // - Must NOT be so different that it describes something else.
+  whyItMatters: 'If optimizers can technically achieve a goal while violating what was intended, every increasingly capable system deployed with a misspecified objective amplifies this gap.',
+                                // OPTIONAL. 1-2 sentences. Explains WHY this concept matters for
+                                // AI safety — used in "Why does this matter?" quiz questions.
+                                //
+                                // GUIDELINES:
+                                // - Explain consequences, implications, or stakes — not what it IS.
+                                // - Must NOT overlap with quizDescription (which covers WHAT/HOW).
+                                // - Same clue-like rules: no type-categorizing phrases, no title
+                                //   or close synonyms, lead with effects or scenarios.
+                                // - Only add for cards where "why does this matter?" is a meaningful
+                                //   question. SKIP for: foundational/overview cards, cards where
+                                //   the title IS the reason it matters (e.g., "Existential Risk"),
+                                //   and very broad category cards.
+                                // - ~40 of 60 cards should have this field.
   topic: 'alignment-fundamentals',  // REQUIRED. Must match a TOPICS[].id exactly.
   secondaryTopic: null,         // Optional. A second topic ID, or null.
   category: 'concept',           // REQUIRED. One of: 'concept', 'technique', 'risk', 'regulation', 'practice', 'proposal', 'actor', 'other'
@@ -273,10 +287,11 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 - **Distractors:** Titles of other cards (preferring same-lesson, then same-category).
 - **Implication:** Each card's `title` must be **distinct and unambiguous**. The `quizDescription` must be identifiable without being a giveaway.
 
-### `why` dimension — "Why does X matter?"
-- **Format:** Given the card's `title`, pick the correct `quizDescription` from 4 options.
-- **Distractors:** quizDescriptions from other cards (same category preferred) OR from `DESCRIPTION_DISTRACTORS`.
-- **Implication:** The `quizDescription` should be recognizably about the concept but written as a clue — using examples, consequences, or scenarios rather than a direct definition.
+### `why` dimension — "Why does X matter?" (only for cards with `whyItMatters`)
+- **Format:** Given the card's `title`, pick the correct `whyItMatters` text from 4 options.
+- **Distractors:** `whyItMatters` texts from other cards, plus one custom plausible-but-wrong distractor from `WHY_DISTRACTORS`.
+- **Implication:** The `whyItMatters` text must explain consequences/stakes (not duplicate `quizDescription`). Only ~40 cards have this field — cards without it are exempt from this quiz dimension.
+- **Note:** Cards without `whyItMatters` still get `why` fallback questions using `quizDescription` (same as `how`), but the dedicated "why" quiz with custom distractors only fires when `whyItMatters` exists.
 
 ### `how` dimension — "How does X work?"
 - **Format:** Same as `why` but with `quizDescription` as the correct answer and quizDescriptions of other cards as distractors.

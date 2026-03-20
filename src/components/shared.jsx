@@ -109,7 +109,7 @@ export function DiHBadge({ size = 'sm' }) {
     );
 }
 
-export function MasteryDots({ mastery, size = 'sm' }) {
+export function MasteryDots({ mastery, size = 'sm', hasWhy = true }) {
     const dotSize = size === 'sm' ? 'w-2 h-2' : 'w-3 h-3';
     const gap = size === 'sm' ? 'gap-1' : 'gap-1.5';
 
@@ -120,8 +120,10 @@ export function MasteryDots({ mastery, size = 'sm' }) {
         return 'var(--color-ink-faint)';
     };
 
-    const labels = ['What', 'Why', 'How'];
-    const scores = [mastery?.whatScore, mastery?.whyScore, mastery?.howScore];
+    const labels = hasWhy ? ['What', 'Why', 'How'] : ['What', 'How'];
+    const scores = hasWhy
+        ? [mastery?.whatScore, mastery?.whyScore, mastery?.howScore]
+        : [mastery?.whatScore, mastery?.howScore];
 
     return (
         <div className={`flex items-center ${gap}`} title={scores.map((s, i) => `${labels[i]}: ${s || 'not tested'}`).join(', ')}>

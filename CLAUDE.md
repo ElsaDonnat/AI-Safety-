@@ -83,6 +83,7 @@ Each card teaches one concept. Data shape:
   summary: 'A brief one-line summary shown on card previews',
   description: 'Detailed explanation shown on learn cards...',
   quizDescription: 'Clue-like indirect description used in quizzes (not a definition — uses examples, consequences, or scenarios so the user must recognize the concept). NEVER start with type-categorizing phrases like "This field...", "A system...", "The practice of..." — lead with gerunds, actions, or effects instead.',
+  whyItMatters: 'Optional — explains WHY this concept matters for AI safety. Used in dedicated "why" quiz questions. Only for ~40 cards where the question is meaningful. Clue-like, consequence-focused, must not overlap with quizDescription.',
   topic: 'alignment',          // primary topic
   secondaryTopic: null,        // optional second topic (or null)
   category: 'concept',         // cross-cutting type (see categories)
@@ -131,11 +132,12 @@ Each card is scored on **3 dimensions** (reduced from Chronos's 4):
 | Dimension | What it tests | Quiz format |
 |-----------|--------------|-------------|
 | `what` | Core definition — "What is X?" | MCQ with definition options |
-| `why` | Significance — "Why does X matter for AI safety?" | MCQ with reasoning options |
+| `why` | Significance — "Why does X matter for AI safety?" | MCQ with `whyItMatters` options (only for cards with `whyItMatters` field; cards without are exempt and get 3 free points) |
 | `how` | Mechanics — "How does X work / how to address it?" | MCQ with description options |
 
 Each dimension: `'green'` (3pts) | `'yellow'` (1pt) | `'red'` (0pts) | `null`
 **Overall mastery: 0–9** (3 dimensions × 3 points each)
+Cards without `whyItMatters` treat null whyScore as 3 points (exempt). MasteryDots shows 2 dots for these cards.
 
 > Chronos used 4 dimensions (location, date, what, description) with mastery 0–12.
 > Update ALL references to 4 dimensions → 3, and 0–12 → 0–9.

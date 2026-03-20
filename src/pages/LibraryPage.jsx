@@ -367,7 +367,7 @@ export default function LibraryPage() {
                                 <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-2 mb-1">
                                         <CategoryTag category={concept.category} />
-                                        <MasteryDots mastery={mastery} size="sm" />
+                                        <MasteryDots mastery={mastery} size="sm" hasWhy={!!concept.whyItMatters} />
                                     </div>
                                     <h3 className="font-bold text-sm" style={{ color: 'var(--color-ink)' }}>
                                         {concept.title}

@@ -1,5 +1,5 @@
 import { ALL_CONCEPTS } from './concepts';
-import { DESCRIPTION_DISTRACTORS } from './descriptionDistractors';
+import { DESCRIPTION_DISTRACTORS, WHY_DISTRACTORS } from './descriptionDistractors';
 
 // ─── Fisher-Yates shuffle ────────────────────────────
 export function shuffle(array) {
@@ -102,6 +102,34 @@ export function generateDescriptionOptions(correctConcept, allConcepts = ALL_CON
             description: c.quizDescription || c.description,
             isCorrect: false,
         });
+    }
+
+    return shuffle(options);
+}
+
+// Generate "why" MCQ options — given a concept title, pick the right whyItMatters
+export function generateWhyOptions(correctConcept, allConcepts = ALL_CONCEPTS) {
+    if (!correctConcept.whyItMatters) return null;
+
+    const correctOption = {
+        id: correctConcept.id,
+        description: correctConcept.whyItMatters,
+        isCorrect: true,
+    };
+    const options = [correctOption];
+
+    // Use custom distractor if available (plausible-but-wrong for this specific card)
+    const custom = WHY_DISTRACTORS[correctConcept.id];
+    if (custom) {
+        options.push({ id: correctConcept.id, description: custom.distractor, isCorrect: false });
+    }
+
+    // Fill remaining slots with whyItMatters from other cards
+    const othersWithWhy = allConcepts.filter(c => c.id !== correctConcept.id && c.whyItMatters);
+    const shuffledOthers = shuffle(othersWithWhy);
+    for (const c of shuffledOthers) {
+        if (options.length >= 4) break;
+        options.push({ id: c.id, description: c.whyItMatters, isCorrect: false });
     }
 
     return shuffle(options);
