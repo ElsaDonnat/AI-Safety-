@@ -143,7 +143,7 @@ export default function HomePage({ onTabChange }) {
                 padding: '12px',
             }}>
                 {/* Domain buttons */}
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                     {DOMAINS.map(domain => (
                         <button
                             key={domain.id}
