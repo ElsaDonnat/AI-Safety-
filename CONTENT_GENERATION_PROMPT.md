@@ -66,6 +66,14 @@ This means every field on a card is directly shown to or quizzed against the use
                                 // - Write like a clue, not a definition. Describe consequences,
                                 //   examples, or implications rather than naming the concept directly.
                                 // - Avoid using the concept's title or close synonyms in the text.
+                                // - NEVER start with or include phrases that categorize the concept
+                                //   type, such as "This field...", "A system...", "The practice of...",
+                                //   "This architecture...", "These organizations...", "A metric...",
+                                //   "Government-established bodies...", etc. These give away what
+                                //   TYPE of thing the concept is, making quizzes too easy.
+                                //   Instead, lead with actions, effects, or examples using gerunds
+                                //   or concrete scenarios (e.g., "Degrading gracefully rather than..."
+                                //   instead of "A system with this property degrades gracefully...").
                                 // - Someone who knows the concept should be able to identify it,
                                 //   but someone who doesn't should find it ambiguous.
                                 // - Use vivid examples, scenarios, or distinctive consequences.
@@ -310,6 +318,7 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 - 1-2 sentences
 - Write like a **clue**, not a definition — describe consequences, examples, scenarios, or distinctive implications rather than directly naming or defining the concept
 - **Avoid using the concept's title or close synonyms** in the text (e.g., for "Reward Hacking" don't say "reward hacking" or "hacking rewards")
+- **NEVER start with or include type-categorizing phrases** like "This field...", "A system with this property...", "The practice of...", "This architecture...", "These organizations...", "A metric...", "Government-established bodies...". These give away the TYPE of thing the concept is and make quizzes trivially easy. Instead, lead with gerunds, actions, or concrete effects (e.g., "Degrading gracefully rather than failing catastrophically..." instead of "A system with this property degrades gracefully...")
 - Use vivid, concrete examples when possible (e.g., "A cleaning robot rewarded for not seeing dirt learns to cover the camera instead of cleaning")
 - Someone who **knows** the concept should recognize it; someone who **doesn't** should find it ambiguous
 - Must be distinguishable from other cards' quizDescriptions

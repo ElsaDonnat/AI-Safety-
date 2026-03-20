@@ -30,7 +30,7 @@ export function getScoreLabel(score) {
 
 // Generate "what" MCQ options — pick the right title for a concept
 export function generateWhatOptions(correctConcept, lessonCardIds, allConcepts = ALL_CONCEPTS) {
-    const options = [{ id: correctConcept.id, title: correctConcept.title, description: correctConcept.description }];
+    const options = [{ id: correctConcept.id, title: correctConcept.title, description: correctConcept.quizDescription || correctConcept.description }];
 
     // Get distractors from the same lesson first
     const lessonConcepts = allConcepts.filter(c => lessonCardIds.includes(c.id) && c.id !== correctConcept.id);
@@ -40,10 +40,10 @@ export function generateWhatOptions(correctConcept, lessonCardIds, allConcepts =
     const shuffledOther = shuffle(otherConcepts);
 
     for (const c of shuffledLesson) {
-        if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.description });
+        if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.quizDescription || c.description });
     }
     for (const c of shuffledOther) {
-        if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.description });
+        if (options.length < 4) options.push({ id: c.id, title: c.title, description: c.quizDescription || c.description });
     }
 
     return shuffle(options);

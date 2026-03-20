@@ -42,16 +42,20 @@ A mobile-first web app that teaches AI safety, alignment, governance, and AI pro
 
 ## What You'll Learn
 
-The app currently covers **25 concepts** across **6 topics**:
+The app currently covers **60 concepts** across **10 topics**:
 
 | Topic | What it covers | Cards |
 |-------|---------------|-------|
-| **Value Alignment** | Aligning AI with human values, RLHF, reward hacking, constitutional AI | 7 cards |
-| **Interpretability** | Understanding AI internals, mechanistic interpretability, superposition, feature visualization | 5 cards |
-| **AI Governance** | Regulation, policy frameworks, dual-use technology | 3 cards |
-| **AI Risks** | Existential risk, instrumental convergence | 2 cards |
-| **AI Ethics** | Algorithmic bias, transparency, explainability | 2 cards |
-| **AI Progress** | LLMs, foundation models, compute, scaling laws, emergent abilities, AI agents, frontier models, AGI | 10 cards |
+| **AI Basics** | Artificial intelligence, machine learning, deep learning, NLP, neural networks, computer vision | 6 cards |
+| **AI Progress** | LLMs, foundation models, scaling laws, benchmarks, emergent abilities, AI labs | 6 cards |
+| **AI Concepts** | Training & inference, supervised/unsupervised/reinforcement learning, transformers, fine-tuning | 6 cards |
+| **Advanced AI** | AGI, superintelligence, narrow AI, AI agents, frontier models, compute | 6 cards |
+| **Alignment Fundamentals** | The alignment problem, instrumental convergence, Goodhart's law, corrigibility, mesa-optimization, reward hacking | 6 cards |
+| **AI Risk** | Existential risk, misuse & dual-use, deceptive alignment, specification gaming, power-seeking AI, catastrophic risk | 6 cards |
+| **Safety Techniques** | RLHF, constitutional AI, interpretability, red teaming, scalable oversight, AI governance | 6 cards |
+| **AI Ethics** | AI ethics, algorithmic bias, AI fairness, concentration of power, race dynamics, value lock-in | 6 cards |
+| **Global AI Policy** | AI regulation, EU AI Act, responsible scaling, AI safety institutes, international coordination, open vs. closed AI | 6 cards |
+| **AI Security** | AI robustness, hallucination, adversarial examples, prompt injection, jailbreaking, distribution shift | 6 cards |
 
 Each topic starts with a foundational lesson that introduces the big idea, followed by deeper lessons on specific concepts.
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.2 — Remove type-categorizing phrases from quiz clues
+
+### Changed
+- Rewrote 21 `quizDescription` values that gave away the concept type by starting with phrases like "This field...", "A system with this property...", "These organizations...", "The practice of..." — now lead with gerunds, actions, or concrete effects instead
+- Fixed `generateWhatOptions` in quiz.js to use `quizDescription` instead of `description` for all option data (correct answer and distractors)
+- Updated CONTENT_GENERATION_PROMPT.md with explicit rule against type-categorizing phrases in quizDescriptions
+- Updated CLAUDE.md card data shape to document the anti-pattern
+
 ## 0.5.1 — Quiz descriptions rewritten as clues
 
 ### Changed

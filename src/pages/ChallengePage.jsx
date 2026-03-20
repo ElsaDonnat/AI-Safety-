@@ -1440,9 +1440,18 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <Mascot mood={soloScore >= 10 ? 'celebrating' : soloScore >= 5 ? 'happy' : 'sad'} size={48} />
                     </div>
 
-                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)', marginBottom: 8, letterSpacing: '-0.02em' }}>
-                        {isPerfect ? 'Perfect Run!' : 'Game Over!'}
-                    </h2>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 8 }}>
+                        {isPerfect ? (
+                            <Trophy size={22} color="#FFD700" strokeWidth={2} />
+                        ) : soloScore >= 10 ? (
+                            <Medal size={22} color="#FFD700" strokeWidth={2} />
+                        ) : soloScore >= 5 ? (
+                            <Medal size={22} color="#C0C0C0" strokeWidth={2} />
+                        ) : null}
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
+                            {isPerfect ? 'Perfect Run!' : 'Game Over!'}
+                        </h2>
+                    </div>
 
                     {/* Tier reached badge */}
                     <div style={{
@@ -1574,8 +1583,10 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
             if (b.score !== a.score) return b.score - a.score;
             return b.hearts - a.hearts; // tiebreak: more hearts = higher
         });
+        const medalColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
         const podiumColors = ['podium-bar--gold', 'podium-bar--silver', 'podium-bar--bronze'];
-        const podiumHeights = [120, 90, 70];
+        const podiumHeights = [130, 96, 72];
+        const showPodium = sorted.length >= 2;
 
         return (
             <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in" style={{ textAlign: 'center' }}>
@@ -1585,56 +1596,79 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     <Mascot mood="celebrating" size={44} />
                 </div>
 
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)', marginBottom: 16, letterSpacing: '-0.02em' }}>
-                    {sorted[0]?.name} wins!
-                </h2>
-
-                {/* Podium */}
-                <div className="podium-bars" style={{ marginBottom: 24 }}>
-                    {sorted.slice(0, 3).map((player, i) => {
-                        // Show 2nd, 1st, 3rd order for visual podium
-                        const displayOrder = [1, 0, 2];
-                        const displayIdx = displayOrder[i] !== undefined ? displayOrder[i] : i;
-                        const p = sorted[displayIdx];
-                        if (!p) return null;
-
-                        return (
-                            <div
-                                key={displayIdx}
-                                className={`podium-bar ${podiumColors[displayIdx] || ''}`}
-                                style={{ height: podiumHeights[displayIdx] || 60, order: i, borderRadius: 3 }}
-                            >
-                                <span>
-                                    <Medal size={20} color={displayIdx === 0 ? '#FFD700' : displayIdx === 1 ? '#C0C0C0' : '#CD7F32'} strokeWidth={2} />
-                                </span>
-                                <span style={{ fontSize: '0.82rem', fontWeight: 600, fontFamily: 'var(--font-display)' }}>{p.name}</span>
-                                <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.8)' }}>{p.score} pts</span>
-                            </div>
-                        );
-                    })}
+                {/* Trophy + Winner */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 20 }}>
+                    <Trophy size={24} color="#FFD700" strokeWidth={2} />
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
+                        {sorted[0]?.name} wins!
+                    </h2>
                 </div>
+
+                {/* Podium — only show when 2+ players */}
+                {showPodium && (
+                    <div className="podium-bars" style={{ marginBottom: 24 }}>
+                        {/* Render in visual order: 2nd, 1st, 3rd */}
+                        {[1, 0, 2].map((rank, visualIdx) => {
+                            const p = sorted[rank];
+                            if (!p) return null;
+
+                            return (
+                                <div
+                                    key={rank}
+                                    className={`podium-bar ${podiumColors[rank] || ''}`}
+                                    style={{ height: podiumHeights[rank] || 60, order: visualIdx, borderRadius: '4px 4px 0 0' }}
+                                >
+                                    <div style={{
+                                        width: 28, height: 28, borderRadius: '50%',
+                                        background: `${medalColors[rank]}20`,
+                                        border: `2px solid ${medalColors[rank]}`,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        marginBottom: 4, flexShrink: 0,
+                                    }}>
+                                        <Medal size={14} color={medalColors[rank]} strokeWidth={2.5} />
+                                    </div>
+                                    <span style={{ fontSize: '0.82rem', fontWeight: 600, fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>{p.name}</span>
+                                    <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.8)', marginTop: 2 }}>{p.score} pts</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
 
                 {/* Full leaderboard */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 20 }}>
-                    {sorted.map((p, i) => (
-                        <div key={i} style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            background: i === 0 ? 'rgba(255, 215, 0, 0.06)' : 'var(--color-card)',
-                            border: '1px solid var(--color-warm)',
-                            borderRadius: 3,
-                            padding: '8px 14px',
-                            boxShadow: i === 0 ? 'none' : 'var(--shadow-card)',
-                        }}>
-                            <span style={{ fontWeight: 600, fontFamily: 'var(--font-display)', fontSize: '0.88rem', color: 'var(--color-ink)' }}>
-                                {i + 1}. {p.name}
-                            </span>
-                            <span style={{ fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', fontSize: '0.88rem' }}>
-                                {p.score} <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>pts</span>
-                            </span>
-                        </div>
-                    ))}
+                    {sorted.map((p, i) => {
+                        const isTopThree = i < 3;
+                        const bgColors = ['rgba(255, 215, 0, 0.06)', 'rgba(192, 192, 192, 0.06)', 'rgba(205, 127, 50, 0.06)'];
+                        return (
+                            <div key={i} style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                background: isTopThree ? bgColors[i] : 'var(--color-card)',
+                                border: `1px solid ${isTopThree ? `${medalColors[i]}30` : 'var(--color-warm)'}`,
+                                borderRadius: 3,
+                                padding: '8px 14px',
+                                boxShadow: 'var(--shadow-card)',
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    {isTopThree ? (
+                                        <Medal size={16} color={medalColors[i]} strokeWidth={2} />
+                                    ) : (
+                                        <span style={{ width: 16, textAlign: 'center', fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>
+                                            {i + 1}
+                                        </span>
+                                    )}
+                                    <span style={{ fontWeight: 600, fontFamily: 'var(--font-display)', fontSize: '0.88rem', color: 'var(--color-ink)' }}>
+                                        {p.name}
+                                    </span>
+                                </div>
+                                <span style={{ fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', fontSize: '0.88rem' }}>
+                                    {p.score} <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>pts</span>
+                                </span>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Buttons */}
