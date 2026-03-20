@@ -30,7 +30,7 @@ const RATING_MILESTONE = 3; // Show rating prompt after completing 3 lessons
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.elsadonnat.aisafety';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState(() => {
+  const [activeTab, setActiveTabRaw] = useState(() => {
     // Cold-start: widget may have set this global before React mounted
     if (window.WIDGET_OPEN_TAB === 'practice') {
       window.WIDGET_OPEN_TAB = null;
@@ -38,6 +38,16 @@ export default function App() {
     }
     return 'home';
   });
+  const activeTabRef = useRef(activeTab);
+
+  // Wrap setActiveTab to push browser history entries
+  const setActiveTab = useCallback((tab) => {
+    // Skip if popstate already set this (avoid double-push)
+    if (tab === activeTabRef.current) return;
+    activeTabRef.current = tab;
+    setActiveTabRaw(tab);
+    window.history.pushState({ type: 'tab', tab }, '');
+  }, []);
   const [inSession, setInSession] = useState(false);
   const [showWeekTracker, setShowWeekTracker] = useState(false);
   const { state, dispatch } = useApp();
@@ -123,6 +133,45 @@ export default function App() {
     mainRef.current?.scrollTo(0, 0);
   }, [activeTab]);
 
+  // ─── Browser history integration ─────────────────────────────────
+  // Replace the initial history entry so we own it
+  useEffect(() => {
+    window.history.replaceState({ type: 'tab', tab: activeTab }, '');
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Handle browser/phone back button (popstate)
+  useEffect(() => {
+    const handlePopState = (e) => {
+      // 1. Settings open → close settings, re-push so we don't lose a history slot
+      if (state.settingsOpen) {
+        window.history.pushState(e.state || { type: 'tab', tab: activeTab }, '');
+        dispatch({ type: 'TOGGLE_SETTINGS' });
+        return;
+      }
+      // 2. Child page has a back handler (lesson flow, practice session, etc.)
+      if (backHandlerRef.current) {
+        backHandlerRef.current();
+        return;
+      }
+      // 3. Navigate to the tab from history state, or go home
+      // Use setActiveTabRaw to avoid pushing another history entry
+      const targetTab = e.state?.tab || 'home';
+      if (targetTab !== activeTab) {
+        activeTabRef.current = targetTab;
+        setActiveTabRaw(targetTab);
+      } else if (activeTab !== 'home') {
+        activeTabRef.current = 'home';
+        setActiveTabRaw('home');
+        window.history.replaceState({ type: 'tab', tab: 'home' }, '');
+      } else {
+        // Already on home with no back handler — push state back to prevent leaving
+        window.history.pushState({ type: 'tab', tab: 'home' }, '');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [activeTab, state.settingsOpen, dispatch]);
+
   // Android hardware back button
   useEffect(() => {
     const listener = CapApp.addListener('backButton', () => {
@@ -150,6 +199,8 @@ export default function App() {
 
   const registerBackHandler = useCallback((handler) => {
     backHandlerRef.current = handler;
+    // Push a history entry so browser back triggers the handler
+    window.history.pushState({ type: 'subflow' }, '');
     return () => { backHandlerRef.current = null; };
   }, []);
 
