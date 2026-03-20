@@ -383,9 +383,24 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                 width: '100%',
                 textAlign: 'center',
             }}>
-                <p style={{ fontSize: '0.88rem', fontFamily: 'var(--font-sans)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
-                    &ldquo;{question.statement}&rdquo;
-                </p>
+                {(() => {
+                    const colonIdx = question.statement.indexOf(': ');
+                    if (colonIdx === -1) return (
+                        <p style={{ fontSize: '0.88rem', fontFamily: 'var(--font-sans)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
+                            &ldquo;{question.statement}&rdquo;
+                        </p>
+                    );
+                    const title = question.statement.slice(0, colonIdx);
+                    const body = question.statement.slice(colonIdx + 2);
+                    return (<>
+                        <p style={{ fontSize: '0.82rem', fontFamily: 'var(--font-display)', fontWeight: 600, color: 'var(--color-ink-secondary)', marginBottom: '8px', letterSpacing: '-0.01em' }}>
+                            {title}
+                        </p>
+                        <p style={{ fontSize: '0.88rem', fontFamily: 'var(--font-sans)', fontStyle: 'italic', color: 'var(--color-ink)', lineHeight: 1.6 }}>
+                            &ldquo;{body}&rdquo;
+                        </p>
+                    </>);
+                })()}
             </div>
             <div style={{ display: 'flex', gap: 8, width: '100%' }}>
                 {[true, false].map(val => {
