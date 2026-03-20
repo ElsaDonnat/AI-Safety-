@@ -10,7 +10,7 @@ import {
     requestNotificationPermission,
 } from '../services/notifications';
 import * as feedback from '../services/feedback';
-import { X, Clock, Sun, Volume2, Music, Smartphone, Download, Upload, MessageCircle, Coffee, GraduationCap, Lock, Check, ChevronDown } from 'lucide-react';
+import { X, Clock, Sun, Volume2, Music, Smartphone, Download, Upload, MessageCircle, Coffee, GraduationCap, Lock, Check, ChevronDown, Zap } from 'lucide-react';
 import { COURSES, validateCoursePassword, getCourseById } from '../data/courseConfig';
 
 const STORAGE_KEY = 'aisafety-state-v1';
@@ -186,7 +186,10 @@ export default function Settings() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
+                        <div className="flex items-center justify-center gap-1.5">
+                            <Zap size={20} color="var(--color-warning)" fill="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
+                        </div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Total XP</div>
                     </Card>
                     <Card className="text-center p-4">
