@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.8.0 — Course companion mode: full implementation
+
+### Added
+- **Course data architecture** — `src/data/courses/ml4g.js` (ML4G course definition with modules, lessons, card overrides) and `src/data/courses/index.js` (course registry, card resolution, course card set derivation)
+- **Card override system** — `resolveCard()` and `resolveAllConcepts()` utilities that apply course-specific field overrides (e.g., `whyItMatters`, `quizDescription`) via shallow merge. Routed through all quiz generation and card display paths.
+- **Learn page course view** — When course mode is active, a Course/General tab selector appears. Course view shows modules as expandable sections with per-module and per-lesson progress derived from card-level completion.
+- **Course-scoped practice** — New "Course Cards" practice mode in the Practice hub that filters the quiz pool to only cards from the active course's modules.
+- **`LessonRow` component** — Extracted reusable lesson row from the general view for use in both course and general Learn page views.
+- **`getCourseCardIds()`** — Derives the set of all card IDs belonging to a course (used for practice filtering).
+- **`setActiveConcepts()`** in challengeQuiz.js — Allows challenge mode to use resolved concepts with course overrides.
+- Test fixture in `ml4g.js`: 2 modules with 4 lessons referencing existing cards, 1 `cardOverrides` entry for c501.
+
+### Changed
+- `courseConfig.js` — Updated header comments to reference `src/data/courses/` for content definitions.
+- `LessonFlow.jsx` — Quiz generation (`QuizQuestion`) now receives resolved concepts via `allConcepts` prop; `CardConnections` also uses resolved concepts.
+- `PracticePage.jsx` — `learnedConcepts`, `starredConcepts`, and `PracticeQuestion` now use resolved concepts with course overrides.
+- `ChallengePage.jsx` — Sets active concepts for challenge generation based on course mode.
+- `DailyQuizFlow.jsx` — Concepts and wrong title generation use resolved concepts.
+- `LibraryPage.jsx` — Card display uses resolved concepts.
+- `challengeQuiz.js` — All generator functions use `_activeConcepts` instead of `ALL_CONCEPTS` directly.
+
 ## 0.7.0 — Course companion mode
 
 ### Added

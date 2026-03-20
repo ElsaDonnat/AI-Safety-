@@ -1,9 +1,11 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
+import { resolveCard, resolveAllConcepts, getCourseCardIds } from '../data/courses/index';
+import { getCourseById } from '../data/courseConfig';
 import { LESSONS, TOPICS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
 import { generateWhatOptions, generateDescriptionOptions, generateWhyOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
-import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3, GraduationCap } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
 import Mascot from '../components/Mascot';
@@ -77,15 +79,24 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
         }
     }, [view, registerBackHandler]);
 
+    // ─── Resolved concepts (with course overrides) ───
+    const resolvedAllConcepts = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
+
     // ─── Derived data ────────────────────────────────
     const learnedConcepts = useMemo(() => {
-        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS;
-        return (state.seenCards || []).map(id => getConceptById(id)).filter(Boolean);
-    }, [state.seenCards]);
+        if (DEV_UNLOCK_ALL) return resolvedAllConcepts;
+        return (state.seenCards || []).map(id => {
+            const base = getConceptById(id);
+            return base ? resolveCard(base, state.courseMode) : null;
+        }).filter(Boolean);
+    }, [state.seenCards, resolvedAllConcepts, state.courseMode]);
 
     const starredConcepts = useMemo(() => {
-        return (state.starredCards || []).map(id => getConceptById(id)).filter(Boolean);
-    }, [state.starredCards]);
+        return (state.starredCards || []).map(id => {
+            const base = getConceptById(id);
+            return base ? resolveCard(base, state.courseMode) : null;
+        }).filter(Boolean);
+    }, [state.starredCards, state.courseMode]);
 
     const conceptStats = useMemo(() => {
         return learnedConcepts.map(c => {
@@ -254,6 +265,23 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
         startSession(`${labels[difficultyLevel]} Concepts`, pool);
     };
 
+    // ─── Course-scoped practice ─────────────────────
+    const courseCardIds = useMemo(() => {
+        if (!state.courseMode) return new Set();
+        return getCourseCardIds(state.courseMode.courseId);
+    }, [state.courseMode]);
+
+    const courseLearnedConcepts = useMemo(() => {
+        if (!state.courseMode || courseCardIds.size === 0) return [];
+        return learnedConcepts.filter(c => courseCardIds.has(c.id));
+    }, [learnedConcepts, courseCardIds, state.courseMode]);
+
+    const startCoursePractice = () => {
+        if (courseLearnedConcepts.length === 0) return;
+        const courseName = getCourseById(state.courseMode?.courseId)?.name || 'Course';
+        startSession(`${courseName} Review`, courseLearnedConcepts);
+    };
+
     // ─── No concepts learned ──────────────────────────
     if (learnedConcepts.length === 0) {
         return (
@@ -367,6 +395,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                             cardMastery={state.cardMastery[q.concept.id]}
                             isStarred={(state.starredCards || []).includes(q.concept.id)}
                             onToggleStar={() => dispatch({ type: 'TOGGLE_STAR', cardId: q.concept.id })}
+                            allConcepts={resolvedAllConcepts}
                             onAnswer={(score) => {
                                 setResults(prev => [...prev, { cardId: q.concept.id, type: q.type, score }]);
                                 dispatch({
@@ -675,6 +704,9 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     onStartByDifficulty={startByDifficulty}
                     learnedConcepts={learnedConcepts}
                     learnedCount={learnedConcepts.length}
+                    courseMode={state.courseMode}
+                    courseLearnedCount={courseLearnedConcepts.length}
+                    onStartCoursePractice={startCoursePractice}
                 />
             ) : (
                 <CollectionView
@@ -695,11 +727,40 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
 // ═══════════════════════════════════════════════════════
 // HUB VIEW — Practice mode cards
 // ═══════════════════════════════════════════════════════
-function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, dispatch, onStartSpacedReview, onStartFavorites, onOpenLessonPicker, onStartByDifficulty, learnedConcepts }) {
+function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, dispatch, onStartSpacedReview, onStartFavorites, onOpenLessonPicker, onStartByDifficulty, learnedConcepts, courseMode, courseLearnedCount, onStartCoursePractice }) {
     const [showClearStarsConfirm, setShowClearStarsConfirm] = useState(false);
+    const courseMeta = courseMode ? getCourseById(courseMode.courseId) : null;
 
     return (
         <div className="space-y-3">
+            {/* Course Cards Practice (only when course mode is active) */}
+            {courseMode && courseMeta && (
+                <Card
+                    onClick={courseLearnedCount > 0 ? onStartCoursePractice : undefined}
+                    className="lesson-card-row p-4"
+                    style={{ opacity: courseLearnedCount > 0 ? 1 : 0.5 }}
+                >
+                    <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: 'rgba(99, 102, 184, 0.1)' }}>
+                            <GraduationCap size={20} color="#6366B8" strokeWidth={2} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>{courseMeta.name} Cards</h3>
+                            <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
+                                {courseLearnedCount > 0
+                                    ? `Practice ${courseLearnedCount} course card${courseLearnedCount !== 1 ? 's' : ''} only`
+                                    : 'Complete course lessons to unlock'
+                                }
+                            </p>
+                        </div>
+                        {courseLearnedCount > 0 && (
+                            <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2} className="mt-2 flex-shrink-0" />
+                        )}
+                    </div>
+                </Card>
+            )}
+
             {/* Spaced Review */}
             <Card onClick={onStartSpacedReview} className="lesson-card-row p-4">
                 <div className="flex items-start gap-3">
@@ -1245,7 +1306,7 @@ function PracticeMatchQuestion({ question, onAnswer, onNext, onBack }) {
 // ═══════════════════════════════════════════════════════
 // PRACTICE QUESTION — individual question card
 // ═══════════════════════════════════════════════════════
-function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAnswer, onNext, onBack }) {
+function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAnswer, onNext, onBack, allConcepts = ALL_CONCEPTS }) {
     const { concept, type } = question;
     const [answered, setAnswered] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -1258,9 +1319,9 @@ function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAn
         const overall = (scoreMap[cardMastery.whatScore] ?? 0) + why + (scoreMap[cardMastery.howScore] ?? 0);
         return overall >= 5 ? 3 : 2;
     })();
-    const [whatOptions] = useState(() => generateWhatOptions(concept, ALL_CONCEPTS.map(c => c.id)));
-    const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, ALL_CONCEPTS, descDifficulty));
-    const [whyOptions] = useState(() => concept.whyItMatters ? generateWhyOptions(concept, ALL_CONCEPTS) : null);
+    const [whatOptions] = useState(() => generateWhatOptions(concept, allConcepts.map(c => c.id), allConcepts));
+    const [descriptionOptions] = useState(() => generateDescriptionOptions(concept, allConcepts, descDifficulty));
+    const [whyOptions] = useState(() => concept.whyItMatters ? generateWhyOptions(concept, allConcepts) : null);
 
     const handleMCQ = (answer, correct) => {
         if (answered) return;

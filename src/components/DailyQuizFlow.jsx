@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { getTodaysDailyQuiz, DAILY_QUIZ_XP_PER_CORRECT } from '../data/dailyQuiz';
-import { getConceptsByIds } from '../data/concepts';
-import { ALL_CONCEPTS } from '../data/concepts';
+import { getConceptsByIds, ALL_CONCEPTS } from '../data/concepts';
+import { resolveCard, resolveAllConcepts } from '../data/courses/index';
 import { Card, Button, ProgressBar, StarButton } from './shared';
 import Mascot from './Mascot';
 import { shareText, buildDailyQuizShareText } from '../services/share';
@@ -12,8 +12,8 @@ import { ChevronLeft, Calendar, Check, X as XIcon, Share2 } from 'lucide-react';
 
 const PHASES = { INTRO: 'intro', QUIZ: 'quiz', RESULTS: 'results' };
 
-function generateWrongTitles(correctId, count = 3) {
-    const others = ALL_CONCEPTS.filter(c => c.id !== correctId);
+function generateWrongTitles(correctId, allConcepts, count = 3) {
+    const others = allConcepts.filter(c => c.id !== correctId);
     const shuffled = [...others].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count).map(c => c.title);
 }
@@ -33,7 +33,11 @@ function shuffleOptions(correct, wrongs) {
 export default function DailyQuizFlow({ onComplete }) {
     const { state, dispatch } = useApp();
     const dailyData = getTodaysDailyQuiz();
-    const events = useMemo(() => getConceptsByIds(dailyData.cardIds || []), [dailyData]);
+    const resolvedAll = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
+    const events = useMemo(() => {
+        const base = getConceptsByIds(dailyData.cardIds || []);
+        return base.map(c => resolveCard(c, state.courseMode));
+    }, [dailyData, state.courseMode]);
 
     const [phase, setPhase] = useState(PHASES.INTRO);
     const [quizIndex, setQuizIndex] = useState(0);
@@ -47,8 +51,8 @@ export default function DailyQuizFlow({ onComplete }) {
 
     // Shuffle options once per question
     const shuffledOptions = useMemo(() => {
-        return events.map(event => shuffleOptions(event.title, event.wrongTitles || generateWrongTitles(event.id)));
-    }, [events]);
+        return events.map(event => shuffleOptions(event.title, event.wrongTitles || generateWrongTitles(event.id, resolvedAll)));
+    }, [events, resolvedAll]);
 
     useEffect(() => {
         sessionStartTime.current = Date.now();

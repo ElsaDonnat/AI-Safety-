@@ -192,21 +192,25 @@ courseMode: {
 }
 ```
 
-#### Architecture (Future)
+#### Architecture
 
-When course mode is active, the app can:
-- **Reorder/filter lessons** to match the course syllabus
-- **Tag cards** with course-specific tags (e.g., `ml4g-week-1`) to group content by course week/module
-- **Show course-specific lessons** that use the same cards but in a different sequence or with different emphasis
-- **Provide alternate card variants** for concepts that need course-specific framing
+When course mode is active, the app:
+- **Shows a Course/General toggle** on the Learn page — course view displays modules → lessons; general view shows the standard domain → topic hierarchy
+- **Resolves card overrides** — `resolveCard()` applies course-specific field overrides (e.g., `whyItMatters`, `quizDescription`) via shallow merge. Used in all quiz generation and card display paths.
+- **Derives course card sets** — `getCourseCardIds()` computes the set of all card IDs in a course (used for practice filtering)
+- **Filters practice sessions** — a "Course Cards" practice mode scopes the quiz pool to only cards from the active course
+- **Tracks progress at card level** — card mastery, seen cards, and SR schedule are global; course/module/lesson completion is derived from card-level state
 
-The course configuration lives in `src/data/courseConfig.js`. Card/lesson overrides per course are **not yet implemented** — only the Settings UI and state management are in place.
+Course lessons reference existing card IDs from the main card registry — no card duplication. If a course needs a card that doesn't exist, create it in the main registry first. `cardOverrides` is a shallow merge — only specified fields get replaced.
 
 #### Files
 
-- `src/data/courseConfig.js` — Course definitions, password validation
+- `src/data/courseConfig.js` — Course metadata, password hashes, validation
+- `src/data/courses/index.js` — Course content registry, `resolveCard()`, `resolveAllConcepts()`, `getCourseCardIds()`
+- `src/data/courses/ml4g.js` — ML4G course definition (modules, lessons, card overrides)
 - `src/components/Settings.jsx` — Course mode UI (unlock, deactivate)
 - `src/context/AppContext.jsx` — `ACTIVATE_COURSE` / `DEACTIVATE_COURSE` actions, `courseMode` state
+- `src/pages/LearnPage.jsx` — Course/General view toggle, `CourseView` and `LessonRow` components
 
 ### Lesson Flow
 

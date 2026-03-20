@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame } from '../data/challengeQuiz';
+import { TIERS, TOTAL_CHALLENGE_QUESTIONS, MAX_HEARTS, generateChallengeGame, setActiveConcepts } from '../data/challengeQuiz';
 import { ALL_CONCEPTS } from '../data/concepts';
+import { resolveAllConcepts } from '../data/courses/index';
 import { Button } from '../components/shared';
 import Mascot from '../components/Mascot';
 import { Zap, Users, Lightbulb, ChevronRight, Flame, BookOpen, GraduationCap, Cog, Trophy, Star, Target, Gamepad2, Medal } from 'lucide-react';
@@ -498,6 +499,13 @@ const CHALLENGE_TINT = 'rgba(var(--color-ink-rgb), 0.36)';
 
 export default function ChallengePage({ onSessionChange, registerBackHandler }) {
     const { state, dispatch } = useApp();
+
+    // Set active concepts for challenge generation (supports course overrides)
+    useEffect(() => {
+        setActiveConcepts(resolveAllConcepts(ALL_CONCEPTS, state.courseMode));
+        return () => setActiveConcepts(ALL_CONCEPTS);
+    }, [state.courseMode]);
+
     const [view, setView] = useState(VIEW.HUB);
     const [mode, setMode] = useState(null);         // 'solo' | 'multiplayer'
     const [players, setPlayers] = useState([]);

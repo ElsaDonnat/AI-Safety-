@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
+import { resolveAllConcepts } from '../data/courses/index';
 import { TOPICS, DOMAINS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
 import { Star, BookOpen, ChevronDown, X } from 'lucide-react';
@@ -119,11 +120,12 @@ export default function LibraryPage() {
     const [showStarredOnly, setShowStarredOnly] = useState(false);
 
     const seenCards = useMemo(() => state.seenCards || [], [state.seenCards]);
+    const resolvedAll = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
 
     const discoveredConcepts = useMemo(() => {
-        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS;
-        return ALL_CONCEPTS.filter(c => seenCards.includes(c.id));
-    }, [seenCards]);
+        if (DEV_UNLOCK_ALL) return resolvedAll;
+        return resolvedAll.filter(c => seenCards.includes(c.id));
+    }, [seenCards, resolvedAll]);
 
     const starredCards = useMemo(() => state.starredCards || [], [state.starredCards]);
 
@@ -410,7 +412,7 @@ export default function LibraryPage() {
                                     )}
                                     <CardConnections
                                         cardId={concept.id}
-                                        allConcepts={ALL_CONCEPTS}
+                                        allConcepts={resolvedAll}
                                         onCardClick={(id) => setExpandedCard(id)}
                                     />
                                 </div>
