@@ -82,11 +82,12 @@ export default function HomePage({ onTabChange }) {
             {/* Progress summary (only if started) */}
             {hasStarted && (
                 <div className="mb-6 px-4 py-4 rounded-[3px]" style={{
-                    backgroundColor: 'rgba(168, 200, 216, 0.35)',
-                    border: '1px solid rgba(168, 200, 216, 0.45)',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                    boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-sidebar-bg)' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink-secondary)' }}>
                             Your Progress
                         </span>
                         <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
@@ -98,26 +99,26 @@ export default function HomePage({ onTabChange }) {
                     </div>
                     <div className="flex justify-between mt-3">
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-sidebar-bg)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink-secondary)' }}>
                                 {completedCount}
                             </span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
                                 lessons
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-sidebar-bg)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink-secondary)' }}>
                                 {learnedCards}
                             </span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
                                 concepts
                             </span>
                         </div>
                         <div>
-                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-sidebar-bg)' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600, color: 'var(--color-ink-secondary)' }}>
                                 {state.currentStreak}
                             </span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-sidebar-bg)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginLeft: '4px' }}>
                                 day streak
                             </span>
                         </div>
@@ -134,7 +135,7 @@ export default function HomePage({ onTabChange }) {
                         className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
                         style={{
                             backgroundColor: '#FFFFFF',
-                            border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                            border: `1px solid ${domain.color}`,
                             boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
                             cursor: domain.comingSoon ? 'default' : 'pointer',
                             opacity: domain.comingSoon ? 0.5 : 1,
@@ -143,10 +144,8 @@ export default function HomePage({ onTabChange }) {
                         <span style={{
                             fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px',
                             color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3,
-                            borderBottom: `2px solid ${domain.color}`,
-                            paddingBottom: '2px',
                         }}>
-                            {domain.title}
+                            {domain.title}<span style={{ color: domain.color }}>.</span>
                         </span>
                     </button>
                 ))}

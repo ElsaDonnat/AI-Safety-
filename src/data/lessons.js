@@ -8,7 +8,7 @@ export const DOMAINS = [
         title: 'Foundations of AI',
         description: 'Core concepts behind modern AI systems',
         icon: 'foundations',
-        color: '#9BBF7A',
+        color: '#8CB564',
         order: 0,
     },
     {
