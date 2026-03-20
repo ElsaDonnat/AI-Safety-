@@ -133,15 +133,21 @@ export default function HomePage({ onTabChange }) {
                         onClick={() => onTabChange('learn')}
                         className="flex-1 py-3 px-2 rounded-[3px] text-center transition-all active:scale-[0.98]"
                         style={{
-                            backgroundColor: `${domain.color}60`,
-                            border: `1px solid ${domain.color}80`,
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                            boxShadow: '0 2px 6px rgba(44, 36, 32, 0.06)',
                             cursor: domain.comingSoon ? 'default' : 'pointer',
                             opacity: domain.comingSoon ? 0.5 : 1,
                         }}
                     >
-                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px', color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
+                        <span style={{
+                            fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px',
+                            color: 'var(--color-ink-secondary)', letterSpacing: '-0.01em', lineHeight: 1.3,
+                            borderBottom: `2px solid ${domain.color}`,
+                            paddingBottom: '2px',
+                        }}>
                             {domain.title}
-                        </p>
+                        </span>
                     </button>
                 ))}
             </div>
