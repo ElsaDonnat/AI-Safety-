@@ -398,14 +398,14 @@ export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
                 >
                     <ChevronRight size={12} color={CATEGORY_CONFIG[conn.category]?.color || '#999'} strokeWidth={2.5} className="flex-shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
-                            {conn.title}
-                        </span>
                         {conn.relationship && (
-                            <span className="text-[10px] ml-1 px-1.5 py-0.5 rounded-[2px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-faint)' }}>
+                            <span className="text-[10px] mr-1 px-1.5 py-0.5 rounded-[2px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-faint)' }}>
                                 {conn.relationship}
                             </span>
                         )}
+                        <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
+                            {conn.title}
+                        </span>
                     </div>
                 </div>
             ))}
