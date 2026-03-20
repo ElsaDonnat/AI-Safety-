@@ -272,6 +272,11 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
                     );
                 })}
             </div>
+            {answered && question.explanation && !normalizedOptions[selected]?.isCorrect && (
+                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5, marginTop: 4 }}>
+                    {question.explanation}
+                </p>
+            )}
         </div>
     );
 }
@@ -413,8 +418,8 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                     );
                 })}
             </div>
-            {answered && !question.isTrue && question.correction && (
-                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic' }}>
+            {answered && question.correction && (selected !== question.isTrue) && (
+                <p style={{ fontSize: '0.78rem', color: 'var(--color-ink-muted)', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.5 }}>
                     {question.correction}
                 </p>
             )}

@@ -10,8 +10,9 @@
  */
 
 import { ALL_CONCEPTS, CATEGORY_CONFIG } from './concepts';
-import { shuffle } from './quiz';
+import { shuffle, generateDescriptionOptions } from './quiz';
 import { TRUE_FALSE_STATEMENTS } from './trueFalseStatements';
+import { DESCRIPTION_DISTRACTORS } from './descriptionDistractors';
 
 // ─── Tier Configuration ──────────────────────────────
 export const TIERS = [
@@ -19,31 +20,37 @@ export const TIERS = [
         name: 'Beginner',
         count: 5,
         types: ['trueOrFalse', 'hardMCQ'],
+        difficulty: 1,  // easy distractors — you can guess from general knowledge
     },
     {
         name: 'Amateur',
         count: 7,
         types: ['trueOrFalse', 'hardMCQ', 'conceptRelationship'],
+        difficulty: 1,
     },
     {
         name: 'Advanced',
         count: 8,
         types: ['hardMCQ', 'trueOrFalse', 'oddOneOut'],
+        difficulty: 2,  // medium — distractors are from related concepts
     },
     {
         name: 'Expert',
         count: 8,
         types: ['hardMCQ', 'oddOneOut', 'conceptRelationship'],
+        difficulty: 2,
     },
     {
         name: 'Master',
         count: 5,
         types: ['hardMCQ', 'oddOneOut'],
+        difficulty: 3,  // hard — subtle errors that require deep understanding
     },
     {
         name: 'Visionary',
         count: 2,
         types: ['hardMCQ', 'conceptRelationship'],
+        difficulty: 3,
     },
 ];
 
@@ -150,14 +157,43 @@ function generateHardMCQWhat() {
 }
 
 /**
- * Hard MCQ — description subtype: given a title, pick the right description
- * from same-category concepts for harder distractors.
+ * Hard MCQ — description subtype: given a title, pick the right description.
+ * Uses curated distractors from DESCRIPTION_DISTRACTORS when available,
+ * with difficulty-appropriate options. Falls back to same-category descriptions.
+ *
+ * @param {number} difficulty - 1 (easy), 2 (medium), 3 (hard/subtle)
  */
-function generateHardMCQDescription() {
+function generateHardMCQDescription(difficulty = 1) {
     const pool = ALL_CONCEPTS.filter(c => c.description);
     if (pool.length < 2) return null;
 
     const concept = pool[Math.floor(Math.random() * pool.length)];
+    const custom = DESCRIPTION_DISTRACTORS[concept.id];
+
+    // Use curated distractors when available
+    if (custom) {
+        const options = generateDescriptionOptions(concept, ALL_CONCEPTS, difficulty);
+        // Find the distractor entries to attach explanations for d:3
+        const explanations = [];
+        if (difficulty >= 3) {
+            for (const opt of options) {
+                if (opt.isCorrect) continue;
+                const match = custom.distractors.find(d => d.text === opt.description);
+                if (match && match.trap) explanations.push(match.trap);
+            }
+        }
+
+        return {
+            type: 'hardMCQ',
+            subtype: 'description',
+            question: `What does "${concept.title}" refer to?`,
+            options,
+            concept,
+            explanation: explanations.length > 0 ? explanations[0] : null,
+        };
+    }
+
+    // Fallback: same-category distractors
     const sameCategory = pool.filter(c => c.id !== concept.id && c.category === concept.category);
     const otherCategory = pool.filter(c => c.id !== concept.id && c.category !== concept.category);
 
@@ -185,6 +221,7 @@ function generateHardMCQDescription() {
         question: `What does "${concept.title}" refer to?`,
         options,
         concept,
+        explanation: null,
     };
 }
 
@@ -268,20 +305,22 @@ function generateConceptRelationship() {
 
 // ─── Question Type Registry ──────────────────────────
 const GENERATORS = {
-    trueOrFalse: generateTrueOrFalse,
-    hardMCQ: () => (Math.random() < 0.5 ? generateHardMCQWhat() : generateHardMCQDescription()),
-    oddOneOut: generateOddOneOut,
-    conceptRelationship: generateConceptRelationship,
+    trueOrFalse: () => generateTrueOrFalse(),
+    hardMCQ: (d) => (Math.random() < 0.5 ? generateHardMCQWhat() : generateHardMCQDescription(d)),
+    oddOneOut: () => generateOddOneOut(),
+    conceptRelationship: () => generateConceptRelationship(),
 };
 
 /**
  * Generate a single question of the given type.
+ * @param {string} type - Question type key
+ * @param {number} difficulty - 1 (easy), 2 (medium), 3 (hard)
  * Returns null if generation fails (not enough concepts).
  */
-export function generateQuestion(type) {
+export function generateQuestion(type, difficulty = 1) {
     const generator = GENERATORS[type];
     if (!generator) return null;
-    return generator();
+    return generator(difficulty);
 }
 
 /**
@@ -294,6 +333,7 @@ export function generateChallengeGame(maxTier = TIERS.length - 1) {
 
     for (let t = 0; t <= Math.min(maxTier, TIERS.length - 1); t++) {
         const tier = TIERS[t];
+        const tierDifficulty = tier.difficulty || 1;
         const tierQuestions = [];
 
         for (let i = 0; i < tier.count; i++) {
@@ -302,13 +342,14 @@ export function generateChallengeGame(maxTier = TIERS.length - 1) {
             let question = null;
 
             for (const type of typePool) {
-                question = generateQuestion(type);
+                question = generateQuestion(type, tierDifficulty);
                 if (question) break;
             }
 
             if (question) {
                 question.tier = t;
                 question.tierName = tier.name;
+                question.difficulty = tierDifficulty;
                 tierQuestions.push(question);
             }
         }
@@ -337,12 +378,14 @@ export function checkChallengeAnswer(question, answer) {
         case 'hardMCQ': {
             const correctOption = question.options.find(o => o.isCorrect);
             const correct = answer === (correctOption?.title || correctOption?.description);
-            return {
-                correct,
-                explanation: correct
-                    ? 'Correct!'
-                    : `The correct answer was: ${correctOption?.title || correctOption?.description}`,
-            };
+            let explanation = correct
+                ? 'Correct!'
+                : `The correct answer was: ${correctOption?.title || correctOption?.description}`;
+            // Append trap explanation for hard questions when wrong
+            if (!correct && question.explanation) {
+                explanation += ` — ${question.explanation}`;
+            }
+            return { correct, explanation };
         }
         case 'oddOneOut': {
             const correct = answer === question.outlier.id;
