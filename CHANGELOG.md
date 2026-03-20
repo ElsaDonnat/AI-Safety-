@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.3 — Remove summary hint from practice quiz questions
+
+### Fixed
+- Practice why/how questions no longer display the concept's summary under the title — previously this gave away the answer by essentially showing a description while asking the user to pick a description
+- Now shows just the title and "Pick the correct description" prompt, matching the lesson recap format
+
 ## 0.5.2 — Remove type-categorizing phrases from quiz clues
 
 ### Changed

@@ -1341,7 +1341,7 @@ function PracticeQuestion({ question, cardMastery, isStarred, onToggleStar, onAn
                 <Card style={answered && score ? { backgroundColor: SCORE_COLORS[score].bg, borderLeft: `3px solid ${SCORE_COLORS[score].border}` } : {}}>
                     <p className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-ink-faint)' }}>{promptLabel}</p>
                     <h3 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h3>
-                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>{concept.summary}</p>
+                    <p className="text-sm mb-5" style={{ color: 'var(--color-ink-muted)' }}>Pick the correct description</p>
                     <div className="mcq-options">
                         {descriptionOptions.map((opt, i) => {
                             const isCorrect = opt.isCorrect;
