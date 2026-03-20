@@ -214,7 +214,7 @@ const CORE_CONCEPTS = [
         quizDescription: 'Controlling massive compute and building the most capable systems, they shape the trajectory of the entire field — their safety decisions matter more than almost anyone else\'s.',
         topic: 'ai-progress',
         secondaryTopic: null,
-        category: 'other',
+        category: 'actor',
         difficulty: 1,
         tags: ['industry', 'organizations', 'frontier', 'governance'],
         linkedCards: [
@@ -874,7 +874,7 @@ const GOVERNANCE_CONCEPTS = [
         quizDescription: 'Independently testing frontier systems before deployment and sharing findings internationally — publicly accountable, unlike the labs\' own internal safety teams.',
         topic: 'global-ai-policy',
         secondaryTopic: null,
-        category: 'other',
+        category: 'actor',
         difficulty: 1,
         tags: ['aisi', 'uk', 'usa', 'evaluation', 'government', 'safety-research'],
         linkedCards: [
@@ -1176,6 +1176,7 @@ export const CATEGORIES = [
     { id: 'regulation', label: 'Regulation', color: '#6366B8', icon: 'scale' },
     { id: 'practice', label: 'Practice', color: '#D4A026', icon: 'clipboard-check' },
     { id: 'proposal', label: 'Proposal', color: '#9370DB', icon: 'file-text' },
+    { id: 'actor', label: 'Actor', color: '#E07B3C', icon: 'building' },
     { id: 'other', label: 'Other', color: '#8B95A5', icon: 'help-circle' },
 ];
 

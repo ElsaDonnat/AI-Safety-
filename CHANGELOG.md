@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.4 — Add "Actor" category for organizations and institutions
+
+### Added
+- New "Actor" category (orange `#E07B3C`, building icon) for cards about organizations, institutions, labs, or groups in the AI ecosystem
+- Added `Building` icon from Lucide for the actor category
+
+### Changed
+- Reclassified "AI Labs" and "AI Safety Institutes" from "other" to "actor"
+- Updated CLAUDE.md category table and guidance to document the new category
+
 ## 0.5.3 — Remove summary hint from practice quiz questions
 
 ### Fixed

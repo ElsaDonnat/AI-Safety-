@@ -108,13 +108,14 @@ Categories classify cards by the **type of knowledge** they represent, cutting a
 | Regulation | `'regulation'` | Laws, rules, treaties, formal mandates — what is legally REQUIRED | Indigo `#6366B8` |
 | Practice | `'practice'` | Voluntary standards, industry norms, evaluation methods — what is DONE by choice (not law) | Amber `#D4A026` |
 | Proposal | `'proposal'` | Safety or governance proposals, frameworks, or visions for improving the field — what is SUGGESTED | Purple `#9370DB` |
-| Other | `'other'` | Institutions, organizations, or concepts that don't fit the above — use sparingly | Gray `#8B95A5` |
+| Actor | `'actor'` | Organizations, institutions, labs, or groups that DO things in the AI ecosystem — WHO is involved | Orange `#E07B3C` |
+| Other | `'other'` | Concepts that don't fit any of the above — use sparingly | Gray `#8B95A5` |
 
 **Key distinction — Practice vs. Regulation:** Practices are voluntary (e.g., Responsible Scaling Policies), regulations are legally mandated (e.g., EU AI Act). If a concept is about what an organization chooses to do, it's a practice. If it's about what governments require, it's a regulation.
 
 **Key distinction — Proposal vs. Practice:** Proposals are ideas or frameworks that have been *suggested* but not widely adopted yet (e.g., "CERN for AI", "Law-Following AI"). Practices are norms that organizations already follow. If it's an aspirational vision or a suggested governance structure, it's a proposal. If it's already standard industry behavior, it's a practice.
 
-**When to use "other":** Only for things like institutions (AI Labs, AI Safety Institutes) that describe WHO does things rather than a concept, method, risk, rule, or proposal. When in doubt, prefer a more specific category. If many cards end up in "other", consider creating a new category.
+**Key distinction — Actor vs. Other:** Actors are specific organizations, institutions, or groups (e.g., AI Labs, AI Safety Institutes) that describe WHO does things in the AI ecosystem. Use "actor" for any card about an entity that takes action. Use "other" only for concepts that truly don't fit any category. When in doubt, prefer a more specific category.
 
 #### Tags
 Tags are free-form strings attached to cards. Uses:

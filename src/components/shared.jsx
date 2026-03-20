@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, forwardRef } from 'react';
 import { CATEGORY_CONFIG } from '../data/concepts';
 import * as feedback from '../services/feedback';
-import { Lightbulb, Wrench, AlertTriangle, Scale, ClipboardCheck, FileText, HelpCircle, Star, Calendar, ChevronRight } from 'lucide-react';
+import { Lightbulb, Wrench, AlertTriangle, Scale, ClipboardCheck, FileText, Building, HelpCircle, Star, Calendar, ChevronRight } from 'lucide-react';
 
 /** Truncates text to `lines` lines with a "Read more / Less" toggle. */
 export function ExpandableText({ children, lines = 3, className = '', style = {}, footerLeft = null }) {
@@ -74,6 +74,7 @@ const ICON_COMPONENTS = {
     scale: Scale,
     'clipboard-check': ClipboardCheck,
     'file-text': FileText,
+    building: Building,
     'help-circle': HelpCircle,
 };
 
