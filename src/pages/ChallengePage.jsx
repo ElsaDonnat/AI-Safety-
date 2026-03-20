@@ -94,8 +94,8 @@ function SharpHeart({ size = 18, filled = false, className = '' }) {
             style={{ display: 'block' }}>
             <path
                 d="M10 17L2.5 9.5C0.5 7.5 0.5 4.2 2.5 2.5C4.5 0.8 7.2 1 9 3L10 4.5L11 3C12.8 1 15.5 0.8 17.5 2.5C19.5 4.2 19.5 7.5 17.5 9.5L10 17Z"
-                fill={filled ? 'var(--color-burgundy-dark)' : 'none'}
-                stroke={filled ? 'var(--color-burgundy-dark)' : 'var(--color-ink-faint)'}
+                fill={filled ? '#A8616B' : 'none'}
+                stroke={filled ? '#A8616B' : 'var(--color-ink-faint)'}
                 strokeWidth="1.2"
                 strokeLinejoin="miter"
             />
