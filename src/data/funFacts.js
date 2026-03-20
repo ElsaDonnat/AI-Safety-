@@ -54,6 +54,76 @@ export const FUN_FACTS = [
         text: 'In 2023, over 30 countries signed the Bletchley Declaration at the UK AI Safety Summit, agreeing that frontier AI risks require international cooperation to manage.',
         relatedCardIds: ['c606', 'c506'],
     },
+    {
+        id: 'ff12',
+        text: 'A landmark 2018 study by Joy Buolamwini and Timnit Gebru found that commercial facial recognition systems had error rates up to 34% higher for darker-skinned women compared to lighter-skinned men.',
+        relatedCardIds: ['c702', 'c106'],
+    },
+    {
+        id: 'ff13',
+        text: 'There are at least 21 different mathematical definitions of algorithmic fairness — and key impossibility theorems prove that many of them cannot be satisfied simultaneously.',
+        relatedCardIds: ['c703', 'c702'],
+    },
+    {
+        id: 'ff14',
+        text: 'The EU AI Act took over three years to negotiate, with the final text running to over 400 pages. It creates a new European AI Office to enforce the rules.',
+        relatedCardIds: ['c802', 'c801'],
+    },
+    {
+        id: 'ff15',
+        text: 'Anthropic\'s Responsible Scaling Policy defines "AI Safety Levels" (ASL) — inspired by biosafety levels used in labs handling dangerous pathogens.',
+        relatedCardIds: ['c803', 'c206'],
+    },
+    {
+        id: 'ff16',
+        text: 'Philosopher Nick Bostrom warned that an AI locked into maximizing paperclip production could convert all available matter — including humans — into paperclips, illustrating the value lock-in problem.',
+        relatedCardIds: ['c706', 'c401'],
+    },
+    {
+        id: 'ff17',
+        text: 'Meta\'s decision to release the Llama model weights sparked intense debate — some researchers praised the move for democratizing AI, while others warned it gave unrestricted access to dangerous capabilities.',
+        relatedCardIds: ['c806', 'c502'],
+    },
+    {
+        id: 'ff18',
+        text: 'In a 2023 survey of AI researchers, median estimates for when AGI would be achieved ranged from 2040 to 2060 — but some predicted it could happen within 10 years.',
+        relatedCardIds: ['c207', 'c208'],
+    },
+    {
+        id: 'ff19',
+        text: 'Training GPT-4 is estimated to have cost over $100 million in compute alone — and the cost of training frontier models roughly triples every year.',
+        relatedCardIds: ['c212', 'c211'],
+    },
+    {
+        id: 'ff20',
+        text: 'In 2024, an AI agent autonomously discovered a zero-day vulnerability in software — demonstrating both the promise and danger of AI systems that can take actions in the world.',
+        relatedCardIds: ['c210', 'c904'],
+    },
+    {
+        id: 'ff21',
+        text: 'Researchers found that adding a single pixel of noise to an image — invisible to the human eye — could cause an AI classifier to confidently identify a cat as a piece of guacamole.',
+        relatedCardIds: ['c903', 'c901'],
+    },
+    {
+        id: 'ff22',
+        text: 'ChatGPT once confidently cited a completely fabricated legal case in a brief prepared by a lawyer — the case, the court, and the judge it referenced did not exist.',
+        relatedCardIds: ['c902', 'c201'],
+    },
+    {
+        id: 'ff23',
+        text: 'Researchers demonstrated "indirect prompt injection" by hiding invisible instructions in a web page that caused an AI assistant to exfiltrate the user\'s private data when summarizing the page.',
+        relatedCardIds: ['c904', 'c210'],
+    },
+    {
+        id: 'ff24',
+        text: 'NVIDIA, the dominant GPU manufacturer, briefly became the world\'s most valuable company in 2024 — illustrating how control of AI compute translates directly into economic power.',
+        relatedCardIds: ['c212', 'c704'],
+    },
+    {
+        id: 'ff25',
+        text: 'IBM\'s Deep Blue beat world chess champion Garry Kasparov in 1997, but it couldn\'t play tic-tac-toe — a perfect example of how narrow AI can be superhuman at one task and useless at another.',
+        relatedCardIds: ['c209', 'c207'],
+    },
 ];
 
 export function getFunFactsForSeenCards() {

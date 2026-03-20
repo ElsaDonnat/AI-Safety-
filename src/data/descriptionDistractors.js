@@ -338,3 +338,227 @@ DESCRIPTION_DISTRACTORS['c606'] = {
         { text: 'Regulations and institutions for managing AI responsibly, which are only necessary for government-funded AI projects and do not apply to private companies.', d: 3 },
     ]
 };
+
+// ─── Advanced AI (c207–c212) ────────────────────────
+
+DESCRIPTION_DISTRACTORS['c207'] = {
+    hardCorrect: 'A hypothetical AI system with human-level ability across all cognitive domains — capable of learning, reasoning, and adapting to any task without domain-specific training.',
+    distractors: [
+        { text: 'A marketing category used by tech companies to describe any AI product that uses deep learning, regardless of how general its capabilities actually are.', d: 1 },
+        { text: 'A hypothetical AI system that vastly exceeds the best human cognitive abilities across all domains, raising questions about human ability to control it.', d: 2 },
+        { text: 'A hypothetical AI system matching human-level general ability, which most researchers agree will be achieved within the next two years.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c208'] = {
+    hardCorrect: 'A hypothetical AI system that vastly exceeds the best human cognitive abilities across all domains, raising fundamental questions about human ability to predict or control its behavior.',
+    distractors: [
+        { text: 'A standard performance tier used in cloud computing to describe servers with the highest available processing speed and memory capacity.', d: 1 },
+        { text: 'A hypothetical AI system with human-level ability across all cognitive tasks, capable of learning and adapting without task-specific training.', d: 2 },
+        { text: 'An AI system that vastly surpasses human intelligence, which would necessarily be benevolent because superior intelligence implies superior moral reasoning.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c209'] = {
+    hardCorrect: 'AI systems that excel at a single specific task or domain but cannot transfer their skills to unrelated tasks — describing all AI systems that exist today.',
+    distractors: [
+        { text: 'A type of neural network architecture that uses fewer parameters than standard models, designed for deployment on mobile phones and edge devices.', d: 1 },
+        { text: 'A hypothetical AI system with human-level ability across all cognitive domains, capable of learning and reasoning about any subject.', d: 2 },
+        { text: 'AI systems limited to one specific task, which are incapable of achieving superhuman performance in their specialized domain.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c210'] = {
+    hardCorrect: 'AI systems that autonomously take multi-step actions in real or digital environments to achieve goals, raising safety concerns due to irreversible consequences and reduced human oversight.',
+    distractors: [
+        { text: 'Virtual characters in video games that follow scripted behavior trees to simulate intelligent responses to player actions.', d: 1 },
+        { text: 'The most powerful AI systems being developed at any given time, pushing the boundaries of what AI can do and requiring the most computational resources.', d: 2 },
+        { text: 'AI systems that take autonomous actions to achieve goals, which are inherently safer than chat-based AI because they can self-correct any mistakes.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c211'] = {
+    hardCorrect: 'The most capable AI systems being developed at any given time, which are the primary focus of safety evaluations and regulation due to their unprecedented capabilities and risks.',
+    distractors: [
+        { text: 'AI models that have been deployed in production for the longest time and have the most established track record of stable performance.', d: 1 },
+        { text: 'General-purpose AI models pretrained on broad datasets that can be adapted to many downstream tasks through fine-tuning or prompting.', d: 2 },
+        { text: 'The most capable AI systems at any given time, which are always open-source and publicly available for safety researchers to study.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c212'] = {
+    hardCorrect: 'The computational resources required to train and run AI systems — significant as a governance lever because it is physical, measurable, and concentrated among few suppliers.',
+    distractors: [
+        { text: 'The mathematical theory underlying neural network training, describing how gradient descent converges to optimal parameter values.', d: 1 },
+        { text: 'Mathematical relationships showing that AI performance improves predictably with increases in model size, data, and processing power.', d: 2 },
+        { text: 'The computational resources needed for AI, which are becoming less important as algorithmic improvements allow frontier models to be trained on consumer hardware.', d: 3 },
+    ]
+};
+
+// ─── AI Security (c901–c906) ────────────────────────
+
+DESCRIPTION_DISTRACTORS['c901'] = {
+    hardCorrect: 'The fundamental safety property of maintaining reliable performance under unexpected inputs, adversarial attacks, or conditions that differ from training — essential for trusting AI in high-stakes settings.',
+    distractors: [
+        { text: 'A hardware reliability metric measuring the mean time between failures for GPU clusters used in large-scale model training.', d: 1 },
+        { text: 'The practice of systematically probing AI systems for weaknesses by simulating adversarial attacks before deployment.', d: 2 },
+        { text: 'The ability of AI systems to perform reliably under any conditions, which modern deep learning systems have fully achieved through large-scale training.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c902'] = {
+    hardCorrect: 'The failure mode where AI models generate factually incorrect, fabricated, or nonsensical content while presenting it with the same confidence level as accurate information.',
+    distractors: [
+        { text: 'A data augmentation technique that generates synthetic training examples to expand limited datasets for machine learning models.', d: 1 },
+        { text: 'Carefully engineered inputs designed to cause AI misclassification — such as imperceptible image modifications that fool image classifiers.', d: 2 },
+        { text: 'AI models generating false information, which can be fully prevented by training on a sufficiently large and carefully curated dataset.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c903'] = {
+    hardCorrect: 'Carefully engineered inputs — often with imperceptible modifications — designed to exploit AI vulnerabilities and cause misclassification or incorrect outputs.',
+    distractors: [
+        { text: 'A machine learning technique where models are trained on intentionally noisy data to improve their ability to handle real-world imperfections.', d: 1 },
+        { text: 'An attack technique that embeds hidden instructions within AI inputs to override intended behavior and redirect the system toward unintended goals.', d: 2 },
+        { text: 'Inputs designed to fool AI systems, which only work on image classifiers and do not affect language models or other AI architectures.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c904'] = {
+    hardCorrect: 'An attack technique that embeds hidden instructions within AI inputs to override intended behavior — particularly dangerous for AI agents that take real-world actions based on processed content.',
+    distractors: [
+        { text: 'A software engineering practice where developers write detailed test prompts to verify that AI systems produce expected outputs during quality assurance.', d: 1 },
+        { text: 'User-initiated attacks that craft specific prompts to trick AI systems into bypassing their safety guardrails — a direct conversation-based technique.', d: 2 },
+        { text: 'An attack where hidden instructions in AI inputs override behavior, which has been fully solved by instruction-tuning techniques used in modern LLMs.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c905'] = {
+    hardCorrect: 'User-initiated attacks that craft specific prompts to trick AI systems into bypassing their safety guardrails — distinct from prompt injection, which hides instructions in external data.',
+    distractors: [
+        { text: 'A hardware modification technique that removes software restrictions from smartphones to allow installation of unauthorized applications.', d: 1 },
+        { text: 'An attack that embeds hidden instructions within AI inputs processed from external sources to override the system\'s intended behavior.', d: 2 },
+        { text: 'Techniques to bypass AI safety guardrails, which only work on older models and are completely ineffective against systems trained with RLHF.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c906'] = {
+    hardCorrect: 'The phenomenon where real-world data differs significantly from training data, causing AI systems to underperform or fail — a fundamental challenge for predicting real-world reliability from test results.',
+    distractors: [
+        { text: 'A data pipeline architecture that distributes training data across multiple servers to speed up the model training process.', d: 1 },
+        { text: 'The failure mode where AI models generate factually incorrect or fabricated content with the same confidence as accurate information.', d: 2 },
+        { text: 'The difference between training and real-world data, which only affects models trained on small datasets and is not a concern for large foundation models.', d: 3 },
+    ]
+};
+
+// ─── AI Ethics (c701–c706) ──────────────────────────
+
+DESCRIPTION_DISTRACTORS['c701'] = {
+    hardCorrect: 'The discipline that investigates the moral implications of building and deploying AI — including fairness, accountability, and societal impact — distinct from the technical focus of AI safety.',
+    distractors: [
+        { text: 'A branch of computer science focused on optimizing the energy efficiency of data centers that train large AI models.', d: 1 },
+        { text: 'The challenge of ensuring AI systems\' objectives and behavior match what their designers actually want, preventing catastrophic misalignment.', d: 2 },
+        { text: 'The field of applied ethics examining the moral dimensions of AI, which is only relevant once AI systems reach human-level general intelligence.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c702'] = {
+    hardCorrect: 'Consistent, directional errors in AI outputs that disproportionately affect specific demographic groups, typically traced to unrepresentative training data or flawed design choices.',
+    distractors: [
+        { text: 'A hardware manufacturing defect where computer chips produce slightly inaccurate floating-point calculations during neural network training.', d: 1 },
+        { text: 'The research area focused on defining and measuring equitable treatment by AI systems, complicated by multiple incompatible mathematical fairness definitions.', d: 2 },
+        { text: 'Systematic errors in AI outputs that disadvantage certain groups, which can be fully eliminated by using a sufficiently large and diverse training dataset.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c703'] = {
+    hardCorrect: 'The goal of building AI systems that treat people equitably, complicated by the mathematical reality that different formal definitions of fairness cannot all be satisfied simultaneously.',
+    distractors: [
+        { text: 'A user interface design methodology that ensures AI applications are equally accessible to users with different screen sizes and devices.', d: 1 },
+        { text: 'Systematic, directional errors in AI outputs that consistently disadvantage particular demographic groups, arising from biased data or flawed design.', d: 2 },
+        { text: 'The goal of designing equitable AI systems, which is straightforward because there is one universally accepted mathematical definition of fairness.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c704'] = {
+    hardCorrect: 'The governance concern that advanced AI could let a small number of human actors — companies, governments, or individuals — accumulate unprecedented societal control, distinct from the AI itself seeking power.',
+    distractors: [
+        { text: 'A cloud computing pricing model where larger customers receive volume discounts on GPU rental for training AI models.', d: 1 },
+        { text: 'The observable behavior of AI systems that accumulate influence and resources beyond their task requirements, as a practical manifestation of instrumental convergence.', d: 2 },
+        { text: 'The risk that AI concentrates power among a few actors, which only applies to military applications and does not affect commercial AI development.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c705'] = {
+    hardCorrect: 'The competitive dynamic where AI developers feel pressured to advance capabilities faster than rivals, potentially deprioritizing safety — a structural risk even among well-intentioned actors.',
+    distractors: [
+        { text: 'A sprint planning methodology used by software teams to estimate development velocity and allocate engineering resources across features.', d: 1 },
+        { text: 'Voluntary commitments by AI labs to only scale model capabilities after demonstrating that adequate safety measures exist for each new capability level.', d: 2 },
+        { text: 'Competitive pressure between AI developers to advance capabilities at the expense of safety, which only occurs between nations and does not affect companies within the same country.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c706'] = {
+    hardCorrect: 'The existential governance risk that AI systems could embed a particular set of values or power structures so deeply that future generations cannot reverse or update them.',
+    distractors: [
+        { text: 'A software versioning practice where legacy APIs are maintained indefinitely to avoid breaking backward compatibility with older client applications.', d: 1 },
+        { text: 'The core challenge of building AI systems whose objectives and actions faithfully reflect the intentions of their human designers.', d: 2 },
+        { text: 'The risk that AI systems permanently encode particular values, which is only a concern for superintelligent systems and irrelevant to current narrow AI.', d: 3 },
+    ]
+};
+
+// ─── Global AI Policy (c801–c806) ────────────────────
+
+DESCRIPTION_DISTRACTORS['c801'] = {
+    hardCorrect: 'Government-enacted, legally binding frameworks governing the development and use of AI systems, carrying enforcement penalties — distinct from industry self-regulation or voluntary commitments.',
+    distractors: [
+        { text: 'A software development methodology where code is reviewed and approved by multiple team members before being merged into the main branch.', d: 1 },
+        { text: 'The ecosystem of regulations, standards, voluntary commitments, and international institutions created to ensure AI is developed and deployed responsibly.', d: 2 },
+        { text: 'Legally binding government rules for AI development, which are consistent and harmonized across all countries worldwide.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c802'] = {
+    hardCorrect: 'The EU\'s 2024 horizontal AI law that sorts systems into risk categories — banning social scoring and real-time biometric surveillance, and imposing strict requirements on high-risk applications across all sectors.',
+    distractors: [
+        { text: 'A European Union regulation that standardizes the format of data privacy consent popups displayed on websites and mobile applications.', d: 1 },
+        { text: 'Legally binding government rules governing AI development and deployment, carrying enforcement consequences for non-compliance.', d: 2 },
+        { text: 'The EU\'s comprehensive AI regulation that classifies systems by risk tier, applying only to AI companies headquartered within EU member states.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c803'] = {
+    hardCorrect: 'Voluntary frameworks adopted by AI labs that require demonstrating adequate safety measures before training more capable models — self-imposed gates rather than government mandates.',
+    distractors: [
+        { text: 'A cloud infrastructure strategy where companies gradually increase server capacity to handle growing numbers of AI inference requests from customers.', d: 1 },
+        { text: 'Government-established organizations that independently evaluate frontier AI safety, develop testing frameworks, and share findings internationally.', d: 2 },
+        { text: 'Voluntary commitments by AI labs to gate capability increases on safety requirements, which are legally enforceable in all jurisdictions where the lab operates.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c804'] = {
+    hardCorrect: 'National agencies created by governments to independently test frontier AI models, develop safety evaluation methods, and share results across borders — separate from AI labs\' own safety teams.',
+    distractors: [
+        { text: 'Private research foundations funded by philanthropists that award grants to university researchers working on theoretical machine learning problems.', d: 1 },
+        { text: 'Voluntary frameworks adopted by AI labs that require demonstrating adequate safety measures before training more capable models.', d: 2 },
+        { text: 'Government bodies dedicated to evaluating AI safety, which have the legal authority to shut down any AI lab that fails their evaluations.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c805'] = {
+    hardCorrect: 'Multilateral diplomatic processes — including summits, treaties, and proposals for oversight bodies — aimed at preventing a regulatory "race to the bottom" as nations compete in AI.',
+    distractors: [
+        { text: 'A standardized API specification that allows different AI models from different companies to communicate and share data with each other seamlessly.', d: 1 },
+        { text: 'The EU\'s 2024 comprehensive AI law that classifies systems by risk tier and imposes requirements across all industries within member states.', d: 2 },
+        { text: 'International efforts to align AI governance approaches, which have already produced a binding global treaty that all major AI-developing nations have ratified.', d: 3 },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c806'] = {
+    hardCorrect: 'The policy debate over whether publicly releasing AI model weights — enabling broad access and independent safety research — or keeping them proprietary better serves safety and innovation.',
+    distractors: [
+        { text: 'A licensing model that determines whether AI software uses a subscription-based or one-time purchase pricing structure for enterprise customers.', d: 1 },
+        { text: 'The inherent challenge that many AI capabilities serve both constructive and destructive purposes, with misuse potential growing alongside capability improvements.', d: 2 },
+        { text: 'The debate over releasing AI model weights, which has been settled in favor of open-weight models because independent researchers always find and fix safety issues.', d: 3 },
+    ]
+};

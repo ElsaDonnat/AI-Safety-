@@ -1,6 +1,6 @@
 # Content Generation Prompt for AI Safety Learning App
 
-You are generating structured learning content for a mobile-first AI Safety learning app. The app teaches users about AI safety through interactive lessons, spaced repetition quizzes, and challenge games.
+You are generating structured learning content for a mobile-first AI Safety vocabulary app. The app teaches users AI safety concepts through interactive lessons, spaced repetition quizzes, and challenge games. Think of it as a companion app for someone studying AI safety — the goal is to help users **remember and distinguish** technical concepts, not just recognize them.
 
 Your output must be **valid JavaScript data** that slots directly into the app's existing data files. Read every section carefully — the app will break if shapes are wrong.
 
@@ -8,17 +8,19 @@ Your output must be **valid JavaScript data** that slots directly into the app's
 
 ## 1. Content Architecture Overview
 
-The app has a hierarchy:
+The app has a 4-level hierarchy:
 
 ```
-TOPICS  →  LESSONS  →  CARDS (concepts)
+DOMAINS  →  TOPICS  →  CHAPTERS (difficulty tiers)  →  LESSONS  →  CARDS (concepts)
 ```
 
-- A **Topic** is a top-level subject area (e.g., "Interpretability", "Value Alignment").
-- A **Lesson** belongs to one topic and teaches 1–3 cards.
+- A **Domain** is the top-level grouping (e.g., "Foundations of AI", "AI Safety").
+- A **Topic** belongs to a domain (e.g., "Alignment Fundamentals" within "AI Safety").
+- A **Chapter** is a difficulty tier within a topic (beginner / amateur / advanced).
+- A **Lesson** belongs to one chapter and teaches 1–3 cards.
 - A **Card** (concept) is the atomic unit of knowledge — one idea, one screen.
 
-Users progress through lessons sequentially within each topic. Each topic starts with a **foundational lesson** (lesson 0) that introduces the topic via a foundational card.
+Users progress through lessons sequentially within each chapter. Each topic's beginner chapter starts with a **foundational lesson** (lesson 0) that introduces the topic.
 
 ### Learning Flow Per Lesson
 
@@ -46,8 +48,9 @@ This means every field on a card is directly shown to or quizzed against the use
 
 ```js
 {
-  id: 'c16',                    // REQUIRED. Format: 'c' + number. Must be globally unique.
-  title: 'Value Alignment',     // REQUIRED. 2-5 words. The concept's name.
+  id: 'c701',                   // REQUIRED. Format: 'c' + number. Must be globally unique.
+                                // Use the ID range specified in section 7.
+  title: 'Value Alignment',    // REQUIRED. 2-5 words. The concept's canonical name.
   summary: 'Ensuring AI systems pursue goals aligned with human values',
                                 // REQUIRED. 1 sentence, <100 chars. Shown on card previews.
   description: 'Value alignment is the challenge of building AI systems whose goals and behaviors are aligned with human values and intentions. As AI systems become more capable, ensuring they do what we actually want becomes increasingly critical.',
@@ -59,7 +62,7 @@ This means every field on a card is directly shown to or quizzed against the use
                                 // Used as the correct answer in "how does X work?" quizzes.
                                 // Must NOT be a copy-paste of `description` — rephrase it.
                                 // Must NOT be so different that it describes something else.
-  topic: 'alignment',           // REQUIRED. Must match a TOPICS[].id exactly.
+  topic: 'alignment-fundamentals',  // REQUIRED. Must match a TOPICS[].id exactly.
   secondaryTopic: null,         // Optional. A second topic ID, or null.
   category: 'alignment',        // REQUIRED. One of: 'technical', 'alignment', 'policy', 'ethics', 'risks'
   difficulty: 1,                // REQUIRED. 1 = beginner, 2 = intermediate, 3 = advanced.
@@ -69,9 +72,15 @@ This means every field on a card is directly shown to or quizzed against the use
                                 //   - Library filtering
                                 //   - Future "tag match" quiz type
                                 // Be consistent: reuse existing tags when the concept overlaps.
-  linkedCards: ['c2', 'c5'],    // REQUIRED. 1-3 card IDs of the most conceptually related cards.
+  linkedCards: [
+    { id: 'c402', relationship: 'can lead to' },
+    { id: 'c601', relationship: 'mitigated by' },
+  ],
+                                // REQUIRED. Array of objects with `id` and `relationship`.
+                                // 1-3 entries. The most conceptually related cards.
+                                // `relationship` is a short phrase describing how this card relates to the linked card.
                                 // Used in "concept relationship" quiz: "Which concept is most related to X?"
-                                // Links should be bidirectional (if c1 links c2, c2 should link c1).
+                                // Links should be bidirectional (if c401 links c402, c402 should link c401).
   importance: 1,                // REQUIRED. 1 = core concept, 2 = important, 3 = supplementary.
                                 // Controls display ordering within a topic.
   isFoundational: false,        // REQUIRED. true ONLY for the single overview card per topic
@@ -83,80 +92,129 @@ This means every field on a card is directly shown to or quizzed against the use
 
 ```js
 {
-  id: 'alignment',              // kebab-case identifier
-  title: 'Value Alignment',     // Display name, 1-3 words
-  description: 'How to ensure AI systems pursue human-compatible goals',
+  id: 'alignment-fundamentals', // kebab-case identifier
+  domain: 'ai-safety',         // Must match a DOMAINS[].id
+  title: 'Alignment Fundamentals',  // Display name, 1-3 words
+  description: 'Core concepts behind the challenge of aligning AI with human intent',
                                 // 1 sentence, shown under the topic header
-  icon: '🎯',                  // Single emoji representing the topic
-  color: '#7C3AED',            // Hex color for the topic's UI accent
+  icon: 'alignment',           // Icon identifier string
+  color: '#9B7EC8',            // Hex color for the topic's UI accent
+  order: 0,                    // Display order within the domain
 }
 ```
 
-### 2c. Lesson
+### 2c. Chapter (difficulty tier within a topic)
 
 ```js
 {
-  id: 'lesson-alignment-0',     // Format: 'lesson-{topicId}-{number}'
+  id: 'alignment-fundamentals-beginner',  // Format: '{topicId}-{difficulty}'
+  topic: 'alignment-fundamentals',
+  title: 'Beginner',
+  difficulty: 'beginner',       // 'beginner', 'amateur', or 'advanced'
+  order: 0,                     // 0=beginner, 1=amateur, 2=advanced
+}
+```
+
+### 2d. Lesson
+
+```js
+{
+  id: 'lesson-alignment-b-0',  // Format: 'lesson-{topicId}-{difficultyInitial}-{number}'
   number: 0,                    // 0 = foundational lesson, then 1, 2, 3...
-  title: 'What is Value Alignment?',
+  title: 'The Alignment Challenge',
                                 // Lesson title, shown on INTRO screen. 3-8 words.
-  subtitle: 'The core challenge of AI safety',
+  subtitle: 'Why making AI do what we want is surprisingly hard',
                                 // Shown below the title. 3-8 words.
-  mood: 'Before we dive in, let's understand why alignment matters…',
+  mood: 'The most important problem you\'ve never heard of…',
                                 // 1 sentence. Sets the tone/hook for the lesson.
                                 // Should spark curiosity or frame a question.
-  topic: 'alignment',           // Must match a TOPICS[].id
-  isFoundational: true,         // true for lesson 0 of each topic
-  cardIds: ['c1'],              // 1-3 card IDs taught in this lesson.
-                                // Foundational lessons typically have 1 card.
+  chapter: 'alignment-fundamentals-beginner',
+                                // Must match a CHAPTERS[].id
+  topic: 'alignment-fundamentals',
+                                // Must match a TOPICS[].id
+  isFoundational: true,         // true for lesson 0 of each topic's beginner chapter
+  cardIds: ['c401', 'c403', 'c406'],
+                                // 1-3 card IDs taught in this lesson.
+                                // Foundational lessons can have 1-3 cards.
                                 // Regular lessons have 1-3 cards.
 }
 ```
 
-### 2d. Description Distractors (for harder quizzes)
+### 2e. Description Distractors (for harder quizzes)
 
-For each card where you want fine-grained quiz difficulty, provide distractors:
+For **every** card, provide distractors. This is not optional — without them, quiz quality degrades to random same-category descriptions.
 
 ```js
 // Key = card ID, value = distractor config
 {
-  'c1': {
+  'c701': {
     hardCorrect: 'A slightly different but still correct phrasing of the concept, used at difficulty 3.',
     distractors: [
-      { text: 'A plausible but wrong description.', d: 1 },  // d=1: easy distractor (obviously wrong)
+      { text: 'A plausible but wrong description.', d: 1 },  // d=1: easy (obviously different domain)
       { text: 'A subtly wrong description.', d: 2 },          // d=2: medium (same domain, wrong concept)
-      { text: 'A very subtly wrong description.', d: 3 },     // d=3: hard (almost right but technically wrong)
-      // Provide at least 3 distractors per card, ideally 4-6 spanning difficulties.
+      { text: 'A very subtly wrong description.', d: 3 },     // d=3: hard (almost right, subtle error)
+      // MUST provide at least 3 distractors (one per difficulty level).
     ],
   },
 }
 ```
 
 **What makes a good distractor:**
-- **d=1 (easy):** Describes something from a completely different domain/category. Obviously not this concept.
-- **d=2 (medium):** Describes something in the same category or a related concept, but is factually about a different idea.
-- **d=3 (hard):** Describes something very close to the real concept but with a subtle factual error, a common misconception, or a conflation with a similar concept.
+- **d=1 (easy):** Describes something from a completely different domain/category. Obviously not this concept. Often funny or absurd in context.
+- **d=2 (medium):** Describes a genuinely related concept that a learner might confuse with this one. Uses the description of a sibling or cousin concept. The user must know the *difference* between related ideas to get this right.
+- **d=3 (hard):** Describes something very close to the real concept but with a subtle factual error — an overstatement ("always", "guarantees", "completely"), a common misconception, or a conflation with a similar concept. The error should be something a learner who *truly understands* the concept would catch.
 
-### 2e. Fun Facts
+**Critical distractor rules:**
+- d=2 distractors should ideally be the actual description of a confusable sibling concept. For example, for "Reward Hacking," a d=2 distractor could be the description of "Specification Gaming" (the broader category) or "Goodhart's Law" (the underlying principle).
+- d=3 distractors should contain a specific, identifiable error — not vague wrongness. The user should be able to point to exactly what's wrong.
+- Never write a distractor that is accidentally correct.
+
+### 2f. True/False Statements
+
+For **every** card, provide a true statement, a false statement, and a correction. These are used in challenge mode True/False questions.
 
 ```js
+// Key = card ID
 {
-  id: 'ff1',                    // Format: 'ff' + number
-  text: 'An interesting, surprising, or memorable fact about AI safety.',
-                                // 1-2 sentences. Shown between challenge rounds.
-  relatedCardIds: ['c1', 'c5'], // Cards this fact relates to. Shown only after user has seen these cards.
+  'c701': {
+    trueStatement: 'A correct, non-obvious claim about the concept that tests understanding.',
+                                // Should NOT be trivially derivable from the title alone.
+                                // Should test a specific aspect or implication of the concept.
+    falseStatement: 'A plausible but incorrect claim — a common misconception or overstatement.',
+                                // Must be the kind of thing a beginner might believe.
+                                // Must be clearly false to someone who understands the concept.
+    correction: 'Explains exactly why the false statement is wrong, in 1-2 sentences.',
+                                // Should educate, not just negate. Explain the correct understanding.
+  },
 }
 ```
 
-### 2f. Daily Quiz Days
+**What makes good true/false content:**
+- The **true statement** should be surprising or non-obvious — something you'd only know if you actually understood the concept. Don't just restate the definition.
+- The **false statement** should be a real misconception, not a straw man. Think: "What would someone who half-understands this concept get wrong?"
+- The **correction** should teach, not just say "that's wrong." Explain the nuance.
+
+### 2g. Fun Facts
+
+```js
+{
+  id: 'ff12',                   // Format: 'ff' + number. Continue from existing IDs.
+  text: 'An interesting, surprising, or memorable fact about AI safety.',
+                                // 1-2 sentences. Shown between challenge rounds and celebrations.
+  relatedCardIds: ['c401', 'c406'],
+                                // Cards this fact relates to. Shown only after user has seen these cards.
+}
+```
+
+### 2h. Daily Quiz Days
 
 ```js
 {
   dateLabel: 'Alignment Basics',  // Theme label for the day
   cards: [
-    { id: 'c1' },
-    { id: 'c2' },
-    { id: 'c6' },
+    { id: 'c401' },
+    { id: 'c403' },
+    { id: 'c406' },
   ],
   // 3 cards per day. The app cycles through days on a loop.
   // Group cards thematically — cards in one daily quiz should relate.
@@ -198,8 +256,8 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 - **Implication:** The `quizDescription` should focus on **mechanism/process** — how the concept works, how it's implemented, or how to address it.
 
 ### Challenge Mode also uses:
-- **True/False:** Shows `"[title]: [quizDescription]"` — user says true or false. False variants swap in another card's quizDescription. So each card's quizDescription must NOT plausibly describe a different card.
-- **Odd One Out:** 4 cards, 3 share a category, 1 is the outlier. So category assignments must be clean — a card should clearly belong to its category.
+- **True/False:** Uses the `TRUE_FALSE_STATEMENTS` for each card. User sees a statement and decides true or false. So true statements must not be trivially obvious, and false statements must be genuinely plausible.
+- **Odd One Out:** 4 cards, 3 share a category, 1 is the outlier. So category assignments must be clean — a card should clearly belong to its category and not plausibly belong to another.
 - **Concept Relationship:** "Which concept is most related to [title]?" using `linkedCards`. So linkedCards must represent genuine, strong conceptual relationships.
 
 ---
@@ -243,7 +301,8 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 ### For `linkedCards`:
 - Link cards that are most conceptually coupled
 - "If you're learning about X, you should also know about Y"
-- Keep links bidirectional
+- Each entry must have `id` (card ID) and `relationship` (short phrase like "a subset of", "mitigated by", "can lead to")
+- Keep links bidirectional (if A links B, B should link A)
 - Don't link cards just because they're in the same topic — link based on conceptual dependency
 
 ### For `difficulty`:
@@ -253,23 +312,23 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 
 ---
 
-## 6. Topic & Lesson Design Guidelines
+## 6. Disambiguation: Handling Confusable Concepts
 
-### Topic structure:
-- Each topic should have 1 foundational lesson (lesson 0) + at least 2-3 regular lessons
-- Foundational lesson has 1 card that gives a broad overview of the topic
-- Regular lessons have 1-3 cards, grouped by sub-theme
-- Lessons within a topic should progress from easier → harder concepts
+This is a vocabulary app. Users will be quizzed on distinguishing similar concepts. When two concepts are closely related or easily confused, you MUST ensure the descriptions make the distinction crystal clear.
 
-### Lesson grouping:
-- Cards in the same lesson should be thematically related
-- If two concepts are frequently mentioned together, they belong in the same lesson
-- The lesson's `mood` text should frame the question that the cards in that lesson answer
+### Disambiguation checklist for every card:
+1. **Identify sibling concepts** — which other cards could a learner confuse with this one?
+2. **State the boundary** — the description should include a phrase like "Unlike X, this concept…" or "This is broader than X because…" or "X is the general principle; this is the specific AI manifestation."
+3. **Use the d=2 distractor** — the medium-difficulty distractor should be the description of the most confusable sibling, so the quiz directly tests whether the user can distinguish them.
 
-### Cross-topic connections:
-- Use `secondaryTopic` when a card genuinely straddles two topics
-- Use `tags` for looser connections
-- Use `linkedCards` for strong 1:1 conceptual relationships
+### Known confusable pairs to watch for:
+- **General principle vs. specific manifestation** (e.g., Goodhart's Law → Reward Hacking → Specification Gaming)
+- **Theoretical prediction vs. observed behavior** (e.g., Instrumental Convergence → Power-Seeking AI)
+- **Mechanism vs. outcome** (e.g., Mesa-Optimization → Deceptive Alignment)
+- **Technique A vs. Technique B** (e.g., RLHF → Constitutional AI, both are alignment methods)
+- **Types of learning** (e.g., Supervised → Unsupervised → Reinforcement Learning)
+
+When creating new content, explicitly ask yourself: "Which existing card could this be confused with?" and make sure both the description and distractors address the confusion.
 
 ---
 
@@ -277,79 +336,185 @@ Every card is quizzed on **3 dimensions**. Understanding how each field is used 
 
 The app already has these cards. Your new content must not duplicate these concepts. You can (and should) link to them via `linkedCards`:
 
-| ID | Title | Topic | Category |
-|----|-------|-------|----------|
-| c1 | Value Alignment | alignment | alignment |
-| c2 | Reinforcement Learning from Human Feedback | alignment | technical |
-| c3 | Mechanistic Interpretability | interpretability | technical |
-| c4 | Superposition in Neural Networks | interpretability | technical |
-| c5 | AI Governance and Regulation | governance | policy |
-| c6 | Reward Hacking | alignment | alignment |
-| c7 | Instrumental Convergence | alignment | risks |
-| c8 | Constitutional AI | alignment | technical |
-| c9 | Feature Visualization | interpretability | technical |
-| c10 | Existential Risk from AI | alignment | risks |
-| c11 | Algorithmic Bias | governance | ethics |
-| c12 | AI Transparency and Explainability | interpretability | ethics |
-| c13 | Dual-Use AI Technology | governance | risks |
-| c14 | Scalable Oversight | alignment | technical |
-| c15 | Robustness and Adversarial Attacks | interpretability | technical |
+### AI Basics (topic: `ai-basics`, domain: `foundations`)
+| ID | Title | Category |
+|----|-------|----------|
+| c101 | Artificial Intelligence | technical |
+| c102 | Machine Learning | technical |
+| c103 | Deep Learning | technical |
+| c104 | Natural Language Processing | technical |
+| c105 | Neural Networks | technical |
+| c106 | Computer Vision | technical |
 
-Existing topics: `alignment`, `interpretability`, `governance`, `risks`, `ethics`
+### AI Progress (topic: `ai-progress`, domain: `foundations`)
+| ID | Title | Category |
+|----|-------|----------|
+| c201 | Large Language Models | technical |
+| c202 | Foundation Models | technical |
+| c203 | Scaling Laws | technical |
+| c204 | Benchmarks | technical |
+| c205 | Emergent Abilities | technical |
+| c206 | AI Labs | policy |
 
-**Start new card IDs at `c16`. Start new fun fact IDs at `ff1`.**
+### AI Concepts (topic: `ai-concepts`, domain: `foundations`)
+| ID | Title | Category |
+|----|-------|----------|
+| c301 | Training and Inference | technical |
+| c302 | Supervised Learning | technical |
+| c303 | Unsupervised Learning | technical |
+| c304 | Reinforcement Learning | technical |
+| c305 | Transformers | technical |
+| c306 | Fine-Tuning | technical |
+
+### Alignment Fundamentals (topic: `alignment-fundamentals`, domain: `ai-safety`)
+| ID | Title | Category |
+|----|-------|----------|
+| c401 | The Alignment Problem | alignment |
+| c402 | Instrumental Convergence | alignment |
+| c403 | Goodhart's Law | alignment |
+| c404 | Corrigibility | alignment |
+| c405 | Mesa-Optimization | alignment |
+| c406 | Reward Hacking | alignment |
+
+### AI Risk (topic: `ai-risk`, domain: `ai-safety`)
+| ID | Title | Category |
+|----|-------|----------|
+| c501 | Existential Risk from AI | risks |
+| c502 | Misuse & Dual-Use | risks |
+| c503 | Deceptive Alignment | risks |
+| c504 | Specification Gaming | risks |
+| c505 | Power-Seeking AI | risks |
+| c506 | Catastrophic Risk | risks |
+
+### Safety Techniques (topic: `safety-techniques`, domain: `ai-safety`)
+| ID | Title | Category |
+|----|-------|----------|
+| c601 | RLHF | alignment |
+| c602 | Constitutional AI | alignment |
+| c603 | Interpretability | alignment |
+| c604 | Red Teaming | alignment |
+| c605 | Scalable Oversight | alignment |
+| c606 | AI Governance | policy |
+
+Existing domains: `foundations`, `ai-safety`, `governance` (coming soon)
+Existing topics: `ai-basics`, `ai-progress`, `ai-concepts`, `alignment-fundamentals`, `ai-risk`, `safety-techniques`
+
+**ID ranges for new content:**
+- Cards: start at `c701` (use ranges like c701–c799 for a topic)
+- Fun facts: start at `ff12` (existing: ff1–ff11)
 
 ---
 
 ## 8. Output Format
 
-Return your content as **4 separate JavaScript code blocks**, each containing an export. I will paste them into the codebase.
+Return your content as **6 separate JavaScript code blocks**, each containing data to paste into the codebase.
 
-### Block 1: New cards to ADD to the `CORE_CONCEPTS` array in `src/data/concepts.js`
+### Block 1: New cards to ADD to `src/data/concepts.js`
 
 ```js
-// New concepts — append to CORE_CONCEPTS array
+// New concepts — append to the appropriate array (CORE_CONCEPTS or SAFETY_CONCEPTS)
 {
-  id: 'c16',
+  id: 'c701',
   title: '...',
-  // ... full card shape
+  summary: '...',
+  description: '...',
+  quizDescription: '...',
+  topic: '...',
+  secondaryTopic: null,
+  category: '...',
+  difficulty: 1,
+  tags: ['...'],
+  linkedCards: [
+    { id: '...', relationship: '...' },
+  ],
+  importance: 1,
+  isFoundational: false,
 },
 // ...more cards
 ```
 
-### Block 2: New topics (if any) and lessons to ADD to `src/data/lessons.js`
+### Block 2: New topics, chapters, and lessons to ADD to `src/data/lessons.js`
 
 ```js
-// New topics — append to TOPICS array (only if you're adding new topics)
-{ id: '...', title: '...', description: '...', icon: '...', color: '...' },
+// New topics — append to TOPICS array (only if adding new topics)
+{ id: '...', domain: '...', title: '...', description: '...', icon: '...', color: '...', order: ... },
+
+// New chapters — append to CHAPTERS array
+{ id: '...', topic: '...', title: '...', difficulty: '...', order: ... },
 
 // New lessons — append to LESSONS array
-{ id: 'lesson-...', number: ..., title: '...', subtitle: '...', mood: '...', topic: '...', isFoundational: ..., cardIds: [...] },
+{
+  id: 'lesson-...',
+  number: ...,
+  title: '...',
+  subtitle: '...',
+  mood: '...',
+  chapter: '...',
+  topic: '...',
+  isFoundational: ...,
+  cardIds: ['...'],
+},
 ```
 
 ### Block 3: Description distractors to MERGE into `src/data/descriptionDistractors.js`
 
 ```js
-// Merge into DESCRIPTION_DISTRACTORS object
-'c16': {
+DESCRIPTION_DISTRACTORS['c701'] = {
   hardCorrect: '...',
   distractors: [
     { text: '...', d: 1 },
     { text: '...', d: 2 },
     { text: '...', d: 3 },
   ],
-},
+};
 ```
 
-### Block 4: Fun facts to ADD to the `FUN_FACTS` array in `src/data/funFacts.js`
+### Block 4: True/False statements to MERGE into `src/data/trueFalseStatements.js`
 
 ```js
-{ id: 'ff1', text: '...', relatedCardIds: ['c1', 'c16'] },
+TRUE_FALSE_STATEMENTS['c701'] = {
+  trueStatement: '...',
+  falseStatement: '...',
+  correction: '...',
+};
+```
+
+### Block 5: Fun facts to ADD to the `FUN_FACTS` array in `src/data/funFacts.js`
+
+```js
+{ id: 'ff12', text: '...', relatedCardIds: ['c701', 'c401'] },
+```
+
+### Block 6: Daily quiz days to ADD to `DAILY_QUIZ_DAYS` in `src/data/dailyQuiz.js`
+
+```js
+{ dateLabel: '...', cards: [{ id: 'c701' }, { id: 'c702' }, { id: 'c703' }] },
 ```
 
 ---
 
-## 9. Your Task
+## 9. Pre-Submission Checklist
+
+Before returning your content, verify:
+
+- [ ] Every card ID is globally unique and within the specified range
+- [ ] Every `topic` value matches an existing or newly created TOPICS[].id
+- [ ] Every `chapter` value in lessons matches an existing or newly created CHAPTERS[].id
+- [ ] Every `linkedCards` entry uses `{ id: '...', relationship: '...' }` format
+- [ ] All `linkedCards` references point to valid card IDs (existing or new)
+- [ ] Links are bidirectional (if A links B, B links A)
+- [ ] Every card has description distractors (Block 3) AND true/false statements (Block 4)
+- [ ] d=2 distractors use descriptions of genuinely confusable sibling concepts
+- [ ] d=3 distractors contain a specific, identifiable error (not vague wrongness)
+- [ ] True statements are non-obvious; false statements are plausible misconceptions
+- [ ] No two cards have near-identical titles or quizDescriptions
+- [ ] Confusable concept pairs are disambiguated in their descriptions
+- [ ] Difficulty ratings are appropriate (not everything is difficulty 1)
+- [ ] Tags reuse existing tags where concepts overlap
+
+---
+
+## 10. Your Task
 
 I want you to generate content for the following topics/curriculum areas:
 
@@ -363,10 +528,13 @@ I want you to generate content for the following topics/curriculum areas:
 
 For each topic area, generate:
 1. A topic entry (if it's a new topic not in the existing list)
-2. A foundational card + lesson (lesson 0) introducing the topic
-3. 6-12 additional concept cards covering the area thoroughly
-4. Lessons grouping those cards (1-3 cards per lesson)
-5. Description distractors for every card
-6. 2-3 fun facts per topic
+2. Chapter entries for each difficulty tier you're populating
+3. A foundational card + lesson (lesson 0) introducing the topic
+4. 6-12 additional concept cards covering the area thoroughly
+5. Lessons grouping those cards (1-3 cards per lesson, progressing easier → harder)
+6. Description distractors for **every** card
+7. True/false statements for **every** card
+8. 2-3 fun facts per topic
+9. Daily quiz day groupings (3 thematically related cards per day)
 
-Ensure all `linkedCards` references are valid (either existing c1-c15 or your new cards). Ensure tag reuse across related cards. Ensure difficulty progression within each topic's lessons.
+Ensure all `linkedCards` references are valid. Ensure tag reuse across related cards. Ensure difficulty progression within each topic's lessons. Ensure confusable concepts are disambiguated.

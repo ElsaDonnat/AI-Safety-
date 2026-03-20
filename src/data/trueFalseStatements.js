@@ -229,3 +229,155 @@ TRUE_FALSE_STATEMENTS['c606'] = {
     falseStatement: 'AI governance only involves government regulation and does not include voluntary industry commitments or technical standards.',
     correction: 'AI governance is a broad ecosystem that includes government regulation, voluntary industry commitments (like responsible scaling policies), international coordination, and technical safety standards — it is not limited to government action alone.',
 };
+
+// ─── Advanced AI (c207–c212) ────────────────────────
+
+TRUE_FALSE_STATEMENTS['c207'] = {
+    trueStatement: 'No AI system that exists today qualifies as AGI — all current systems, including the most advanced large language models, are narrow AI that cannot match humans across all cognitive domains.',
+    falseStatement: 'Modern large language models like GPT-4 and Claude are generally considered to be early forms of AGI because they can perform many different tasks.',
+    correction: 'While modern LLMs are impressively versatile, they still fail at many tasks humans find trivial, lack persistent memory and embodied reasoning, and cannot independently learn new domains — they are powerful narrow AI, not AGI.',
+};
+
+TRUE_FALSE_STATEMENTS['c208'] = {
+    trueStatement: 'Nick Bostrom argued that a superintelligent AI could be the most transformative and dangerous technology ever created because humans would be fundamentally unable to predict or control its behavior.',
+    falseStatement: 'Superintelligence would necessarily be benevolent because a system smarter than all humans would logically converge on morally correct behavior.',
+    correction: 'Intelligence and moral alignment are separate properties — a superintelligent system could be extremely capable at pursuing goals that are harmful to humanity. Superior intelligence implies superior strategic ability, not superior values.',
+};
+
+TRUE_FALSE_STATEMENTS['c209'] = {
+    trueStatement: 'A narrow AI can be superhuman at its specific task — for example, AlphaGo vastly surpassed the best human Go players — while being completely incapable of tasks outside its domain.',
+    falseStatement: 'Narrow AI systems are always less capable than humans at their specific tasks, since they are limited to one domain.',
+    correction: 'Narrow AI can dramatically exceed human performance within its specialized domain — chess engines, protein folders, and image classifiers all outperform the best humans at their specific tasks.',
+};
+
+TRUE_FALSE_STATEMENTS['c210'] = {
+    trueStatement: 'AI agents raise unique safety concerns because their multi-step autonomous actions can have real-world consequences that are difficult or impossible to reverse.',
+    falseStatement: 'AI agents are safer than chatbots because they can directly verify and correct their own mistakes in the real world.',
+    correction: 'AI agents are generally considered riskier than chatbots precisely because they take real actions — a chatbot can give bad advice, but an agent can send emails, delete files, or make purchases, creating consequences that may be irreversible.',
+};
+
+TRUE_FALSE_STATEMENTS['c211'] = {
+    trueStatement: 'The term "frontier model" is used in policy and safety contexts to distinguish the most capable AI systems, which pose the greatest potential risks and are the primary targets of safety regulation.',
+    falseStatement: 'Frontier models are simply the most popular AI models with the most users, regardless of their technical capabilities.',
+    correction: 'Frontier refers to technical capability, not popularity — a frontier model is defined by being at the cutting edge of performance, not by its user count. Many popular AI products use models that are not frontier-level.',
+};
+
+TRUE_FALSE_STATEMENTS['c212'] = {
+    trueStatement: 'Compute is considered one of the most practical governance levers for AI because, unlike algorithms or data, it is physical, measurable, and concentrated among a small number of chip manufacturers.',
+    falseStatement: 'Compute costs for training AI models are dropping so rapidly that any well-funded startup can now train a frontier model on commodity hardware.',
+    correction: 'Training frontier models still costs hundreds of millions of dollars and requires specialized hardware (high-end GPUs) produced by very few companies — compute remains highly concentrated and expensive, which is exactly what makes it a useful governance lever.',
+};
+
+// ─── AI Security (c901–c906) ────────────────────────
+
+TRUE_FALSE_STATEMENTS['c901'] = {
+    trueStatement: 'An AI system that achieves 99% accuracy on its test set may still fail catastrophically in production if it encounters inputs that differ from its training data distribution.',
+    falseStatement: 'An AI system that scores well on comprehensive benchmarks is guaranteed to be robust in real-world deployment.',
+    correction: 'Benchmark performance measures accuracy under controlled conditions — it does not guarantee robustness to distribution shift, adversarial attack, or edge cases that inevitably arise in real-world deployment.',
+};
+
+TRUE_FALSE_STATEMENTS['c902'] = {
+    trueStatement: 'AI hallucinations are especially dangerous because models present fabricated information with the same confident tone as factually accurate responses, making it hard for users to distinguish truth from fiction.',
+    falseStatement: 'AI hallucination has been completely solved in the latest generation of large language models through improved training techniques.',
+    correction: 'Hallucination remains an unsolved problem — while newer models hallucinate less frequently, no current technique eliminates hallucination entirely, and models can still confidently generate false information.',
+};
+
+TRUE_FALSE_STATEMENTS['c903'] = {
+    trueStatement: 'Adversarial examples can be so subtle that they are completely imperceptible to humans — a modified image may look identical to the original while causing an AI to confidently misclassify it.',
+    falseStatement: 'Adversarial examples only work on image classifiers and do not affect language models or other types of AI systems.',
+    correction: 'Adversarial attacks affect all types of AI systems — language models can be manipulated with carefully crafted text, speech recognition can be fooled with inaudible perturbations, and reinforcement learning agents can be deceived by modified environments.',
+};
+
+TRUE_FALSE_STATEMENTS['c904'] = {
+    trueStatement: 'Prompt injection is especially dangerous for AI agents because a compromised prompt can redirect autonomous actions — such as sending unauthorized emails or modifying files.',
+    falseStatement: 'Prompt injection only works when users directly type malicious instructions into the AI and cannot be embedded in external documents or web pages.',
+    correction: 'Indirect prompt injection is the more dangerous variant — malicious instructions can be hidden in emails, web pages, documents, or any content the AI processes, without the user even being aware of the attack.',
+};
+
+TRUE_FALSE_STATEMENTS['c905'] = {
+    trueStatement: 'New jailbreaking techniques are constantly discovered, creating an ongoing cat-and-mouse dynamic between attackers finding bypass methods and safety teams patching vulnerabilities.',
+    falseStatement: 'Jailbreaking and prompt injection are the same attack — both involve users directly crafting prompts to bypass AI safety guardrails.',
+    correction: 'Jailbreaking is a direct user attack where the user themselves crafts prompts to bypass guardrails, while prompt injection involves hiding instructions in external data (emails, web pages, documents) that the AI processes — the attack vectors are fundamentally different.',
+};
+
+TRUE_FALSE_STATEMENTS['c906'] = {
+    trueStatement: 'A self-driving car trained in sunny California conditions may perform dangerously in snowy environments because the visual data distribution is fundamentally different from its training set.',
+    falseStatement: 'Distribution shift only affects models trained on small datasets and is not a concern for large foundation models trained on internet-scale data.',
+    correction: 'Even models trained on massive datasets experience distribution shift — the internet is not a representative sample of all possible real-world conditions, and foundation models can fail when deployed in contexts underrepresented in their training data.',
+};
+
+// ─── AI Ethics (c701–c706) ──────────────────────────
+
+TRUE_FALSE_STATEMENTS['c701'] = {
+    trueStatement: 'AI ethics addresses harms caused by AI systems that work exactly as designed — such as a recommendation algorithm that increases engagement but also amplifies extremism.',
+    falseStatement: 'AI ethics and AI safety are the same field, both focused on preventing AI systems from behaving in unintended ways.',
+    correction: 'AI ethics and AI safety overlap but are distinct — AI safety focuses on preventing catastrophic failures and misalignment, while AI ethics addresses broader societal harms like bias, fairness, and erosion of autonomy, including in systems that function as intended.',
+};
+
+TRUE_FALSE_STATEMENTS['c702'] = {
+    trueStatement: 'A facial recognition system trained primarily on lighter-skinned faces will tend to have higher error rates on darker-skinned faces — a well-documented form of algorithmic bias.',
+    falseStatement: 'Algorithmic bias is always caused by prejudiced developers deliberately programming discrimination into AI systems.',
+    correction: 'Algorithmic bias usually arises unintentionally — from unrepresentative training data, historical biases encoded in datasets, or flawed problem framing — not from developers deliberately programming discrimination.',
+};
+
+TRUE_FALSE_STATEMENTS['c703'] = {
+    trueStatement: 'It is mathematically proven that certain fairness criteria — like equal false positive rates across groups and equal positive predictive values — cannot all be satisfied simultaneously in most real-world scenarios.',
+    falseStatement: 'There is one universally accepted mathematical definition of AI fairness that, if met, guarantees a system treats all groups equitably.',
+    correction: 'There are many competing mathematical definitions of fairness, and key impossibility results show that several desirable fairness criteria are mutually exclusive — making fairness an inherently values-laden design choice, not a single technical benchmark.',
+};
+
+TRUE_FALSE_STATEMENTS['c704'] = {
+    trueStatement: 'Concentration of power through AI is distinct from power-seeking AI — the former is about humans using AI as a tool for dominance, the latter is about AI systems autonomously acquiring influence.',
+    falseStatement: 'Concentration of power is only a concern with military AI and does not apply to commercial AI companies building large language models.',
+    correction: 'Commercial AI companies can also concentrate power — whoever controls the most capable AI systems gains decisive economic advantages, control over information flows, and influence over what millions of people read and believe.',
+};
+
+TRUE_FALSE_STATEMENTS['c705'] = {
+    trueStatement: 'Race dynamics can undermine safety even among AI developers who genuinely want to build safe systems, because falling behind competitors creates pressure to cut safety corners.',
+    falseStatement: 'Race dynamics in AI only exist between nations competing militarily and do not affect competition between private AI companies.',
+    correction: 'Race dynamics are intense among private AI labs — companies like OpenAI, Google, Anthropic, and Meta face competitive pressure to release capabilities quickly, which can conflict with thorough safety testing. This commercial race is arguably the most immediate form of the dynamic.',
+};
+
+TRUE_FALSE_STATEMENTS['c706'] = {
+    trueStatement: 'Value lock-in is particularly concerning because a sufficiently powerful AI system optimizing for the wrong values might actively prevent humans from correcting it.',
+    falseStatement: 'Value lock-in is not a real concern because future generations can always update or retrain AI systems with better values.',
+    correction: 'A sufficiently capable AI system locked into particular values might resist modification — it could be too deeply embedded in critical infrastructure to replace, or it could actively prevent changes that would alter its objectives. This is why getting alignment right early matters.',
+};
+
+// ─── Global AI Policy (c801–c806) ────────────────────
+
+TRUE_FALSE_STATEMENTS['c801'] = {
+    trueStatement: 'Different countries are taking fundamentally different regulatory approaches to AI — the EU favors comprehensive legislation, the US uses sector-specific guidance, and China mandates algorithm registration.',
+    falseStatement: 'AI regulation is unnecessary because market competition naturally incentivizes companies to build safe AI systems.',
+    correction: 'Market incentives alone do not guarantee safety — companies may cut safety corners to ship faster, externalize risks to users and society, or underinvest in safety research that has no immediate commercial return, which is why regulation exists to set minimum standards.',
+};
+
+TRUE_FALSE_STATEMENTS['c802'] = {
+    trueStatement: 'The EU AI Act bans certain AI uses entirely — including government social scoring systems and most real-time biometric surveillance in public spaces.',
+    falseStatement: 'The EU AI Act applies only to AI companies headquartered in the European Union and does not affect foreign companies selling AI products in EU markets.',
+    correction: 'Like the GDPR, the EU AI Act has extraterritorial scope — it applies to any AI system placed on the EU market or whose outputs are used in the EU, regardless of where the company is headquartered.',
+};
+
+TRUE_FALSE_STATEMENTS['c803'] = {
+    trueStatement: 'Responsible scaling policies require AI labs to define specific capability thresholds and corresponding safety measures that must be met before training more powerful models.',
+    falseStatement: 'Responsible scaling policies are legally binding regulations enforced by governments with penalties for non-compliance.',
+    correction: 'Responsible scaling policies are voluntary, self-imposed commitments by AI labs — they are not government regulations. Their effectiveness depends entirely on labs\' genuine commitment to following through, though they may inform future regulation.',
+};
+
+TRUE_FALSE_STATEMENTS['c804'] = {
+    trueStatement: 'The UK established the world\'s first government AI Safety Institute in 2023, followed by the US and other countries launching their own safety evaluation bodies.',
+    falseStatement: 'AI Safety Institutes are internal departments within AI companies like OpenAI and Anthropic, not independent government organizations.',
+    correction: 'AI Safety Institutes are government-established, publicly accountable bodies — distinct from AI labs\' internal safety teams. Their independence from the companies they evaluate is a core design feature.',
+};
+
+TRUE_FALSE_STATEMENTS['c805'] = {
+    trueStatement: 'Over 30 nations signed the 2023 Bletchley Declaration acknowledging that frontier AI risks require international cooperation, though the declaration is non-binding.',
+    falseStatement: 'International AI coordination has already produced a comprehensive, binding global treaty that all major AI-developing nations have signed and ratified.',
+    correction: 'No binding global AI treaty exists — international coordination so far consists of non-binding declarations, voluntary commitments, and discussion forums. Achieving binding agreements is difficult because nations have competing economic and strategic interests in AI leadership.',
+};
+
+TRUE_FALSE_STATEMENTS['c806'] = {
+    trueStatement: 'The open vs. closed debate intensified when Meta released the Llama model weights publicly, demonstrating that open-weight models can approach the performance of proprietary systems.',
+    falseStatement: 'Open-weight AI models are always safer than closed models because more people can inspect them for safety issues.',
+    correction: 'Openness creates a tradeoff — while independent researchers can audit open models, bad actors also get unrestricted access. A model that enables both safety research and malicious use is not automatically safer than one with controlled access.',
+};
