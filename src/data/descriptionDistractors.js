@@ -574,7 +574,7 @@ export const WHY_DISTRACTORS = {
     'c105': { distractor: 'Because neural networks are modeled on biological brains, their decision-making process is inherently transparent and can be fully explained by neuroscience principles.' },
     'c106': { distractor: 'Visual AI has achieved consistent superhuman accuracy across all conditions and demographics, making human review of its outputs unnecessary in safety-critical applications.' },
     'c202': { distractor: 'Building one model for many tasks eliminates the need for domain experts to review its outputs, since the system already understands each field deeply.' },
-    'c203': { distractor: 'Predictable performance curves mean researchers can guarantee in advance exactly when dangerous capabilities will emerge, giving regulators ample warning.' },
+    'c203': { distractor: 'Knowing how performance scales lets labs skip safety testing at intermediate sizes, since they can extrapolate results from smaller models.' },
     'c204': { distractor: 'High benchmark scores provide definitive proof that a model is safe and reliable enough for real-world deployment without further testing.' },
     'c205': { distractor: 'Surprising new capabilities always appear gradually enough that safety teams have time to study and mitigate them before they cause harm.' },
     'c206': { distractor: 'Because these organizations compete fiercely, market forces naturally ensure they invest more in safety than a monopoly would.' },

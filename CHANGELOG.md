@@ -15,6 +15,17 @@
 
 ### Changed
 - Settings.jsx now imports GraduationCap, Lock, Check, ChevronDown icons from Lucide
+## 0.6.2 — Improve "Why It Matters" quiz quality
+
+### Changed
+- Shortened all 50 `whyItMatters` fields to max one sentence for better quiz readability
+- Rewrote Scaling Laws distractor (c203) to be clearly distinguishable from the correct answer
+- Added `similarWhyMatters` field to 20 cards across 8 similarity groups (e.g., "gaming objectives", "irreversibility", "bias in training data")
+- `generateWhyOptions()` now excludes cards whose `whyItMatters` is thematically too similar to the correct answer from the distractor pool
+
+### Added
+- `CONTENT_GUIDE.md` — instructions for LLMs/humans creating new cards, including the `similarWhyMatters` validation checklist
+- Documented `similarWhyMatters` field and similarity groups in `CLAUDE.md`
 
 ## 0.6.1 — Smarter "What" quiz distractors
 
