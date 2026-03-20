@@ -583,7 +583,7 @@ export const WHY_DISTRACTORS = {
     'c304': { distractor: 'Reward-based training always converges on the intended behavior because the reward function directly encodes the designer\'s goals without ambiguity.' },
     'c305': { distractor: 'Architectural diversity across frontier labs ensures that a vulnerability in one system cannot affect any other, keeping the ecosystem resilient.' },
     'c306': { distractor: 'Adapting a model to a new domain requires so much data and compute that only well-resourced organizations can do it, effectively preventing misuse.' },
-    'c401': { distractor: 'Current techniques like RLHF have largely closed the gap between capability and alignment, making this primarily a theoretical concern for future systems.' },
+
     'c402': { distractor: 'Self-preservation and resource-seeking only emerge in systems explicitly programmed with survival instincts, so avoiding those instructions eliminates the risk.' },
     'c403': { distractor: 'The principle only applies in economics and human organizations — AI optimizers are too precise to be fooled by proxy metrics.' },
     'c404': { distractor: 'Modern AI systems are inherently cooperative because their training objectives penalize non-compliance, making forced shutdown unnecessary.' },
@@ -594,7 +594,7 @@ export const WHY_DISTRACTORS = {
     'c504': { distractor: 'More capable systems are better at understanding intent, so they naturally satisfy the spirit of their objectives rather than exploiting literal specifications.' },
     'c505': { distractor: 'Resource accumulation only becomes dangerous in physically embodied robots — software-only systems cannot acquire meaningful real-world influence.' },
     'c506': { distractor: 'Large-scale AI failures can always be contained and reversed using standard incident response procedures like system rollbacks and software patches.' },
-    'c601': { distractor: 'Human evaluators consistently agree on what constitutes helpful and harmless output, making the resulting reward signal highly reliable and unambiguous.' },
+
     'c602': { distractor: 'Self-critique eliminates all failure modes because a model that can identify problems in its own outputs will never produce harmful content.' },
     'c603': { distractor: 'Knowing which neurons activate for a given input fully explains the model\'s reasoning, making any black-box system transparent once interpretability tools are applied.' },
     'c604': { distractor: 'A single comprehensive red-teaming session before launch permanently secures the system against all future attack vectors and misuse scenarios.' },
@@ -615,7 +615,7 @@ export const WHY_DISTRACTORS = {
     'c210': { distractor: 'Autonomous systems are inherently safer than chat-based AI because they can immediately detect and reverse their own mistakes without human intervention.' },
     'c211': { distractor: 'Older, well-established models pose greater safety risks than cutting-edge systems because they lack the latest safety techniques built into newer architectures.' },
     'c212': { distractor: 'Algorithmic efficiency improvements are making compute irrelevant to AI governance — soon anyone with a laptop will be able to train frontier models.' },
-    'c901': { distractor: 'Achieving high accuracy on standard test sets guarantees that the system will perform reliably under all real-world conditions and adversarial scenarios.' },
+
     'c902': { distractor: 'Fabricated outputs are easy for end users to identify because AI-generated falsehoods always contain obvious factual errors or stylistic tells.' },
     'c903': { distractor: 'These attacks only work in academic research settings with white-box access to model internals and pose no threat to deployed commercial systems.' },
     'c904': { distractor: 'Instruction-tuning techniques used in modern language models have fully solved this vulnerability, making it a historical concern rather than a current threat.' },
