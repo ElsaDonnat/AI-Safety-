@@ -14,7 +14,7 @@ import App from './App.jsx'
 import { AppProvider } from './context/AppContext.jsx'
 
 // Configure native status bar (no-ops on web)
-StatusBar.setBackgroundColor({ color: '#FAFAF8' }).catch(() => {});
+StatusBar.setBackgroundColor({ color: '#FAFAF8' }).catch(() => {}); // --color-bg (light mode)
 StatusBar.setStyle({ style: Style.Light }).catch(() => {});
 SplashScreen.hide().catch(() => {});
 

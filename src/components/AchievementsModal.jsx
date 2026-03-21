@@ -19,8 +19,8 @@ const CATEGORY_LABELS = {
 function AchievementIconBadge({ achievement, size = 32, locked = false }) {
     const IconComponent = achievement.icon;
     const iconSize = Math.round(size * 0.5);
-    const color = locked ? 'var(--color-ink-muted)' : (achievement.iconColor || 'var(--color-burgundy)');
-    const bgColor = locked ? 'rgba(var(--color-ink-rgb), 0.04)' : `${achievement.iconColor || 'var(--color-burgundy)'}14`;
+    const color = locked ? 'var(--color-ink-muted)' : (achievement.iconColor || 'var(--color-coral)');
+    const bgColor = locked ? 'rgba(var(--color-ink-rgb), 0.04)' : `${achievement.iconColor || 'var(--color-coral)'}14`;
 
     return (
         <div style={{
@@ -58,7 +58,7 @@ function AchievementDetail({ achievement, isUnlocked, unlockDate, progress, onBa
             <div className="achievement-detail-content">
                 <div
                     className="achievement-detail-emoji-wrap"
-                    style={isUnlocked ? { background: `${achievement.iconColor || 'var(--color-burgundy)'}12` } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
+                    style={isUnlocked ? { background: `${achievement.iconColor || 'var(--color-coral)'}12` } : { background: 'rgba(var(--color-ink-rgb), 0.04)' }}
                 >
                     <AchievementIconBadge achievement={achievement} size={56} locked={!isUnlocked} />
                 </div>
@@ -139,7 +139,7 @@ export default function AchievementsModal({ onClose }) {
                             className="h-full rounded-[2px] transition-all duration-700 ease-out"
                             style={{
                                 width: `${(totalUnlocked / (ACHIEVEMENTS.length + BONUS_ACHIEVEMENTS.length)) * 100}%`,
-                                backgroundColor: 'var(--color-burgundy)',
+                                backgroundColor: 'var(--color-coral)',
                             }}
                         />
                     </div>
@@ -209,7 +209,7 @@ export default function AchievementsModal({ onClose }) {
 
                             {/* Bonus (Secret) Achievements */}
                             <div className="mb-5">
-                                <h3 className="text-[10px] uppercase tracking-widest font-semibold mb-2" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>
+                                <h3 className="text-[10px] uppercase tracking-widest font-semibold mb-2" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-mono)' }}>
                                     Secret {unlockedBonus > 0 ? `\u2014 ${unlockedBonus}/${BONUS_ACHIEVEMENTS.length}` : ''}
                                 </h3>
                                 <div className="achievement-grid">

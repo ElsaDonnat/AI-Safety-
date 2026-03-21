@@ -241,8 +241,8 @@ function MCQLayout({ question, selected, answered, nearMiss, onSelect }) {
                 {normalizedOptions.map((opt, i) => {
                     const isSelected = selected === i;
                     const isCorrect = opt.isCorrect;
-                    let bg = 'var(--color-parchment-dark)';
-                    let border = '1px solid var(--color-warm)';
+                    let bg = 'var(--color-bg-alt)';
+                    let border = '1px solid var(--color-border)';
                     let color = 'var(--color-ink)';
                     if (answered) {
                         if (isCorrect) {
@@ -315,8 +315,8 @@ function OddOneOutLayout({ question, selected, answered, onSelect }) {
                 {question.options.map(opt => {
                     const isOutlier = opt.isOutlier;
                     const isSelected = selected === opt.id;
-                    let bg = 'var(--color-parchment-dark)';
-                    let border = '1px solid var(--color-warm)';
+                    let bg = 'var(--color-bg-alt)';
+                    let border = '1px solid var(--color-border)';
                     let color = 'var(--color-ink)';
 
                     if (answered) {
@@ -377,8 +377,8 @@ function TrueOrFalseLayout({ question, selected, answered, onSelect }) {
                 {question.prompt || 'True or false?'}
             </p>
             <div style={{
-                background: 'var(--color-parchment-dark)',
-                border: '1px solid var(--color-warm)',
+                background: 'var(--color-bg-alt)',
+                border: '1px solid var(--color-border)',
                 borderRadius: 3,
                 padding: '18px 16px',
                 width: '100%',
@@ -879,8 +879,8 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                 {/* ── Tier Ladder — warm beige panel at top ── */}
                 <div style={{
-                    background: 'var(--color-warm-light)',
-                    border: '1px solid var(--color-warm)',
+                    background: 'var(--color-border-light)',
+                    border: '1px solid var(--color-border)',
                     borderRadius: '3px',
                     padding: '16px 12px 14px',
                     marginBottom: 12,
@@ -914,7 +914,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 left: `calc(100% / ${TIER_DISPLAY.length} / 2)`,
                                 width: `calc(${bestTierReached / (TIER_DISPLAY.length - 1)} * (100% - 100% / ${TIER_DISPLAY.length}))`,
                                 height: '2px',
-                                background: 'var(--color-burgundy)',
+                                background: 'var(--color-coral)',
                                 transition: 'width 0.4s ease',
                                 zIndex: 0,
                             }} />
@@ -992,7 +992,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             justifyContent: 'center',
                             flexShrink: 0,
                         }}>
-                            <Zap size={24} color="var(--color-burgundy-light)" strokeWidth={2} />
+                            <Zap size={24} color="var(--color-coral-light)" strokeWidth={2} />
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                             <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '15px', color: '#F0EBE5', marginBottom: 3, letterSpacing: '-0.01em' }}>
@@ -1000,14 +1000,14 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </p>
                             <p style={{ fontSize: '12px', color: 'var(--color-sidebar-text)', opacity: 0.8 }}>
                                 {TIER_DISPLAY.length} tiers, {TOTAL_CHALLENGE_QUESTIONS} questions
-                                {ch.soloHighScore > 0 && <> {'\u00B7'} Best: <span style={{ color: 'var(--color-burgundy-light)', fontWeight: 600 }}>{ch.soloHighScore}/{TOTAL_CHALLENGE_QUESTIONS}</span></>}
+                                {ch.soloHighScore > 0 && <> {'\u00B7'} Best: <span style={{ color: 'var(--color-coral-light)', fontWeight: 600 }}>{ch.soloHighScore}/{TOTAL_CHALLENGE_QUESTIONS}</span></>}
                             </p>
                         </div>
                         <div style={{
                             width: 32,
                             height: 32,
                             borderRadius: '3px',
-                            background: 'var(--color-burgundy)',
+                            background: 'var(--color-coral)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -1049,7 +1049,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         }}
                         className="flex-1 text-left active:scale-[0.99] transition-all duration-150"
                         style={{
-                            background: 'var(--color-bronze)',
+                            background: 'var(--color-sky)',
                             borderRadius: '3px',
                             padding: '14px',
                             border: 'none',
@@ -1074,7 +1074,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         onClick={availableFunFacts.length > 0 ? () => setView(VIEW.FUN_FACTS) : undefined}
                         className="flex-1 text-left active:scale-[0.99] transition-all duration-150"
                         style={{
-                            background: 'var(--color-burgundy)',
+                            background: 'var(--color-coral)',
                             borderRadius: '3px',
                             padding: '14px',
                             border: 'none',
@@ -1119,28 +1119,28 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         </p>
                         <div className="flex justify-around items-start">
                             <div className="text-center">
-                                <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-coral)', lineHeight: 1 }}>
                                     {ch.soloHighScore || 0}
                                 </p>
                                 <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Best Score</p>
                             </div>
                             {allTimeAccuracy !== null && (
                                 <div className="text-center">
-                                    <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                    <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-coral)', lineHeight: 1 }}>
                                         {allTimeAccuracy}%
                                     </p>
                                     <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Accuracy</p>
                                 </div>
                             )}
                             <div className="text-center">
-                                <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-coral)', lineHeight: 1 }}>
                                     {ch.multiplayerVictories || 0}
                                 </p>
                                 <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Victories</p>
                             </div>
                             {totalGames > 0 && (
                                 <div className="text-center">
-                                    <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', lineHeight: 1 }}>
+                                    <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-coral)', lineHeight: 1 }}>
                                         {totalGames}
                                     </p>
                                     <p style={{ fontSize: '10px', color: 'var(--color-ink-muted)', marginTop: 3 }}>Games</p>
@@ -1177,7 +1177,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         style={{
                             flex: 1,
                             padding: '10px 14px',
-                            border: '1px solid var(--color-warm)',
+                            border: '1px solid var(--color-border)',
                             borderRadius: 3,
                             fontSize: '0.88rem',
                             fontFamily: 'var(--font-sans)',
@@ -1207,7 +1207,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             background: 'var(--color-card)',
-                            border: '1px solid var(--color-warm)',
+                            border: '1px solid var(--color-border)',
                             borderRadius: 3,
                             padding: '10px 14px',
                             boxShadow: 'var(--shadow-card)',
@@ -1282,7 +1282,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                         style={{
                                             padding: '10px 14px',
                                             borderRadius: 3,
-                                            border: '1px solid var(--color-warm)',
+                                            border: '1px solid var(--color-border)',
                                             background: 'var(--color-card)',
                                             fontWeight: 600,
                                             fontSize: '0.88rem',
@@ -1335,7 +1335,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 <Hearts current={currentPlayer?.hearts || 0} max={Math.max(MAX_HEARTS, currentPlayer?.hearts || 0)} />
                 <div style={{
                     display: 'flex', alignItems: 'center', gap: 6,
-                    background: 'var(--color-warm-light)', border: '1px solid var(--color-warm)',
+                    background: 'var(--color-border-light)', border: '1px solid var(--color-border)',
                     borderRadius: 3, padding: '6px 14px',
                 }}>
                     <span style={{ fontSize: '0.88rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
@@ -1388,7 +1388,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                         <div style={{ height: 2, background: 'rgba(var(--color-ink-rgb), 0.08)', overflow: 'hidden' }}>
                             <div style={{
                                 height: '100%',
-                                background: 'var(--color-burgundy)',
+                                background: 'var(--color-coral)',
                                 width: `${((questionIndex + 1) / TOTAL_CHALLENGE_QUESTIONS) * 100}%`,
                                 transition: 'width 0.3s ease',
                             }} />
@@ -1406,7 +1406,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                             </span>
                         )}
                         <div style={{ textAlign: 'center' }}>
-                            <span style={{ fontSize: '1.1rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
+                            <span style={{ fontSize: '1.1rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
                                 {currentPlayer?.score || 0}
                             </span>
                             <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginLeft: 3 }}>pts</span>
@@ -1416,8 +1416,8 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 fontSize: '10px',
                                 fontWeight: 700,
                                 fontFamily: 'var(--font-mono)',
-                                color: 'var(--color-burgundy)',
-                                background: 'var(--color-burgundy-soft)',
+                                color: 'var(--color-coral)',
+                                background: 'var(--color-coral-soft)',
                                 padding: '2px 8px',
                                 borderRadius: 3,
                                 letterSpacing: '0.02em',
@@ -1439,7 +1439,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     borderRadius: 3,
                     padding: '20px 16px',
                     flex: 1,
-                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.15)' : '1px solid var(--color-warm)',
+                    border: tierInfo?.tier.id === 'visionary' ? '1.5px solid rgba(220, 38, 38, 0.15)' : '1px solid var(--color-border)',
                     boxShadow: 'var(--shadow-card)',
                 }}>
                     <ChallengeQuestion
@@ -1501,7 +1501,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                     {/* Score */}
                     <div style={{ marginBottom: 16 }}>
-                        <p style={{ fontSize: '2.2rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)', letterSpacing: '-0.02em' }}>
+                        <p style={{ fontSize: '2.2rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-coral)', letterSpacing: '-0.02em' }}>
                             {soloScore}/{TOTAL_CHALLENGE_QUESTIONS}
                         </p>
                         <p style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
@@ -1563,26 +1563,26 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-around',
-                        background: 'var(--color-warm-light)',
-                        border: '1px solid var(--color-warm)',
+                        background: 'var(--color-border-light)',
+                        border: '1px solid var(--color-border)',
                         borderRadius: 3,
                         padding: '14px 12px',
                         marginBottom: 20,
                     }}>
                         <div className="text-center">
-                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
+                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-coral)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
                                 {bestStreak}
                             </p>
                             <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Best Streak</p>
                         </div>
                         <div className="text-center">
-                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
+                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-coral)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
                                 +{soloScore * 8}
                             </p>
                             <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.03em' }}>XP Earned</p>
                         </div>
                         <div className="text-center">
-                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
+                            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-coral)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
                                 {questionIndex + 1}
                             </p>
                             <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Questions</p>
@@ -1680,7 +1680,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 background: isTopThree ? bgColors[i] : 'var(--color-card)',
-                                border: `1px solid ${isTopThree ? `${medalColors[i]}30` : 'var(--color-warm)'}`,
+                                border: `1px solid ${isTopThree ? `${medalColors[i]}30` : 'var(--color-border)'}`,
                                 borderRadius: 3,
                                 padding: '8px 14px',
                                 boxShadow: 'var(--shadow-card)',
@@ -1697,7 +1697,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                                         {p.name}
                                     </span>
                                 </div>
-                                <span style={{ fontWeight: 700, color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)', fontSize: '0.88rem' }}>
+                                <span style={{ fontWeight: 700, color: 'var(--color-coral)', fontFamily: 'var(--font-display)', fontSize: '0.88rem' }}>
                                     {p.score} <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>pts</span>
                                 </span>
                             </div>

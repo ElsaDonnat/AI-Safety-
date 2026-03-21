@@ -9,13 +9,13 @@ const SECTIONS = [
         id: 'learn',
         title: 'Learn',
         description: 'Structured lessons across AI foundations, safety, and governance',
-        color: 'var(--color-burgundy)',
+        color: 'var(--color-coral)',
     },
     {
         id: 'library',
         title: 'Library',
         description: 'Browse and review every concept you\'ve encountered',
-        color: 'var(--color-bronze)',
+        color: 'var(--color-sky)',
     },
     {
         id: 'practice',
@@ -45,7 +45,7 @@ export default function HomePage({ onTabChange }) {
             {/* Hero — with warm accent bar */}
             <div className="mb-10 flex gap-4">
                 {/* Warm brown accent line — starts aligned with top of logo */}
-                <div className="flex-shrink-0 mt-2" style={{ width: '3px', alignSelf: 'stretch', background: 'linear-gradient(to bottom, var(--color-ink), var(--color-warm))', borderRadius: '1px' }} />
+                <div className="flex-shrink-0 mt-2" style={{ width: '3px', alignSelf: 'stretch', background: 'linear-gradient(to bottom, var(--color-ink), var(--color-border))', borderRadius: '1px' }} />
                 <div>
                 <h1 style={{
                     fontFamily: 'var(--font-display)',
@@ -59,7 +59,7 @@ export default function HomePage({ onTabChange }) {
                 }}>
                     <MatrixTextReveal
                         text="alignd."
-                        dotColor="var(--color-bronze)"
+                        dotColor="var(--color-sky)"
                     />
                 </h1>
                 <p style={{
@@ -83,18 +83,18 @@ export default function HomePage({ onTabChange }) {
             {hasStarted && (
                 <div className="mb-6 px-4 py-4 rounded-[3px]" style={{
                     backgroundColor: 'var(--color-card)',
-                    border: '1px solid var(--color-warm)',
+                    border: '1px solid var(--color-border)',
                 }}>
                     <div className="flex items-center justify-between mb-3">
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '14px', color: 'var(--color-ink-secondary)' }}>
                             Your Progress
                         </span>
-                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: 'var(--color-burgundy)' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600, color: 'var(--color-coral)' }}>
                             {progressPct}%
                         </span>
                     </div>
-                    <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-parchment)' }}>
-                        <div style={{ height: '100%', width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-burgundy)', transition: 'width 0.5s ease-out' }} />
+                    <div style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-bg)' }}>
+                        <div style={{ height: '100%', width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-coral)', transition: 'width 0.5s ease-out' }} />
                     </div>
                     <div className="flex justify-between mt-3">
                         <div>
@@ -174,7 +174,7 @@ export default function HomePage({ onTabChange }) {
             </div>
 
             {/* Warm divider */}
-            <div className="my-2" style={{ height: '1px', backgroundColor: 'var(--color-warm)' }} />
+            <div className="my-2" style={{ height: '1px', backgroundColor: 'var(--color-border)' }} />
 
             {/* Section cards */}
             <div className="space-y-3">
@@ -219,7 +219,7 @@ export default function HomePage({ onTabChange }) {
             {/* Footer */}
             <div className="mt-12 mb-8 text-center">
                 <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px', color: 'var(--color-ink)', letterSpacing: '-0.02em', transform: 'scaleY(0.92)' }}>
-                    alignd<span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--color-bronze)', marginLeft: '4px', verticalAlign: 'baseline', position: 'relative', top: '-1px' }} />
+                    alignd<span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--color-sky)', marginLeft: '4px', verticalAlign: 'baseline', position: 'relative', top: '-1px' }} />
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     alignd — ai safety companion
