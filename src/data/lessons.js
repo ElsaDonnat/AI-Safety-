@@ -27,6 +27,15 @@ export const DOMAINS = [
         color: '#B99EDB',
         order: 2,
     },
+    {
+        id: 'ml4g',
+        title: 'ML for Good',
+        description: 'Companion learning path for the ML4G course',
+        icon: 'ai-basics',
+        color: '#4CAF50',
+        order: 99,
+        courseOnly: 'ml4g', // only visible when this course mode is active
+    },
 ];
 
 // ─── Topics (within domains) ────────────────────────────────
@@ -123,6 +132,16 @@ export const TOPICS = [
         color: '#7BA3CC',
         order: 1,
     },
+    // ─── ML for Good (course-only) ───────────────────────────
+    {
+        id: 'ml4g-overview',
+        domain: 'ml4g',
+        title: 'ML4G Overview',
+        description: 'Introduction to the ML for Good curriculum',
+        icon: 'ai-basics',
+        color: '#4CAF50',
+        order: 0,
+    },
 ];
 
 // ─── Chapters (difficulty tiers within topics) ──────────────
@@ -167,6 +186,8 @@ export const CHAPTERS = [
     { id: 'global-ai-policy-beginner', topic: 'global-ai-policy', title: 'Beginner', difficulty: 'beginner', order: 0 },
     { id: 'global-ai-policy-amateur', topic: 'global-ai-policy', title: 'Amateur', difficulty: 'amateur', order: 1, comingSoon: true },
     { id: 'global-ai-policy-advanced', topic: 'global-ai-policy', title: 'Advanced', difficulty: 'advanced', order: 2, comingSoon: true },
+    // ML for Good (course-only)
+    { id: 'ml4g-overview-beginner', topic: 'ml4g-overview', title: 'Beginner', difficulty: 'beginner', order: 0 },
 ];
 
 // Difficulty badge colors — single source of truth
@@ -425,6 +446,19 @@ export const LESSONS = [
         topic: 'global-ai-policy',
         isFoundational: false,
         cardIds: ['c803', 'c804', 'c805'],
+    },
+
+    // ─── ML for Good / Overview / Beginner ───────────────────
+    {
+        id: 'lesson-ml4g-overview-b-0',
+        number: 0,
+        title: 'Welcome to ML for Good',
+        subtitle: 'Your companion guide to the ML4G course',
+        mood: 'Let\u2019s explore how ML can be a force for good\u2026',
+        chapter: 'ml4g-overview-beginner',
+        topic: 'ml4g-overview',
+        isFoundational: true,
+        cardIds: ['c101', 'c102', 'c103'], // reuses existing cards as placeholder
     },
 ];
 
