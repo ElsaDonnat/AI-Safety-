@@ -302,6 +302,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                         Coming soon
                     </p>
                 </div>
+            )}
             {/* ═══ Course View ═══ */}
             {learnView === 'course' && courseContent && (
                 <CourseView
