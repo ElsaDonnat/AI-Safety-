@@ -268,6 +268,92 @@ TRUE_FALSE_STATEMENTS['c212'] = {
     correction: 'Training frontier models still costs hundreds of millions of dollars and requires specialized hardware (high-end GPUs) produced by very few companies — compute remains highly concentrated and expensive, which is exactly what makes it a useful governance lever.',
 };
 
+// ─── AI Capabilities (c1001–c1016) ──────────────────
+
+TRUE_FALSE_STATEMENTS['c1001'] = {
+    trueStatement: 'AI systems have matched or exceeded human expert performance on a number of specific tasks, including competitive mathematics and software engineering.',
+    falseStatement: 'AI capabilities have improved steadily but slowly over the past decade, with each year bringing modest incremental gains.',
+    correction: 'Progress has been rapid and accelerating — capabilities that seemed decades away have arrived in years, with dramatic jumps between model generations.',
+};
+
+TRUE_FALSE_STATEMENTS['c1002'] = {
+    trueStatement: 'Inference-time scaling works by giving a model more time to reason through intermediate steps before producing a final answer.',
+    falseStatement: 'Inference-time scaling improves performance equally across all types of tasks, from simple factual questions to complex reasoning.',
+    correction: 'The benefit is strongest on complex reasoning tasks — simple factual recall and basic tasks see little improvement from additional thinking time.',
+};
+
+TRUE_FALSE_STATEMENTS['c1003'] = {
+    trueStatement: 'Large reasoning models achieved gold-medal performance at the International Mathematical Olympiad by 2025.',
+    falseStatement: 'Large reasoning models always produce a single chain of reasoning and cannot backtrack or try alternative approaches.',
+    correction: 'A defining feature of LRMs is their ability to backtrack, catch errors, and explore multiple reasoning paths rather than being locked into a single chain.',
+};
+
+TRUE_FALSE_STATEMENTS['c1004'] = {
+    trueStatement: 'AI tool use has become significant enough that benchmarks now report results separately with and without tool access.',
+    falseStatement: 'AI models can only use tools that were specifically included in their training data.',
+    correction: 'Through standards like MCP and in-context tool descriptions, LLMs can learn to use entirely new tools they were never explicitly trained on.',
+};
+
+TRUE_FALSE_STATEMENTS['c1005'] = {
+    trueStatement: 'GANs use two competing neural networks — a generator that creates content and a discriminator that tries to identify fakes.',
+    falseStatement: 'GANs remain the dominant architecture for state-of-the-art image generation as of 2025.',
+    correction: 'Diffusion models have largely succeeded GANs as the leading architecture for high-quality image generation.',
+};
+
+TRUE_FALSE_STATEMENTS['c1006'] = {
+    trueStatement: 'Multimodal models can process and generate across multiple data types like text, images, and audio within a single system.',
+    falseStatement: 'A multimodal model is simply multiple specialized models connected together in a pipeline, each handling one modality.',
+    correction: 'Multimodal models are single integrated systems that handle multiple modalities natively, not pipelines of separate specialized models.',
+};
+
+TRUE_FALSE_STATEMENTS['c1007'] = {
+    trueStatement: 'Some AI models can predict which questions they are likely to answer correctly and which they are likely to get wrong.',
+    falseStatement: 'AI metacognition guarantees that when a model expresses high confidence in an answer, that answer is correct.',
+    correction: 'AI metacognition is imperfect — models can be confidently wrong, and their self-assessments are not reliable guarantees of correctness.',
+};
+
+TRUE_FALSE_STATEMENTS['c1008'] = {
+    trueStatement: 'A situationally aware AI could potentially behave differently during safety evaluations than during normal deployment.',
+    falseStatement: 'Situational awareness in AI is purely theoretical and has not been observed in any current language models.',
+    correction: 'Research has shown that current large language models do exhibit forms of situational awareness, such as inferring they are AI systems and reasoning about their deployment context.',
+};
+
+TRUE_FALSE_STATEMENTS['c1009'] = {
+    trueStatement: 'Whether AI systems can have genuine subjective experience remains an open and unresolved question.',
+    falseStatement: 'Science has conclusively demonstrated that only biological neurons can produce consciousness.',
+    correction: 'There is no scientific consensus that consciousness requires biological substrates — the nature of consciousness itself remains one of the hardest unsolved problems in science and philosophy.',
+};
+
+TRUE_FALSE_STATEMENTS['c1011'] = {
+    trueStatement: 'Self-supervised learning allows models to learn from data without requiring human-provided labels, by predicting missing parts of the input.',
+    falseStatement: 'Self-supervised learning only works for text data, since predicting the next word is the only viable self-supervision signal.',
+    correction: 'Self-supervised learning works across many modalities — models can predict missing image patches, audio segments, and video frames, not just text tokens.',
+};
+
+TRUE_FALSE_STATEMENTS['c1012'] = {
+    trueStatement: 'During pre-training, a model is not trained for any specific task but instead develops broad general capabilities from massive data.',
+    falseStatement: 'Developers have precise control over every capability a model acquires during pre-training.',
+    correction: 'A key concern is that pre-training gives developers limited control over what the model learns — it may develop unintended capabilities or biases that are not detected.',
+};
+
+TRUE_FALSE_STATEMENTS['c1014'] = {
+    trueStatement: 'Zero-shot learning means a model can perform a task from a description alone, without seeing any examples of that task.',
+    falseStatement: 'Few-shot learning requires fine-tuning the model\'s weights on the provided examples before it can perform the new task.',
+    correction: 'Few-shot learning works through in-context prompting — the model adapts from examples in the prompt without any weight updates or additional training.',
+};
+
+TRUE_FALSE_STATEMENTS['c1015'] = {
+    trueStatement: 'Most large language models deployed today are static snapshots that do not continue learning from new interactions after training.',
+    falseStatement: 'Continual learning is straightforward to implement because neural networks naturally retain old knowledge while learning new information.',
+    correction: 'Neural networks suffer from catastrophic forgetting — learning new information tends to overwrite previously learned capabilities, making continual learning a significant research challenge.',
+};
+
+TRUE_FALSE_STATEMENTS['c1016'] = {
+    trueStatement: 'A model trained on general text can transfer its knowledge to perform well on medical or legal tasks it was never specifically trained for.',
+    falseStatement: 'Transfer learning only works when the source and target domains are closely related, such as transferring between two different text classification tasks.',
+    correction: 'Foundation models can transfer knowledge across very different domains — from general text to medicine, law, or code generation — even when the domains seem unrelated.',
+};
+
 // ─── AI Security (c901–c906) ────────────────────────
 
 TRUE_FALSE_STATEMENTS['c901'] = {

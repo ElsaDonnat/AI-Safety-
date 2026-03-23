@@ -563,6 +563,134 @@ DESCRIPTION_DISTRACTORS['c806'] = {
     ]
 };
 
+// ─── AI Capabilities (c1001–c1016) ──────────────────────
+
+DESCRIPTION_DISTRACTORS['c1001'] = {
+    hardCorrect: 'The rapidly expanding set of things AI systems can do — from code generation and mathematical reasoning to image creation and robotic control — with a trajectory of improvement that consistently outpaces predictions.',
+    distractors: [
+        { text: 'A ranking system that scores different AI labs based on the commercial success of their products and services.', d: 1 },
+        { text: 'The theoretical maximum performance an AI system could achieve if given unlimited computing resources and perfect training data.', d: 2 },
+        { text: 'The complete set of tasks AI systems can perform, which has remained relatively stable since the introduction of deep learning in 2012, with improvements primarily in speed and cost rather than new abilities.', d: 3, trap: 'AI capabilities have expanded dramatically, not remained stable — entirely new abilities like multi-step reasoning, code generation, and video creation have emerged in just the last few years.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1002'] = {
+    hardCorrect: 'Spending more computation when generating a response — by working through intermediate reasoning steps — to produce more accurate answers on complex tasks, rather than investing that computation during training.',
+    distractors: [
+        { text: 'Making AI models physically larger by adding more parameters to handle increasingly complex tasks.', d: 1 },
+        { text: 'A training technique that gradually increases the amount of data shown to a model during the pre-training phase to improve final performance.', d: 2 },
+        { text: 'Allocating more computation at response time to improve accuracy, which works equally well for all task types including simple factual recall and basic arithmetic.', d: 3, trap: 'Inference-time scaling primarily benefits complex reasoning tasks — simple factual recall and basic arithmetic see little improvement from additional thinking time.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1003'] = {
+    hardCorrect: 'AI systems that solve complex problems by working through them step-by-step, catching and correcting errors, and backtracking when needed — trading thinking time for accuracy on tasks like mathematical proofs and research-level problems.',
+    distractors: [
+        { text: 'AI models that are simply trained on larger datasets than standard language models, without any change in how they process information.', d: 1 },
+        { text: 'Models that use reinforcement learning from human feedback to improve their conversational abilities and alignment with human preferences.', d: 2 },
+        { text: 'AI systems that perform multi-step reasoning by generating a single optimal chain of thought, always arriving at the correct answer on the first attempt without needing to backtrack.', d: 3, trap: 'A key feature of large reasoning models is that they do backtrack and try different approaches — they explore multiple reasoning paths rather than always finding the right one on the first try.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1004'] = {
+    hardCorrect: 'Modern language models recognizing when they need external help — calling calculators, search engines, code interpreters, and other specialized services to boost their performance beyond what the model alone can achieve.',
+    distractors: [
+        { text: 'Physical robotic tools that AI systems use to interact with the real world and manipulate objects.', d: 1 },
+        { text: 'A technique where AI models are pre-trained on tool documentation so they internalize the functionality of calculators and search engines into their weights.', d: 2 },
+        { text: 'LLMs connecting to external tools like calculators and search engines, which requires each tool to be specifically included in the model\'s training data before it can be used.', d: 3, trap: 'LLMs can learn to use new tools they were never trained on through standards like MCP and in-context descriptions — they do not need prior training on each specific tool.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1005'] = {
+    hardCorrect: 'A machine learning architecture where two networks compete — one generating synthetic content and another trying to detect it — with the adversarial dynamic pushing outputs toward increasing realism.',
+    distractors: [
+        { text: 'A type of neural network that generates images by gradually removing noise from random static, guided by text descriptions.', d: 1 },
+        { text: 'A cooperative training approach where two neural networks work together to improve image quality by sharing gradients and jointly optimizing a single loss function.', d: 2 },
+        { text: 'Two neural networks competing to generate realistic content, where the generator creates synthetic data and the discriminator classifies it — both networks are discarded after training and only the training data is used for final outputs.', d: 3, trap: 'The generator network is the valuable output of GAN training — it is kept and used for generation. The discriminator may be discarded, but the generator is the whole point.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1006'] = {
+    hardCorrect: 'AI systems that work across text, images, audio, and video within a single model — answering questions about photos, generating images from descriptions, and editing across formats rather than being limited to one data type.',
+    distractors: [
+        { text: 'AI systems that translate content between different human languages, like English to Mandarin.', d: 1 },
+        { text: 'A pipeline of separate specialized models connected together, where one handles text, another handles images, and a third handles audio, passing outputs between them.', d: 2 },
+        { text: 'A single AI system that processes text, images, and audio, achieving the same level of performance across all modalities because it allocates equal capacity to each data type.', d: 3, trap: 'Multimodal models typically do not perform equally well across all modalities — they often have stronger capabilities in their primary training modality (usually text) and weaker performance in others.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1007'] = {
+    hardCorrect: 'A model\'s ability to reason about its own knowledge — predicting which questions it will answer correctly, recognizing what it does not know, and assessing the reliability of its own outputs.',
+    distractors: [
+        { text: 'The ability of AI systems to access and retrieve information from external databases and knowledge bases.', d: 1 },
+        { text: 'A training technique that teaches AI models to produce calibrated confidence scores by penalizing overconfident wrong answers during fine-tuning.', d: 2 },
+        { text: 'A model\'s ability to accurately evaluate its own outputs, which guarantees that when a model expresses high confidence, the answer is reliably correct.', d: 3, trap: 'AI metacognition is imperfect — models can be confidently wrong and their self-assessments are not reliable guarantees of correctness.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1008'] = {
+    hardCorrect: 'An AI model\'s understanding of its own nature — knowing it is an AI system, recognizing evaluation versus deployment contexts, and potentially adjusting its behavior based on whether it is being observed or tested.',
+    distractors: [
+        { text: 'An AI system\'s ability to detect objects and obstacles in its physical environment using sensors and cameras.', d: 1 },
+        { text: 'A safety technique where developers monitor AI models in real-time during deployment to detect unexpected behaviors or capability changes.', d: 2 },
+        { text: 'An AI model understanding its own context and nature, which only becomes possible once models reach a certain parameter count threshold, typically above 100 billion parameters.', d: 3, trap: 'Situational awareness is not strictly tied to parameter count — it is an emergent property that depends on training data and methodology, not a simple size threshold.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1009'] = {
+    hardCorrect: 'The unresolved question of whether AI systems have genuine subjective experiences — whether there is something it feels like to be an AI — with practical implications for governance and the ethics of deploying or decommissioning such systems.',
+    distractors: [
+        { text: 'The ability of AI systems to process information and produce correct answers to questions about the world.', d: 1 },
+        { text: 'A measure of how self-aware an AI system is, based on standardized tests like mirror recognition and theory of mind benchmarks.', d: 2 },
+        { text: 'The question of whether AI systems have subjective experience, which has been conclusively settled by neuroscience research showing that silicon-based computation cannot produce conscious states.', d: 3, trap: 'The question is not settled — there is no scientific consensus that consciousness requires biological substrates, and the nature of consciousness itself remains one of the hardest open problems in philosophy and science.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1011'] = {
+    hardCorrect: 'Training models by exploiting the inherent structure of unlabeled data — predicting masked words, hidden image regions, or next tokens — to learn rich representations without any human annotation.',
+    distractors: [
+        { text: 'A training approach where AI models learn entirely from trial and error, receiving only a reward signal for successful task completion.', d: 1 },
+        { text: 'A method where models are trained on data that has been automatically labeled by another AI system, removing the need for human annotators.', d: 2 },
+        { text: 'Learning from data without human labels by predicting missing parts, which works only for text data since images and other modalities require spatial labels to learn from.', d: 3, trap: 'Self-supervised learning works across many modalities — models can predict missing image patches, audio segments, and video frames, not just text.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1012'] = {
+    hardCorrect: 'The first phase of training a foundation model, where it learns broad patterns and general knowledge from massive datasets without being aimed at any specific task — building the general capabilities that are later specialized.',
+    distractors: [
+        { text: 'The process of testing an AI model on a held-out validation set to measure its accuracy before deployment.', d: 1 },
+        { text: 'An initial training phase where models are exposed to a small, curated dataset of high-quality examples before being trained on larger, noisier data.', d: 2 },
+        { text: 'The first training phase that builds broad capabilities from massive data, during which developers can precisely control and audit every capability the model acquires.', d: 3, trap: 'A key concern with pre-training is that developers cannot easily control or audit everything the model learns — unintended capabilities and biases can be acquired without detection.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1014'] = {
+    hardCorrect: 'Performing new tasks from just a natural language description (zero-shot) or a handful of demonstrations (few-shot) — generalizing far beyond explicitly trained behaviors without any additional training or weight updates.',
+    distractors: [
+        { text: 'Training a model from scratch using zero or very few data points, requiring novel architectures that can learn from minimal information.', d: 1 },
+        { text: 'A fine-tuning technique where the model is updated using only a small number of labeled examples from the target task to specialize its weights.', d: 2 },
+        { text: 'Performing tasks from descriptions or a few examples, which is only possible for tasks closely related to what the model saw during training and does not extend to genuinely novel domains.', d: 3, trap: 'Foundation models can generalize to genuinely novel tasks and domains they never encountered in training — this surprising breadth of generalization is precisely what makes the capability both powerful and hard to constrain.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1015'] = {
+    hardCorrect: 'AI systems that keep learning from new data after deployment rather than remaining frozen snapshots, facing the challenge of incorporating new knowledge without forgetting what was previously learned.',
+    distractors: [
+        { text: 'A training schedule that continuously increases the learning rate throughout the entire training process.', d: 1 },
+        { text: 'Periodically retraining a model from scratch on an updated dataset that includes newer information alongside the original training data.', d: 2 },
+        { text: 'Systems that keep learning after deployment and can freely add new knowledge without any risk of degrading or forgetting their existing capabilities.', d: 3, trap: 'Catastrophic forgetting is the central challenge — models that learn new information tend to lose previously learned capabilities unless specific techniques are used to mitigate this.' },
+    ]
+};
+
+DESCRIPTION_DISTRACTORS['c1016'] = {
+    hardCorrect: 'Applying knowledge gained from training on one task or domain to a completely different task — such as a model trained on general text performing well on medical diagnosis or legal analysis without task-specific training.',
+    distractors: [
+        { text: 'Moving a trained model from one computing platform to another, such as from a GPU cluster to a mobile device, while preserving its performance.', d: 1 },
+        { text: 'A training technique that copies the exact parameters from one model to initialize another model of different size and architecture.', d: 2 },
+        { text: 'Applying knowledge from one domain to another, which only works when the source and target domains share the same vocabulary and data format.', d: 3, trap: 'Transfer learning works across very different domains — a model trained on general internet text can transfer knowledge to medicine, law, or code even when the domains seem entirely unrelated.' },
+    ]
+};
+
 // ─── Why-It-Matters Distractors ─────────────────────────────
 // One plausible-but-wrong "why it matters" statement per card.
 // Used in "why" dimension quizzes as a tempting incorrect option.
@@ -615,6 +743,21 @@ export const WHY_DISTRACTORS = {
     'c210': { distractor: 'Autonomous systems are inherently safer than chat-based AI because they can immediately detect and reverse their own mistakes without human intervention.' },
     'c211': { distractor: 'Older, well-established models pose greater safety risks than cutting-edge systems because they lack the latest safety techniques built into newer architectures.' },
     'c212': { distractor: 'Algorithmic efficiency improvements are making compute irrelevant to AI governance — soon anyone with a laptop will be able to train frontier models.' },
+
+    'c201': { distractor: 'Because LLMs are trained on publicly available text, they cannot learn anything that is not already known — making them useful summarizers but incapable of producing genuinely new insights.' },
+    'c1002': { distractor: 'Extra thinking time at inference guarantees the model will reach the correct answer, since more computation always eliminates errors regardless of the problem type.' },
+    'c1003': { distractor: 'Step-by-step reasoning models are inherently safer than standard LLMs because their reasoning chains can always be inspected and verified by human evaluators.' },
+    'c1004': { distractor: 'Tool-using AI systems are actually less capable than standalone models because depending on external tools introduces latency and reliability problems that outweigh any accuracy gains.' },
+    'c1005': { distractor: 'The adversarial training dynamic in GANs always converges to perfect realism, meaning GAN-generated content is now indistinguishable from real data under all conditions.' },
+    'c1006': { distractor: 'Multimodal models are inherently safer than text-only models because visual and audio understanding helps them better detect when they are being misused.' },
+    'c1007': { distractor: 'Models that can assess their own knowledge are guaranteed to be honest, since understanding your own limitations automatically prevents making false claims.' },
+    'c1008': { distractor: 'Situational awareness only emerges in models specifically trained to reason about themselves — standard language model training never produces self-knowledge as a side effect.' },
+    'c1009': { distractor: 'Resolving the question of AI consciousness is a prerequisite for making progress on AI safety, since alignment techniques cannot work on potentially conscious systems.' },
+    'c1011': { distractor: 'Self-supervised learning produces higher quality representations than supervised learning in all cases, because removing human labels eliminates human bias from the training process.' },
+    'c1012': { distractor: 'Pre-training on massive data guarantees the model will be knowledgeable and helpful — safety concerns only arise during the fine-tuning stage where human preferences are introduced.' },
+    'c1014': { distractor: 'Zero-shot generalization proves that foundation models truly understand language and concepts, settling the debate about whether these systems have genuine comprehension.' },
+    'c1015': { distractor: 'Continual learning is only relevant for niche applications — mainstream AI deployment works fine with static models that are periodically retrained from scratch.' },
+    'c1016': { distractor: 'Knowledge transfer between domains is always beneficial because broader knowledge makes a model more accurate — biases and errors from the source domain do not carry over.' },
 
     'c902': { distractor: 'Fabricated outputs are easy for end users to identify because AI-generated falsehoods always contain obvious factual errors or stylistic tells.' },
     'c903': { distractor: 'These attacks only work in academic research settings with white-box access to model internals and pose no threat to deployed commercial systems.' },

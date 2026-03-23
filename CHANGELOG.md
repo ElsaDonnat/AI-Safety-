@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.9.0 — AI Capabilities topic (AI Safety Atlas Ch. 1)
+
+### Added
+- **New topic: AI Capabilities** — 14 new cards (c1001–c1016) covering current capabilities and the foundation model paradigm, sourced from AI Safety Atlas Chapter 1
+- **2 new chapters** — "Current Capabilities" (beginner) and "Foundation Models" (beginner)
+- **8 new lessons** spanning: AI Capabilities overview, Reasoning & Tools, Vision & Media, Machine Self-Knowledge, The Paradigm Shift, Learning From Raw Data, Specialization, and Adaptation & Transfer
+- New cards include: Inference-Time Scaling, Large Reasoning Models, AI Tool Use, GANs, Multimodal Models, AI Metacognition, Situational Awareness, AI Consciousness, Self-Supervised Learning, Pre-training, Zero-Shot & Few-Shot Learning, Continual Learning, Transfer Learning
+- Description distractors (hardMCQ) for all 14 new cards
+- True/False statements for all 14 new cards
+- WHY_DISTRACTORS for 14 new cards + updated c201
+
+### Changed
+- **c201 (Large Language Models)** — Updated descriptions with 2025 benchmarks and added whyItMatters
+- **c202 (Foundation Models)** — Updated descriptions with paradigm shift framing and safety challenges
+- **c601 (RLHF)** — Updated descriptions emphasizing reward model imperfection and added whyItMatters
+- Lessons reuse existing cards c201, c202, c211, c306, c601 in new AI Capabilities context
+
+### Design decisions
+- Used existing c211 (Frontier Models) instead of creating duplicate c1010
+- Kept c306 as Fine-Tuning (unchanged) instead of renaming; created new c1016 for Transfer Learning
+- Converted proposed array-format true/false to existing `{trueStatement, falseStatement, correction}` format
+
 ## 0.8.0 — Course companion mode: full implementation
 
 ### Added
