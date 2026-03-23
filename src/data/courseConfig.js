@@ -6,9 +6,13 @@
  * course — lessons, ordering, and emphasis may change.
  *
  * To add a new course:
- *  1. Add an entry to COURSES below
+ *  1. Add an entry to COURSES below (metadata + password)
  *  2. Set the password hash (use hashPassword() to generate)
- *  3. Optionally define course-specific lesson overrides in the future
+ *  3. Create a course content file in src/data/courses/<courseId>.js
+ *  4. Register it in src/data/courses/index.js
+ *
+ * This file handles metadata & auth. Course content (modules, lessons,
+ * card overrides) lives in src/data/courses/.
  */
 
 // Simple hash for password verification (not cryptographic — just prevents casual peeking)

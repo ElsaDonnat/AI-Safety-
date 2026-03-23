@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, CATEGORIES } from '../data/concepts';
+import { resolveAllConcepts } from '../data/courses/index';
 import { TOPICS, DOMAINS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
 import { Star, BookOpen, ChevronDown, X } from 'lucide-react';
@@ -32,8 +33,8 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
     // Variant styles for beige dropdowns
     const variantStyles = {
         default: { bg: 'var(--color-card)', border: 'rgba(var(--color-ink-rgb), 0.1)' },
-        primary: { bg: '#5C514A', border: '#4A3F38', text: '#D4C8BD' },   // sidebar brown for Domain
-        secondary: { bg: '#D4C8BD', border: '#B8A99A' },  // lighter beige for others
+        primary: { bg: 'var(--color-sidebar-bg)', border: 'var(--color-sidebar-border)', text: 'var(--color-sidebar-text)' },   // sidebar brown for Domain
+        secondary: { bg: 'var(--color-sidebar-text)', border: 'var(--color-sidebar-border)' },  // lighter beige for others
     };
     const vs = variantStyles[variant] || variantStyles.default;
 
@@ -53,7 +54,7 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                             : `1px solid ${vs.border}`),
                     color: variant === 'primary'
                         ? vs.text
-                        : (selected && activeColor ? activeColor : (variant !== 'default' ? '#5C514A' : 'var(--color-ink-muted)')),
+                        : (selected && activeColor ? activeColor : (variant !== 'default' ? 'var(--color-sidebar-bg)' : 'var(--color-ink-muted)')),
                 }}
             >
                 {selected && activeColor && (
@@ -63,7 +64,7 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
                 <ChevronDown size={12} className="flex-shrink-0 ml-auto" style={{
                     transform: open ? 'rotate(180deg)' : 'none',
                     transition: 'transform 0.15s',
-                    color: variant === 'primary' ? '#D4C8BD' : undefined,
+                    color: variant === 'primary' ? 'var(--color-sidebar-text)' : undefined,
                 }} />
             </button>
             {open && (
@@ -119,11 +120,12 @@ export default function LibraryPage() {
     const [showStarredOnly, setShowStarredOnly] = useState(false);
 
     const seenCards = useMemo(() => state.seenCards || [], [state.seenCards]);
+    const resolvedAll = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
 
     const discoveredConcepts = useMemo(() => {
-        if (DEV_UNLOCK_ALL) return ALL_CONCEPTS;
-        return ALL_CONCEPTS.filter(c => seenCards.includes(c.id));
-    }, [seenCards]);
+        if (DEV_UNLOCK_ALL) return resolvedAll;
+        return resolvedAll.filter(c => seenCards.includes(c.id));
+    }, [seenCards, resolvedAll]);
 
     const starredCards = useMemo(() => state.starredCards || [], [state.starredCards]);
 
@@ -410,7 +412,7 @@ export default function LibraryPage() {
                                     )}
                                     <CardConnections
                                         cardId={concept.id}
-                                        allConcepts={ALL_CONCEPTS}
+                                        allConcepts={resolvedAll}
                                         onCardClick={(id) => setExpandedCard(id)}
                                     />
                                 </div>

@@ -419,7 +419,7 @@ export default function App() {
         return (
           <div className="achievement-toast animate-slide-in-down" onClick={() => dispatch({ type: 'DISMISS_ACHIEVEMENT_TOAST' })}>
             <span className="achievement-toast-emoji" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {achievement.icon && <achievement.icon size={22} color={achievement.iconColor || 'var(--color-burgundy)'} strokeWidth={2} />}
+              {achievement.icon && <achievement.icon size={22} color={achievement.iconColor || 'var(--color-coral)'} strokeWidth={2} />}
             </span>
             <div>
               <p className="achievement-toast-label">Achievement Unlocked!</p>

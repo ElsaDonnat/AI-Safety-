@@ -7,10 +7,12 @@ import {
 } from '../data/lessons';
 import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { getConceptById } from '../data/concepts';
-import { Card, Button, MasteryDots } from '../components/shared';
+import { Card, Button, MasteryDots, TabSelector } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
-import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock, Cpu, ShieldAlert, Target, Shield, Scale, Globe } from 'lucide-react';
+import { getCourseContent } from '../data/courses/index';
+import { getCourseById } from '../data/courseConfig';
+import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock, Cpu, ShieldAlert, Target, Shield, Scale, Globe, GraduationCap } from 'lucide-react';
 import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // Maps domain/topic icon IDs to Lucide components
@@ -68,6 +70,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
     const [activeDomain, setActiveDomain] = useState('foundations');
     const [expandedTopic, setExpandedTopic] = useState(null);
     const [showThisWeek, setShowThisWeek] = useState(false);
+    const [expandedModule, setExpandedModule] = useState(null);
     const mainRef = useRef(null);
 
     // Auto-switch to course domain when course mode activates, or reset if deactivated
@@ -82,6 +85,26 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
             setActiveDomain('foundations');
         }
     }, [activeCourseId]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Course mode
+    const courseMode = state.courseMode;
+    const courseContent = useMemo(
+        () => courseMode ? getCourseContent(courseMode.courseId) : null,
+        [courseMode]
+    );
+    const courseMeta = useMemo(
+        () => courseMode ? getCourseById(courseMode.courseId) : null,
+        [courseMode]
+    );
+    const [learnView, setLearnView] = useState(courseMode ? 'course' : 'general');
+
+    // Sync learnView when course mode changes
+    useEffect(() => {
+        setLearnView(prev => {
+            if (courseMode && prev !== 'course' && prev !== 'general') return 'course';
+            if (!courseMode && prev === 'course') return 'general';
+            return prev;
+        });
+    }, [courseMode]);
 
     // Track study sessions for "This Week" card
     useEffect(() => {
@@ -176,6 +199,20 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 </p>
             </div>
 
+            {/* Course / General toggle (only when course mode is active) */}
+            {courseMode && courseContent && (
+                <div className="mb-4">
+                    <TabSelector
+                        tabs={[
+                            { id: 'course', label: courseMeta?.name || 'Course' },
+                            { id: 'general', label: 'General' },
+                        ]}
+                        activeTab={learnView}
+                        onChange={setLearnView}
+                    />
+                </div>
+            )}
+
             {/* This Week card */}
             {showThisWeek && (
                 <Card className="mb-4 animate-fade-in" style={{ position: 'relative' }}>
@@ -265,194 +302,365 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                         Coming soon
                     </p>
                 </div>
+            {/* ═══ Course View ═══ */}
+            {learnView === 'course' && courseContent && (
+                <CourseView
+                    courseContent={courseContent}
+                    state={state}
+                    expandedModule={expandedModule}
+                    setExpandedModule={setExpandedModule}
+                    setActiveLesson={setActiveLesson}
+                />
             )}
 
-            {/* Topic list for active domain */}
-            {(DEV_UNLOCK_ALL || !currentDomain?.comingSoon) && (
-                <div className="space-y-4">
-                    {domainTopics.map(topic => {
-                        const chapters = getChaptersByTopic(topic.id);
-                        const allTopicLessons = chapters.flatMap(ch => getLessonsByChapter(ch.id));
-                        const completedTopicLessons = allTopicLessons.filter(l => state.completedLessons[l.id]);
-                        const isExpanded = expandedTopic === topic.id;
-                        const progressPct = allTopicLessons.length > 0
-                            ? Math.round((completedTopicLessons.length / allTopicLessons.length) * 100)
-                            : 0;
-
-                        return (
-                            <Card key={topic.id}>
-                                {/* Topic header */}
-                                <div
-                                    className="flex items-center gap-3 cursor-pointer"
-                                    onClick={() => setExpandedTopic(isExpanded ? null : topic.id)}
+            {/* ═══ General View ═══ */}
+            {learnView === 'general' && (
+                <>
+                    {/* Domain sub-tabs */}
+                    <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+                        {DOMAINS.map(domain => {
+                            const isActive = activeDomain === domain.id;
+                            return (
+                                <button
+                                    key={domain.id}
+                                    onClick={() => {
+                                        setActiveDomain(domain.id);
+                                        setExpandedTopic(null);
+                                    }}
+                                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
+                                    style={{
+                                        backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-bg)',
+                                        color: isActive ? '#F0EBE5' : 'var(--color-ink-muted)',
+                                        border: isActive ? '1px solid var(--color-sidebar-bg)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
+                                    }}
                                 >
-                                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
-                                        style={{ backgroundColor: `${topic.color}15` }}>
-                                        <TopicIcon iconId={topic.icon} color={topic.color} />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                            {topic.title}
-                                        </h3>
-                                        <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
-                                            {topic.description}
-                                        </p>
-                                        {/* Progress bar */}
-                                        <div className="mt-2 w-full overflow-hidden"
-                                            style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
-                                            <div className="h-full transition-all duration-500"
-                                                style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-burgundy)' }} />
-                                        </div>
-                                        <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)' }}>
-                                            {completedTopicLessons.length}/{allTopicLessons.length} lessons
-                                        </p>
-                                    </div>
-                                    <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2}
-                                        className="flex-shrink-0 transition-transform duration-200"
-                                        style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                                    />
-                                </div>
+                                    <TopicIcon iconId={domain.icon} color={isActive ? '#fff' : domain.color} />
+                                    <span>{domain.title}</span>
+                                    {domain.comingSoon && (
+                                        <span className="ml-0.5" style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', opacity: 0.7 }}>Soon</span>
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
 
-                                {/* Expanded: chapters and lessons */}
-                                {isExpanded && (
-                                    <div className="mt-4 animate-fade-in">
-                                        {chapters.map((chapter, chIdx) => {
-                                            const chapterLessons = getLessonsByChapter(chapter.id);
-                                            const diffColor = DIFFICULTY_COLORS[chapter.difficulty] || '#888';
-                                            const diffBg = DIFFICULTY_BG_COLORS[chapter.difficulty] || 'rgba(136,136,136,0.12)';
+                    {/* Coming Soon state for locked domains */}
+                    {!DEV_UNLOCK_ALL && currentDomain?.comingSoon && (
+                        <div className="text-center py-16">
+                            <div className="mb-3"><TopicIcon iconId={currentDomain.icon} color={currentDomain.color} /></div>
+                            <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                                {currentDomain.title}
+                            </h3>
+                            <p className="text-sm mb-1" style={{ color: 'var(--color-ink-muted)' }}>
+                                {currentDomain.description}
+                            </p>
+                            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
+                                Coming soon
+                            </p>
+                        </div>
+                    )}
 
-                                            // Chapter unlock: all chapters unlocked for testing
-                                            // TODO: restore sequential gating when content is finalized
-                                            // let chapterUnlocked = chIdx === 0;
-                                            // if (chIdx > 0) {
-                                            //     const prevChapterLessons = getLessonsByChapter(chapters[chIdx - 1].id);
-                                            //     chapterUnlocked = prevChapterLessons.length > 0 &&
-                                            //         prevChapterLessons.every(l => state.completedLessons[l.id]);
-                                            // }
-                                            let _chapterUnlocked = true;
+                    {/* Topic list for active domain */}
+                    {(DEV_UNLOCK_ALL || !currentDomain?.comingSoon) && (
+                        <div className="space-y-4">
+                            {domainTopics.map(topic => {
+                                const chapters = getChaptersByTopic(topic.id);
+                                const allTopicLessons = chapters.flatMap(ch => getLessonsByChapter(ch.id));
+                                const completedTopicLessons = allTopicLessons.filter(l => state.completedLessons[l.id]);
+                                const isExpanded = expandedTopic === topic.id;
+                                const progressPct = allTopicLessons.length > 0
+                                    ? Math.round((completedTopicLessons.length / allTopicLessons.length) * 100)
+                                    : 0;
 
-                                            return (
-                                                <div key={chapter.id} className={chIdx > 0 ? 'mt-4' : ''}>
-                                                    {/* Chapter header badge */}
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <span
-                                                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider"
-                                                            style={{
-                                                                fontFamily: 'var(--font-mono)',
-                                                                fontSize: '11px',
-                                                                fontWeight: 500,
-                                                                letterSpacing: '0.02em',
-                                                                backgroundColor: diffBg,
-                                                                color: diffColor,
-                                                            }}
-                                                        >
-                                                            <span className="w-1.5 h-1.5 rounded-[1px]" style={{ backgroundColor: diffColor }} />
-                                                            {chapter.title}
-                                                        </span>
-                                                        {chapter.comingSoon && (
-                                                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
-                                                                Soon
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    {/* Lessons in chapter */}
-                                                    {(DEV_UNLOCK_ALL || !chapter.comingSoon) && (
-                                                        <div className="space-y-2">
-                                                            {chapterLessons.map((lesson, idx) => {
-                                                                const isCompleted = !!state.completedLessons[lesson.id];
-                                                                // Within a chapter: all lessons unlocked for testing
-                                                                // TODO: restore sequential unlock when content is finalized
-                                                                // const isUnlocked = chapterUnlocked && (
-                                                                //     idx === 0 || !!state.completedLessons[chapterLessons[idx - 1]?.id]
-                                                                // );
-                                                                const isUnlocked = true;
-                                                                // Find the next lesson across all chapters in this topic
-                                                                const isNext = isUnlocked && !isCompleted &&
-                                                                    !chapterLessons.slice(0, idx).some(l => !state.completedLessons[l.id]);
-
-                                                                return (
-                                                                    <div
-                                                                        key={lesson.id}
-                                                                        className={`flex items-center gap-3 px-3 py-3 rounded-[3px] transition-all ${isUnlocked ? 'cursor-pointer active:scale-[0.99]' : 'opacity-50'}`}
-                                                                        style={{
-                                                                            backgroundColor: isNext
-                                                                                ? `${topic.color}10`
-                                                                                : isCompleted
-                                                                                    ? 'rgba(var(--color-ink-rgb), 0.02)'
-                                                                                    : 'transparent',
-                                                                            border: isNext ? `1.5px solid ${topic.color}30` : '1.5px solid transparent',
-                                                                        }}
-                                                                        onClick={() => {
-                                                                            if (isUnlocked) setActiveLesson(lesson);
-                                                                        }}
-                                                                    >
-                                                                        {/* Status indicator */}
-                                                                        <div className="w-8 h-8 rounded-[3px] flex items-center justify-center flex-shrink-0"
-                                                                            style={{
-                                                                                backgroundColor: isCompleted
-                                                                                    ? 'var(--color-success)'
-                                                                                    : isNext
-                                                                                        ? topic.color
-                                                                                        : 'rgba(var(--color-ink-rgb), 0.08)',
-                                                                                color: (isCompleted || isNext) ? '#fff' : 'var(--color-ink-faint)',
-                                                                            }}
-                                                                        >
-                                                                            {isCompleted ? (
-                                                                                <Check size={14} strokeWidth={3} />
-                                                                            ) : (
-                                                                                <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{idx + 1}</span>
-                                                                            )}
-                                                                        </div>
-
-                                                                        {/* Lesson info */}
-                                                                        <div className="flex-1 min-w-0">
-                                                                            <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
-                                                                                {lesson.title}
-                                                                            </p>
-                                                                            <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
-                                                                                {lesson.subtitle || `${lesson.cardIds.length} concept${lesson.cardIds.length !== 1 ? 's' : ''}`}
-                                                                            </p>
-                                                                        </div>
-
-                                                                        {/* Mastery dots for completed */}
-                                                                        {isCompleted && lesson.cardIds.length > 0 && (
-                                                                            <MasteryDots mastery={state.cardMastery?.[lesson.cardIds[0]]} size="sm" hasWhy={!!getConceptById(lesson.cardIds[0])?.whyItMatters} />
-                                                                        )}
-
-                                                                        {/* Arrow for next */}
-                                                                        {isNext && !isCompleted && (
-                                                                            <ChevronRight size={14} color={topic.color} strokeWidth={2.5} />
-                                                                        )}
-
-                                                                        {/* Lock for locked */}
-                                                                        {!isUnlocked && (
-                                                                            <Lock size={14} color="var(--color-ink-faint)" strokeWidth={2} />
-                                                                        )}
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    )}
+                                return (
+                                    <Card key={topic.id}>
+                                        {/* Topic header */}
+                                        <div
+                                            className="flex items-center gap-3 cursor-pointer"
+                                            onClick={() => setExpandedTopic(isExpanded ? null : topic.id)}
+                                        >
+                                            <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
+                                                style={{ backgroundColor: `${topic.color}15` }}>
+                                                <TopicIcon iconId={topic.icon} color={topic.color} />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                                                    {topic.title}
+                                                </h3>
+                                                <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                                                    {topic.description}
+                                                </p>
+                                                {/* Progress bar */}
+                                                <div className="mt-2 w-full overflow-hidden"
+                                                    style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
+                                                    <div className="h-full transition-all duration-500"
+                                                        style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: 'var(--color-coral)' }} />
                                                 </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </Card>
-                        );
-                    })}
-                </div>
+                                                <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)' }}>
+                                                    {completedTopicLessons.length}/{allTopicLessons.length} lessons
+                                                </p>
+                                            </div>
+                                            <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2}
+                                                className="flex-shrink-0 transition-transform duration-200"
+                                                style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                                            />
+                                        </div>
+
+                                        {/* Expanded: chapters and lessons */}
+                                        {isExpanded && (
+                                            <div className="mt-4 animate-fade-in">
+                                                {chapters.map((chapter, chIdx) => {
+                                                    const chapterLessons = getLessonsByChapter(chapter.id);
+                                                    const diffColor = DIFFICULTY_COLORS[chapter.difficulty] || '#888';
+                                                    const diffBg = DIFFICULTY_BG_COLORS[chapter.difficulty] || 'rgba(136,136,136,0.12)';
+
+                                                    // Chapter unlock: all chapters unlocked for testing
+                                                    // TODO: restore sequential gating when content is finalized
+                                                    let _chapterUnlocked = true;
+
+                                                    return (
+                                                        <div key={chapter.id} className={chIdx > 0 ? 'mt-4' : ''}>
+                                                            {/* Chapter header badge */}
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <span
+                                                                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider"
+                                                                    style={{
+                                                                        fontFamily: 'var(--font-mono)',
+                                                                        fontSize: '11px',
+                                                                        fontWeight: 500,
+                                                                        letterSpacing: '0.02em',
+                                                                        backgroundColor: diffBg,
+                                                                        color: diffColor,
+                                                                    }}
+                                                                >
+                                                                    <span className="w-1.5 h-1.5 rounded-[1px]" style={{ backgroundColor: diffColor }} />
+                                                                    {chapter.title}
+                                                                </span>
+                                                                {chapter.comingSoon && (
+                                                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
+                                                                        Soon
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            {/* Lessons in chapter */}
+                                                            {(DEV_UNLOCK_ALL || !chapter.comingSoon) && (
+                                                                <div className="space-y-2">
+                                                                    {chapterLessons.map((lesson, idx) => {
+                                                                        const isCompleted = !!state.completedLessons[lesson.id];
+                                                                        const isUnlocked = true;
+                                                                        const isNext = isUnlocked && !isCompleted &&
+                                                                            !chapterLessons.slice(0, idx).some(l => !state.completedLessons[l.id]);
+
+                                                                        return (
+                                                                            <LessonRow
+                                                                                key={lesson.id}
+                                                                                lesson={lesson}
+                                                                                idx={idx}
+                                                                                isCompleted={isCompleted}
+                                                                                isUnlocked={isUnlocked}
+                                                                                isNext={isNext}
+                                                                                accentColor={topic.color}
+                                                                                state={state}
+                                                                                onStart={() => setActiveLesson(lesson)}
+                                                                            />
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </Card>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {/* Empty state */}
+                    {!currentDomain?.comingSoon && domainTopics.length === 0 && (
+                        <div className="text-center py-12">
+                            <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
+                                No topics available yet.
+                            </p>
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
+    );
+}
+
+// ═══════════════════════════════════════════════════════
+// LESSON ROW — reusable lesson item for both views
+// ═══════════════════════════════════════════════════════
+function LessonRow({ lesson, idx, isCompleted, isUnlocked, isNext, accentColor, state, onStart }) {
+    return (
+        <div
+            className={`flex items-center gap-3 px-3 py-3 rounded-[3px] transition-all ${isUnlocked ? 'cursor-pointer active:scale-[0.99]' : 'opacity-50'}`}
+            style={{
+                backgroundColor: isNext
+                    ? `${accentColor}10`
+                    : isCompleted
+                        ? 'rgba(var(--color-ink-rgb), 0.02)'
+                        : 'transparent',
+                border: isNext ? `1.5px solid ${accentColor}30` : '1.5px solid transparent',
+            }}
+            onClick={() => { if (isUnlocked) onStart(); }}
+        >
+            {/* Status indicator */}
+            <div className="w-8 h-8 rounded-[3px] flex items-center justify-center flex-shrink-0"
+                style={{
+                    backgroundColor: isCompleted
+                        ? 'var(--color-success)'
+                        : isNext
+                            ? accentColor
+                            : 'rgba(var(--color-ink-rgb), 0.08)',
+                    color: (isCompleted || isNext) ? '#fff' : 'var(--color-ink-faint)',
+                }}
+            >
+                {isCompleted ? (
+                    <Check size={14} strokeWidth={3} />
+                ) : (
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{idx + 1}</span>
+                )}
+            </div>
+
+            {/* Lesson info */}
+            <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
+                    {lesson.title}
+                </p>
+                <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                    {lesson.subtitle || `${lesson.cardIds.length} concept${lesson.cardIds.length !== 1 ? 's' : ''}`}
+                </p>
+            </div>
+
+            {/* Mastery dots for completed */}
+            {isCompleted && lesson.cardIds.length > 0 && (
+                <MasteryDots mastery={state.cardMastery?.[lesson.cardIds[0]]} size="sm" hasWhy={!!getConceptById(lesson.cardIds[0])?.whyItMatters} />
             )}
 
-            {/* Empty state */}
-            {!currentDomain?.comingSoon && domainTopics.length === 0 && (
-                <div className="text-center py-12">
-                    <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
-                        No topics available yet.
-                    </p>
-                </div>
+            {/* Arrow for next */}
+            {isNext && !isCompleted && (
+                <ChevronRight size={14} color={accentColor} strokeWidth={2.5} />
             )}
+
+            {/* Lock for locked */}
+            {!isUnlocked && (
+                <Lock size={14} color="var(--color-ink-faint)" strokeWidth={2} />
+            )}
+        </div>
+    );
+}
+
+// ═══════════════════════════════════════════════════════
+// COURSE VIEW — module → lesson structure
+// ═══════════════════════════════════════════════════════
+function CourseView({ courseContent, state, expandedModule, setExpandedModule, setActiveLesson }) {
+    const COURSE_COLOR = '#6366B8'; // Indigo accent for course modules
+
+    return (
+        <div className="space-y-4">
+            {courseContent.modules.map((mod, modIdx) => {
+                const isExpanded = expandedModule === mod.id;
+                const totalCards = mod.lessons.reduce((sum, l) => sum + l.cardIds.length, 0);
+                const completedCards = mod.lessons.reduce((sum, l) =>
+                    sum + l.cardIds.filter(id => (state.seenCards || []).includes(id)).length, 0
+                );
+                const progressPct = totalCards > 0 ? Math.round((completedCards / totalCards) * 100) : 0;
+
+                // Module completion based on whether all its lessons' cards have been seen
+                const completedLessons = mod.lessons.filter(l =>
+                    l.cardIds.every(id => (state.seenCards || []).includes(id))
+                );
+
+                return (
+                    <Card key={mod.id}>
+                        {/* Module header */}
+                        <div
+                            className="flex items-center gap-3 cursor-pointer"
+                            onClick={() => setExpandedModule(isExpanded ? null : mod.id)}
+                        >
+                            <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: `${COURSE_COLOR}15` }}>
+                                <GraduationCap size={20} color={COURSE_COLOR} strokeWidth={1.8} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-[10px] font-semibold uppercase tracking-wider"
+                                        style={{ color: COURSE_COLOR }}>
+                                        Module {modIdx + 1}
+                                    </span>
+                                </div>
+                                <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                                    {mod.title}
+                                </h3>
+                                {mod.subtitle && (
+                                    <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                                        {mod.subtitle}
+                                    </p>
+                                )}
+                                {/* Progress bar */}
+                                <div className="mt-2 w-full overflow-hidden"
+                                    style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
+                                    <div className="h-full transition-all duration-500"
+                                        style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: COURSE_COLOR }} />
+                                </div>
+                                <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)' }}>
+                                    {completedLessons.length}/{mod.lessons.length} lessons · {completedCards}/{totalCards} cards
+                                </p>
+                            </div>
+                            <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2}
+                                className="flex-shrink-0 transition-transform duration-200"
+                                style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                            />
+                        </div>
+
+                        {/* Expanded: lessons within the module */}
+                        {isExpanded && (
+                            <div className="mt-4 animate-fade-in space-y-2">
+                                {mod.lessons.map((lesson, idx) => {
+                                    // A course lesson is "completed" when all its cards have been seen
+                                    const isCompleted = lesson.cardIds.every(id => (state.seenCards || []).includes(id));
+                                    const isNext = !isCompleted &&
+                                        mod.lessons.slice(0, idx).every(l =>
+                                            l.cardIds.every(id => (state.seenCards || []).includes(id))
+                                        );
+
+                                    // Build a lesson-like object for LessonFlow compatibility
+                                    const lessonObj = {
+                                        id: lesson.id,
+                                        title: lesson.title,
+                                        subtitle: lesson.subtitle,
+                                        mood: lesson.mood,
+                                        cardIds: lesson.cardIds,
+                                        // Course lessons need a topic for LessonFlow's topic intro.
+                                        // Derive from the first card's topic, or use a default.
+                                        topic: getConceptById(lesson.cardIds[0])?.topic || 'ai-basics',
+                                    };
+
+                                    return (
+                                        <LessonRow
+                                            key={lesson.id}
+                                            lesson={lessonObj}
+                                            idx={idx}
+                                            isCompleted={isCompleted}
+                                            isUnlocked={true}
+                                            isNext={isNext}
+                                            accentColor={COURSE_COLOR}
+                                            state={state}
+                                            onStart={() => setActiveLesson(lessonObj)}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </Card>
+                );
+            })}
         </div>
     );
 }

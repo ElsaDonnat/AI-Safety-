@@ -41,7 +41,7 @@ export function ExpandableText({ children, lines = 3, className = '', style = {}
                         <button
                             onClick={() => setExpanded(e => !e)}
                             className="text-xs font-medium flex-shrink-0 ml-3"
-                            style={{ color: 'var(--color-burgundy)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                            style={{ color: 'var(--color-coral)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                         >
                             {expanded ? 'Show less' : 'Read more'}
                         </button>
@@ -146,7 +146,7 @@ export function Divider() {
         <div className="flex items-center justify-center my-6">
             <div className="flex-1 h-px" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }} />
             <div className="mx-3">
-                <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: 'var(--color-bronze-light)' }} />
+                <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: 'var(--color-sky-deep)' }} />
             </div>
             <div className="flex-1 h-px" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }} />
         </div>
@@ -162,7 +162,7 @@ export function ProgressBar({ value, max, color }) {
                 style={{
                     width: `${pct}%`,
                     borderRadius: '1px',
-                    backgroundColor: color || 'var(--color-bronze)',
+                    backgroundColor: color || 'var(--color-sky)',
                 }}
             />
         </div>
@@ -174,13 +174,13 @@ export const Button = forwardRef(function Button({ children, onClick, variant = 
 
     const variants = {
         primary: {
-            backgroundColor: disabled ? 'var(--color-ink-faint)' : 'var(--color-bronze)',
+            backgroundColor: disabled ? 'var(--color-ink-faint)' : 'var(--color-sky)',
             color: '#fff',
             boxShadow: disabled ? 'none' : '0 2px 8px rgba(168, 200, 216, 0.35)'
         },
         secondary: {
             backgroundColor: 'rgba(168, 200, 216, 0.12)',
-            color: 'var(--color-bronze-light)',
+            color: 'var(--color-sky-deep)',
         },
         ghost: {
             backgroundColor: 'transparent',
@@ -241,7 +241,7 @@ export function StarButton({ isStarred, onClick, size = 18 }) {
         <button
             onClick={(e) => { e.stopPropagation(); feedback.starPing(); onClick(); }}
             className="flex items-center justify-center transition-all duration-200 active:scale-90"
-            style={{ color: isStarred ? 'var(--color-burgundy)' : 'var(--color-ink-faint)', minWidth: '44px', minHeight: '44px' }}
+            style={{ color: isStarred ? 'var(--color-coral)' : 'var(--color-ink-faint)', minWidth: '44px', minHeight: '44px' }}
             title={isStarred ? 'Remove from favorites' : 'Add to favorites'}
         >
             <Star size={size} fill={isStarred ? 'currentColor' : 'none'} strokeWidth={2} />
@@ -279,7 +279,7 @@ export function ConfirmModal({ title, message, confirmLabel = 'Yes', cancelLabel
                         onClick={onConfirm}
                         className="flex-1 px-6 py-3 rounded-[3px] font-semibold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer"
                         style={{
-                            backgroundColor: danger ? 'var(--color-error)' : 'var(--color-bronze)',
+                            backgroundColor: danger ? 'var(--color-error)' : 'var(--color-sky)',
                             color: '#fff',
                             boxShadow: danger ? '0 2px 8px rgba(166, 61, 61, 0.25)' : '0 2px 8px rgba(168, 200, 216, 0.35)',
                         }}
@@ -304,7 +304,7 @@ export function ControversyNote({ note }) {
                 style={{ color: 'var(--color-ink-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
                 <span className="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold"
-                    style={{ backgroundColor: 'var(--color-burgundy-soft)', color: 'var(--color-burgundy)' }}>
+                    style={{ backgroundColor: 'var(--color-coral-soft)', color: 'var(--color-coral)' }}>
                     ?
                 </span>
                 {expanded ? 'Hide scholarly note' : 'See scholarly note'}
@@ -313,7 +313,7 @@ export function ControversyNote({ note }) {
                 <div className="mt-2 px-3 py-2.5 rounded-[3px] text-xs leading-relaxed animate-fade-in"
                     style={{
                         backgroundColor: 'rgba(var(--color-ink-rgb), 0.04)',
-                        borderLeft: '2px solid var(--color-burgundy)',
+                        borderLeft: '2px solid var(--color-coral)',
                         color: 'var(--color-ink-secondary)',
                         fontStyle: 'italic',
                     }}>
@@ -398,14 +398,14 @@ export function CardConnections({ cardId, onCardClick, allConcepts = [] }) {
                 >
                     <ChevronRight size={12} color={CATEGORY_CONFIG[conn.category]?.color || '#999'} strokeWidth={2.5} className="flex-shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
-                            {conn.title}
-                        </span>
                         {conn.relationship && (
-                            <span className="text-[10px] ml-1 px-1.5 py-0.5 rounded-[2px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-faint)' }}>
+                            <span className="text-[10px] mr-1 px-1.5 py-0.5 rounded-[2px]" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)', color: 'var(--color-ink-faint)' }}>
                                 {conn.relationship}
                             </span>
                         )}
+                        <span className="font-medium" style={{ color: 'var(--color-ink)' }}>
+                            {conn.title}
+                        </span>
                     </div>
                 </div>
             ))}

@@ -125,7 +125,7 @@ export default function Settings() {
                 <div className="absolute inset-0" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} />
                 <div
                     className="relative w-full max-w-lg rounded-[4px] p-6 mx-4 animate-fade-in-up"
-                    style={{ backgroundColor: 'var(--color-parchment)', maxHeight: '80vh', overflowY: 'auto', boxShadow: 'var(--shadow-elevated)' }}
+                    style={{ backgroundColor: 'var(--color-bg)', maxHeight: '80vh', overflowY: 'auto', boxShadow: 'var(--shadow-elevated)' }}
                     onClick={e => e.stopPropagation()}
                 >
                     <div className="flex items-center justify-between mb-4">
@@ -167,7 +167,7 @@ export default function Settings() {
             <div className="absolute inset-0" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} />
             <div
                 className="relative w-full max-w-lg rounded-[4px] p-6 mx-4 animate-fade-in-up"
-                style={{ backgroundColor: 'var(--color-parchment)', maxHeight: '80vh', overflowY: 'auto', boxShadow: 'var(--shadow-elevated)' }}
+                style={{ backgroundColor: 'var(--color-bg)', maxHeight: '80vh', overflowY: 'auto', boxShadow: 'var(--shadow-elevated)' }}
                 onClick={e => e.stopPropagation()}
             >
                 <div className="relative flex items-center justify-center mb-4">
@@ -188,7 +188,7 @@ export default function Settings() {
                     <Card className="text-center p-4">
                         <div className="flex items-center justify-center gap-1.5">
                             <Zap size={20} color="var(--color-warning)" fill="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
-                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{state.totalXP}</div>
                         </div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Total XP</div>
                     </Card>
@@ -202,16 +202,16 @@ export default function Settings() {
                                 yesterday.setDate(yesterday.getDate() - 1);
                                 return state.lastActiveDate === yesterday.toISOString().split('T')[0] ? 'at-risk' : 'inactive';
                             })()} size={22} />
-                            <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
+                            <div className="text-2xl font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{state.currentStreak}</div>
                         </div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Day Streak</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{learnedCount}/{totalConcepts}</div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Cards Learned</div>
                     </Card>
                     <Card className="text-center p-4">
-                        <div className="text-2xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{completedLessons}/{LESSONS.length}</div>
                         <div className="text-[11px] mt-1 uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>Lessons Complete</div>
                     </Card>
                 </div>
@@ -224,12 +224,12 @@ export default function Settings() {
                         </div>
                         <div className="flex items-center justify-around">
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{todayTimeStr}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{todayTimeStr}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Today</span>
                             </div>
                             <div style={{ width: 1, height: 28, backgroundColor: 'rgba(var(--color-ink-rgb), 0.08)' }} />
                             <div className="flex flex-col items-center">
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{studyTimeStr}</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{studyTimeStr}</span>
                                 <span className="text-[11px]" style={{ color: 'var(--color-ink-muted)' }}>Total</span>
                             </div>
                         </div>
@@ -355,7 +355,7 @@ export default function Settings() {
                                     onChange={e => { setSelectedCourseId(e.target.value); setCourseError(null); }}
                                     className="w-full appearance-none rounded-[3px] px-3 py-2 pr-8 text-xs font-semibold"
                                     style={{
-                                        backgroundColor: 'var(--color-parchment)',
+                                        backgroundColor: 'var(--color-bg)',
                                         color: 'var(--color-ink)',
                                         border: '1px solid rgba(var(--color-ink-rgb), 0.12)',
                                         fontFamily: 'var(--font-display)',
@@ -378,7 +378,7 @@ export default function Settings() {
                                     placeholder="Enter course password"
                                     className="w-full rounded-[3px] pl-8 pr-3 py-2 text-xs"
                                     style={{
-                                        backgroundColor: 'var(--color-parchment)',
+                                        backgroundColor: 'var(--color-bg)',
                                         color: 'var(--color-ink)',
                                         border: courseError ? '1px solid var(--color-error)' : '1px solid rgba(var(--color-ink-rgb), 0.12)',
                                     }}
@@ -483,7 +483,7 @@ export default function Settings() {
                                     onChange={e => dispatch({ type: 'SET_DAILY_REMINDER_TIME', value: e.target.value })}
                                     className="rounded-[3px] px-2 py-1 text-xs"
                                     style={{
-                                        backgroundColor: 'var(--color-parchment)',
+                                        backgroundColor: 'var(--color-bg)',
                                         color: 'var(--color-ink)',
                                         border: '1px solid rgba(var(--color-ink-rgb), 0.08)',
                                     }}
@@ -566,7 +566,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_SOUND_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, var(--color-burgundy) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.soundVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, var(--color-coral) ${(state.soundVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.soundVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>
@@ -591,7 +591,7 @@ export default function Settings() {
                             onChange={e => dispatch({ type: 'SET_MUSIC_VOLUME', value: parseFloat(e.target.value) })}
                             className="volume-slider"
                             style={{
-                                background: `linear-gradient(to right, var(--color-burgundy) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.musicVolume ?? 1) * 100}%)`
+                                background: `linear-gradient(to right, var(--color-coral) ${(state.musicVolume ?? 1) * 100}%, rgba(var(--color-ink-rgb), 0.10) ${(state.musicVolume ?? 1) * 100}%)`
                             }}
                         />
                     </div>

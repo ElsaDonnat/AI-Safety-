@@ -115,14 +115,14 @@ export default function WeekTracker({ onClose }) {
             style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }}
             onClick={onClose}>
             <div className="w-full max-w-sm rounded-[4px] overflow-hidden animate-fade-in"
-                style={{ backgroundColor: 'var(--color-parchment)', boxShadow: 'var(--shadow-elevated)' }}
+                style={{ backgroundColor: 'var(--color-bg)', boxShadow: 'var(--shadow-elevated)' }}
                 onClick={e => e.stopPropagation()}>
 
                 {/* Header with streak */}
                 <div className="px-5 pt-5 pb-3 text-center">
                     <div className="flex items-center justify-center gap-3 mb-2">
                         <StreakFlame status={streakStatus} size={28} />
-                        <span className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: streakStatus === 'inactive' ? 'var(--color-ink-faint)' : 'var(--color-burgundy)' }}>
+                        <span className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: streakStatus === 'inactive' ? 'var(--color-ink-faint)' : 'var(--color-coral)' }}>
                             {state.currentStreak}
                         </span>
                     </div>
@@ -140,7 +140,7 @@ export default function WeekTracker({ onClose }) {
                             return (
                                 <div key={i} className="flex flex-col items-center gap-1">
                                     <span className="text-[10px] font-medium" style={{
-                                        color: day.isToday ? 'var(--color-burgundy)' : 'var(--color-ink-faint)',
+                                        color: day.isToday ? 'var(--color-coral)' : 'var(--color-ink-faint)',
                                         fontFamily: 'var(--font-mono)',
                                     }}>
                                         {day.label}
@@ -148,12 +148,12 @@ export default function WeekTracker({ onClose }) {
                                     <div className="w-8 h-8 rounded-[3px] flex items-center justify-center" style={{
                                         backgroundColor: day.isFuture ? 'rgba(var(--color-ink-rgb), 0.02)' :
                                             hasActivity ? 'rgba(212, 114, 106, 0.08)' : 'var(--color-card)',
-                                        border: day.isToday ? '2px solid var(--color-burgundy)' :
+                                        border: day.isToday ? '2px solid var(--color-coral)' :
                                             hasActivity ? '2px solid rgba(212, 114, 106, 0.2)' : '1px solid rgba(var(--color-ink-rgb), 0.06)',
                                         boxShadow: hasActivity ? 'none' : 'var(--shadow-card)',
                                     }}>
                                         {hasActivity ? (
-                                            <Check size={14} color="var(--color-burgundy)" strokeWidth={3} />
+                                            <Check size={14} color="var(--color-coral)" strokeWidth={3} />
                                         ) : day.isFuture ? null : (
                                             <div className="w-1.5 h-1.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-ink-faint)', opacity: 0.3 }} />
                                         )}
@@ -172,7 +172,7 @@ export default function WeekTracker({ onClose }) {
                 <div className="px-5 pb-3">
                     <div className="grid grid-cols-3 gap-2">
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
                                 {stats.totalSessions}
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>
@@ -180,13 +180,13 @@ export default function WeekTracker({ onClose }) {
                             </div>
                         </div>
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
                                 {stats.totalQuestions}
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>questions</div>
                         </div>
                         <div className="text-center p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
-                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-burgundy)' }}>
+                            <div className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
                                 {formatTime(stats.totalSeconds)}
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>study time</div>
@@ -200,14 +200,14 @@ export default function WeekTracker({ onClose }) {
                         <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                             <div className="flex items-center gap-1.5">
                                 <Zap size={16} fill="var(--color-warning)" color="var(--color-warning)" strokeWidth={2} style={{ opacity: 0.7 }} />
-                                <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{state.totalXP} XP</div>
+                                <div className="text-sm font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{state.totalXP} XP</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>total earned</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-center gap-1 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                             <div className="flex items-center gap-1.5">
-                                <BookOpen size={16} color="var(--color-burgundy)" strokeWidth={2} />
-                                <div className="text-sm font-bold" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-display)' }}>{cardsLearned}</div>
+                                <BookOpen size={16} color="var(--color-coral)" strokeWidth={2} />
+                                <div className="text-sm font-bold" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-display)' }}>{cardsLearned}</div>
                             </div>
                             <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-ink-muted)', fontFamily: 'var(--font-mono)' }}>concepts learned</div>
                         </div>
@@ -229,7 +229,7 @@ export default function WeekTracker({ onClose }) {
                             {weakest && (
                                 <div className="flex-1 flex flex-col items-center justify-center gap-0.5 p-2.5 rounded-[3px]" style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
                                     <div className="flex items-center gap-1">
-                                        <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-burgundy)', fontFamily: 'var(--font-mono)' }}>Focus on</div>
+                                        <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-coral)', fontFamily: 'var(--font-mono)' }}>Focus on</div>
                                     </div>
                                     <div className="text-xs font-medium" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>{weakest.label}</div>
                                 </div>

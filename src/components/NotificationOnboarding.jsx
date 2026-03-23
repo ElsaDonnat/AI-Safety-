@@ -25,7 +25,7 @@ export default function NotificationOnboarding({ onEnable, onSkip }) {
             <div className="absolute inset-0" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.4)', backdropFilter: 'blur(4px)' }} />
             <div
                 className="relative w-full max-w-sm rounded-[4px] p-6 mx-4 animate-fade-in-up"
-                style={{ backgroundColor: 'var(--color-parchment)', boxShadow: 'var(--shadow-elevated)' }}
+                style={{ backgroundColor: 'var(--color-bg)', boxShadow: 'var(--shadow-elevated)' }}
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex justify-center mb-3">
@@ -78,7 +78,7 @@ export default function NotificationOnboarding({ onEnable, onSkip }) {
                         onClick={() => setStreakEnabled(!streakEnabled)}
                         className="relative w-11 h-6 rounded-full transition-colors"
                         style={{
-                            backgroundColor: streakEnabled ? 'var(--color-burgundy)' : 'rgba(var(--color-ink-rgb), 0.15)',
+                            backgroundColor: streakEnabled ? 'var(--color-coral)' : 'rgba(var(--color-ink-rgb), 0.15)',
                         }}
                     >
                         <span
