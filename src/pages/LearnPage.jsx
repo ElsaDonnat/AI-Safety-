@@ -208,7 +208,15 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                             { id: 'general', label: 'General' },
                         ]}
                         activeTab={learnView}
-                        onChange={setLearnView}
+                        onChange={(view) => {
+                            setLearnView(view);
+                            if (view === 'general') {
+                                // Reset to first non-course domain when switching to general
+                                const firstGeneral = DOMAINS.find(d => !d.courseOnly);
+                                if (firstGeneral) setActiveDomain(firstGeneral.id);
+                                setExpandedTopic(null);
+                            }
+                        }}
                     />
                 </div>
             )}
@@ -260,49 +268,6 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 </Card>
             )}
 
-            {/* Domain sub-tabs */}
-            <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-                {visibleDomains.map(domain => {
-                    const isActive = activeDomain === domain.id;
-                    return (
-                        <button
-                            key={domain.id}
-                            onClick={() => {
-                                setActiveDomain(domain.id);
-                                setExpandedTopic(null);
-                            }}
-                            className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
-                            style={{
-                                backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-parchment)',
-                                color: isActive ? '#F0EBE5' : 'var(--color-ink-muted)',
-                                border: isActive ? '1px solid var(--color-sidebar-bg)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
-                            }}
-                        >
-                            <TopicIcon iconId={domain.icon} color={isActive ? '#fff' : domain.color} />
-                            <span>{domain.title}</span>
-                            {domain.comingSoon && (
-                                <span className="ml-0.5" style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.04em', opacity: 0.7 }}>Soon</span>
-                            )}
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* Coming Soon state for locked domains */}
-            {!DEV_UNLOCK_ALL && currentDomain?.comingSoon && (
-                <div className="text-center py-16">
-                    <div className="mb-3"><TopicIcon iconId={currentDomain.icon} color={currentDomain.color} /></div>
-                    <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                        {currentDomain.title}
-                    </h3>
-                    <p className="text-sm mb-1" style={{ color: 'var(--color-ink-muted)' }}>
-                        {currentDomain.description}
-                    </p>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-ink-faint)' }}>
-                        Coming soon
-                    </p>
-                </div>
-            )}
             {/* ═══ Course View ═══ */}
             {learnView === 'course' && courseContent && (
                 <CourseView
@@ -319,7 +284,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 <>
                     {/* Domain sub-tabs */}
                     <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-                        {DOMAINS.map(domain => {
+                        {visibleDomains.map(domain => {
                             const isActive = activeDomain === domain.id;
                             return (
                                 <button
@@ -330,7 +295,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                     }}
                                     className="flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0"
                                     style={{
-                                        backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-bg)',
+                                        backgroundColor: isActive ? 'var(--color-sidebar-bg)' : 'var(--color-parchment)',
                                         color: isActive ? '#F0EBE5' : 'var(--color-ink-muted)',
                                         border: isActive ? '1px solid var(--color-sidebar-bg)' : '1px solid rgba(var(--color-ink-rgb), 0.10)',
                                     }}
