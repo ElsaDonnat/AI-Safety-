@@ -70,6 +70,19 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
     const [showThisWeek, setShowThisWeek] = useState(false);
     const mainRef = useRef(null);
 
+    // Auto-switch to course domain when course mode activates, or reset if deactivated
+    const activeCourseId = state.courseMode?.courseId || null;
+    useEffect(() => {
+        if (activeCourseId) {
+            // Find the course-only domain matching the active course
+            const courseDomain = DOMAINS.find(d => d.courseOnly === activeCourseId);
+            if (courseDomain) setActiveDomain(courseDomain.id);
+        } else if (DOMAINS.find(d => d.id === activeDomain)?.courseOnly) {
+            // Active domain is course-only but course is no longer active — reset
+            setActiveDomain('foundations');
+        }
+    }, [activeCourseId]); // eslint-disable-line react-hooks/exhaustive-deps
+
     // Track study sessions for "This Week" card
     useEffect(() => {
         const currentCount = (state.studySessions || []).length;
@@ -138,8 +151,15 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
 
     const completedCount = Object.keys(state.completedLessons).length;
     const totalLessons = LESSONS.length;
-    const currentDomain = DOMAINS.find(d => d.id === activeDomain);
-    const domainTopics = getTopicsByDomain(activeDomain);
+
+    // Filter domains: show course-only domains only when matching course mode is active
+    const visibleDomains = DOMAINS.filter(d => {
+        if (d.courseOnly) return d.courseOnly === activeCourseId;
+        return true;
+    });
+
+    const currentDomain = visibleDomains.find(d => d.id === activeDomain) || visibleDomains[0];
+    const domainTopics = getTopicsByDomain(currentDomain?.id);
 
     return (
         <div className="px-4 py-6 max-w-2xl mx-auto" ref={mainRef}>
@@ -205,7 +225,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
 
             {/* Domain sub-tabs */}
             <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-                {DOMAINS.map(domain => {
+                {visibleDomains.map(domain => {
                     const isActive = activeDomain === domain.id;
                     return (
                         <button

@@ -28,7 +28,7 @@ export const COURSES = [
         name: 'ML4G',
         fullName: 'ML for Good',
         description: 'A companion mode for the ML for Good course. Lessons and cards are tailored to the ML4G curriculum.',
-        passwordHash: -360708972, // hash of 'ml4g2026'
+        passwordHash: 1339035764, // hash of 'ML4G2026'
     },
 ];
 
