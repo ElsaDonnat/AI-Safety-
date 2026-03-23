@@ -660,7 +660,7 @@ export default function Settings() {
                 {/* Feedback & Support */}
                 <div className="flex gap-2 mb-3">
                     <button
-                        onClick={() => window.open('https://forms.gle/JDUzvYqq5dVxo5vL9', '_blank')}
+                        onClick={() => window.open('https://forms.gle/WJvjPyjQihU22hbw5', '_blank')}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[3px] text-xs font-semibold transition-all active:scale-[0.98]"
                         style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'var(--color-card)', border: '1px solid rgba(var(--color-ink-rgb), 0.08)', fontFamily: 'var(--font-mono)' }}
                     >
