@@ -691,6 +691,251 @@ DESCRIPTION_DISTRACTORS['c1016'] = {
     ]
 };
 
+// ─── AI Capabilities Batch 2 (c1017–c1045) ──────────────────────
+
+DESCRIPTION_DISTRACTORS['c1041'] = {
+    hardCorrect: 'A behavioral test proposed in 1950 that evaluates machine intelligence by whether it can hold a conversation indistinguishable from a human\'s, sidestepping questions about internal mental states.',
+    distractors: [
+        { text: 'A test that measures the processing speed of AI systems against human reaction times on cognitive tasks.', d: 1 },
+        { text: 'A comprehensive evaluation framework that measures AI performance across multiple cognitive domains including reasoning, memory, and language.', d: 2 },
+        { text: 'A behavioral test of intelligence where a machine must fool an interrogator in conversation, which has proven to be a reliable and complete measure of general intelligence.', d: 3, trap: 'The Turing Test has proven incomplete — LLMs can pass conversational tests while failing at spatial reasoning and long-term planning. It tests only one narrow capability.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1017'] = {
+    hardCorrect: 'A thought experiment arguing that processing symbols according to rules can produce correct outputs without any genuine understanding — challenging whether sophisticated computation constitutes real comprehension.',
+    distractors: [
+        { text: 'An AI training technique where models learn to translate between human languages without understanding grammar rules.', d: 1 },
+        { text: 'A proof that AI systems can never achieve genuine understanding because silicon-based computation is fundamentally different from biological neural processing.', d: 2 },
+        { text: 'A thought experiment where a person follows rules to manipulate Chinese symbols without understanding them, proving conclusively that AI systems cannot be conscious or intelligent.', d: 3, trap: 'The Chinese Room argues against equating symbol manipulation with understanding, but it does not prove AI cannot be intelligent — it challenges one definition of intelligence without settling the matter.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1020'] = {
+    hardCorrect: 'A measurement framework with two continuous axes: how well a system performs on individual cognitive tasks (capability) and across what percentage of cognitive domains it achieves expert-level performance (generality).',
+    distractors: [
+        { text: 'A binary classification system that labels AI models as either "narrow" or "general" based on whether they pass a standardized intelligence test.', d: 1 },
+        { text: 'A single score from 0 to 100 that ranks AI models by averaging their performance across all known benchmarks.', d: 2 },
+        { text: 'A two-axis framework measuring performance depth and domain breadth, using ten cognitive domains from the CHC theory that comprehensively cover all possible forms of intelligence.', d: 3, trap: 'Critics note that CHC domains derive from human individual differences and may miss capabilities universal in humans but lacking in AI — the ten domains are not necessarily comprehensive for measuring machine intelligence.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1021'] = {
+    hardCorrect: 'A six-level scale from no AI involvement through tool, consultant, collaborator, and expert roles to fully autonomous agent — describing deployment choices about human oversight rather than inherent system capability.',
+    distractors: [
+        { text: 'A classification of how intelligent different AI models are, from basic pattern matching to human-level reasoning.', d: 1 },
+        { text: 'A technical specification of how many decisions per second an AI system can make without human input.', d: 2 },
+        { text: 'A six-level scale of AI independence where higher autonomy levels always indicate greater risk and should be avoided whenever possible.', d: 3, trap: 'Higher autonomy does not always mean greater risk — it depends on the combination of capability and autonomy. A Level 5 agent performing low-stakes tasks may be less risky than a Level 2 consultant making medical decisions.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1022'] = {
+    hardCorrect: 'Defining AI capability through task duration and team size — a system is t-AGI if it outperforms a human expert given time t, and (t,n)-AGI if it beats n experts working together for time t.',
+    distractors: [
+        { text: 'A formula that calculates the probability of achieving AGI by multiplying the number of AI researchers by the years of remaining research needed.', d: 1 },
+        { text: 'A benchmark suite that measures AI performance across t different task categories using n different evaluation metrics.', d: 2 },
+        { text: 'A framework where a "one-year AGI" can outperform humans only on tasks that take exactly one year to complete, not on shorter tasks.', d: 3, trap: 'A one-year AGI would dominate short tasks too, because most long projects decompose into sub-tasks completable in shorter timeframes — mastering year-long work implies mastering its components.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1023'] = {
+    hardCorrect: 'The total computation available for AI, combining three independent multiplying factors: the number of chips, the computational efficiency of each chip, and algorithmic improvements that reduce the compute needed for the same result.',
+    distractors: [
+        { text: 'The total electricity consumed during AI training, measured in kilowatt-hours.', d: 1 },
+        { text: 'The raw number of floating-point operations performed during model training, without accounting for how efficiently those operations are used.', d: 2 },
+        { text: 'The combination of hardware, software, and chip production that determines total AI compute, which grows at the same rate as hardware performance alone since the three factors are dependent on each other.', d: 3, trap: 'The three factors improve independently and multiply together — effective compute grows much faster than any single factor because hardware efficiency, algorithmic efficiency, and chip production each contribute independently.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1024'] = {
+    hardCorrect: 'The massive datasets — text, images, video, and code — used to train foundation models, whose scale has grown at 3.7× per year and whose composition and quality directly determine model capabilities.',
+    distractors: [
+        { text: 'The input data that users provide to AI models during conversations and interactions.', d: 1 },
+        { text: 'Curated, human-labeled datasets created specifically for fine-tuning models on particular tasks like medical diagnosis or legal reasoning.', d: 2 },
+        { text: 'The datasets used for pre-training, which must consist entirely of high-quality, curated text to produce capable models since low-quality data degrades performance uniformly.', d: 3, trap: 'Foundation models train on massive, largely uncurated web data — not exclusively high-quality text. Models learn useful patterns even from noisy data, though quality does affect certain capabilities.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1025'] = {
+    hardCorrect: 'Training data generated by AI systems rather than collected from humans — including self-play, AI-generated reasoning chains, and model-produced examples that could remove the finite data constraint if quality is sufficient.',
+    distractors: [
+        { text: 'Data that has been cleaned, filtered, and formatted by automated tools before being used for training.', d: 1 },
+        { text: 'Computer-generated simulations used exclusively for training robotics and autonomous vehicle systems in virtual environments.', d: 2 },
+        { text: 'AI-generated training data that is always lower quality than human-generated data and can only be used as a supplement, never as a primary training source.', d: 3, trap: 'For some domains, synthetic data has proven equal or superior to human-generated data — reinforcement learning from self-play (AlphaZero) produces superhuman strategies without any human examples.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1026'] = {
+    hardCorrect: 'The observation that transistor density on chips doubles roughly every two years, driving decades of exponential computing growth — now slowing for general chips but continuing through AI-specific hardware innovation.',
+    distractors: [
+        { text: 'A law stating that computer software becomes twice as efficient every two years.', d: 1 },
+        { text: 'The principle that AI model performance doubles with every doubling of parameter count, independent of other factors like training data.', d: 2 },
+        { text: 'The observation that transistor density doubles every two years, which continues at the same pace today as it did in the 1970s without any signs of slowing.', d: 3, trap: 'Traditional Moore\'s Law scaling has slowed significantly as transistors approach atomic-scale physical limits — continued AI hardware improvement now relies increasingly on architectural innovation rather than raw transistor shrinkage.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1027'] = {
+    hardCorrect: 'Software improvements that reduce the computation required to reach a given performance level — cutting needed compute by roughly 3× per year through better architectures, training methods, and optimization techniques.',
+    distractors: [
+        { text: 'The speed at which algorithms execute on specific hardware, measured in operations per second.', d: 1 },
+        { text: 'Techniques for compressing large AI models into smaller versions that can run on consumer hardware without performance loss.', d: 2 },
+        { text: 'Software improvements that reduce compute requirements, which contribute roughly equally to hardware improvements in driving AI capability gains.', d: 3, trap: 'Research suggests 60–95% of performance gains come from scaling compute and data, with only 5–40% from algorithmic improvements — the contributions are not equal, though measurement is uncertain.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1028'] = {
+    hardCorrect: 'The historical observation that across 70 years of AI research, simple learning algorithms paired with massive computation have consistently outperformed hand-crafted domain expertise — making scale the dominant driver of progress.',
+    distractors: [
+        { text: 'The lesson that AI researchers should focus on building smaller, more efficient models rather than scaling up existing architectures.', d: 1 },
+        { text: 'The principle that AI progress requires both scaling computation and encoding human expertise into models in equal measure.', d: 2 },
+        { text: 'The observation that computation beats expertise, which means that algorithmic innovation and architectural improvements are irrelevant to AI progress.', d: 3, trap: 'The Bitter Lesson does not reject algorithmic innovation — it says the winning algorithms are those that leverage scale most effectively. Transformers beat LSTMs not through domain knowledge but through better parallelization of compute.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1029'] = {
+    hardCorrect: 'The debate over whether scaling existing AI architectures with more compute, data, and parameters will be sufficient to reach transformative capabilities — with strong, weak, and skeptical positions each backed by different evidence.',
+    distractors: [
+        { text: 'The proven scientific law that scaling any neural network to sufficient size will always produce general intelligence.', d: 1 },
+        { text: 'The observation that AI performance always improves proportionally to the amount of compute invested, with no diminishing returns at any scale.', d: 2 },
+        { text: 'The debate about whether scale alone is sufficient, where the strong version has been confirmed by the consistent success of simply making models larger without any other changes.', d: 3, trap: 'Even the strongest scaling results have involved significant algorithmic innovations alongside scale — transformers, attention mechanisms, and training techniques all evolved substantially. Pure scaling without any other changes has not been tested.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1030'] = {
+    hardCorrect: 'Post-training techniques — chain-of-thought prompting, tool use, extended reasoning, retrieval — that unlock capabilities a model already possesses but cannot yet express, producing dramatic performance jumps without retraining.',
+    distractors: [
+        { text: 'The process of removing biases and harmful content from AI model outputs through content filtering.', d: 1 },
+        { text: 'A training technique that reduces model size while maintaining performance, making deployment cheaper and faster.', d: 2 },
+        { text: 'Post-training techniques that unlock latent capabilities, which always produce predictable and proportional improvements that scaling laws can forecast in advance.', d: 3, trap: 'Unhobbling produces improvements outside what scaling laws predict — scaling laws only forecast base model capability, while unhobbling can produce dramatic jumps that are hard to anticipate from training compute alone.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1031'] = {
+    hardCorrect: 'A benchmark testing AI models across 57 academic subjects from STEM to humanities — the most widely cited yardstick for comparing foundation models, now nearly saturated with frontier models scoring above 90%.',
+    distractors: [
+        { text: 'A test that measures how well AI models can engage in multi-turn conversations with domain experts.', d: 1 },
+        { text: 'A standardized IQ test adapted for AI systems that produces a single intelligence score comparable to human IQ.', d: 2 },
+        { text: 'A comprehensive 57-subject benchmark that remains challenging for frontier AI models, with the best systems scoring around 60–70% as of 2025.', d: 3, trap: 'MMLU is nearly saturated — frontier models score above 90% as of 2025, which is precisely why harder benchmarks like HLE were created.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1032'] = {
+    hardCorrect: 'Visual pattern puzzles requiring abstract rule deduction from a few examples — designed to be easy for humans but extremely challenging for AI, testing fluid intelligence and novel skill acquisition rather than learned knowledge.',
+    distractors: [
+        { text: 'A benchmark that tests AI systems on generating photorealistic images from text descriptions.', d: 1 },
+        { text: 'A test of AI general knowledge that uses visual multiple-choice questions drawn from textbooks and encyclopedias.', d: 2 },
+        { text: 'Abstract reasoning puzzles that are equally difficult for humans and AI systems, measuring a form of intelligence that neither has a natural advantage in.', d: 3, trap: 'ARC-AGI puzzles are designed to be trivially easy for most humans but very hard for AI — this asymmetry is the entire point, testing whether AI can match human-like fluid reasoning.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1033'] = {
+    hardCorrect: 'A benchmark using real GitHub issues from open-source projects — testing AI\'s ability to navigate codebases, write patches, and pass test suites, where performance jumped from 15% to 74% in one year.',
+    distractors: [
+        { text: 'A test that measures how quickly AI systems can write simple programs from natural language descriptions.', d: 1 },
+        { text: 'A coding competition benchmark that ranks AI systems against human programmers in timed algorithmic challenges.', d: 2 },
+        { text: 'A software engineering benchmark testing real GitHub issues, where the 15% to 74% improvement was driven entirely by larger model sizes rather than tool use or scaffolding.', d: 3, trap: 'The jump from 15% to 74% was substantially driven by tool use and scaffolding (Claude Opus 4 with tools vs Claude 3 Opus alone) — not just model scale.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1034'] = {
+    hardCorrect: 'Research-level mathematics problems created by professional mathematicians, far harder than olympiad-level — tracking whether AI can contribute to the frontier of mathematical research, with current models solving 41% of tier 1–3 problems.',
+    distractors: [
+        { text: 'A collection of unsolved mathematical conjectures used to test whether AI can prove theorems that humans have been unable to solve.', d: 1 },
+        { text: 'An olympiad-level math competition benchmark where frontier AI models now consistently achieve gold-medal performance.', d: 2 },
+        { text: 'Research-level math problems where AI models solving 41% of problems demonstrates that AI has essentially caught up with professional mathematicians in research capability.', d: 3, trap: 'Solving 41% of tiered problems is significant progress but far from matching professional mathematicians — the remaining problems represent substantial unsolved challenges, and tier-4 performance is only 29%.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1035'] = {
+    hardCorrect: 'A benchmark of the hardest possible questions crowdsourced from domain experts across hundreds of fields — created because standard benchmarks became too easy, where ~25% is a strong score for frontier models.',
+    distractors: [
+        { text: 'A philosophical thought experiment about the last question humanity will ever need to answer before AI surpasses us.', d: 1 },
+        { text: 'A standardized exam administered to AI systems covering the same material as graduate-level comprehensive exams across all disciplines.', d: 2 },
+        { text: 'The hardest benchmark ever created, designed to remain permanently beyond AI capability to ensure humans always maintain an intellectual advantage.', d: 3, trap: 'HLE was designed to be very hard, not permanently unsolvable — scores will likely rise as models improve, just as MMLU scores rose from mediocre to near-perfect.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1036'] = {
+    hardCorrect: 'A metric measuring the longest task duration at which AI systems still outperform human experts — operationalizing the idea that expanding time horizons from minutes to days signals a shift from assistance to automation.',
+    distractors: [
+        { text: 'A measurement of how long it takes an AI model to generate a response to a user query.', d: 1 },
+        { text: 'A benchmark that tests AI systems on time-sensitive tasks like stock trading or emergency response decision-making.', d: 2 },
+        { text: 'A metric measuring task duration capability, which only applies to software engineering tasks and cannot be generalized to other professional domains.', d: 3, trap: 'While METR\'s initial measurements focused on software engineering, the (t,n)-AGI framework it operationalizes applies to any cognitive task — the concept is domain-general even if current data is domain-specific.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1037'] = {
+    hardCorrect: 'A forecasting framework that estimates how much compute transformative AI requires by using the human brain as a reference — with estimates spanning twelve orders of magnitude depending on which biological process is used as an anchor.',
+    distractors: [
+        { text: 'A neuroscience technique that maps AI model architectures onto brain structures to determine which model best resembles human cognition.', d: 1 },
+        { text: 'A theory that AI systems must reach the same computational capacity as a human brain before they can exhibit general intelligence.', d: 2 },
+        { text: 'A forecasting method using the brain as a reference that provides precise timeline predictions for when AGI will arrive, with an estimated uncertainty of only 2–3 years.', d: 3, trap: 'Biological anchors involve twelve orders of magnitude of uncertainty (10²⁸ to 10⁴¹ FLOP) — the predictions are useful for reasoning about timelines but far from precise.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1038'] = {
+    hardCorrect: 'The projected point where AI labs exhaust all available high-quality public text for training — expected between 2026–2032, with multimodal data, synthetic data, and self-play as potential escape routes.',
+    distractors: [
+        { text: 'A government policy that restricts which datasets AI companies are allowed to use for model training.', d: 1 },
+        { text: 'The theoretical limit on how much information can be compressed into a neural network\'s parameters, regardless of how much training data is available.', d: 2 },
+        { text: 'The exhaustion of internet text data, which will permanently halt AI progress since there are no viable alternatives to human-generated training data.', d: 3, trap: 'Several potential alternatives exist — multimodal data (images, video), synthetic data, and self-play can all supplement or replace text data. Whether they are sufficient is debated, but the wall is not necessarily permanent.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1039'] = {
+    hardCorrect: 'The escalating electricity demands of AI training and inference — with single training runs projected to require gigawatts by 2030, potentially becoming the binding physical constraint on scaling even as compute and algorithms improve.',
+    distractors: [
+        { text: 'Regulations that limit how much electricity AI companies are allowed to use in order to reduce carbon emissions.', d: 1 },
+        { text: 'The cooling requirements of AI data centers, which represent the primary technical challenge in deploying large-scale AI systems.', d: 2 },
+        { text: 'Growing power demands that will definitely prevent AI scaling beyond current levels because new energy infrastructure cannot be built fast enough.', d: 3, trap: 'While energy infrastructure takes years to build, massive investments in dedicated power plants, nuclear partnerships, and new grid capacity suggest the constraint may be overcome — it is a serious bottleneck, not an absolute barrier.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1040'] = {
+    hardCorrect: 'Accumulated potential in one AI input (hardware, data, or software) that unleashes rapidly once the lagging component catches up — like abundant chips waiting for the right algorithm, creating sudden rather than gradual capability jumps.',
+    distractors: [
+        { text: 'A situation where AI companies have invested too much money in hardware and need to recoup costs by rushing products to market.', d: 1 },
+        { text: 'The gradual depreciation of AI hardware over time as newer, faster chips make previous generations obsolete.', d: 2 },
+        { text: 'Stored computational potential that causes sudden capability jumps, which can be prevented by pausing AI development since halting research also halts hardware production.', d: 3, trap: 'An AI pause does not necessarily prevent hardware overhang — chip manufacturing may continue, chips may be stockpiled, and chip design can advance during the pause, potentially making the overhang larger.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1042'] = {
+    hardCorrect: 'AI systems that enhance their own capabilities — improving algorithms, training methods, or architecture to create more capable versions, which then improve themselves further in an accelerating feedback loop.',
+    distractors: [
+        { text: 'A quality assurance process where AI models are tested and debugged by other AI models before deployment.', d: 1 },
+        { text: 'A training technique where models are retrained from scratch with each new dataset, gradually improving performance through fresh starts.', d: 2 },
+        { text: 'AI systems improving their own design in a feedback loop, which is purely theoretical and has no real-world examples as of 2025.', d: 3, trap: 'Recursive self-improvement is already happening incrementally — AI helps design better chips (AlphaChip), writes significant portions of its own code, and assists in ML research.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1043'] = {
+    hardCorrect: 'A hypothesized chain reaction where sufficiently advanced AI rapidly improves its own intelligence, compounded by machine advantages like instant duplication, direct code editing, and communication thousands of times faster than speech.',
+    distractors: [
+        { text: 'The gradual increase in AI capabilities over decades as research funding and computational resources steadily grow.', d: 1 },
+        { text: 'A theoretical maximum intelligence level that no AI system can exceed due to fundamental computational limits.', d: 2 },
+        { text: 'A self-reinforcing cycle of AI improvement that would happen instantaneously once a system reaches a critical intelligence threshold, with no gradual lead-up.', d: 3, trap: 'The path likely runs through gradual automation of AI research before any explosive transition — each generation handling more of the R&D process, not an instantaneous jump from a single threshold.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1044'] = {
+    hardCorrect: 'How rapidly AI capabilities and societal impact increase once advanced AI arrives — ranging from slow (years of gradual improvement) to fast (days of explosive growth) — determined by whether growth is exponential or superexponential.',
+    distractors: [
+        { text: 'The speed at which AI models process information and generate responses to user queries.', d: 1 },
+        { text: 'A measure of how quickly new AI architectures are invented and published in research papers.', d: 2 },
+        { text: 'The rate of AI capability growth, which will definitely be slow and gradual because physical infrastructure constraints prevent rapid scaling.', d: 3, trap: 'Infrastructure constraints may slow but do not guarantee gradual takeoff — software improvements, algorithmic breakthroughs, and overhangs could enable rapid capability jumps even with fixed hardware.' },
+    ],
+};
+
+DESCRIPTION_DISTRACTORS['c1045'] = {
+    hardCorrect: 'AI defined by civilizational impact rather than cognitive benchmarks — capable of triggering economic transitions comparable to the Industrial Revolution, potentially achievable without human-level performance across all domains.',
+    distractors: [
+        { text: 'AI systems that have been formally approved by government regulators for deployment in critical infrastructure.', d: 1 },
+        { text: 'The most advanced AI model at any given time, representing the state of the art in capability benchmarks.', d: 2 },
+        { text: 'AI that triggers Industrial Revolution-scale economic change, which by definition requires achieving AGI-level performance across all cognitive domains first.', d: 3, trap: 'TAI is defined by impact, not cognitive architecture — moderate capability across economically important tasks, or exceptional capability in key domains like AI research, could be transformative without full AGI.' },
+    ],
+};
+
 // ─── Why-It-Matters Distractors ─────────────────────────────
 // One plausible-but-wrong "why it matters" statement per card.
 // Used in "why" dimension quizzes as a tempting incorrect option.
@@ -702,7 +947,6 @@ export const WHY_DISTRACTORS = {
     'c105': { distractor: 'Because neural networks are modeled on biological brains, their decision-making process is inherently transparent and can be fully explained by neuroscience principles.' },
     'c106': { distractor: 'Visual AI has achieved consistent superhuman accuracy across all conditions and demographics, making human review of its outputs unnecessary in safety-critical applications.' },
     'c202': { distractor: 'Building one model for many tasks eliminates the need for domain experts to review its outputs, since the system already understands each field deeply.' },
-    'c203': { distractor: 'Knowing how performance scales lets labs skip safety testing at intermediate sizes, since they can extrapolate results from smaller models.' },
     'c204': { distractor: 'High benchmark scores provide definitive proof that a model is safe and reliable enough for real-world deployment without further testing.' },
     'c205': { distractor: 'Surprising new capabilities always appear gradually enough that safety teams have time to study and mitigate them before they cause harm.' },
     'c206': { distractor: 'Because these organizations compete fiercely, market forces naturally ensure they invest more in safety than a monopoly would.' },
@@ -738,7 +982,6 @@ export const WHY_DISTRACTORS = {
     'c804': { distractor: 'AI labs\' internal safety teams already perform the same evaluations, so independent government bodies duplicate existing work without adding meaningful oversight.' },
     'c805': { distractor: 'National governments can effectively regulate AI within their own borders, making international coordination a diplomatic nicety rather than a practical necessity.' },
     'c806': { distractor: 'Releasing model weights is always safer because the open-source community will quickly patch any vulnerabilities before bad actors can exploit them.' },
-    'c208': { distractor: 'A system vastly smarter than humans would naturally develop ethical reasoning superior to our own, making explicit alignment constraints unnecessary.' },
     'c209': { distractor: 'Since narrow AI can only operate within its trained domain, it poses no safety concerns and can be deployed freely without evaluation or oversight.' },
     'c210': { distractor: 'Autonomous systems are inherently safer than chat-based AI because they can immediately detect and reverse their own mistakes without human intervention.' },
     'c211': { distractor: 'Older, well-established models pose greater safety risks than cutting-edge systems because they lack the latest safety techniques built into newer architectures.' },
@@ -758,6 +1001,37 @@ export const WHY_DISTRACTORS = {
     'c1014': { distractor: 'Zero-shot generalization proves that foundation models truly understand language and concepts, settling the debate about whether these systems have genuine comprehension.' },
     'c1015': { distractor: 'Continual learning is only relevant for niche applications — mainstream AI deployment works fine with static models that are periodically retrained from scratch.' },
     'c1016': { distractor: 'Knowledge transfer between domains is always beneficial because broader knowledge makes a model more accurate — biases and errors from the source domain do not carry over.' },
+
+    'c1041': { distractor: 'The Turing Test provides a complete and reliable measure of intelligence — any system that passes it has demonstrated genuine understanding and general cognitive capability.' },
+    'c1017': { distractor: 'Since AI systems merely process symbols without understanding, they are inherently incapable of causing real-world harm through their outputs.' },
+    'c1020': { distractor: 'Binary AGI definitions are sufficient for policy because the precise moment a system crosses the threshold is when regulation should begin — continuous measures add unnecessary complexity.' },
+    'c1021': { distractor: 'AI systems should always be deployed at the highest autonomy level possible to maximize efficiency, since human oversight primarily introduces delay without meaningful safety benefit.' },
+    'c1022': { distractor: 'AI systems that excel at tasks under 10 seconds are fundamentally incapable of performing longer tasks, since short-task and long-task capabilities are entirely independent.' },
+    'c1023': { distractor: 'Effective compute growth is slowing down overall because Moore\'s Law is ending, meaning AI capability improvements will plateau in the near future.' },
+    'c1024': { distractor: 'Training data quality is irrelevant as long as the dataset is large enough — scale alone guarantees that models learn correct and unbiased patterns.' },
+    'c1025': { distractor: 'Synthetic data always degrades model quality because AI-generated content inevitably contains errors that compound through successive training generations.' },
+    'c1026': { distractor: 'Since Moore\'s Law has slowed for general chips, AI hardware improvements have also stalled, making software optimization the only remaining path to better AI.' },
+    'c1027': { distractor: 'Algorithmic improvements are only useful during early development — once a model architecture is mature, further software optimization provides negligible performance gains.' },
+    'c1028': { distractor: 'The Bitter Lesson proves that domain expertise is worthless in AI — researchers should abandon all attempts to incorporate human knowledge into AI systems.' },
+    'c1029': { distractor: 'The scaling hypothesis has been definitively proven true, eliminating any uncertainty about whether current approaches will reach transformative capabilities.' },
+    'c1030': { distractor: 'Unhobbling techniques are fully captured by scaling laws, so deployed model capabilities can always be predicted from training compute alone.' },
+    'c1031': { distractor: 'Since frontier models now score above 90% on MMLU, the benchmark confirms that these systems have achieved genuine expert-level understanding across all 57 subjects.' },
+    'c1032': { distractor: 'ARC-AGI\'s difficulty for AI proves that current systems have no reasoning ability whatsoever — their performance on other benchmarks is entirely memorization.' },
+    'c1033': { distractor: 'AI\'s rapid improvement on SWE-bench means that human software engineers will be fully replaced within one year, since benchmark performance directly translates to real-world job capability.' },
+    'c1034': { distractor: 'Solving 41% of FrontierMath proves that AI can now conduct independent mathematical research without human collaboration or oversight.' },
+    'c1035': { distractor: 'HLE\'s difficulty means current AI systems are nowhere close to human-level intelligence and cannot perform any expert-level work in any domain.' },
+    'c1036': { distractor: 'Task horizon only measures speed of completion — a system with a longer task horizon simply works faster, not more capably, than one with a shorter horizon.' },
+    'c1037': { distractor: 'Biological anchors provide the only scientifically valid method for predicting AGI timelines, making all other forecasting approaches unnecessary.' },
+    'c1038': { distractor: 'The data wall is a permanent and insurmountable barrier that will definitively prevent AI from ever achieving transformative capabilities.' },
+    'c1039': { distractor: 'Energy constraints are purely an economic issue — any organization willing to pay enough can access unlimited power for AI training without physical infrastructure limitations.' },
+    'c1040': { distractor: 'Overhangs only occur in theory — in practice, all AI inputs advance at the same rate, preventing any accumulation of latent potential.' },
+    'c1042': { distractor: 'Recursive self-improvement would make AI systems safer because each iteration would better understand and implement human values through improved reasoning.' },
+    'c1043': { distractor: 'An intelligence explosion would be self-limiting because more intelligent systems would naturally recognize the importance of safety constraints and voluntarily slow their own improvement.' },
+    'c1044': { distractor: 'Takeoff speed is irrelevant to safety planning because the same alignment techniques work equally well regardless of whether capability growth takes years or days.' },
+    'c1045': { distractor: 'Transformative AI can only arrive after AGI is achieved, since no AI system short of human-level general intelligence could cause Industrial Revolution-scale economic disruption.' },
+    'c207': { distractor: 'The exact timing of AGI is irrelevant to safety research because alignment solutions will be equally applicable regardless of when AGI arrives.' },
+    'c208': { distractor: 'A superintelligent system would naturally develop ethical behavior superior to humans, making pre-arrival alignment work unnecessary.' },
+    'c203': { distractor: 'Scaling laws guarantee that AI capabilities will improve smoothly and predictably, eliminating the possibility of sudden dangerous capability jumps.' },
 
     'c902': { distractor: 'Fabricated outputs are easy for end users to identify because AI-generated falsehoods always contain obvious factual errors or stylistic tells.' },
     'c903': { distractor: 'These attacks only work in academic research settings with white-box access to model internals and pose no threat to deployed commercial systems.' },

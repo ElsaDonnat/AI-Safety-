@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.10.0 — AI Capabilities batch 2: AGI, Scale, Forecasting, Takeoff (Atlas Ch. 1 §4–6)
+
+### Added
+- **4 new chapters** — Defining & Measuring AGI (amateur), Leveraging Scale (amateur), Forecasting Timelines (advanced), Takeoff (advanced)
+- **27 new cards** (c1017, c1020–c1045) covering: Turing Test, Chinese Room, ANI/ASI spectrum, Capability & Generality framework, AI Autonomy Levels, (t,n)-AGI, Effective Compute, Training Data, Synthetic Data, Moore's Law, Algorithmic Efficiency, Bitter Lesson, Scaling Hypothesis, Unhobbling, MMLU, ARC-AGI, SWE-bench, FrontierMath, Humanity's Last Exam, METR Task Horizon, Biological Anchors, Data Wall, AI Energy Constraints, AI Overhang, Recursive Self-Improvement, Intelligence Explosion, Takeoff Speeds, Transformative AI
+- **12 new lessons** (lessons 8–19) across the 4 chapters
+- Full quiz content: description distractors, true/false statements, and WHY_DISTRACTORS for all 27 cards
+
+### Changed
+- **c207 (AGI)** — Updated descriptions with capability-generality framework, added whyItMatters
+- **c208 (Superintelligence)** — Updated with ASI-focused content and new linkedCards
+- **c209 (Narrow AI)** — Updated with ANI-focused content including concrete examples
+- **c203 (Scaling Laws)** — Updated with four-variable framework and OpenAI 2020 findings, updated whyItMatters
+
+### Design decisions
+- Content LLM had wrong IDs for c208/c209/c210/c212 (gave descriptions for concepts that don't exist at those IDs). Created new cards c1042–c1045 for the missing concepts; updated c208/c209 with the overlapping ANI/ASI content instead.
+- Renumbered Turing Test from c1016 → c1041 (c1016 already taken by Transfer Learning from batch 1)
+- Converted all true/false from array format to existing {trueStatement, falseStatement, correction} format
+
 ## 0.9.0 — AI Capabilities topic (AI Safety Atlas Ch. 1)
 
 ### Added

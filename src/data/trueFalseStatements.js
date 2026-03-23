@@ -268,7 +268,7 @@ TRUE_FALSE_STATEMENTS['c212'] = {
     correction: 'Training frontier models still costs hundreds of millions of dollars and requires specialized hardware (high-end GPUs) produced by very few companies — compute remains highly concentrated and expensive, which is exactly what makes it a useful governance lever.',
 };
 
-// ─── AI Capabilities (c1001–c1016) ──────────────────
+// ─── AI Capabilities (c1001–c1045) ──────────────────
 
 TRUE_FALSE_STATEMENTS['c1001'] = {
     trueStatement: 'AI systems have matched or exceeded human expert performance on a number of specific tasks, including competitive mathematics and software engineering.',
@@ -352,6 +352,168 @@ TRUE_FALSE_STATEMENTS['c1016'] = {
     trueStatement: 'A model trained on general text can transfer its knowledge to perform well on medical or legal tasks it was never specifically trained for.',
     falseStatement: 'Transfer learning only works when the source and target domains are closely related, such as transferring between two different text classification tasks.',
     correction: 'Foundation models can transfer knowledge across very different domains — from general text to medicine, law, or code generation — even when the domains seem unrelated.',
+};
+
+TRUE_FALSE_STATEMENTS['c1041'] = {
+    trueStatement: 'The Turing Test evaluates intelligence by whether a machine can fool a human interrogator in conversation.',
+    falseStatement: 'Modern AI systems that pass Turing-style conversation tests have also demonstrated robust general intelligence across all cognitive domains.',
+    correction: 'LLMs can pass conversational tests while failing at basic spatial reasoning, long-term planning, and other cognitive tasks — passing the Turing Test does not indicate general intelligence.',
+};
+
+TRUE_FALSE_STATEMENTS['c1017'] = {
+    trueStatement: 'The Chinese Room argument challenges whether symbol manipulation alone constitutes genuine understanding.',
+    falseStatement: 'The Chinese Room argument proves that AI systems can never be truly intelligent regardless of their architecture or capabilities.',
+    correction: 'The argument challenges one specific claim about symbol processing and understanding — it does not prove that intelligence is impossible for machines, only that correct outputs alone may not demonstrate comprehension.',
+};
+
+TRUE_FALSE_STATEMENTS['c1020'] = {
+    trueStatement: 'The capability-generality framework treats intelligence as a continuous spectrum rather than a binary "AGI or not" classification.',
+    falseStatement: 'A system achieving 85th percentile performance on 30% of cognitive domains would not count as having any general intelligence under the capability-generality framework.',
+    correction: 'Under this framework, any system performing at expert level across multiple domains exhibits some degree of general intelligence — it is a matter of degree, not a binary threshold.',
+};
+
+TRUE_FALSE_STATEMENTS['c1021'] = {
+    trueStatement: 'The same AI system can be deployed at different autonomy levels depending on deployment choices, not just its inherent capability.',
+    falseStatement: 'An AI system deployed as a Level 5 autonomous agent is always more dangerous than the same system deployed as a Level 2 consultant.',
+    correction: 'Risk depends on the combination of autonomy, capability, and task domain — a Level 5 agent on low-stakes tasks may pose less risk than a Level 2 consultant making high-stakes medical or financial decisions.',
+};
+
+TRUE_FALSE_STATEMENTS['c1022'] = {
+    trueStatement: 'Under the (t,n)-AGI framework, a "one-year AGI" would effectively beat humans at virtually everything because most projects decompose into shorter sub-tasks.',
+    falseStatement: 'The (t,n)-AGI framework measures intelligence by how many different tasks a system can perform, not by how long it can sustain expert-level work.',
+    correction: 'The framework explicitly defines AGI through task duration (t) and expert comparison (n) — it measures how long a system can sustain expert-level work, which is a proxy for capability breadth.',
+};
+
+TRUE_FALSE_STATEMENTS['c1023'] = {
+    trueStatement: 'Effective compute grows faster than any single input because hardware efficiency, algorithmic efficiency, and chip production multiply together independently.',
+    falseStatement: 'Effective compute is simply the total number of GPUs used during training.',
+    correction: 'Effective compute combines three factors: chip count, hardware efficiency (FLOP per dollar), and algorithmic efficiency (compute needed for a given result) — counting GPUs alone misses two of the three multipliers.',
+};
+
+TRUE_FALSE_STATEMENTS['c1024'] = {
+    trueStatement: 'Training dataset sizes for language models have grown at approximately 3.7× per year since 2010.',
+    falseStatement: 'Foundation models can only learn effectively from high-quality, curated text data that has been carefully filtered and labeled by humans.',
+    correction: 'Foundation models learn useful patterns from massive, largely uncurated web data through self-supervised learning — human curation and labeling are not required for pre-training.',
+};
+
+TRUE_FALSE_STATEMENTS['c1025'] = {
+    trueStatement: 'AlphaZero demonstrated that self-play can produce superhuman AI strategies without any human-generated training data.',
+    falseStatement: 'Synthetic data is always lower quality than human-generated data and can only supplement, never replace, real training data.',
+    correction: 'In some domains, synthetic data matches or exceeds human data quality — AlphaZero\'s self-play strategies surpassed all human chess knowledge, and reinforcement learning on reasoning tasks has shown strong results.',
+};
+
+TRUE_FALSE_STATEMENTS['c1026'] = {
+    trueStatement: 'Traditional Moore\'s Law transistor scaling has slowed as transistors approach atomic-scale physical limits.',
+    falseStatement: 'Moore\'s Law applies specifically to AI model performance, predicting that accuracy doubles every two years.',
+    correction: 'Moore\'s Law describes transistor density on chips, not AI model performance directly. AI performance depends on many factors beyond chip density, including algorithms, training data, and architecture.',
+};
+
+TRUE_FALSE_STATEMENTS['c1027'] = {
+    trueStatement: 'Algorithmic efficiency improvements reduce the compute needed for a given AI performance level by approximately 3× per year for language models.',
+    falseStatement: 'Algorithmic efficiency and hardware scaling contribute roughly equally to AI capability improvements.',
+    correction: 'Research suggests 60–95% of performance gains come from scaling compute and data, with 5–40% from algorithmic improvements — though measurement methodology introduces substantial uncertainty.',
+};
+
+TRUE_FALSE_STATEMENTS['c1028'] = {
+    trueStatement: 'The Bitter Lesson observes that general methods leveraging massive computation have consistently outperformed hand-engineered domain knowledge across 70 years of AI research.',
+    falseStatement: 'The Bitter Lesson argues that algorithmic innovation is irrelevant and only raw compute matters for AI progress.',
+    correction: 'The Bitter Lesson does not reject algorithmic innovation — it says the winning algorithms are those that leverage scale effectively. Transformers beat LSTMs through better parallelization, not domain knowledge.',
+};
+
+TRUE_FALSE_STATEMENTS['c1029'] = {
+    trueStatement: 'Major AI labs including OpenAI, Anthropic, and DeepMind have all indicated that scaling will be a significant component of achieving advanced AI capabilities.',
+    falseStatement: 'The strong scaling hypothesis has been definitively proven correct by the consistent success of making models larger.',
+    correction: 'The scaling hypothesis remains a hypothesis — even strong results have involved significant algorithmic innovations alongside scale, and critics argue entirely new architectures may be needed for certain capabilities.',
+};
+
+TRUE_FALSE_STATEMENTS['c1030'] = {
+    trueStatement: 'A model scoring 4.5% on Humanity\'s Last Exam can reach approximately 25% through successive unhobbling steps like reasoning-specific training and extended thinking time.',
+    falseStatement: 'Unhobbling improvements are predictable from scaling laws since they depend on the same compute-performance relationships.',
+    correction: 'Scaling laws predict base model performance from training compute — unhobbling produces jumps outside those predictions, making deployed capabilities harder to forecast from training inputs alone.',
+};
+
+TRUE_FALSE_STATEMENTS['c1031'] = {
+    trueStatement: 'Frontier models score above 90% on MMLU as of 2025, approaching saturation of the benchmark.',
+    falseStatement: 'MMLU remains the most challenging comprehensive benchmark for frontier AI models.',
+    correction: 'MMLU is nearly saturated and no longer challenging for frontier models — harder successors like Humanity\'s Last Exam were created specifically because MMLU became too easy.',
+};
+
+TRUE_FALSE_STATEMENTS['c1032'] = {
+    trueStatement: 'ARC-AGI puzzles are designed to be easy for humans but difficult for AI systems, testing abstract reasoning rather than learned knowledge.',
+    falseStatement: 'ARC-AGI has been solved by frontier AI models, demonstrating that abstract reasoning is no longer a challenge for large language models.',
+    correction: 'While large reasoning models have made significant progress on ARC-AGI, the benchmark still reveals meaningful gaps in AI abstract reasoning compared to human performance.',
+};
+
+TRUE_FALSE_STATEMENTS['c1033'] = {
+    trueStatement: 'AI performance on SWE-bench jumped from 15% to 74% in approximately one year, partly driven by adding tool use and scaffolding.',
+    falseStatement: 'SWE-bench tests AI on synthetic coding problems designed to measure programming knowledge.',
+    correction: 'SWE-bench uses real issues from real open-source GitHub repositories, requiring navigation of existing codebases and passing existing test suites — not synthetic exercises.',
+};
+
+TRUE_FALSE_STATEMENTS['c1034'] = {
+    trueStatement: 'FrontierMath problems are significantly harder than olympiad-level mathematics, representing the frontier of mathematical research.',
+    falseStatement: 'Current AI models can solve the majority of FrontierMath problems, demonstrating near-human-level mathematical research capability.',
+    correction: 'As of early 2026, the best models solve only 41% of tier 1–3 problems and 29% of tier 4 — significant progress but far from matching professional mathematicians across all difficulty levels.',
+};
+
+TRUE_FALSE_STATEMENTS['c1035'] = {
+    trueStatement: 'Humanity\'s Last Exam was created in response to MMLU and other standard benchmarks becoming too easy for frontier AI models.',
+    falseStatement: 'Frontier AI models currently score above 80% on Humanity\'s Last Exam, indicating the benchmark will soon need replacement.',
+    correction: 'Frontier models score approximately 25% on HLE even with extended reasoning and tools — the benchmark remains very challenging and far from saturation.',
+};
+
+TRUE_FALSE_STATEMENTS['c1036'] = {
+    trueStatement: 'METR\'s task horizon metric measures the longest duration of tasks at which AI can reliably match human expert performance.',
+    falseStatement: 'Current frontier AI systems can reliably complete multi-day professional tasks without significant performance degradation.',
+    correction: 'Current AI systems show significant performance degradation on multi-day tasks — they excel at short tasks but struggle to maintain context and coherence over extended time horizons.',
+};
+
+TRUE_FALSE_STATEMENTS['c1037'] = {
+    trueStatement: 'Biological anchor estimates for the compute required for transformative AI span twelve orders of magnitude, from 10²⁸ to 10⁴¹ FLOP.',
+    falseStatement: 'Biological anchors provide precise predictions of when AGI will arrive, with uncertainty of only a few years.',
+    correction: 'The twelve orders of magnitude uncertainty means biological anchors provide rough ballpark estimates, not precise predictions — useful for reasoning about timelines but far from exact.',
+};
+
+TRUE_FALSE_STATEMENTS['c1038'] = {
+    trueStatement: 'The indexed web contains roughly 500 trillion tokens of text, and at current scaling rates, high-quality text data could be exhausted between 2026 and 2032.',
+    falseStatement: 'Hitting the data wall will permanently stop AI capability progress because there are no alternatives to human-generated text data.',
+    correction: 'Multimodal data (images, video), synthetic data, and self-play are all active research areas that could provide alternative training signals — the data wall is a constraint, not necessarily a permanent barrier.',
+};
+
+TRUE_FALSE_STATEMENTS['c1039'] = {
+    trueStatement: 'By 2030, a single frontier AI training run is projected to require gigawatts of power, comparable to the energy consumption of a small city.',
+    falseStatement: 'Energy constraints will definitely prevent AI from scaling beyond 2030 levels because new power infrastructure cannot be built fast enough.',
+    correction: 'Massive investments in dedicated power plants, nuclear energy partnerships, and grid expansion suggest the constraint may be addressed — energy is a serious bottleneck but not necessarily an absolute barrier.',
+};
+
+TRUE_FALSE_STATEMENTS['c1040'] = {
+    trueStatement: 'A hardware overhang means abundant computing hardware exists waiting for the right algorithms, potentially enabling many powerful AI systems to appear simultaneously once software catches up.',
+    falseStatement: 'Pausing AI development would prevent hardware overhangs because chip manufacturers would stop producing chips during the pause.',
+    correction: 'Chip manufacturing may continue during a pause (for non-AI uses or stockpiling), and chip design can advance even without deployment — potentially making the overhang larger, not smaller.',
+};
+
+TRUE_FALSE_STATEMENTS['c1042'] = {
+    trueStatement: 'AI systems are already helping design better chips, write significant portions of their own code, and assist in ML research — incremental forms of recursive self-improvement.',
+    falseStatement: 'Recursive self-improvement is purely theoretical and has no real-world examples as of 2025.',
+    correction: 'Recursive self-improvement is already happening incrementally — AI helps design chips (AlphaChip), writes code, and assists in ML research, though not yet in a fully autonomous feedback loop.',
+};
+
+TRUE_FALSE_STATEMENTS['c1043'] = {
+    trueStatement: 'Machine advantages that compound intelligence explosion risk include instant duplication, direct code editability, and communication speeds thousands of times faster than human speech.',
+    falseStatement: 'An intelligence explosion would happen instantaneously once a system reaches a critical intelligence threshold, with no gradual lead-up.',
+    correction: 'The path likely runs through gradual automation of AI research — each generation handling more R&D at superhuman speed — rather than an instant jump from a single threshold.',
+};
+
+TRUE_FALSE_STATEMENTS['c1044'] = {
+    trueStatement: 'Slow takeoff allows iterative safety refinement while fast takeoff demands that safety measures work correctly from the start.',
+    falseStatement: 'Takeoff speed is irrelevant to AI safety because the same alignment techniques work equally well regardless of how fast capabilities grow.',
+    correction: 'Takeoff speed fundamentally determines which safety strategies are viable — fast takeoff eliminates the possibility of iterative testing and correction that slow takeoff permits.',
+};
+
+TRUE_FALSE_STATEMENTS['c1045'] = {
+    trueStatement: 'Transformative AI could arrive before AGI if AI automates enough economically valuable work without achieving human-level performance across all cognitive domains.',
+    falseStatement: 'Transformative AI requires achieving AGI first, since no system short of human-level general intelligence could cause Industrial Revolution-scale economic disruption.',
+    correction: 'TAI is defined by impact, not cognitive architecture — moderate capability across economically important tasks, or exceptional capability in key domains, could be transformative without full AGI.',
 };
 
 // ─── AI Security (c901–c906) ────────────────────────
