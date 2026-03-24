@@ -1008,6 +1008,9 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
 // COLLECTION VIEW — Card triage
 // ═══════════════════════════════════════════════════════
 function CollectionView({ statusTiers, collectionSort, setCollectionSort, expandedCardId, setExpandedCardId, state, dispatch, onStartSession }) {
+    const [collapsedTiers, setCollapsedTiers] = useState({});
+    const toggleTier = (key) => setCollapsedTiers(prev => ({ ...prev, [key]: !prev[key] }));
+
     const tierConfig = [
         {
             key: 'new',
@@ -1056,26 +1059,34 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                 />
             </div>
 
-            {tierConfig.map(tier => (
+            {tierConfig.map(tier => {
+                const isCollapsed = !!collapsedTiers[tier.key];
+                return (
                 <div key={tier.key} className="mb-5">
-                    <div className="flex items-center gap-2 mb-2">
+                    <button
+                        onClick={() => toggleTier(tier.key)}
+                        className="flex items-center gap-2 mb-2 w-full text-left"
+                    >
+                        <ChevronDown size={14} color={tier.color} strokeWidth={2.5}
+                            className="transition-transform duration-200 flex-shrink-0"
+                            style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }} />
                         <h3 className="text-sm font-bold" style={{ color: tier.color }}>{tier.label}</h3>
                         <span className="text-xs font-medium px-2 py-0.5 rounded-full"
                             style={{ backgroundColor: tier.bg, color: tier.color }}>
                             {tier.items.length}
                         </span>
                         {tier.items.length > 0 && tier.practiceLabel && (
-                            <button
-                                onClick={() => onStartSession(tier.items.map(i => i.concept))}
+                            <span
+                                onClick={(e) => { e.stopPropagation(); onStartSession(tier.items.map(i => i.concept)); }}
                                 className="ml-auto text-[10px] font-semibold px-2 py-1 rounded-[3px] transition-all"
                                 style={{ backgroundColor: tier.bg, color: tier.color }}
                             >
                                 {tier.practiceLabel} {'\u2192'}
-                            </button>
+                            </span>
                         )}
-                    </div>
+                    </button>
 
-                    {tier.items.length === 0 ? (
+                    {!isCollapsed && (tier.items.length === 0 ? (
                         <div className="text-center py-4 rounded-[3px]" style={{ backgroundColor: tier.bg }}>
                             <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
                                 {tier.key === 'new' ? 'All cards have been reviewed' :
@@ -1165,9 +1176,10 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                 );
                             })}
                         </div>
-                    )}
+                    ))}
                 </div>
-            ))}
+                );
+            })}
         </div>
     );
 }
