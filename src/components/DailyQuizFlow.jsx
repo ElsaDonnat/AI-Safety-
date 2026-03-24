@@ -1,63 +1,51 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { getTodaysDailyQuiz, DAILY_QUIZ_XP_PER_CORRECT } from '../data/dailyQuiz';
-import { getConceptsByIds, ALL_CONCEPTS } from '../data/concepts';
-import { resolveCard, resolveAllConcepts } from '../data/courses/index';
-import { Card, Button, ProgressBar, StarButton } from './shared';
+import { Card, Button, ProgressBar } from './shared';
 import Mascot from './Mascot';
 import { shareText, buildDailyQuizShareText } from '../services/share';
 import * as feedback from '../services/feedback';
 import StreakCelebration from './StreakCelebration';
-import { ChevronLeft, Calendar, Check, X as XIcon, Share2 } from 'lucide-react';
+import { ChevronLeft, Calendar, Check, X as XIcon, Share2, ChevronDown, ChevronUp } from 'lucide-react';
 
 const PHASES = { INTRO: 'intro', QUIZ: 'quiz', RESULTS: 'results' };
 
-function generateWrongTitles(correctId, allConcepts, count = 3) {
-    const others = allConcepts.filter(c => c.id !== correctId);
-    const shuffled = [...others].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count).map(c => c.title);
-}
-
-function shuffleOptions(correct, wrongs) {
-    const options = [
-        { title: correct, isCorrect: true },
-        ...wrongs.map(t => ({ title: t, isCorrect: false })),
-    ];
-    for (let i = options.length - 1; i > 0; i--) {
+function shuffleArray(arr) {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [options[i], options[j]] = [options[j], options[i]];
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    return options;
+    return shuffled;
 }
 
 export default function DailyQuizFlow({ onComplete }) {
     const { state, dispatch } = useApp();
-    const dailyData = getTodaysDailyQuiz();
-    const resolvedAll = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
-    const events = useMemo(() => {
-        const base = getConceptsByIds(dailyData.cardIds || []);
-        return base.map(c => resolveCard(c, state.courseMode));
-    }, [dailyData, state.courseMode]);
+    const dailyData = useMemo(() => getTodaysDailyQuiz(), []);
+    const questions = useMemo(() => dailyData.questions || [], [dailyData]);
 
     const [phase, setPhase] = useState(PHASES.INTRO);
     const [quizIndex, setQuizIndex] = useState(0);
     const [results, setResults] = useState([]); // ['correct' | 'wrong']
     const [selectedOption, setSelectedOption] = useState(null);
     const [answered, setAnswered] = useState(false);
-    const [showCard, setShowCard] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
     const [shareToast, setShareToast] = useState(false);
     const [streakCelebration, setStreakCelebration] = useState(null);
+    const [expandedResult, setExpandedResult] = useState(null);
     const sessionStartTime = useRef(null);
 
     // Shuffle options once per question
     const shuffledOptions = useMemo(() => {
-        return events.map(event => shuffleOptions(event.title, event.wrongTitles || generateWrongTitles(event.id, resolvedAll)));
-    }, [events, resolvedAll]);
+        return questions.map(q => {
+            const opts = q.options.map(o => ({ label: o, isCorrect: o === q.answer }));
+            return shuffleArray(opts);
+        });
+    }, [questions]);
 
     useEffect(() => {
         sessionStartTime.current = Date.now();
-        dispatch({ type: 'START_DAILY_QUIZ' });
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         if (shareToast) {
@@ -66,7 +54,7 @@ export default function DailyQuizFlow({ onComplete }) {
         }
     }, [shareToast]);
 
-    const totalCards = events.length;
+    const totalQuestions = questions.length;
 
     // ─── INTRO ───
     if (phase === PHASES.INTRO) {
@@ -83,24 +71,24 @@ export default function DailyQuizFlow({ onComplete }) {
                     <div className="py-4 text-center">
                         <div className="daily-quiz-date-badge">
                             <Calendar size={16} strokeWidth={2} />
-                            {dailyData.dateLabel}
+                            Daily Quiz
                         </div>
 
                         <h2 className="text-2xl font-bold mt-3 mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                            Daily AI Safety Quiz
+                            AI Safety Dates
                         </h2>
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
-                            Can you identify these concepts?
+                            When did these events happen?
                         </p>
 
                         <div className="daily-quiz-bonus-pill">
-                            {'2× XP BONUS'}
+                            {'2\u00d7 XP BONUS'}
                         </div>
 
                         <div className="mt-4 space-y-3 px-4">
-                            {events.map((event, i) => (
+                            {questions.map((q, i) => (
                                 <div key={i} className="daily-quiz-year-card animate-fade-in-up" style={{ animationDelay: `${i * 150}ms` }}>
-                                    <span className="daily-quiz-year">{event.summary || '???'}</span>
+                                    <span className="daily-quiz-year" style={{ fontSize: '13px', fontWeight: 400 }}>{q.event.length > 80 ? q.event.slice(0, 77) + '...' : q.event}</span>
                                 </div>
                             ))}
                         </div>
@@ -118,7 +106,7 @@ export default function DailyQuizFlow({ onComplete }) {
 
     // ─── QUIZ PHASE ───
     if (phase === PHASES.QUIZ) {
-        const event = events[quizIndex];
+        const question = questions[quizIndex];
         const options = shuffledOptions[quizIndex];
 
         const handleAnswer = (optIndex) => {
@@ -128,22 +116,14 @@ export default function DailyQuizFlow({ onComplete }) {
             setAnswered(true);
             const isCorrect = options[optIndex].isCorrect;
             setResults(prev => [...prev, isCorrect ? 'correct' : 'wrong']);
-            // Update 'what' mastery — consistent with lesson learn quiz behavior
-            dispatch({
-                type: 'UPDATE_CARD_MASTERY',
-                cardId: event.id,
-                questionType: 'what',
-                score: isCorrect ? 'green' : 'red',
-            });
-            // Show the card reveal after a short delay
-            setTimeout(() => setShowCard(true), 400);
+            setTimeout(() => setShowDetail(true), 400);
         };
 
         const handleNext = () => {
             setSelectedOption(null);
             setAnswered(false);
-            setShowCard(false);
-            if (quizIndex + 1 < totalCards) {
+            setShowDetail(false);
+            if (quizIndex + 1 < totalQuestions) {
                 setQuizIndex(i => i + 1);
             } else {
                 // Detect streak earning before dispatching XP
@@ -157,11 +137,25 @@ export default function DailyQuizFlow({ onComplete }) {
                         prevStreakStatus = 'at-risk';
                     }
                 }
-                // Quiz done — calculate XP and dispatch
-                const xpEarned = results.filter(r => r === 'correct').length * DAILY_QUIZ_XP_PER_CORRECT;
-                const cardIds = events.map(e => e.id);
-                dispatch({ type: 'MARK_CARDS_SEEN', cardIds });
-                dispatch({ type: 'COMPLETE_DAILY_QUIZ', xpEarned, cardIds });
+                // Calculate results
+                const finalResults = [...results, options[selectedOption]?.isCorrect ? 'correct' : 'wrong'].slice(0, totalQuestions);
+                // Use results accumulated so far (already includes this answer)
+                const correctCount = results.filter(r => r === 'correct').length;
+                const xpEarned = correctCount * DAILY_QUIZ_XP_PER_CORRECT;
+
+                // Store results for later review
+                const lastResults = {
+                    questions: questions.map((q, i) => ({
+                        event: q.event,
+                        answer: q.answer,
+                        detail: q.detail,
+                        result: finalResults[i] || results[i],
+                    })),
+                    results: finalResults.length ? finalResults : results,
+                    xpEarned,
+                };
+
+                dispatch({ type: 'COMPLETE_DAILY_QUIZ', xpEarned, cardIds: [], lastResults });
                 if (xpEarned > 0) {
                     dispatch({ type: 'ADD_XP', amount: xpEarned });
                 }
@@ -184,24 +178,24 @@ export default function DailyQuizFlow({ onComplete }) {
                             Quiz
                         </span>
                         <div className="flex items-center gap-2">
-                            <span className="daily-quiz-bonus-pill-sm">{'2× XP'}</span>
+                            <span className="daily-quiz-bonus-pill-sm">{'2\u00d7 XP'}</span>
                             <span className="text-sm font-medium" style={{ color: 'var(--color-ink-muted)' }}>
-                                {quizIndex + 1} / {totalCards}
+                                {quizIndex + 1} / {totalQuestions}
                             </span>
                         </div>
                     </div>
-                    <ProgressBar value={quizIndex + 1} max={totalCards} color="#B8860B" />
+                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="#B8860B" />
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto">
                     <div className="mt-5 animate-slide-in-right" key={quizIndex}>
-                        {/* Concept hint */}
+                        {/* Question */}
                         <div className="text-center mb-5">
                             <p className="text-sm mt-2 font-medium" style={{ color: 'var(--color-ink-muted)' }}>
-                                Which concept matches this description?
+                                When did this happen?
                             </p>
-                            <p className="text-base mt-2 font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                {event.quizDescription || event.summary}
+                            <p className="text-base mt-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.5 }}>
+                                {question.event}
                             </p>
                         </div>
 
@@ -222,7 +216,7 @@ export default function DailyQuizFlow({ onComplete }) {
                                         disabled={answered}
                                         className={optClass}
                                     >
-                                        <span>{opt.title}</span>
+                                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}>{opt.label}</span>
                                         {answered && opt.isCorrect && (
                                             <Check size={16} color="var(--color-success)" strokeWidth={2.5} />
                                         )}
@@ -234,39 +228,50 @@ export default function DailyQuizFlow({ onComplete }) {
                             })}
                         </div>
 
-                        {/* XP feedback */}
-                        {answered && !showCard && (
+                        {/* Feedback + Detail */}
+                        {answered && !showDetail && (
                             <div className="mt-4 pt-3 text-sm text-center animate-fade-in">
                                 {options[selectedOption]?.isCorrect ? (
                                     <p className="font-semibold" style={{ color: 'var(--color-success)' }}>
-                                        {'✓'} Correct! +{DAILY_QUIZ_XP_PER_CORRECT} XP
+                                        {'\u2713'} Correct! +{DAILY_QUIZ_XP_PER_CORRECT} XP
                                     </p>
                                 ) : (
                                     <p className="font-semibold" style={{ color: 'var(--color-error)' }}>
-                                        {'✗'} Not quite!
+                                        {'\u2717'} Not quite — it was {question.answer}
                                     </p>
                                 )}
                             </div>
                         )}
 
-                        {/* Card reveal — the learning moment */}
-                        {showCard && (
+                        {/* Detail card after answering */}
+                        {showDetail && (
                             <Card className="mt-4 daily-quiz-card-reveal daily-quiz-learn-card">
-                                <h3 className="text-base font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                    {event.title}
-                                </h3>
+                                <div className="flex items-start gap-2 mb-2">
+                                    <div
+                                        className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
+                                        style={{
+                                            backgroundColor: options[selectedOption]?.isCorrect ? 'rgba(5,150,105,0.1)' : 'rgba(166,61,61,0.1)',
+                                            color: options[selectedOption]?.isCorrect ? 'var(--color-success)' : 'var(--color-error)',
+                                        }}
+                                    >
+                                        {options[selectedOption]?.isCorrect ? '\u2713' : '\u2717'}
+                                    </div>
+                                    <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                                        {question.answer}
+                                    </p>
+                                </div>
                                 <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
-                                    {event.description}
+                                    {question.detail}
                                 </p>
                             </Card>
                         )}
                     </div>
                 </div>
 
-                {showCard && (
+                {showDetail && (
                     <div className="flex-shrink-0 mt-auto pt-4 pb-2">
                         <Button className="w-full daily-quiz-btn" onClick={handleNext}>
-                            {quizIndex + 1 < totalCards ? 'Continue →' : 'See Results'}
+                            {quizIndex + 1 < totalQuestions ? 'Continue \u2192' : 'See Results'}
                         </Button>
                     </div>
                 )}
@@ -283,61 +288,72 @@ export default function DailyQuizFlow({ onComplete }) {
             <div className="daily-quiz-container animate-fade-in">
                 <div className="flex-1 min-h-0 overflow-y-auto">
                     <div className="py-6 text-center">
-                        <Mascot mood={correctCount === totalCards ? 'celebrating' : correctCount > 0 ? 'happy' : 'thinking'} size={70} />
+                        <Mascot mood={correctCount === totalQuestions ? 'celebrating' : correctCount > 0 ? 'happy' : 'thinking'} size={70} />
 
                         <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-display)' }}>
-                            {correctCount === totalCards ? 'Perfect!' : correctCount > 0 ? 'Nice work!' : 'Better luck tomorrow!'}
+                            {correctCount === totalQuestions ? 'Perfect!' : correctCount > 0 ? 'Nice work!' : 'Better luck tomorrow!'}
                         </h2>
 
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
-                            {dailyData.dateLabel} {'·'} {correctCount}/{totalCards} correct
+                            {correctCount}/{totalQuestions} correct
                         </p>
 
                         {xpEarned > 0 && (
                             <div className="daily-quiz-xp-result animate-pop-in">
-                                <span className="daily-quiz-bonus-pill mr-2">{'2× BONUS'}</span>
+                                <span className="daily-quiz-bonus-pill mr-2">{'2\u00d7 BONUS'}</span>
                                 <span className="text-xl font-bold" style={{ color: '#B8860B' }}>+{xpEarned} XP</span>
                             </div>
                         )}
 
-                        {/* Acquired cards */}
+                        {/* Results list with expandable details */}
                         <div className="mt-6 text-left">
                             <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: '#B8860B' }}>
-                                {totalCards} Bonus Cards Acquired
+                                Today's Events
                             </h3>
                             <div className="space-y-2">
-                                {events.map((event, i) => (
-                                    <Card key={event.id} className="daily-quiz-learn-card animate-fade-in-up" style={{ animationDelay: `${i * 100}ms` }}>
+                                {questions.map((q, i) => (
+                                    <Card
+                                        key={i}
+                                        className="daily-quiz-learn-card animate-fade-in-up cursor-pointer"
+                                        style={{ animationDelay: `${i * 100}ms` }}
+                                        onClick={() => setExpandedResult(expandedResult === i ? null : i)}
+                                    >
                                         <div className="flex items-start gap-2">
                                             <div
-                                                className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
+                                                className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
                                                 style={{
                                                     backgroundColor: results[i] === 'correct' ? 'rgba(5,150,105,0.1)' : 'rgba(166,61,61,0.1)',
                                                     color: results[i] === 'correct' ? 'var(--color-success)' : 'var(--color-error)',
                                                 }}
                                             >
-                                                {results[i] === 'correct' ? '✓' : '✗'}
+                                                {results[i] === 'correct' ? '\u2713' : '\u2717'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)' }}>{event.title}</p>
-                                                <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink-muted)' }}>
-                                                    {event.summary}
+                                                <p className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-accent)' }}>
+                                                    {q.answer}
+                                                </p>
+                                                <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400 }}>
+                                                    {q.event}
                                                 </p>
                                             </div>
-                                            <StarButton
-                                                isStarred={(state.starredCards || []).includes(event.id)}
-                                                onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: event.id })}
-                                                size={16}
-                                            />
+                                            <div className="flex-shrink-0 mt-1">
+                                                {expandedResult === i
+                                                    ? <ChevronUp size={14} color="var(--color-ink-muted)" />
+                                                    : <ChevronDown size={14} color="var(--color-ink-muted)" />
+                                                }
+                                            </div>
                                         </div>
+                                        {expandedResult === i && (
+                                            <div className="mt-2 pt-2 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+                                                <p className="text-xs leading-relaxed" style={{ color: 'var(--color-ink-muted)' }}>
+                                                    {q.detail}
+                                                </p>
+                                            </div>
+                                        )}
                                     </Card>
                                 ))}
                             </div>
                         </div>
-
-                        <p className="text-xs mt-5 px-2" style={{ color: 'var(--color-ink-muted)' }}>
-                            These cards are now in your collection. Practice them in the Practice tab!
-                        </p>
                     </div>
                 </div>
 
@@ -347,7 +363,7 @@ export default function DailyQuizFlow({ onComplete }) {
                     </Button>
                     <button
                         onClick={async () => {
-                            const text = buildDailyQuizShareText({ correctCount, totalCards, xpEarned, dateLabel: dailyData.dateLabel });
+                            const text = buildDailyQuizShareText({ correctCount, totalCards: totalQuestions, xpEarned, dateLabel: dailyData.dateLabel });
                             const result = await shareText({ title: 'AI Safety', text });
                             if (result === 'copied') setShareToast(true);
                         }}
@@ -377,4 +393,115 @@ export default function DailyQuizFlow({ onComplete }) {
     }
 
     return null;
+}
+
+/**
+ * Compact review component shown on LearnPage after quiz is completed.
+ * Shows the 3 events with dates, expandable to show detail notes.
+ */
+export function DailyQuizCompletedReview() {
+    const { state } = useApp();
+    const [expanded, setExpanded] = useState(false);
+    const [expandedItem, setExpandedItem] = useState(null);
+
+    const lastResults = state.dailyQuiz?.lastResults;
+    const todayStr = new Date().toISOString().split('T')[0];
+    const isCompletedToday = state.dailyQuiz?.lastCompletedDate === todayStr;
+
+    if (!isCompletedToday || !lastResults) return null;
+
+    const correctCount = lastResults.results?.filter(r => r === 'correct').length || 0;
+    const total = lastResults.questions?.length || 0;
+
+    if (!expanded) {
+        return (
+            <Card
+                className="mb-4 cursor-pointer daily-quiz-completed-card"
+                onClick={() => setExpanded(true)}
+            >
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
+                        style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}>
+                        <Check size={20} color="var(--color-success)" strokeWidth={1.8} />
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
+                            Daily Quiz Complete
+                        </p>
+                        <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                            {correctCount}/{total} correct {lastResults.xpEarned > 0 ? `\u00b7 +${lastResults.xpEarned} XP` : ''} — tap to review
+                        </p>
+                    </div>
+                    <ChevronDown size={16} color="var(--color-ink-faint)" strokeWidth={2} />
+                </div>
+            </Card>
+        );
+    }
+
+    return (
+        <Card className="mb-4 daily-quiz-completed-card">
+            <div
+                className="flex items-center gap-3 cursor-pointer"
+                onClick={() => { setExpanded(false); setExpandedItem(null); }}
+            >
+                <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
+                    style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}>
+                    <Check size={20} color="var(--color-success)" strokeWidth={1.8} />
+                </div>
+                <div className="flex-1">
+                    <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
+                        Daily Quiz Complete
+                    </p>
+                    <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                        {correctCount}/{total} correct {lastResults.xpEarned > 0 ? `\u00b7 +${lastResults.xpEarned} XP` : ''}
+                    </p>
+                </div>
+                <ChevronUp size={16} color="var(--color-ink-faint)" strokeWidth={2} />
+            </div>
+
+            <div className="mt-3 space-y-2">
+                {lastResults.questions.map((q, i) => (
+                    <div
+                        key={i}
+                        className="rounded-[6px] px-3 py-2.5 cursor-pointer transition-colors"
+                        style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.03)' }}
+                        onClick={(e) => { e.stopPropagation(); setExpandedItem(expandedItem === i ? null : i); }}
+                    >
+                        <div className="flex items-start gap-2">
+                            <div
+                                className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold flex-shrink-0 mt-0.5"
+                                style={{
+                                    backgroundColor: q.result === 'correct' ? 'rgba(5,150,105,0.1)' : 'rgba(166,61,61,0.1)',
+                                    color: q.result === 'correct' ? 'var(--color-success)' : 'var(--color-error)',
+                                }}
+                            >
+                                {q.result === 'correct' ? '\u2713' : '\u2717'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-accent)' }}>
+                                    {q.answer}
+                                </p>
+                                <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.4 }}>
+                                    {q.event}
+                                </p>
+                            </div>
+                            <div className="flex-shrink-0 mt-1">
+                                {expandedItem === i
+                                    ? <ChevronUp size={12} color="var(--color-ink-muted)" />
+                                    : <ChevronDown size={12} color="var(--color-ink-muted)" />
+                                }
+                            </div>
+                        </div>
+                        {expandedItem === i && (
+                            <div className="mt-2 pt-2 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+                                <p className="text-[11px] leading-relaxed pl-6" style={{ color: 'var(--color-ink-muted)' }}>
+                                    {q.detail}
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </Card>
+    );
 }

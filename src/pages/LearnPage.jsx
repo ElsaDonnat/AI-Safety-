@@ -9,7 +9,7 @@ import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { getConceptById } from '../data/concepts';
 import { Card, Button, MasteryDots, TabSelector } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
-import DailyQuizFlow from '../components/DailyQuizFlow';
+import DailyQuizFlow, { DailyQuizCompletedReview } from '../components/DailyQuizFlow';
 import { getCourseContent } from '../data/courses/index';
 import { getCourseById } from '../data/courseConfig';
 import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock, Cpu, ShieldAlert, Target, Shield, Scale, Globe } from 'lucide-react';
@@ -136,8 +136,8 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
         try { return getTodaysDailyQuiz(); } catch { return null; }
     }, []);
     const todayStr = new Date().toISOString().split('T')[0];
-    const dailyQuizAttempted = state.dailyQuiz?.lastAttemptedDate === todayStr;
-    const showDailyQuizCard = dailyQuiz && dailyQuiz.cardIds?.length > 0 && !dailyQuizAttempted;
+    const dailyQuizCompleted = state.dailyQuiz?.lastCompletedDate === todayStr;
+    const showDailyQuizCard = dailyQuiz && dailyQuiz.questions?.length > 0 && !dailyQuizCompleted;
 
     // Active lesson flow
     if (activeLesson) {
@@ -233,7 +233,7 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 </Card>
             )}
 
-            {/* Daily Quiz card */}
+            {/* Daily Quiz card — show until completed */}
             {showDailyQuizCard && (
                 <Card className="mb-4" onClick={() => setActiveDailyQuiz(true)}>
                     <div className="flex items-center gap-3">
@@ -246,13 +246,16 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                                 Daily Quiz
                             </p>
                             <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
-                                Test your knowledge today
+                                When did these AI safety milestones happen?
                             </p>
                         </div>
                         <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2} />
                     </div>
                 </Card>
             )}
+
+            {/* Daily Quiz completed review */}
+            {dailyQuizCompleted && <DailyQuizCompletedReview />}
 
             {/* ═══ Course View ═══ */}
             {learnView === 'course' && courseContent && (

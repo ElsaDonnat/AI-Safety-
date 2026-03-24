@@ -50,6 +50,7 @@ const defaultState = {
         lastXPEarned: 0,
         totalCompleted: 0,
         acquiredCardIds: [],      // card IDs acquired via daily quiz
+        lastResults: null,        // { questions: [...], results: ['correct'|'wrong'], xpEarned }
     },
 
     // ─── Achievements ───
@@ -463,6 +464,7 @@ function reducer(state, action) {
                     lastCompletedDate: getTodayDate(),
                     lastXPEarned: action.xpEarned,
                     totalCompleted: (state.dailyQuiz?.totalCompleted || 0) + 1,
+                    lastResults: action.lastResults || null,
                     acquiredCardIds: [
                         ...new Set([
                             ...(state.dailyQuiz?.acquiredCardIds || []),
