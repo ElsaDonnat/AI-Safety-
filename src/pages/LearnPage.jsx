@@ -603,6 +603,8 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, s
                                         subtitle: lesson.subtitle,
                                         mood: lesson.mood,
                                         cardIds: lesson.cardIds,
+                                        number: idx,
+                                        isFoundational: idx === 0,
                                         // Course lessons need a topic for LessonFlow's topic intro.
                                         // Derive from the first card's topic, or use a default.
                                         topic: getConceptById(lesson.cardIds[0])?.topic || 'ai-basics',

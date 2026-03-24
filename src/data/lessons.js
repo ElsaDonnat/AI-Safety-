@@ -132,15 +132,15 @@ export const TOPICS = [
         color: '#7BA3CC',
         order: 1,
     },
-    // ─── AI Capabilities (AI Safety Atlas Ch. 1) ──────────
+    // ─── AI Capabilities (ML4G course-only) ────────────────
     {
         id: 'ai-capabilities',
-        domain: 'foundations',
+        domain: 'ml4g',
         title: 'AI Capabilities',
         description: 'What AI systems can do today, the foundation model paradigm, and how capabilities are built',
         icon: 'ai-progress',
         color: '#2563EB',
-        order: 4,
+        order: 1,
     },
     // ─── ML for Good (course-only) ───────────────────────────
     {
