@@ -45,6 +45,12 @@
   --color-success-light: rgba(90, 158, 111, 0.15);
   --color-warning: #D4A04A;
   --color-warning-light: rgba(212, 160, 74, 0.15);
+
+  /* Daily Quiz accent — warm gold */
+  --color-daily: #D4A04A;
+  --color-daily-dark: #B8862E;
+  --color-daily-light: #E0B86A;
+  --color-daily-soft: rgba(212, 160, 74, 0.12);
   --color-error: #C44D4D;
   --color-error-light: rgba(196, 77, 77, 0.15);
 
@@ -126,6 +132,12 @@ html[data-theme="dark"] {
   --color-success-light: rgba(125, 191, 143, 0.15);
   --color-warning: #E0B85A;
   --color-warning-light: rgba(224, 184, 90, 0.15);
+
+  /* Daily Quiz accent — warm gold (dark mode) */
+  --color-daily: #E0B85A;
+  --color-daily-dark: #D4A04A;
+  --color-daily-light: #F0CC7A;
+  --color-daily-soft: rgba(224, 184, 90, 0.14);
   --color-error: #E07070;
   --color-error-light: rgba(224, 112, 112, 0.15);
 
@@ -1466,8 +1478,8 @@ input, textarea, [contenteditable] {
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--color-coral);
-  background-color: var(--color-coral-soft);
+  color: var(--color-daily);
+  background-color: var(--color-daily-soft);
 }
 
 .daily-quiz-bonus-pill {
@@ -1477,9 +1489,9 @@ input, textarea, [contenteditable] {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: var(--color-coral);
-  background: linear-gradient(135deg, var(--color-coral-soft), rgba(212, 114, 106, 0.18));
-  border: 1px solid rgba(212, 114, 106, 0.25);
+  color: var(--color-daily);
+  background: linear-gradient(135deg, var(--color-daily-soft), rgba(212, 160, 74, 0.18));
+  border: 1px solid rgba(212, 160, 74, 0.25);
 }
 
 .daily-quiz-bonus-pill-sm {
@@ -1489,8 +1501,8 @@ input, textarea, [contenteditable] {
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--color-coral);
-  background-color: var(--color-coral-soft);
+  color: var(--color-daily);
+  background-color: var(--color-daily-soft);
 }
 
 .daily-quiz-number {
@@ -1502,8 +1514,8 @@ input, textarea, [contenteditable] {
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--color-coral);
-  background-color: var(--color-coral-soft);
+  color: var(--color-daily);
+  background-color: var(--color-daily-soft);
   flex-shrink: 0;
 }
 
@@ -1517,20 +1529,20 @@ input, textarea, [contenteditable] {
 }
 
 .daily-quiz-learn-card {
-  border-left: 3px solid var(--color-coral);
+  border-left: 3px solid var(--color-daily);
 }
 
 .daily-quiz-btn {
-  background-color: var(--color-coral) !important;
-  box-shadow: 0 2px 8px rgba(212, 114, 106, 0.35) !important;
+  background-color: var(--color-daily) !important;
+  box-shadow: 0 2px 8px rgba(212, 160, 74, 0.35) !important;
 }
 .daily-quiz-btn:hover {
-  background-color: var(--color-coral-dark) !important;
+  background-color: var(--color-daily-dark) !important;
 }
 
 .daily-quiz-phase-tag {
-  color: var(--color-coral);
-  background-color: var(--color-coral-soft);
+  color: var(--color-daily);
+  background-color: var(--color-daily-soft);
 }
 
 .daily-quiz-option {
@@ -1553,7 +1565,7 @@ input, textarea, [contenteditable] {
 }
 
 .daily-quiz-option:not(:disabled):hover {
-  border-color: var(--color-coral-light);
+  border-color: var(--color-daily-light);
   background-color: var(--color-card-hover);
   box-shadow: var(--shadow-card);
 }
@@ -1592,7 +1604,7 @@ input, textarea, [contenteditable] {
   margin-top: 12px;
   padding: 8px 16px;
   border-radius: 12px;
-  background-color: var(--color-coral-soft);
+  background-color: var(--color-daily-soft);
 }
 
 .daily-quiz-year {
@@ -1600,7 +1612,7 @@ input, textarea, [contenteditable] {
   font-family: var(--font-serif);
   font-size: 2rem;
   font-weight: 700;
-  color: var(--color-coral);
+  color: var(--color-daily);
   letter-spacing: -0.02em;
 }
 

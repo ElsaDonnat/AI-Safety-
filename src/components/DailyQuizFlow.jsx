@@ -87,7 +87,7 @@ export default function DailyQuizFlow({ onComplete }) {
                         Back
                     </button>
                 </div>
-                <div className="flex-1 min-h-0 flex flex-col justify-center overflow-y-auto">
+                <div className="flex-1 min-h-0 flex flex-col justify-center">
                     <div className="py-3 text-center">
                         <div className="daily-quiz-date-badge">
                             <Calendar size={16} strokeWidth={2} />
@@ -206,17 +206,17 @@ export default function DailyQuizFlow({ onComplete }) {
                             </span>
                         </div>
                     </div>
-                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="var(--color-coral)" />
+                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="var(--color-daily)" />
                 </div>
 
-                <div className="flex-1 min-h-0 overflow-y-auto">
-                    <div className="mt-5 animate-slide-in-right" key={quizIndex}>
+                <div className="flex-1 min-h-0 flex flex-col justify-center">
+                    <div className="animate-slide-in-right" key={quizIndex}>
                         {/* Question */}
-                        <div className="text-center mb-5">
-                            <p className="text-sm mt-2 font-medium" style={{ color: 'var(--color-ink-muted)' }}>
+                        <div className="text-center mb-4">
+                            <p className="text-sm font-medium" style={{ color: 'var(--color-ink-muted)' }}>
                                 When did this happen?
                             </p>
-                            <p className="text-base mt-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.5 }}>
+                            <p className="text-base mt-1.5" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.5 }}>
                                 <RichText text={question.event} />
                             </p>
                         </div>
@@ -232,66 +232,53 @@ export default function DailyQuizFlow({ onComplete }) {
                                 }
 
                                 return (
-                                    <button
-                                        key={i}
-                                        onClick={() => handleAnswer(i)}
-                                        disabled={answered}
-                                        className={optClass}
-                                    >
-                                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}>{opt.label}</span>
-                                        {answered && opt.isCorrect && (
-                                            <Check size={16} color="var(--color-success)" strokeWidth={2.5} />
+                                    <div key={i}>
+                                        <button
+                                            onClick={() => handleAnswer(i)}
+                                            disabled={answered}
+                                            className={optClass}
+                                        >
+                                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}>{opt.label}</span>
+                                            {answered && opt.isCorrect && (
+                                                <Check size={16} color="var(--color-success)" strokeWidth={2.5} />
+                                            )}
+                                            {answered && selectedOption === i && !opt.isCorrect && (
+                                                <XIcon size={16} color="var(--color-error)" strokeWidth={2.5} />
+                                            )}
+                                        </button>
+                                        {/* Inline detail inside correct answer box */}
+                                        {answered && opt.isCorrect && showDetail && (
+                                            <div
+                                                className="daily-quiz-card-reveal"
+                                                style={{
+                                                    padding: '8px 18px 12px',
+                                                    borderRadius: '0 0 12px 12px',
+                                                    marginTop: '-2px',
+                                                    backgroundColor: 'rgba(5, 150, 105, 0.05)',
+                                                    borderLeft: '2px solid var(--color-success)',
+                                                    borderRight: '2px solid var(--color-success)',
+                                                    borderBottom: '2px solid var(--color-success)',
+                                                }}
+                                            >
+                                                <p className="text-xs leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
+                                                    {question.detail}
+                                                </p>
+                                                {selectedOption !== null && !options[selectedOption].isCorrect && (
+                                                    <p className="text-[11px] mt-1 font-medium" style={{ color: 'var(--color-error)' }}>
+                                                        You answered: {options[selectedOption].label}
+                                                    </p>
+                                                )}
+                                            </div>
                                         )}
-                                        {answered && selectedOption === i && !opt.isCorrect && (
-                                            <XIcon size={16} color="var(--color-error)" strokeWidth={2.5} />
-                                        )}
-                                    </button>
+                                    </div>
                                 );
                             })}
                         </div>
-
-                        {/* Feedback + Detail */}
-                        {answered && !showDetail && (
-                            <div className="mt-4 pt-3 text-sm text-center animate-fade-in">
-                                {options[selectedOption]?.isCorrect ? (
-                                    <p className="font-semibold" style={{ color: 'var(--color-success)' }}>
-                                        {'\u2713'} Correct! +{DAILY_QUIZ_XP_PER_CORRECT} XP
-                                    </p>
-                                ) : (
-                                    <p className="font-semibold" style={{ color: 'var(--color-error)' }}>
-                                        {'\u2717'} Not quite — it was {question.answer}
-                                    </p>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Detail card after answering */}
-                        {showDetail && (
-                            <Card className="mt-4 daily-quiz-card-reveal daily-quiz-learn-card">
-                                <div className="flex items-start gap-2 mb-2">
-                                    <div
-                                        className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
-                                        style={{
-                                            backgroundColor: options[selectedOption]?.isCorrect ? 'rgba(5,150,105,0.1)' : 'rgba(166,61,61,0.1)',
-                                            color: options[selectedOption]?.isCorrect ? 'var(--color-success)' : 'var(--color-error)',
-                                        }}
-                                    >
-                                        {options[selectedOption]?.isCorrect ? '\u2713' : '\u2717'}
-                                    </div>
-                                    <p className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                        {question.answer}
-                                    </p>
-                                </div>
-                                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
-                                    {question.detail}
-                                </p>
-                            </Card>
-                        )}
                     </div>
                 </div>
 
                 {showDetail && (
-                    <div className="flex-shrink-0 mt-auto pt-4 pb-2">
+                    <div className="flex-shrink-0 pt-3 pb-2">
                         <Button className="w-full daily-quiz-btn" onClick={handleNext}>
                             {quizIndex + 1 < totalQuestions ? 'Continue \u2192' : 'See Results'}
                         </Button>
@@ -307,79 +294,71 @@ export default function DailyQuizFlow({ onComplete }) {
         const xpEarned = correctCount * DAILY_QUIZ_XP_PER_CORRECT;
 
         return (
-            <div className="daily-quiz-container animate-fade-in">
-                <div className="flex-1 min-h-0 overflow-y-auto">
-                    <div className="py-6 text-center">
-                        <Mascot mood={correctCount === totalQuestions ? 'celebrating' : correctCount > 0 ? 'happy' : 'thinking'} size={70} />
-
-                        <h2 className="text-2xl font-bold mt-4 mb-1" style={{ fontFamily: 'var(--font-display)' }}>
+            <div className="daily-quiz-container animate-fade-in" style={{ overflow: 'hidden' }}>
+                <div className="flex-1 min-h-0 flex flex-col justify-center">
+                    <div className="text-center">
+                        <h2 className="text-xl font-bold mb-0.5" style={{ fontFamily: 'var(--font-display)' }}>
                             {correctCount === totalQuestions ? 'Perfect!' : correctCount > 0 ? 'Nice work!' : 'Better luck tomorrow!'}
                         </h2>
 
-                        <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
+                        <p className="text-sm" style={{ color: 'var(--color-ink-muted)' }}>
                             {correctCount}/{totalQuestions} correct
+                            {xpEarned > 0 && <span className="font-semibold" style={{ color: 'var(--color-daily)' }}> · +{xpEarned} XP</span>}
                         </p>
+                    </div>
 
-                        {xpEarned > 0 && (
-                            <div className="daily-quiz-xp-result animate-pop-in">
-                                <span className="daily-quiz-bonus-pill mr-2">{'2\u00d7 BONUS'}</span>
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-coral)' }}>+{xpEarned} XP</span>
-                            </div>
-                        )}
-
-                        {/* Results list with expandable details */}
-                        <div className="mt-6 text-left">
-                            <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: 'var(--color-coral)' }}>
-                                Today's Events
-                            </h3>
-                            <div className="space-y-2">
-                                {questions.map((q, i) => (
-                                    <Card
-                                        key={i}
-                                        className="daily-quiz-learn-card animate-fade-in-up cursor-pointer"
-                                        style={{ animationDelay: `${i * 100}ms` }}
-                                        onClick={() => setExpandedResult(expandedResult === i ? null : i)}
-                                    >
-                                        <div className="flex items-start gap-2">
-                                            <div
-                                                className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
-                                                style={{
-                                                    backgroundColor: results[i] === 'correct' ? 'rgba(5,150,105,0.1)' : 'rgba(166,61,61,0.1)',
-                                                    color: results[i] === 'correct' ? 'var(--color-success)' : 'var(--color-error)',
-                                                }}
-                                            >
-                                                {results[i] === 'correct' ? '\u2713' : '\u2717'}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
-                                                    {q.answer}
-                                                </p>
-                                                <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400 }}>
-                                                    {stripBold(q.event)}
-                                                </p>
-                                            </div>
-                                            <div className="flex-shrink-0 mt-1">
-                                                {expandedResult === i
-                                                    ? <ChevronUp size={14} color="var(--color-ink-muted)" />
-                                                    : <ChevronDown size={14} color="var(--color-ink-muted)" />
-                                                }
-                                            </div>
+                    {/* Results list with expandable details */}
+                    <div className="mt-4 text-left">
+                        <h3 className="text-[10px] uppercase tracking-wider font-semibold mb-2 px-1" style={{ color: 'var(--color-daily)' }}>
+                            Today's Events
+                        </h3>
+                        <div className="space-y-1.5">
+                            {questions.map((q, i) => (
+                                <div
+                                    key={i}
+                                    className="daily-quiz-learn-card animate-fade-in-up cursor-pointer rounded-[6px] px-3 py-2"
+                                    style={{ animationDelay: `${i * 80}ms`, backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}
+                                    onClick={() => setExpandedResult(expandedResult === i ? null : i)}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <div
+                                            className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold flex-shrink-0"
+                                            style={{
+                                                backgroundColor: results[i] === 'correct' ? 'rgba(5,150,105,0.1)' : 'rgba(166,61,61,0.1)',
+                                                color: results[i] === 'correct' ? 'var(--color-success)' : 'var(--color-error)',
+                                            }}
+                                        >
+                                            {results[i] === 'correct' ? '\u2713' : '\u2717'}
                                         </div>
-                                        {expandedResult === i && (
-                                            <div className="mt-2 pt-2 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
-                                                <p className="text-xs leading-relaxed" style={{ color: 'var(--color-ink-muted)' }}>
-                                                    {q.detail}
-                                                </p>
-                                            </div>
-                                        )}
-                                    </Card>
-                                ))}
-                            </div>
+                                        <div className="flex-1 min-w-0">
+                                            <span className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-daily)' }}>
+                                                {q.answer}
+                                            </span>
+                                            <span className="text-xs ml-1.5" style={{ color: 'var(--color-ink-muted)' }}>
+                                                {stripBold(q.event).length > 60 ? stripBold(q.event).slice(0, 57) + '...' : stripBold(q.event)}
+                                            </span>
+                                        </div>
+                                        <div className="flex-shrink-0">
+                                            {expandedResult === i
+                                                ? <ChevronUp size={12} color="var(--color-ink-muted)" />
+                                                : <ChevronDown size={12} color="var(--color-ink-muted)" />
+                                            }
+                                        </div>
+                                    </div>
+                                    {expandedResult === i && (
+                                        <div className="mt-1.5 pt-1.5 animate-fade-in" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
+                                            <p className="text-[11px] leading-relaxed pl-6" style={{ color: 'var(--color-ink-muted)' }}>
+                                                {q.detail}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                <div className="flex-shrink-0 pt-4 pb-2 space-y-2">
+                <div className="flex-shrink-0 pt-3 pb-2 space-y-1.5">
                     <Button className="w-full daily-quiz-btn" onClick={onComplete}>
                         Done
                     </Button>
@@ -389,10 +368,10 @@ export default function DailyQuizFlow({ onComplete }) {
                             const result = await shareText({ title: 'AI Safety', text });
                             if (result === 'copied') setShareToast(true);
                         }}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-coral)', backgroundColor: 'var(--color-coral-soft)' }}
+                        className="w-full flex items-center justify-center gap-2 py-2 rounded-[3px] text-xs font-medium transition-colors cursor-pointer"
+                        style={{ color: 'var(--color-daily)', backgroundColor: 'var(--color-daily-soft)' }}
                     >
-                        <Share2 size={16} strokeWidth={2} />
+                        <Share2 size={14} strokeWidth={2} />
                         Share Result
                     </button>
                     {shareToast && (
@@ -500,7 +479,7 @@ export function DailyQuizCompletedReview() {
                                 {q.result === 'correct' ? '\u2713' : '\u2717'}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-coral)' }}>
+                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-daily)' }}>
                                     {q.answer}
                                 </p>
                                 <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.4 }}>
