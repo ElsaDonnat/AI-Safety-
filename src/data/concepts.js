@@ -9,7 +9,7 @@ const CORE_CONCEPTS = [
         title: 'Artificial Intelligence',
         summary: 'Machines that can perform tasks normally requiring human intelligence',
         description: 'Artificial intelligence (AI) is the broad field of building machines that can perform tasks typically requiring human cognition — such as recognizing images, understanding language, or making decisions. AI ranges from narrow systems that excel at one task to the aspirational goal of general-purpose intelligence.',
-        quizDescription: 'Image recognition, language understanding, strategic decision-making — anywhere a machine does something we used to think only people could do.',
+        quizDescription: 'Building systems that perceive, reason, and decide — from sorting photos to writing essays to beating world champions at strategy games.',
         topic: 'ai-basics',
         secondaryTopic: null,
         category: 'concept',
