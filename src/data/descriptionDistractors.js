@@ -10,7 +10,7 @@ DESCRIPTION_DISTRACTORS['c101'] = {
     distractors: [
         { text: 'A branch of computer science dedicated to building robots that replicate the full range of human physical and mental abilities.', d: 1 },
         { text: 'A technique that enables systems to improve their performance on tasks by learning from data rather than following pre-written instructions.', d: 2 },
-        { text: 'The broad field of building machines that can perform tasks typically requiring human cognition, ranging exclusively from narrow task-specific systems to general-purpose agents.', d: 3, trap: 'The word "exclusively" is wrong — AI also includes non-agent systems like classifiers and generative models, not just narrow-to-general agents.' },
+        { text: 'A field focused solely on replicating human-level general intelligence, where narrow task-specific systems like spam filters or chess engines are not considered true AI.', d: 3, trap: 'AI includes both narrow (task-specific) and general systems — spam filters and chess engines ARE examples of AI.' },
     ]
 };
 
@@ -941,7 +941,7 @@ DESCRIPTION_DISTRACTORS['c1045'] = {
 // Used in "why" dimension quizzes as a tempting incorrect option.
 
 export const WHY_DISTRACTORS = {
-    'c102': { distractor: 'Because learned patterns are discovered automatically by the algorithm, they are always more accurate and less biased than rules written by human experts.' },
+    'c102': { distractor: 'Machine learning only matters for narrow commercial applications like ad targeting and product recommendations, so its safety implications are limited to consumer privacy.' },
     'c103': { distractor: 'Adding more layers always improves both performance and interpretability, because each additional layer makes the model\'s reasoning more transparent and auditable.' },
     'c104': { distractor: 'Language-capable AI systems truly understand meaning and intent, so their outputs can be trusted as factual without human verification.' },
     'c105': { distractor: 'Because neural networks are modeled on biological brains, their decision-making process is inherently transparent and can be fully explained by neuroscience principles.' },
