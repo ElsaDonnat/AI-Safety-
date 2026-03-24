@@ -348,23 +348,32 @@ export function AnimatedCounter({ value, prefix = '', duration = 600, delay = 0,
     return <span className={className} style={style}>{prefix}{display}</span>;
 }
 
-export function TabSelector({ tabs, activeTab, onChange }) {
+export function TabSelector({ tabs, activeTab, onChange, accentColor }) {
     return (
         <div className="flex rounded-[3px] p-1" style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.05)' }}>
-            {tabs.map(tab => (
-                <button
-                    key={tab.id}
-                    onClick={() => onChange(tab.id)}
-                    className="flex-1 px-4 py-2 rounded-[2px] text-xs font-semibold transition-all duration-200"
-                    style={{
-                        backgroundColor: activeTab === tab.id ? 'var(--color-card)' : 'transparent',
-                        color: activeTab === tab.id ? 'var(--color-ink)' : 'var(--color-ink-muted)',
-                        boxShadow: activeTab === tab.id ? 'var(--shadow-card)' : 'none',
-                    }}
-                >
-                    {tab.label}
-                </button>
-            ))}
+            {tabs.map(tab => {
+                const isActive = activeTab === tab.id;
+                const useAccent = isActive && accentColor && tab.accent;
+                return (
+                    <button
+                        key={tab.id}
+                        onClick={() => onChange(tab.id)}
+                        className="flex-1 px-4 py-2 rounded-[2px] text-xs font-semibold transition-all duration-200"
+                        style={{
+                            backgroundColor: useAccent
+                                ? `${accentColor}15`
+                                : isActive ? 'var(--color-card)' : 'transparent',
+                            color: useAccent
+                                ? accentColor
+                                : isActive ? 'var(--color-ink)' : 'var(--color-ink-muted)',
+                            boxShadow: isActive ? 'var(--shadow-card)' : 'none',
+                            border: useAccent ? `1px solid ${accentColor}25` : '1px solid transparent',
+                        }}
+                    >
+                        {tab.label}
+                    </button>
+                );
+            })}
         </div>
     );
 }

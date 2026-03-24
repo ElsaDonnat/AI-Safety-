@@ -9,6 +9,7 @@ import { getTodaysDailyQuiz } from '../data/dailyQuiz';
 import { getConceptById } from '../data/concepts';
 import { Card, Button, MasteryDots, TabSelector } from '../components/shared';
 import LessonFlow from '../components/learn/LessonFlow';
+import CourseIntroFlow from '../components/learn/CourseIntroFlow';
 import DailyQuizFlow, { DailyQuizCompletedReview } from '../components/DailyQuizFlow';
 import { getCourseContent } from '../data/courses/index';
 import { getCourseById } from '../data/courseConfig';
@@ -145,6 +146,15 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
 
     // Active lesson flow
     if (activeLesson) {
+        if (activeLesson.isCourseIntro) {
+            return (
+                <CourseIntroFlow
+                    lesson={activeLesson}
+                    onComplete={() => setActiveLesson(null)}
+                    onExit={() => setActiveLesson(null)}
+                />
+            );
+        }
         return (
             <LessonFlow
                 lesson={activeLesson}
@@ -194,9 +204,10 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 <div className="mb-4">
                     <TabSelector
                         tabs={[
-                            { id: 'course', label: courseMeta?.name || 'Course' },
+                            { id: 'course', label: courseMeta?.name || 'Course', accent: true },
                             { id: 'general', label: 'General' },
                         ]}
+                        accentColor="#2D6A4F"
                         activeTab={learnView}
                         onChange={(view) => {
                             setLearnView(view);
@@ -482,13 +493,15 @@ function LessonRow({ lesson, idx, isCompleted, isUnlocked, isNext, accentColor, 
                     backgroundColor: isCompleted
                         ? 'var(--color-success)'
                         : isNext
-                            ? accentColor
+                            ? (lesson.isCourseIntro ? '#2D6A4F' : accentColor)
                             : 'rgba(var(--color-ink-rgb), 0.08)',
                     color: (isCompleted || isNext) ? '#fff' : 'var(--color-ink-faint)',
                 }}
             >
                 {isCompleted ? (
                     <Check size={14} strokeWidth={3} />
+                ) : lesson.isCourseIntro ? (
+                    <Brain size={14} strokeWidth={2} />
                 ) : (
                     <span style={{ fontFamily: 'var(--font-display)', fontSize: '12px', fontWeight: 600 }}>{idx + 1}</span>
                 )}
@@ -540,7 +553,9 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                 );
                 const progressPct = totalCards > 0 ? Math.round((completedCards / totalCards) * 100) : 0;
                 const completedLessonsCount = allLessons.filter(l =>
-                    l.cardIds.every(id => (state.seenCards || []).includes(id))
+                    l.isCourseIntro
+                        ? !!(state.completedLessons?.[l.id])
+                        : l.cardIds.every(id => (state.seenCards || []).includes(id))
                 ).length;
 
                 return (
@@ -590,7 +605,9 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                                     );
                                     const chProgress = chTotalCards > 0 ? Math.round((chDoneCards / chTotalCards) * 100) : 0;
                                     const chDoneLessons = chLessons.filter(l =>
-                                        l.cardIds.every(id => (state.seenCards || []).includes(id))
+                                        l.isCourseIntro
+                                            ? !!(state.completedLessons?.[l.id])
+                                            : l.cardIds.every(id => (state.seenCards || []).includes(id))
                                     ).length;
 
                                     return (
@@ -635,11 +652,15 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                                                 <div className="mt-1 ml-5 space-y-2 animate-fade-in"
                                                     style={{ borderLeft: `2px solid ${chColor}25`, paddingLeft: '12px' }}>
                                                     {chLessons.map((lesson, idx) => {
-                                                        const isCompleted = lesson.cardIds.every(id => (state.seenCards || []).includes(id));
+                                                        const isIntro = !!lesson.isCourseIntro;
+                                                        const isCompleted = isIntro
+                                                            ? !!(state.completedLessons?.[lesson.id])
+                                                            : lesson.cardIds.every(id => (state.seenCards || []).includes(id));
                                                         const isNext = !isCompleted &&
-                                                            chLessons.slice(0, idx).every(l =>
-                                                                l.cardIds.every(id => (state.seenCards || []).includes(id))
-                                                            );
+                                                            chLessons.slice(0, idx).every(l => {
+                                                                if (l.isCourseIntro) return !!(state.completedLessons?.[l.id]);
+                                                                return l.cardIds.every(id => (state.seenCards || []).includes(id));
+                                                            });
 
                                                         const lessonObj = {
                                                             id: lesson.id,
@@ -649,7 +670,8 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                                                             cardIds: lesson.cardIds,
                                                             number: idx,
                                                             isFoundational: idx === 0 && chIdx === 0,
-                                                            topic: getConceptById(lesson.cardIds[0])?.topic || 'ai-basics',
+                                                            isCourseIntro: isIntro,
+                                                            topic: isIntro ? null : (getConceptById(lesson.cardIds[0])?.topic || 'ai-basics'),
                                                         };
 
                                                         return (

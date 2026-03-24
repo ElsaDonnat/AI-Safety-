@@ -33,6 +33,14 @@ export const ml4gCourse = {
                     color: '#8CB564',
                     lessons: [
                         {
+                            id: 'ml4g-intro',
+                            title: 'Welcome to ML4G',
+                            subtitle: 'Introduction to the course & app',
+                            mood: 'welcome',
+                            cardIds: [],
+                            isCourseIntro: true,
+                        },
+                        {
                             id: 'ml4g-L01',
                             title: 'What is AI?',
                             subtitle: 'Foundations of artificial intelligence',
