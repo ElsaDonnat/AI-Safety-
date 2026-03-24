@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.1 — Fun Facts Trivia Mode
+
+### Added
+- **20 new trivia fun facts** (ff26–ff45) — "who was the first...", "what was the name of the paper...", etc., covering AI history milestones, key people, and landmark events
+- **Fun Facts intro screen** — explains the mode, shows discovery progress (X/N facts discovered), with "Start Trivia" button
+- **10-question quiz rounds** — each round picks 10 random questions, prioritizing unseen facts
+- **Score tracking** — running score displayed during quiz, with final results screen
+- **Results screen** — shows score, percentage bar, discovery count, contextual feedback message, and play-again / back-to-challenge buttons
+- `pickFunFactsForRound()` utility — selects questions prioritizing undiscovered facts, with fallback to seen ones
+- `FUN_FACTS_TOTAL` and `FUN_FACTS_PER_ROUND` exported constants
+
+### Changed
+- Rewrote `FunFactsFlow.jsx` with 3-phase flow: INTRO → QUIZ → RESULTS
+- Removed duplicate fun facts (ff5, ff15) that overlapped with new additions
+- Answer options are kept concise (no parenthetical details) — extra context appears in the post-answer explanation instead
+
 ## 0.10.0 — AI Capabilities batch 2: AGI, Scale, Forecasting, Takeoff (Atlas Ch. 1 §4–6)
 
 ### Added

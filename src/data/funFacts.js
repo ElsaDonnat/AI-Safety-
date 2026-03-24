@@ -40,16 +40,6 @@ export const FUN_FACTS = [
         explanation: 'Benchmark saturation occurs when AI systems quickly reach or exceed human-level performance on a test, rendering it useless for measuring further progress.',
     },
     {
-        id: 'ff5',
-        text: 'The Transformer architecture, introduced in a 2017 paper called "Attention Is All You Need," is behind virtually every major language model today.',
-        relatedCardIds: ['c305', 'c201'],
-        cardId: 'c201',
-        question: 'What was the title of the 2017 paper that introduced the Transformer architecture?',
-        correctAnswer: 'Attention Is All You Need',
-        wrongAnswers: ['Deep Learning Revolution', 'Language Models are Few-Shot Learners', 'Neural Machine Translation by Jointly Learning to Align and Translate'],
-        explanation: 'The 2017 paper "Attention Is All You Need" by Vaswani et al. introduced the Transformer architecture, which replaced recurrence with self-attention and became the backbone of modern LLMs.',
-    },
-    {
         id: 'ff6',
         text: 'The term "instrumental convergence" was popularized by philosopher Nick Bostrom, who argued that almost any sufficiently intelligent agent would pursue sub-goals like self-preservation — even if never told to.',
         relatedCardIds: ['c402', 'c505'],
@@ -138,16 +128,6 @@ export const FUN_FACTS = [
         correctAnswer: 'The European AI Office',
         wrongAnswers: ['The Global AI Council', 'The Digital Safety Board', 'The AI Ethics Commission'],
         explanation: 'After over three years of negotiation and 400+ pages of text, the EU AI Act established the European AI Office as its enforcement body.',
-    },
-    {
-        id: 'ff15',
-        text: 'Anthropic\'s Responsible Scaling Policy defines "AI Safety Levels" (ASL) — inspired by biosafety levels used in labs handling dangerous pathogens.',
-        relatedCardIds: ['c803', 'c206'],
-        cardId: 'c803',
-        question: 'What inspired the "AI Safety Levels" in Anthropic\'s Responsible Scaling Policy?',
-        correctAnswer: 'Biosafety levels used in pathogen labs',
-        wrongAnswers: ['Nuclear security clearance levels', 'Software maturity models', 'Aviation safety ratings'],
-        explanation: 'Anthropic\'s ASL framework draws directly from the biosafety level (BSL) system used in labs handling dangerous pathogens, mapping containment rigor to AI capability thresholds.',
     },
     {
         id: 'ff16',
@@ -249,10 +229,243 @@ export const FUN_FACTS = [
         wrongAnswers: ['Checkers', 'Go', 'Backgammon'],
         explanation: 'Deep Blue\'s chess mastery paired with its inability to play tic-tac-toe perfectly illustrates the brittleness of narrow AI — superhuman in one domain, completely incapable in others.',
     },
+    {
+        id: 'ff26',
+        text: 'The term "artificial intelligence" was coined at the 1956 Dartmouth conference, widely considered the founding moment of the field.',
+        relatedCardIds: ['c209', 'c201'],
+        cardId: 'c209',
+        question: 'Who coined the term "artificial intelligence"?',
+        correctAnswer: 'John McCarthy',
+        wrongAnswers: ['Alan Turing', 'Marvin Minsky', 'Herbert Simon'],
+        explanation: 'John McCarthy coined the term at the 1956 Dartmouth Summer Research Project on Artificial Intelligence, a small workshop that brought together the founders of the field.',
+    },
+    {
+        id: 'ff27',
+        text: 'The Perceptron, built in 1958, was the first neural network — and its limitations nearly killed the field of AI for a decade.',
+        relatedCardIds: ['c201', 'c209'],
+        cardId: 'c201',
+        question: 'What was the name of the first neural network, built in 1958?',
+        correctAnswer: 'The Perceptron',
+        wrongAnswers: ['ELIZA', 'SHRDLU', 'The Boltzmann Machine'],
+        explanation: 'Frank Rosenblatt built the Perceptron at Cornell in 1958. When Minsky and Papert published a book exposing its limitations in 1969, funding for neural network research dried up for years — a period known as the "AI winter."',
+    },
+    {
+        id: 'ff28',
+        text: 'Nick Bostrom\'s 2014 book on the existential risks of superintelligent AI became a surprise bestseller and was recommended by Bill Gates and Elon Musk.',
+        relatedCardIds: ['c207', 'c401'],
+        cardId: 'c401',
+        question: 'Who wrote "Superintelligence," the influential book warning about AI existential risk?',
+        correctAnswer: 'Nick Bostrom',
+        wrongAnswers: ['Stuart Russell', 'Eliezer Yudkowsky', 'Max Tegmark'],
+        explanation: 'Nick Bostrom published "Superintelligence: Paths, Dangers, Strategies" in 2014. Both Bill Gates and Elon Musk publicly recommended the book, helping bring AI safety concerns into mainstream discourse.',
+    },
+    {
+        id: 'ff29',
+        text: 'In 2016, an AI system beat a world champion Go player in a game long considered too complex for computers — the match was watched by over 200 million people.',
+        relatedCardIds: ['c209', 'c205'],
+        cardId: 'c209',
+        question: 'What was the name of the AI system that first beat a professional Go player?',
+        correctAnswer: 'AlphaGo',
+        wrongAnswers: ['AlphaZero', 'Deep Blue', 'Watson'],
+        explanation: 'DeepMind\'s AlphaGo defeated world champion Lee Sedol 4-1 in March 2016 in Seoul. The match was watched by over 200 million people and is considered a watershed moment in AI history.',
+    },
+    {
+        id: 'ff30',
+        text: 'Stuart Russell\'s 2019 book proposed a radical rethink of AI: instead of optimizing fixed objectives, machines should be uncertain about human preferences and actively learn them.',
+        relatedCardIds: ['c401', 'c402'],
+        cardId: 'c401',
+        question: 'Who proposed the "AI alignment problem" framing in the book "Human Compatible"?',
+        correctAnswer: 'Stuart Russell',
+        wrongAnswers: ['Nick Bostrom', 'Yoshua Bengio', 'Demis Hassabis'],
+        explanation: 'Stuart Russell, a UC Berkeley professor and co-author of the most widely used AI textbook, published "Human Compatible" in 2019, arguing that AI systems should defer to humans rather than pursue fixed goals.',
+    },
+    {
+        id: 'ff31',
+        text: 'The first chatbot ever created was so convincing that some users refused to believe it was a program — its creator was disturbed by how easily people formed emotional attachments to it.',
+        relatedCardIds: ['c209', 'c201'],
+        cardId: 'c209',
+        question: 'What was the first chatbot ever created?',
+        correctAnswer: 'ELIZA',
+        wrongAnswers: ['PARRY', 'Siri', 'Clippy'],
+        explanation: 'Joseph Weizenbaum created ELIZA at MIT in 1966. It mimicked a therapist using simple pattern matching, yet users became deeply attached to it — a phenomenon Weizenbaum found so troubling he later became an AI critic.',
+    },
+    {
+        id: 'ff32',
+        text: 'The idea of testing whether a machine can think by seeing if a human can distinguish it from another human in conversation was proposed in a famous 1950 paper.',
+        relatedCardIds: ['c209', 'c207'],
+        cardId: 'c209',
+        question: 'Who introduced the concept of the "Turing Test"?',
+        correctAnswer: 'Alan Turing',
+        wrongAnswers: ['John von Neumann', 'Claude Shannon', 'Norbert Wiener'],
+        explanation: 'Alan Turing proposed the "imitation game" in his 1950 paper "Computing Machinery and Intelligence," which opened with the famous question "Can machines think?" The test remains influential — and controversial — to this day.',
+    },
+    {
+        id: 'ff33',
+        text: 'In 2011, an AI system defeated two former champions on the TV quiz show Jeopardy!, processing natural language clues and buzzing in faster than humans.',
+        relatedCardIds: ['c209', 'c201'],
+        cardId: 'c209',
+        question: 'What was the name of the AI that first beat human champions at Jeopardy!?',
+        correctAnswer: 'IBM Watson',
+        wrongAnswers: ['Deep Blue', 'AlphaGo', 'GPT-3'],
+        explanation: 'IBM Watson defeated former champions Ken Jennings and Brad Rutter on Jeopardy! in February 2011. Jennings famously wrote on his Final Jeopardy answer: "I for one welcome our new computer overlords."',
+    },
+    {
+        id: 'ff34',
+        text: 'One of the first organizations dedicated to AI safety was founded in 2000 — years before most people took the idea seriously.',
+        relatedCardIds: ['c601', 'c401'],
+        cardId: 'c601',
+        question: 'Who founded the Machine Intelligence Research Institute (MIRI), one of the first AI safety organizations?',
+        correctAnswer: 'Eliezer Yudkowsky',
+        wrongAnswers: ['Nick Bostrom', 'Stuart Russell', 'Max Tegmark'],
+        explanation: 'Eliezer Yudkowsky founded what became MIRI in 2000 (originally as the Singularity Institute). He was one of the earliest voices warning about AI alignment risks, years before the topic entered mainstream AI research.',
+    },
+    {
+        id: 'ff35',
+        text: 'The technique that made modern deep learning practical was first described in 1986 — but it took nearly 30 years before hardware caught up to make it truly useful.',
+        relatedCardIds: ['c201', 'c203'],
+        cardId: 'c201',
+        question: 'What training technique, introduced in 1986, made modern deep learning practical?',
+        correctAnswer: 'Backpropagation',
+        wrongAnswers: ['Gradient boosting', 'Dropout', 'Batch normalization'],
+        explanation: 'Hinton, Rumelhart, and Williams published the backpropagation algorithm in 1986. Though the idea existed earlier, their paper made it practical. It remained the backbone of neural network training but only became transformative when GPU computing took off around 2012.',
+    },
+    {
+        id: 'ff36',
+        text: 'A landmark study exposing racial bias in commercial facial recognition was led by a researcher who had personally experienced the systems failing to detect her face.',
+        relatedCardIds: ['c702', 'c106'],
+        cardId: 'c702',
+        question: 'Who led the "Gender Shades" study that exposed racial bias in facial recognition?',
+        correctAnswer: 'Joy Buolamwini',
+        wrongAnswers: ['Kate Crawford', 'Safiya Noble', 'Cathy O\'Neil'],
+        explanation: 'Joy Buolamwini, a MIT Media Lab researcher, co-authored the 2018 "Gender Shades" study with Timnit Gebru. Buolamwini discovered the bias firsthand when facial recognition systems couldn\'t detect her face unless she wore a white mask.',
+    },
+    {
+        id: 'ff37',
+        text: 'In 2016, Microsoft launched a chatbot on Twitter that had to be shut down within 24 hours after users taught it to post offensive and hateful content.',
+        relatedCardIds: ['c406', 'c702'],
+        cardId: 'c406',
+        question: 'What was the name of Microsoft\'s chatbot that was shut down within 24 hours for posting offensive content?',
+        correctAnswer: 'Tay',
+        wrongAnswers: ['Sydney', 'Cortana', 'Xiaoice'],
+        explanation: 'Microsoft\'s Tay was designed to learn from Twitter conversations, but users quickly exploited it by feeding it hateful content, which it learned to repeat. The incident became a cautionary tale about the dangers of unfiltered learning from user input.',
+    },
+    {
+        id: 'ff38',
+        text: 'The concept of an "intelligence explosion" — where a smart enough AI recursively improves itself — was first described by a British mathematician in 1965, decades before modern AI.',
+        relatedCardIds: ['c207', 'c505'],
+        cardId: 'c505',
+        question: 'Who first described the "intelligence explosion" concept — the idea that AI could recursively self-improve?',
+        correctAnswer: 'I.J. Good',
+        wrongAnswers: ['Alan Turing', 'John von Neumann', 'Marvin Minsky'],
+        explanation: 'I.J. Good, a British mathematician who worked with Turing at Bletchley Park during WWII, described the "ultraintelligent machine" in 1965: a machine smart enough to build an even smarter one, triggering an unstoppable chain of improvement.',
+    },
+    {
+        id: 'ff39',
+        text: 'The 2012 deep learning breakthrough that kicked off the modern AI revolution was a neural network that won an image recognition competition by a huge margin — and was trained on consumer gaming GPUs.',
+        relatedCardIds: ['c201', 'c203'],
+        cardId: 'c203',
+        question: 'What was the name of the neural network that won ImageNet 2012 and kicked off the deep learning revolution?',
+        correctAnswer: 'AlexNet',
+        wrongAnswers: ['ResNet', 'VGGNet', 'LeNet'],
+        explanation: 'AlexNet, built by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton, won the 2012 ImageNet competition with an error rate nearly half that of the runner-up. It was trained on just two consumer NVIDIA GTX 580 GPUs.',
+    },
+    {
+        id: 'ff40',
+        text: 'Two pioneers of neural network research received the 2024 Nobel Prize in Physics — a field far from where most people expected AI breakthroughs to be recognized.',
+        relatedCardIds: ['c201', 'c209'],
+        cardId: 'c201',
+        question: 'Who received the 2024 Nobel Prize in Physics for foundational work on artificial neural networks?',
+        correctAnswer: 'John Hopfield and Geoffrey Hinton',
+        wrongAnswers: ['Yann LeCun and Yoshua Bengio', 'Ian Goodfellow and Andrej Karpathy', 'Demis Hassabis and Andrew Ng'],
+        explanation: 'John Hopfield and Geoffrey Hinton were awarded the 2024 Nobel Prize in Physics for discoveries that enabled machine learning with artificial neural networks. Hinton, often called the "Godfather of Deep Learning," has become an outspoken voice on AI risks.',
+    },
+    {
+        id: 'ff41',
+        text: 'Isaac Asimov\'s "Three Laws of Robotics" — written for a 1942 sci-fi story — are still referenced in real AI ethics discussions over 80 years later.',
+        relatedCardIds: ['c401', 'c402'],
+        cardId: 'c401',
+        question: 'Who proposed the "Three Laws of Robotics" in science fiction, later influencing real AI ethics?',
+        correctAnswer: 'Isaac Asimov',
+        wrongAnswers: ['Arthur C. Clarke', 'Philip K. Dick', 'William Gibson'],
+        explanation: 'Isaac Asimov introduced his Three Laws in the 1942 short story "Runaround." While researchers today consider them too simplistic for real AI governance, they remain a cultural touchstone and are frequently cited in policy discussions.',
+    },
+    {
+        id: 'ff42',
+        text: 'In March 2023, a high-profile open letter calling for a pause on advanced AI training attracted over 33,000 signatures, including prominent AI researchers and tech leaders.',
+        relatedCardIds: ['c506', 'c601'],
+        cardId: 'c506',
+        question: 'What was the name of the 2023 open letter calling for a pause on training AI systems more powerful than GPT-4?',
+        correctAnswer: 'Pause Giant AI Experiments',
+        wrongAnswers: ['The Asilomar AI Principles', 'The Montreal Declaration', 'The Bletchley Declaration'],
+        explanation: 'The "Pause Giant AI Experiments" letter, published by the Future of Life Institute in March 2023, was signed by over 33,000 people including Yoshua Bengio, Elon Musk, and Steve Wozniak. It called for a 6-month pause on training AI systems more powerful than GPT-4.',
+    },
+    {
+        id: 'ff43',
+        text: 'The paper that introduced the Transformer architecture — the foundation of every modern large language model — has one of the most memorable titles in AI research history.',
+        relatedCardIds: ['c201', 'c305'],
+        cardId: 'c201',
+        question: 'What was the title of the 2017 paper that introduced the Transformer architecture?',
+        correctAnswer: 'Attention Is All You Need',
+        wrongAnswers: ['Language Models are Few-Shot Learners', 'Neural Machine Translation by Jointly Learning to Align and Translate', 'Deep Residual Learning for Image Recognition'],
+        explanation: 'Published by Vaswani et al. at Google in 2017, "Attention Is All You Need" replaced recurrence with self-attention mechanisms. The paper\'s catchy title belies its enormous impact — it is now one of the most cited papers in all of computer science.',
+    },
+    {
+        id: 'ff44',
+        text: 'DeepMind was acquired by Google in 2014 for over $500 million, making it one of the largest AI acquisitions at the time — before the company had released any commercial product.',
+        relatedCardIds: ['c209', 'c704'],
+        cardId: 'c704',
+        question: 'What was the original name of the company that became Google DeepMind?',
+        correctAnswer: 'DeepMind Technologies',
+        wrongAnswers: ['Google Brain', 'Google AI', 'Alphabet Intelligence'],
+        explanation: 'DeepMind Technologies was founded in London in 2010 by Demis Hassabis, Shane Legg, and Mustafa Suleyman. Google acquired it for over $500 million in 2014, and it merged with Google Brain in 2023 to form Google DeepMind.',
+    },
+    {
+        id: 'ff45',
+        text: 'Anthropic\'s Responsible Scaling Policy was the first major framework to define specific AI capability thresholds that trigger mandatory safety measures — inspired by an unexpected source.',
+        relatedCardIds: ['c803', 'c206'],
+        cardId: 'c803',
+        question: 'What inspired the "AI Safety Levels" (ASL) in Anthropic\'s Responsible Scaling Policy?',
+        correctAnswer: 'Biosafety levels used in pathogen labs',
+        wrongAnswers: ['Nuclear security clearance levels', 'Software maturity models', 'Aviation safety ratings'],
+        explanation: 'Anthropic\'s ASL framework maps directly to biosafety levels (BSL-1 through BSL-4) used in labs handling dangerous pathogens. Just as BSL-4 labs require spacesuits and airlocks, higher ASL levels require progressively stricter safety measures.',
+    },
 ];
+
+export const FUN_FACTS_TOTAL = FUN_FACTS.length;
+
+export const FUN_FACTS_PER_ROUND = 10;
 
 export function getFunFactsForSeenCards() {
     return FUN_FACTS;
+}
+
+/**
+ * Pick `count` fun facts for a round, prioritizing unseen ones.
+ * Returns a shuffled array of fun fact objects.
+ */
+export function pickFunFactsForRound(seenFunFactIds, count = FUN_FACTS_PER_ROUND) {
+    const seenSet = new Set(seenFunFactIds || []);
+    const unseen = FUN_FACTS.filter(ff => !seenSet.has(ff.id));
+    const seen = FUN_FACTS.filter(ff => seenSet.has(ff.id));
+
+    let pool = [];
+    if (unseen.length >= count) {
+        // Shuffle unseen and take `count`
+        pool = shuffle(unseen).slice(0, count);
+    } else {
+        // Take all unseen + fill remainder from seen (shuffled)
+        pool = [...unseen, ...shuffle(seen).slice(0, count - unseen.length)];
+    }
+    return shuffle(pool);
+}
+
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
 }
 
 export function getNextFunFact(seenFunFactIds, availableFacts, index) {
