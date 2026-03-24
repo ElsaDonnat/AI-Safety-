@@ -233,9 +233,9 @@ TRUE_FALSE_STATEMENTS['c606'] = {
 // ─── Advanced AI (c207–c212) ────────────────────────
 
 TRUE_FALSE_STATEMENTS['c207'] = {
-    trueStatement: 'No AI system that exists today qualifies as AGI — all current systems, including the most advanced large language models, are narrow AI that cannot match humans across all cognitive domains.',
-    falseStatement: 'Modern large language models like GPT-4 and Claude are generally considered to be early forms of AGI because they can perform many different tasks.',
-    correction: 'While modern LLMs are impressively versatile, they still fail at many tasks humans find trivial, lack persistent memory and embodied reasoning, and cannot independently learn new domains — they are powerful narrow AI, not AGI.',
+    trueStatement: 'No AI system that exists today qualifies as full AGI — even the most advanced large language models still have significant gaps in areas like long-term planning, persistent memory, and embodied reasoning.',
+    falseStatement: 'Modern large language models like GPT-4 and Claude are generally considered to have achieved AGI because they can perform many different tasks.',
+    correction: 'While modern LLMs are impressively versatile and show early general capabilities across many domains, they still fail at many tasks humans find trivial, lack persistent memory and embodied reasoning, and have significant gaps — they fall short of full AGI on the capability-generality spectrum.',
 };
 
 TRUE_FALSE_STATEMENTS['c208'] = {
@@ -283,7 +283,7 @@ TRUE_FALSE_STATEMENTS['c1002'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c1003'] = {
-    trueStatement: 'Large reasoning models achieved gold-medal performance at the International Mathematical Olympiad by 2025.',
+    trueStatement: 'AI systems achieved gold-medal-equivalent performance at the International Mathematical Olympiad by 2025, first through specialized math systems and then through large reasoning models.',
     falseStatement: 'Large reasoning models always produce a single chain of reasoning and cannot backtrack or try alternative approaches.',
     correction: 'A defining feature of LRMs is their ability to backtrack, catch errors, and explore multiple reasoning paths rather than being locked into a single chain.',
 };
@@ -415,7 +415,7 @@ TRUE_FALSE_STATEMENTS['c1027'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c1028'] = {
-    trueStatement: 'The Bitter Lesson observes that general methods leveraging massive computation have consistently outperformed hand-engineered domain knowledge across 70 years of AI research.',
+    trueStatement: 'The Bitter Lesson observes that general methods leveraging massive computation have consistently outperformed hand-engineered domain knowledge across decades of AI research.',
     falseStatement: 'The Bitter Lesson argues that algorithmic innovation is irrelevant and only raw compute matters for AI progress.',
     correction: 'The Bitter Lesson does not reject algorithmic innovation — it says the winning algorithms are those that leverage scale effectively. Transformers beat LSTMs through better parallelization, not domain knowledge.',
 };
@@ -445,7 +445,7 @@ TRUE_FALSE_STATEMENTS['c1032'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c1033'] = {
-    trueStatement: 'AI performance on SWE-bench jumped from 15% to 74% in approximately one year, partly driven by adding tool use and scaffolding.',
+    trueStatement: 'AI performance on SWE-bench improved dramatically in one to two years, partly driven by adding tool use and scaffolding to frontier models.',
     falseStatement: 'SWE-bench tests AI on synthetic coding problems designed to measure programming knowledge.',
     correction: 'SWE-bench uses real issues from real open-source GitHub repositories, requiring navigation of existing codebases and passing existing test suites — not synthetic exercises.',
 };
@@ -453,7 +453,7 @@ TRUE_FALSE_STATEMENTS['c1033'] = {
 TRUE_FALSE_STATEMENTS['c1034'] = {
     trueStatement: 'FrontierMath problems are significantly harder than olympiad-level mathematics, representing the frontier of mathematical research.',
     falseStatement: 'Current AI models can solve the majority of FrontierMath problems, demonstrating near-human-level mathematical research capability.',
-    correction: 'As of early 2026, the best models solve only 41% of tier 1–3 problems and 29% of tier 4 — significant progress but far from matching professional mathematicians across all difficulty levels.',
+    correction: 'Frontier models have made rapid progress from under 2% when the benchmark launched, but still solve only a fraction of the hardest problems — significant progress but far from matching professional mathematicians across all difficulty levels.',
 };
 
 TRUE_FALSE_STATEMENTS['c1035'] = {
@@ -469,9 +469,9 @@ TRUE_FALSE_STATEMENTS['c1036'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c1037'] = {
-    trueStatement: 'Biological anchor estimates for the compute required for transformative AI span twelve orders of magnitude, from 10²⁸ to 10⁴¹ FLOP.',
+    trueStatement: 'Biological anchor estimates for the compute required for transformative AI span thirteen orders of magnitude, from 10²⁸ to 10⁴¹ FLOP.',
     falseStatement: 'Biological anchors provide precise predictions of when AGI will arrive, with uncertainty of only a few years.',
-    correction: 'The twelve orders of magnitude uncertainty means biological anchors provide rough ballpark estimates, not precise predictions — useful for reasoning about timelines but far from exact.',
+    correction: 'The thirteen orders of magnitude uncertainty means biological anchors provide rough ballpark estimates, not precise predictions — useful for reasoning about timelines but far from exact.',
 };
 
 TRUE_FALSE_STATEMENTS['c1038'] = {
@@ -619,7 +619,7 @@ TRUE_FALSE_STATEMENTS['c804'] = {
 };
 
 TRUE_FALSE_STATEMENTS['c805'] = {
-    trueStatement: 'Over 30 nations signed the 2023 Bletchley Declaration acknowledging that frontier AI risks require international cooperation, though the declaration is non-binding.',
+    trueStatement: 'Twenty-eight countries and the EU signed the 2023 Bletchley Declaration acknowledging that frontier AI risks require international cooperation, though the declaration is non-binding.',
     falseStatement: 'International AI coordination has already produced a comprehensive, binding global treaty that all major AI-developing nations have signed and ratified.',
     correction: 'No binding global AI treaty exists — international coordination so far consists of non-binding declarations, voluntary commitments, and discussion forums. Achieving binding agreements is difficult because nations have competing economic and strategic interests in AI leadership.',
 };
