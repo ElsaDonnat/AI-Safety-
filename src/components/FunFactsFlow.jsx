@@ -35,7 +35,7 @@ export default function FunFactsFlow({ onExit }) {
         [availableFacts, factIndex]
     );
 
-    const event = currentFact ? getConceptById(currentFact.cardId) : null;
+    const concept = currentFact ? getConceptById(currentFact.cardId) : null;
 
     const shuffledOptions = useMemo(
         () => currentFact ? shuffleOptions(currentFact.correctAnswer, currentFact.wrongAnswers) : [],
@@ -72,7 +72,7 @@ export default function FunFactsFlow({ onExit }) {
     }, []);
 
     // ─── Empty state ───
-    if (!currentFact || !event) {
+    if (!currentFact) {
         return (
             <div className="py-6 animate-fade-in">
                 <div className="flex-shrink-0 pt-3">
@@ -113,19 +113,21 @@ export default function FunFactsFlow({ onExit }) {
                 </div>
             </div>
 
-            {/* Event reference */}
-            <div className="text-center mb-5 animate-fade-in">
-                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: 'var(--color-ink-faint)' }}>
-                    Related to
-                </p>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
-                    <CategoryTag category={event.category} />
-                    <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                        {event.title}
-                    </span>
+            {/* Concept reference */}
+            {concept && (
+                <div className="text-center mb-5 animate-fade-in">
+                    <p className="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: 'var(--color-ink-faint)' }}>
+                        Related to
+                    </p>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+                        style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
+                        <CategoryTag category={concept.category} />
+                        <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                            {concept.title}
+                        </span>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Question */}
             <div className="animate-slide-in-right" key={`q-${factIndex}`}>
@@ -192,7 +194,7 @@ export default function FunFactsFlow({ onExit }) {
 
                         <div className="mt-5">
                             <Button className="w-full" onClick={handleNext}>
-                                Next Fun Fact →
+                                Next Fun Fact
                             </Button>
                         </div>
                     </div>
