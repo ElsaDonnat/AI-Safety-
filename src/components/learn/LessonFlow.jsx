@@ -52,7 +52,6 @@ const PHASE = {
     INTRO: 'intro',
     TOPIC_INTRO: 'topic_intro',
     LEARN_CARD: 'learn_card',
-    LEARN_QUIZ: 'learn_quiz',
     RECAP_TRANSITION: 'recap_transition',
     RECAP: 'recap',
     FINAL_REVIEW: 'final_review',
@@ -64,7 +63,7 @@ const QUESTION_TYPES = ['what', 'why', 'how'];
 
 export default function LessonFlow({ lesson, onComplete }) {
     const { state, dispatch } = useApp();
-    const recapPerCard = state.recapPerCard ?? 1;
+    const recapPerCard = state.recapPerCard ?? 2;
     // Resolve concepts with course overrides applied
     const resolvedAllConcepts = useMemo(() => resolveAllConcepts(ALL_CONCEPTS, state.courseMode), [state.courseMode]);
     const concepts = useMemo(() => {
@@ -76,75 +75,41 @@ export default function LessonFlow({ lesson, onComplete }) {
 
     const [phase, setPhase] = useState(PHASE.INTRO);
     const [cardIndex, setCardIndex] = useState(0);
-    const [learnQuizIndex, setLearnQuizIndex] = useState(0);
     const [recapIndex, setRecapIndex] = useState(0);
     const [reviewIndex, setReviewIndex] = useState(0);
     const [quizResults, setQuizResults] = useState([]);
     const [selectedDot, setSelectedDot] = useState(null);
     const [showExitConfirm, setShowExitConfirm] = useState(false);
-    const [checkpointData, setCheckpointData] = useState(null);
     const xpDispatched = useRef(false);
-    const pendingNextAction = useRef(null);
     const lastAnswerScore = useRef(null);
     const sessionStartTime = useRef(null);
     const [sessionDuration, setSessionDuration] = useState(0);
     const [shareToast, setShareToast] = useState(false);
     const [streakCelebration, setStreakCelebration] = useState(null);
 
-    const [selectedTypes] = useState(() => {
-        return concepts.map(concept => {
-            if (concept.whyItMatters) {
-                const types = shuffle([...QUESTION_TYPES]);
-                // Bias "why" toward recap slot (position 2) — swap with 60% chance
-                const whyIdx = types.indexOf('why');
-                if (whyIdx < 2 && Math.random() < 0.6) {
-                    [types[whyIdx], types[2]] = [types[2], types[whyIdx]];
-                }
-                return types;
-            }
-            // No whyItMatters — only what/how, pad to 3
-            const types = shuffle(['what', 'how']);
-            types.push(types[Math.floor(Math.random() * 2)]);
-            return types;
-        });
-    });
-
-    const learnTypes = useMemo(() => {
-        return selectedTypes.map(types => types.slice(0, 2));
-    }, [selectedTypes]);
-
-    const remainingTypes = useMemo(() => {
-        return selectedTypes.map(types => types[2]);
-    }, [selectedTypes]);
-
-    const learnQuizQuestions = useMemo(() => {
-        const qs = [];
-        concepts.forEach((concept, i) => {
-            learnTypes[i].forEach(type => {
-                qs.push({ concept, type, cardIdx: i, phase: 'learn' });
-            });
-        });
-        return qs;
-    }, [concepts, learnTypes]);
-
+    // Generate recap questions — all quiz questions happen in the recap phase
     const [recapQuestions] = useState(() => {
         if (recapPerCard === 0) return [];
         const qs = [];
         concepts.forEach((concept, i) => {
-            qs.push({ concept, type: remainingTypes[i], cardIdx: i, phase: 'recap' });
+            // Build available question types for this card
+            const available = concept.whyItMatters
+                ? shuffle([...QUESTION_TYPES])
+                : shuffle(['what', 'how']);
+            // Pick recapPerCard types (pad by cycling if needed)
+            for (let q = 0; q < recapPerCard; q++) {
+                const type = available[q % available.length];
+                qs.push({ concept, type, cardIdx: i, phase: 'recap' });
+            }
         });
         return shuffle(qs);
     });
-
-    const currentCardLearnQs = useMemo(() => {
-        return learnQuizQuestions.filter(q => q.cardIdx === cardIndex);
-    }, [learnQuizQuestions, cardIndex]);
 
     const hardResults = useMemo(() => {
         return quizResults.filter(r => r.firstScore === 'red' || r.firstScore === 'yellow');
     }, [quizResults]);
 
-    const totalQuestions = concepts.length * (2 + recapPerCard);
+    const totalQuestions = concepts.length * recapPerCard;
     const answeredCount = quizResults.length;
 
     useEffect(() => { sessionStartTime.current = Date.now(); }, []);
@@ -214,29 +179,9 @@ export default function LessonFlow({ lesson, onComplete }) {
         dispatch({ type: 'UPDATE_SR_SCHEDULE', cardId, ...next });
     }, [dispatch, state.srSchedule]);
 
-    const handleNext = useCallback((originalNext, _questionConcept, isCardBoundary = false) => {
-        if (isCardBoundary) {
-            const greenSoFar = quizResults.filter(r => r.firstScore === 'green').length;
-            pendingNextAction.current = originalNext;
-            setCheckpointData({ label: isCardBoundary, greenCount: greenSoFar });
-        } else {
-            originalNext();
-        }
-    }, [quizResults]);
-
-    const dismissCheckpoint = useCallback(() => {
-        setCheckpointData(null);
-        if (pendingNextAction.current) {
-            pendingNextAction.current();
-            pendingNextAction.current = null;
-        }
+    const handleNext = useCallback((originalNext) => {
+        originalNext();
     }, []);
-
-    if (checkpointData) {
-        return <CheckpointScreen data={checkpointData} onDismiss={dismissCheckpoint}
-            quizResults={quizResults} totalQuestions={totalQuestions}
-            conceptsCount={concepts.length} recapPerCard={recapPerCard} />;
-    }
 
     // ════════════════════════════════════════════════════
     // INTRO
@@ -376,9 +321,6 @@ export default function LessonFlow({ lesson, onComplete }) {
                             Study {'\u00B7'} {cardIndex + 1}/{concepts.length}
                         </span>
                     </div>
-                    <ProgressTimeline quizResults={quizResults} totalQuestions={totalQuestions}
-                        conceptsCount={concepts.length} recapPerCard={recapPerCard}
-                        currentQuestionIndex={cardIndex * 2} variant="header" />
                 </div>
                 <div className="flex-1 min-h-0 overflow-y-auto mt-4" key={concept.id}>
                     <div className="animate-slide-in-right">
@@ -438,57 +380,17 @@ export default function LessonFlow({ lesson, onComplete }) {
                 </div>
                 <div className="flex-shrink-0 flex gap-3 pt-4 pb-2">
                     {cardIndex > 0 && (
-                        <Button variant="secondary" onClick={() => { setCardIndex(i => i - 1); setLearnQuizIndex(0); }}>{'\u2190 Back'}</Button>
+                        <Button variant="secondary" onClick={() => setCardIndex(i => i - 1)}>{'\u2190 Back'}</Button>
                     )}
-                    <Button className="flex-1" onClick={() => { setLearnQuizIndex(0); setPhase(PHASE.LEARN_QUIZ); }}>{'Quiz Me \u2192'}</Button>
-                </div>
-            </div>
-            </>
-        );
-    }
-
-    // ════════════════════════════════════════════════════
-    // LEARN QUIZ
-    // ════════════════════════════════════════════════════
-    if (phase === PHASE.LEARN_QUIZ) {
-        const q = currentCardLearnQs[learnQuizIndex];
-        if (!q) {
-            const next = cardIndex + 1;
-            if (next < concepts.length) { setCardIndex(next); setLearnQuizIndex(0); setPhase(PHASE.LEARN_CARD); }
-            else if (recapPerCard > 0 && concepts.length > 2) { setPhase(PHASE.RECAP_TRANSITION); }
-            else if (recapPerCard > 0) { setRecapIndex(0); setPhase(PHASE.RECAP); }
-            else { setPhase(PHASE.SUMMARY); }
-            return null;
-        }
-        const isLastOfCard = learnQuizIndex === currentCardLearnQs.length - 1;
-        return (
-            <>
-            <ExitConfirmModal show={showExitConfirm} onConfirm={onComplete} onCancel={() => setShowExitConfirm(false)} />
-            <div className="lesson-flow-container">
-                <div className="flex-shrink-0 pt-4">
-                    <div className="flex items-center justify-center mb-2 relative">
-                        <button onClick={handleExit} className="text-sm flex items-center gap-1 absolute left-0" style={{ color: 'var(--color-ink-muted)' }}>
-                            <ChevronLeft size={16} strokeWidth={2} />
-                            Exit
-                        </button>
-                        <span className="text-xs uppercase tracking-widest font-bold px-2.5 py-1 rounded-[2px]"
-                            style={{ backgroundColor: 'var(--color-coral-soft)', color: 'var(--color-coral)' }}>
-                            Learn Quiz {'\u00B7'} {answeredCount + 1}/{totalQuestions}
-                        </span>
-                    </div>
-                    <ProgressTimeline quizResults={quizResults} totalQuestions={totalQuestions}
-                        conceptsCount={concepts.length} recapPerCard={recapPerCard}
-                        currentQuestionIndex={answeredCount} variant="header" />
-                </div>
-                <div className="flex-1 min-h-0 overflow-y-auto mt-4" key={`learn-q-${cardIndex}-${learnQuizIndex}`}>
-                    <QuizQuestion question={q} lessonCardIds={lesson.cardIds} descriptionDifficulty={1}
-                        allConcepts={resolvedAllConcepts}
-                        onAnswer={(score) => recordAnswer(q.concept.id, q.type, score)}
-                        onNext={() => handleNext(() => setLearnQuizIndex(i => i + 1), q.concept,
-                            (isLastOfCard && cardIndex < concepts.length - 1)
-                                ? `Card ${cardIndex + 1} of ${concepts.length} complete`
-                                : false)}
-                        onBack={learnQuizIndex > 0 ? () => setLearnQuizIndex(i => i - 1) : null} />
+                    <Button className="flex-1" onClick={() => {
+                        const next = cardIndex + 1;
+                        if (next < concepts.length) { setCardIndex(next); }
+                        else if (recapPerCard > 0 && concepts.length > 2) { setPhase(PHASE.RECAP_TRANSITION); }
+                        else if (recapPerCard > 0) { setRecapIndex(0); setPhase(PHASE.RECAP); }
+                        else { setPhase(PHASE.SUMMARY); }
+                    }}>
+                        {cardIndex < concepts.length - 1 ? 'Next Card \u2192' : recapPerCard > 0 ? 'Start Recap \u2192' : 'Finish \u2192'}
+                    </Button>
                 </div>
             </div>
             </>
@@ -918,16 +820,13 @@ function QuizQuestion({ question, lessonCardIds, onAnswer, onNext, onBack, onSki
 // ═══════════════════════════════════════════════════════
 // PROGRESS TIMELINE
 // ═══════════════════════════════════════════════════════
-function ProgressTimeline({ quizResults, conceptsCount, questionsPerCard = 2, recapPerCard, currentQuestionIndex, variant = 'header' }) {
+function ProgressTimeline({ quizResults, conceptsCount, recapPerCard, currentQuestionIndex, variant = 'header' }) {
     const isCheckpoint = variant === 'checkpoint';
     const dotSize = isCheckpoint ? 12 : 8;
     const currentDotSize = isCheckpoint ? 14 : 10;
     const futureDotSize = isCheckpoint ? 8 : 6;
     const lineH = isCheckpoint ? 3 : 2;
     const gap = isCheckpoint ? 6 : 4;
-    const groupGap = isCheckpoint ? 14 : 10;
-    const sectionGap = isCheckpoint ? 22 : 16;
-    const learnCount = conceptsCount * questionsPerCard;
     const recapCount = conceptsCount * recapPerCard;
 
     const getColor = (index) => {
@@ -963,63 +862,17 @@ function ProgressTimeline({ quizResults, conceptsCount, questionsPerCard = 2, re
         }} />);
     };
 
-    const learnGroups = [];
-    for (let card = 0; card < conceptsCount; card++) {
-        const group = [];
-        for (let q = 0; q < questionsPerCard; q++) { group.push(card * questionsPerCard + q); }
-        learnGroups.push(group);
-    }
+    if (recapCount === 0) return null;
 
     return (
         <div className="flex items-center justify-center w-full" style={{ minHeight: isCheckpoint ? 24 : 16 }}>
-            {learnGroups.map((group, gi) => (
-                <div key={`lg-${gi}`} className="flex items-center" style={{ gap: 0 }}>
-                    {group.map((dotIdx, di) => (
-                        <div key={dotIdx} className="flex items-center" style={{ gap: 0 }}>
-                            {renderDot(dotIdx)}
-                            {di < group.length - 1 && renderLine(dotIdx)}
-                        </div>
-                    ))}
-                    {gi < learnGroups.length - 1 && <div style={{ width: groupGap }} />}
-                </div>
-            ))}
-            {recapCount > 0 && (
-                <div className="flex items-center" style={{ gap: 2, marginLeft: sectionGap - groupGap, marginRight: sectionGap - groupGap }}>
-                    <div className="rounded-full" style={{ width: 2, height: 2, backgroundColor: 'var(--color-ink-faint)', opacity: 0.4 }} />
-                    <div className="rounded-full" style={{ width: 2, height: 2, backgroundColor: 'var(--color-ink-faint)', opacity: 0.4 }} />
-                </div>
-            )}
-            {recapCount > 0 && (
-                <div className="flex items-center" style={{ gap: 0 }}>
-                    {Array.from({ length: recapCount }, (_, i) => learnCount + i).map((dotIdx, i) => (
-                        <div key={dotIdx} className="flex items-center" style={{ gap: 0 }}>
-                            {renderDot(dotIdx)}
-                            {i < recapCount - 1 && renderLine(dotIdx)}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-}
-
-// ═══════════════════════════════════════════════════════
-// CHECKPOINT SCREEN
-// ═══════════════════════════════════════════════════════
-function CheckpointScreen({ data, onDismiss, quizResults, totalQuestions, conceptsCount, recapPerCard }) {
-    const { label, greenCount } = data;
-    useEffect(() => {
-        const timer = setTimeout(onDismiss, 1000);
-        return () => clearTimeout(timer);
-    }, [onDismiss]);
-
-    return (
-        <div className="lesson-flow-container animate-checkpoint-enter" onClick={onDismiss} style={{ cursor: 'pointer', userSelect: 'none' }}>
-            <div className="flex-1 min-h-0 flex flex-col items-center justify-center py-6">
-                <ProgressTimeline quizResults={quizResults} totalQuestions={totalQuestions} conceptsCount={conceptsCount}
-                    recapPerCard={recapPerCard} currentQuestionIndex={quizResults.length} variant="checkpoint" />
-                <p className="text-sm font-semibold mt-5" style={{ color: 'var(--color-ink-secondary)' }}>{label}</p>
-                {greenCount > 0 && <p className="text-xs mt-1" style={{ color: 'var(--color-success)' }}>{greenCount} correct so far</p>}
+            <div className="flex items-center" style={{ gap: 0 }}>
+                {Array.from({ length: recapCount }, (_, i) => i).map((dotIdx, i) => (
+                    <div key={dotIdx} className="flex items-center" style={{ gap: 0 }}>
+                        {renderDot(dotIdx)}
+                        {i < recapCount - 1 && renderLine(dotIdx)}
+                    </div>
+                ))}
             </div>
         </div>
     );

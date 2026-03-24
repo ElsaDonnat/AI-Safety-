@@ -259,18 +259,17 @@ export default function Settings() {
                 {/* Lesson Settings */}
                 {(() => {
                     const recap = state.recapPerCard ?? 2;
-                    const totalQ = 3 * (2 + recap);
+                    const totalQ = 3 * recap;
                     const estMin = Math.max(1, Math.round(totalQ / 2));
                     return (
                         <>
                             <Card className="mb-3 p-4">
-                                <div className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Recap intensity (lessons)</div>
+                                <div className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-display)' }}>Recap questions (lessons)</div>
                                 <div className="flex gap-2">
                                     {[
                                         { value: 0, label: 'Off', sub: 'No recap' },
                                         { value: 1, label: '1', sub: '1 per card' },
                                         { value: 2, label: '2', sub: '2 per card' },
-                                        { value: 3, label: '3', sub: '3 per card' },
                                     ].map(({ value, label }) => {
                                         const isActive = recap === value;
                                         return (
@@ -295,7 +294,6 @@ export default function Settings() {
                                         'No recap',
                                         '1 per card',
                                         '2 per card',
-                                        '3 per card',
                                     ].map(text => (
                                         <span key={text} className="flex-1 text-center text-[11px]" style={{ color: 'var(--color-ink-faint)', fontFamily: 'var(--font-mono)' }}>{text}</span>
                                     ))}
