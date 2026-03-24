@@ -125,7 +125,7 @@ export default function FunFactsFlow({ onExit }) {
                     </button>
                 </div>
 
-                <div className="text-center mt-10 mb-8">
+                <div className="text-center mt-6 mb-6">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-5"
                         style={{ background: 'rgba(234, 179, 8, 0.12)', border: '2px solid rgba(234, 179, 8, 0.25)' }}>
                         <Lightbulb size={30} strokeWidth={1.8} color="#92400E" />
