@@ -22,7 +22,7 @@ function shuffleOptions(correct, wrongs) {
 
 export default function FunFactsFlow({ onExit }) {
     const { state, dispatch } = useApp();
-    const [phase, setPhase] = useState(PHASE.INTRO);
+    const [phase, setPhase] = useState(PHASE.QUIZ);
     const [questionIndex, setQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState(null);
     const [answered, setAnswered] = useState(false);
@@ -34,7 +34,7 @@ export default function FunFactsFlow({ onExit }) {
         [state.seenCards]
     );
 
-    const seenCount = useMemo(() => {
+    const _SeenCount = useMemo(() => {
         const availableIds = new Set(availableFacts.map(f => f.id));
         return (state.seenFunFacts || []).filter(id => availableIds.has(id)).length;
     }, [state.seenFunFacts, availableFacts]);
@@ -92,7 +92,7 @@ export default function FunFactsFlow({ onExit }) {
         setAnswered(false);
         setScore(0);
         setRoundResults([]);
-        setPhase(PHASE.INTRO);
+        setPhase(PHASE.QUIZ);
     }, [state.seenFunFacts, availableFacts.length]);
 
     const handleStartQuiz = useCallback(() => {
@@ -332,9 +332,9 @@ export default function FunFactsFlow({ onExit }) {
     }
 
     return (
-        <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in" key={`ff-${questionIndex}`}>
+        <div className="px-4 py-3 max-w-2xl mx-auto animate-fade-in" key={`ff-${questionIndex}`}>
             {/* Top bar */}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2">
                 <button onClick={onExit} className="flex items-center gap-1 text-sm"
                     style={{ color: 'var(--color-ink-muted)' }}>
                     <ChevronLeft size={16} strokeWidth={2} />
@@ -345,7 +345,7 @@ export default function FunFactsFlow({ onExit }) {
                         {score} <span style={{ fontWeight: 400, color: 'var(--color-ink-muted)' }}>pts</span>
                     </span>
                     <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
-                        style={{ backgroundColor: 'rgba(234, 179, 8, 0.15)', color: '#92400E' }}>
+                        style={{ backgroundColor: 'var(--color-coral-soft)', color: 'var(--color-coral)' }}>
                         {questionIndex + 1}/{totalQuestions}
                     </span>
                 </div>
@@ -353,10 +353,10 @@ export default function FunFactsFlow({ onExit }) {
 
             {/* Progress bar */}
             <div style={{
-                height: 4,
+                height: 3,
                 borderRadius: 2,
                 background: 'rgba(var(--color-ink-rgb), 0.08)',
-                marginBottom: 20,
+                marginBottom: 14,
                 overflow: 'hidden',
             }}>
                 <div style={{
@@ -370,14 +370,14 @@ export default function FunFactsFlow({ onExit }) {
 
             {/* Concept reference */}
             {concept && (
-                <div className="text-center mb-5 animate-fade-in">
-                    <p className="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: 'var(--color-ink-faint)' }}>
+                <div className="text-center mb-3 animate-fade-in">
+                    <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: 'var(--color-ink-faint)' }}>
                         Related to
                     </p>
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full"
                         style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.06)' }}>
                         <CategoryTag category={concept.category} />
-                        <span className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                        <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                             {concept.title}
                         </span>
                     </div>
@@ -386,34 +386,36 @@ export default function FunFactsFlow({ onExit }) {
 
             {/* Question */}
             <div className="animate-slide-in-right" key={`q-${questionIndex}`}>
-                <div className="text-center mb-6 px-2">
-                    <h2 className="text-base font-bold leading-relaxed" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                <div className="text-center mb-4 px-2">
+                    <h2 className="text-sm font-semibold leading-relaxed" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', letterSpacing: '-0.01em' }}>
                         {currentFact.question}
                     </h2>
                 </div>
 
                 {/* Options */}
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                     {shuffledOptions.map((opt, i) => {
                         let bg = 'var(--color-card)';
-                        let border = '1.5px solid var(--color-ink-faint)';
+                        let border = '1px solid var(--color-border)';
                         let textColor = 'var(--color-ink)';
                         let opacity = 1;
                         let icon = null;
+                        const isSelected = selectedOption === i;
+                        const isWrong = answered && !opt.isCorrect && !isSelected;
 
                         if (answered) {
                             if (opt.isCorrect) {
                                 bg = 'rgba(34, 197, 94, 0.1)';
                                 border = '1.5px solid var(--color-success)';
                                 textColor = 'var(--color-success)';
-                                icon = <Check size={16} color="var(--color-success)" strokeWidth={2.5} />;
-                            } else if (selectedOption === i) {
+                                icon = <Check size={14} color="var(--color-success)" strokeWidth={2.5} />;
+                            } else if (isSelected) {
                                 bg = 'rgba(239, 68, 68, 0.1)';
                                 border = '1.5px solid var(--color-error)';
                                 textColor = 'var(--color-error)';
-                                icon = <XIcon size={16} color="var(--color-error)" strokeWidth={2.5} />;
+                                icon = <XIcon size={14} color="var(--color-error)" strokeWidth={2.5} />;
                             } else {
-                                opacity = 0.4;
+                                opacity = 0.35;
                             }
                         }
 
@@ -422,10 +424,10 @@ export default function FunFactsFlow({ onExit }) {
                                 key={i}
                                 onClick={() => handleAnswer(i)}
                                 disabled={answered}
-                                className="w-full text-left px-4 py-3 rounded-[3px] flex items-center justify-between gap-2 transition-all active:scale-[0.98]"
+                                className={`w-full text-left rounded-[3px] flex items-center justify-between gap-2 transition-all active:scale-[0.98] ${isWrong ? 'px-3 py-2' : 'px-4 py-2.5'}`}
                                 style={{ backgroundColor: bg, border, color: textColor, opacity }}
                             >
-                                <span className="text-sm font-medium">{opt.text}</span>
+                                <span className={`${isWrong ? 'text-xs' : 'text-sm'} font-medium`}>{opt.text}</span>
                                 {icon}
                             </button>
                         );
@@ -434,20 +436,20 @@ export default function FunFactsFlow({ onExit }) {
 
                 {/* Explanation (after answering) */}
                 {answered && (
-                    <div className="mt-5 animate-fade-in">
-                        <div className="p-4 rounded-[3px]" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
-                            <div className="flex items-center gap-1.5 mb-2">
-                                <Lightbulb size={14} strokeWidth={2} color="#92400E" />
+                    <div className="mt-4 animate-fade-in">
+                        <div className="px-3 py-3 rounded-[3px]" style={{ backgroundColor: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
+                            <div className="flex items-center gap-1.5 mb-1.5">
+                                <Lightbulb size={13} strokeWidth={2} color="#92400E" />
                                 <span className="text-[10px] uppercase tracking-wider font-bold" style={{ color: '#92400E' }}>
                                     Did you know?
                                 </span>
                             </div>
-                            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink)' }}>
+                            <p className="text-xs leading-relaxed" style={{ color: 'var(--color-ink)' }}>
                                 {currentFact.explanation}
                             </p>
                         </div>
 
-                        <div className="mt-5">
+                        <div className="mt-4">
                             <Button className="w-full" onClick={handleNext}>
                                 {questionIndex + 1 >= totalQuestions ? 'See Results' : 'Next Question'}
                             </Button>
