@@ -360,14 +360,12 @@ export function TabSelector({ tabs, activeTab, onChange, accentColor }) {
                         onClick={() => onChange(tab.id)}
                         className="flex-1 px-4 py-2 rounded-[2px] text-xs font-semibold transition-all duration-200"
                         style={{
-                            backgroundColor: useAccent
-                                ? `${accentColor}15`
-                                : isActive ? 'var(--color-card)' : 'transparent',
+                            backgroundColor: isActive ? 'var(--color-card)' : 'transparent',
                             color: useAccent
                                 ? accentColor
                                 : isActive ? 'var(--color-ink)' : 'var(--color-ink-muted)',
                             boxShadow: isActive ? 'var(--shadow-card)' : 'none',
-                            border: useAccent ? `1px solid ${accentColor}25` : '1px solid transparent',
+                            border: '1px solid transparent',
                         }}
                     >
                         {tab.label}
