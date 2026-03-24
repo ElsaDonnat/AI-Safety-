@@ -463,14 +463,16 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
 function LessonRow({ lesson, idx, isCompleted, isUnlocked, isNext, accentColor, state, onStart }) {
     return (
         <div
-            className={`flex items-center gap-3 px-3 py-3 rounded-[3px] transition-all ${isUnlocked ? 'cursor-pointer active:scale-[0.99]' : 'opacity-50'}`}
+            className={`flex items-center gap-3 py-3 rounded-[3px] transition-all ${isUnlocked ? 'cursor-pointer active:scale-[0.99]' : 'opacity-50'}`}
             style={{
                 backgroundColor: isNext
-                    ? `${accentColor}10`
+                    ? `${accentColor}08`
                     : isCompleted
                         ? 'rgba(var(--color-ink-rgb), 0.02)'
                         : 'transparent',
-                border: isNext ? `1.5px solid ${accentColor}30` : '1.5px solid transparent',
+                borderLeft: isNext ? `3px solid ${accentColor}` : '3px solid transparent',
+                paddingLeft: '12px',
+                paddingRight: '12px',
             }}
             onClick={() => { if (isUnlocked) onStart(); }}
         >
@@ -597,7 +599,7 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                                             <div
                                                 className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] cursor-pointer transition-colors duration-150"
                                                 style={{
-                                                    backgroundColor: isChExpanded ? `${chColor}10` : 'transparent',
+                                                    backgroundColor: 'transparent',
                                                 }}
                                                 onClick={() => setExpandedChapter(isChExpanded ? null : chapter.id)}
                                             >
