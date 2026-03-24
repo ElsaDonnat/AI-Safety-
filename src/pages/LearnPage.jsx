@@ -12,7 +12,7 @@ import LessonFlow from '../components/learn/LessonFlow';
 import DailyQuizFlow from '../components/DailyQuizFlow';
 import { getCourseContent } from '../data/courses/index';
 import { getCourseById } from '../data/courseConfig';
-import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock, Cpu, ShieldAlert, Target, Shield, Scale, Globe, GraduationCap } from 'lucide-react';
+import { Lightbulb, Landmark, ShieldCheck, Bot, TrendingUp, Brain, Calendar, ChevronRight, Check, Lock, Cpu, ShieldAlert, Target, Shield, Scale, Globe } from 'lucide-react';
 import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 // Maps domain/topic icon IDs to Lucide components
@@ -509,60 +509,73 @@ function LessonRow({ lesson, idx, isCompleted, isUnlocked, isNext, accentColor, 
 }
 
 // ═══════════════════════════════════════════════════════
-// COURSE VIEW — module → lesson structure
+// COURSE VIEW — topic → chapter → lesson hierarchy
+// (mirrors the General view's domain → topic → chapter → lesson structure)
 // ═══════════════════════════════════════════════════════
-function CourseView({ courseContent, state, expandedModule, setExpandedModule, setActiveLesson }) {
-    const COURSE_COLOR = '#6366B8'; // Indigo accent for course modules
 
+// Rotating chapter accent colors — assigned by position within a topic
+const CHAPTER_COLORS = [
+    '#3B82F6', // Blue
+    '#2BA89E', // Teal
+    '#8B5CF6', // Purple
+    '#D4A026', // Amber
+    '#EC4899', // Pink
+    '#EF4444', // Red
+    '#6366B8', // Indigo
+    '#10B981', // Emerald
+];
+
+// Lesson position accent colors — consistent across all chapters
+const LESSON_POSITION_COLORS = [
+    '#6366B8', // Indigo
+    '#3B82F6', // Blue
+    '#2BA89E', // Teal
+    '#8B5CF6', // Purple
+    '#D4A026', // Amber
+    '#EC4899', // Pink
+];
+
+function CourseView({ courseContent, state, expandedModule, setExpandedModule, setActiveLesson }) {
     return (
         <div className="space-y-4">
-            {courseContent.modules.map((mod, modIdx) => {
-                const isExpanded = expandedModule === mod.id;
-                const totalCards = mod.lessons.reduce((sum, l) => sum + l.cardIds.length, 0);
-                const completedCards = mod.lessons.reduce((sum, l) =>
+            {courseContent.topics.map(topic => {
+                const isExpanded = expandedModule === topic.id;
+                const allLessons = topic.chapters.flatMap(ch => ch.lessons);
+                const totalCards = allLessons.reduce((sum, l) => sum + l.cardIds.length, 0);
+                const completedCards = allLessons.reduce((sum, l) =>
                     sum + l.cardIds.filter(id => (state.seenCards || []).includes(id)).length, 0
                 );
                 const progressPct = totalCards > 0 ? Math.round((completedCards / totalCards) * 100) : 0;
-
-                // Module completion based on whether all its lessons' cards have been seen
-                const completedLessons = mod.lessons.filter(l =>
+                const completedLessonsCount = allLessons.filter(l =>
                     l.cardIds.every(id => (state.seenCards || []).includes(id))
-                );
+                ).length;
 
                 return (
-                    <Card key={mod.id}>
-                        {/* Module header */}
+                    <Card key={topic.id}>
+                        {/* Topic header */}
                         <div
                             className="flex items-center gap-3 cursor-pointer"
-                            onClick={() => setExpandedModule(isExpanded ? null : mod.id)}
+                            onClick={() => setExpandedModule(isExpanded ? null : topic.id)}
                         >
                             <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
-                                style={{ backgroundColor: `${COURSE_COLOR}15` }}>
-                                <GraduationCap size={20} color={COURSE_COLOR} strokeWidth={1.8} />
+                                style={{ backgroundColor: `${topic.color}15` }}>
+                                <TopicIcon iconId={topic.icon} color={topic.color} />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-semibold uppercase tracking-wider"
-                                        style={{ color: COURSE_COLOR }}>
-                                        Module {modIdx + 1}
-                                    </span>
-                                </div>
                                 <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                    {mod.title}
+                                    {topic.title}
                                 </h3>
-                                {mod.subtitle && (
-                                    <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
-                                        {mod.subtitle}
-                                    </p>
-                                )}
+                                <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
+                                    {topic.subtitle}
+                                </p>
                                 {/* Progress bar */}
                                 <div className="mt-2 w-full overflow-hidden"
                                     style={{ height: '4px', borderRadius: '1px', backgroundColor: 'var(--color-surface-alt, rgba(var(--color-ink-rgb), 0.06))' }}>
                                     <div className="h-full transition-all duration-500"
-                                        style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: COURSE_COLOR }} />
+                                        style={{ width: `${progressPct}%`, borderRadius: '1px', backgroundColor: topic.color }} />
                                 </div>
                                 <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-faint)' }}>
-                                    {completedLessons.length}/{mod.lessons.length} lessons · {completedCards}/{totalCards} cards
+                                    {completedLessonsCount}/{allLessons.length} lessons
                                 </p>
                             </div>
                             <ChevronRight size={16} color="var(--color-ink-faint)" strokeWidth={2}
@@ -571,43 +584,71 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, s
                             />
                         </div>
 
-                        {/* Expanded: lessons within the module */}
+                        {/* Expanded: chapters and lessons */}
                         {isExpanded && (
-                            <div className="mt-4 animate-fade-in space-y-2">
-                                {mod.lessons.map((lesson, idx) => {
-                                    // A course lesson is "completed" when all its cards have been seen
-                                    const isCompleted = lesson.cardIds.every(id => (state.seenCards || []).includes(id));
-                                    const isNext = !isCompleted &&
-                                        mod.lessons.slice(0, idx).every(l =>
-                                            l.cardIds.every(id => (state.seenCards || []).includes(id))
-                                        );
-
-                                    // Build a lesson-like object for LessonFlow compatibility
-                                    const lessonObj = {
-                                        id: lesson.id,
-                                        title: lesson.title,
-                                        subtitle: lesson.subtitle,
-                                        mood: lesson.mood,
-                                        cardIds: lesson.cardIds,
-                                        number: idx,
-                                        isFoundational: idx === 0,
-                                        // Course lessons need a topic for LessonFlow's topic intro.
-                                        // Derive from the first card's topic, or use a default.
-                                        topic: getConceptById(lesson.cardIds[0])?.topic || 'ai-basics',
-                                    };
+                            <div className="mt-4 animate-fade-in">
+                                {topic.chapters.map((chapter, chIdx) => {
+                                    const chapterColor = CHAPTER_COLORS[chIdx % CHAPTER_COLORS.length];
+                                    const chapterBg = `${chapterColor}14`;
 
                                     return (
-                                        <LessonRow
-                                            key={lesson.id}
-                                            lesson={lessonObj}
-                                            idx={idx}
-                                            isCompleted={isCompleted}
-                                            isUnlocked={true}
-                                            isNext={isNext}
-                                            accentColor={COURSE_COLOR}
-                                            state={state}
-                                            onStart={() => setActiveLesson(lessonObj)}
-                                        />
+                                        <div key={chapter.id} className={chIdx > 0 ? 'mt-4' : ''}>
+                                            {/* Chapter header badge */}
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span
+                                                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider"
+                                                    style={{
+                                                        fontFamily: 'var(--font-mono)',
+                                                        fontSize: '11px',
+                                                        fontWeight: 500,
+                                                        letterSpacing: '0.02em',
+                                                        backgroundColor: chapterBg,
+                                                        color: chapterColor,
+                                                    }}
+                                                >
+                                                    <span className="w-1.5 h-1.5 rounded-[1px]" style={{ backgroundColor: chapterColor }} />
+                                                    {chapter.title}
+                                                </span>
+                                            </div>
+
+                                            {/* Lessons in chapter */}
+                                            <div className="space-y-2">
+                                                {chapter.lessons.map((lesson, idx) => {
+                                                    const isCompleted = lesson.cardIds.every(id => (state.seenCards || []).includes(id));
+                                                    const isNext = !isCompleted &&
+                                                        chapter.lessons.slice(0, idx).every(l =>
+                                                            l.cardIds.every(id => (state.seenCards || []).includes(id))
+                                                        );
+
+                                                    const lessonColor = LESSON_POSITION_COLORS[idx % LESSON_POSITION_COLORS.length];
+
+                                                    const lessonObj = {
+                                                        id: lesson.id,
+                                                        title: lesson.title,
+                                                        subtitle: lesson.subtitle,
+                                                        mood: lesson.mood,
+                                                        cardIds: lesson.cardIds,
+                                                        number: idx,
+                                                        isFoundational: idx === 0 && chIdx === 0,
+                                                        topic: getConceptById(lesson.cardIds[0])?.topic || 'ai-basics',
+                                                    };
+
+                                                    return (
+                                                        <LessonRow
+                                                            key={lesson.id}
+                                                            lesson={lessonObj}
+                                                            idx={idx}
+                                                            isCompleted={isCompleted}
+                                                            isUnlocked={true}
+                                                            isNext={isNext}
+                                                            accentColor={lessonColor}
+                                                            state={state}
+                                                            onStart={() => setActiveLesson(lessonObj)}
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
                                     );
                                 })}
                             </div>

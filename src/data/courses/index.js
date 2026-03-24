@@ -32,10 +32,12 @@ export function getCourseCardIds(courseId) {
     const course = COURSE_CONTENT[courseId];
     if (!course) return new Set();
     const ids = new Set();
-    for (const mod of course.modules) {
-        for (const lesson of mod.lessons) {
-            for (const cardId of lesson.cardIds) {
-                ids.add(cardId);
+    for (const topic of course.topics) {
+        for (const chapter of topic.chapters) {
+            for (const lesson of chapter.lessons) {
+                for (const cardId of lesson.cardIds) {
+                    ids.add(cardId);
+                }
             }
         }
     }
