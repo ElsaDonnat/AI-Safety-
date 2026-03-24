@@ -10,6 +10,26 @@ import { ChevronLeft, Calendar, Check, X as XIcon, Share2, ChevronDown, ChevronU
 
 const PHASES = { INTRO: 'intro', QUIZ: 'quiz', RESULTS: 'results' };
 
+/** Render text with **bold** markers as <strong> elements */
+function RichText({ text, className, style }) {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return (
+        <span className={className} style={style}>
+            {parts.map((part, i) =>
+                part.startsWith('**') && part.endsWith('**')
+                    ? <strong key={i} style={{ fontWeight: 600 }}>{part.slice(2, -2)}</strong>
+                    : part
+            )}
+        </span>
+    );
+}
+
+/** Strip **bold** markers for plain text contexts */
+function stripBold(text) {
+    return text ? text.replace(/\*\*/g, '') : '';
+}
+
 function shuffleArray(arr) {
     const shuffled = [...arr];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -67,14 +87,14 @@ export default function DailyQuizFlow({ onComplete }) {
                         Back
                     </button>
                 </div>
-                <div className="flex-1 min-h-0 flex flex-col justify-center">
-                    <div className="py-4 text-center">
+                <div className="flex-1 min-h-0 flex flex-col justify-center overflow-y-auto">
+                    <div className="py-3 text-center">
                         <div className="daily-quiz-date-badge">
                             <Calendar size={16} strokeWidth={2} />
                             Daily Quiz
                         </div>
 
-                        <h2 className="text-2xl font-bold mt-3 mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                        <h2 className="text-xl font-bold mt-2 mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                             AI Safety Dates
                         </h2>
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
@@ -85,17 +105,21 @@ export default function DailyQuizFlow({ onComplete }) {
                             {'2\u00d7 XP BONUS'}
                         </div>
 
-                        <div className="mt-4 space-y-3 px-4">
-                            {questions.map((q, i) => (
-                                <div key={i} className="daily-quiz-year-card animate-fade-in-up" style={{ animationDelay: `${i * 150}ms` }}>
-                                    <span className="daily-quiz-year" style={{ fontSize: '13px', fontWeight: 400 }}>{q.event.length > 80 ? q.event.slice(0, 77) + '...' : q.event}</span>
-                                </div>
-                            ))}
+                        <div className="mt-3 space-y-2 px-4">
+                            {questions.map((q, i) => {
+                                const plain = stripBold(q.event);
+                                const display = plain.length > 80 ? plain.slice(0, 77) + '...' : plain;
+                                return (
+                                    <div key={i} className="daily-quiz-preview-card animate-fade-in-up" style={{ animationDelay: `${i * 150}ms` }}>
+                                        <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--color-primary)' }}>{display}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
 
-                <div className="flex-shrink-0 pt-4 pb-2">
+                <div className="flex-shrink-0 pt-3 pb-2">
                     <Button className="w-full daily-quiz-btn" onClick={() => setPhase(PHASES.QUIZ)}>
                         Start Quiz
                     </Button>
@@ -139,14 +163,13 @@ export default function DailyQuizFlow({ onComplete }) {
                 }
                 // Calculate results
                 const finalResults = [...results, options[selectedOption]?.isCorrect ? 'correct' : 'wrong'].slice(0, totalQuestions);
-                // Use results accumulated so far (already includes this answer)
                 const correctCount = results.filter(r => r === 'correct').length;
                 const xpEarned = correctCount * DAILY_QUIZ_XP_PER_CORRECT;
 
                 // Store results for later review
                 const lastResults = {
                     questions: questions.map((q, i) => ({
-                        event: q.event,
+                        event: stripBold(q.event),
                         answer: q.answer,
                         detail: q.detail,
                         result: finalResults[i] || results[i],
@@ -161,7 +184,6 @@ export default function DailyQuizFlow({ onComplete }) {
                 }
                 const duration = sessionStartTime.current ? Math.round((Date.now() - sessionStartTime.current) / 1000) : 0;
                 dispatch({ type: 'RECORD_STUDY_SESSION', duration, sessionType: 'daily_quiz', questionsAnswered: results.length });
-                // Show streak celebration if this is the first activity today
                 if (!wasActiveToday) {
                     const newStreak = prevStreakStatus === 'at-risk' ? state.currentStreak + 1 : 1;
                     setTimeout(() => setStreakCelebration({ previousStatus: prevStreakStatus, newStreak }), 600);
@@ -184,7 +206,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             </span>
                         </div>
                     </div>
-                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="#B8860B" />
+                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="var(--color-coral)" />
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto">
@@ -195,7 +217,7 @@ export default function DailyQuizFlow({ onComplete }) {
                                 When did this happen?
                             </p>
                             <p className="text-base mt-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.5 }}>
-                                {question.event}
+                                <RichText text={question.event} />
                             </p>
                         </div>
 
@@ -301,13 +323,13 @@ export default function DailyQuizFlow({ onComplete }) {
                         {xpEarned > 0 && (
                             <div className="daily-quiz-xp-result animate-pop-in">
                                 <span className="daily-quiz-bonus-pill mr-2">{'2\u00d7 BONUS'}</span>
-                                <span className="text-xl font-bold" style={{ color: '#B8860B' }}>+{xpEarned} XP</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-coral)' }}>+{xpEarned} XP</span>
                             </div>
                         )}
 
                         {/* Results list with expandable details */}
                         <div className="mt-6 text-left">
-                            <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: '#B8860B' }}>
+                            <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: 'var(--color-coral)' }}>
                                 Today's Events
                             </h3>
                             <div className="space-y-2">
@@ -329,11 +351,11 @@ export default function DailyQuizFlow({ onComplete }) {
                                                 {results[i] === 'correct' ? '\u2713' : '\u2717'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-accent)' }}>
+                                                <p className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
                                                     {q.answer}
                                                 </p>
                                                 <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400 }}>
-                                                    {q.event}
+                                                    {stripBold(q.event)}
                                                 </p>
                                             </div>
                                             <div className="flex-shrink-0 mt-1">
@@ -368,7 +390,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             if (result === 'copied') setShareToast(true);
                         }}
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: '#8B6914', backgroundColor: 'rgba(184, 134, 11, 0.1)' }}
+                        style={{ color: 'var(--color-coral)', backgroundColor: 'var(--color-coral-soft)' }}
                     >
                         <Share2 size={16} strokeWidth={2} />
                         Share Result
@@ -478,7 +500,7 @@ export function DailyQuizCompletedReview() {
                                 {q.result === 'correct' ? '\u2713' : '\u2717'}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-accent)' }}>
+                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-coral)' }}>
                                     {q.answer}
                                 </p>
                                 <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.4 }}>
