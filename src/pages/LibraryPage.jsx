@@ -32,9 +32,9 @@ function FilterDropdown({ value, options, onChange, allLabel = 'All', activeColo
 
     // Variant styles for beige dropdowns
     const variantStyles = {
-        default: { bg: 'var(--color-card)', border: 'rgba(var(--color-ink-rgb), 0.1)' },
-        primary: { bg: 'var(--color-sidebar-bg)', border: 'var(--color-sidebar-border)', text: 'var(--color-sidebar-text)' },   // sidebar brown for Domain
-        secondary: { bg: 'var(--color-sidebar-text)', border: 'var(--color-sidebar-border)' },  // lighter beige for others
+        default: { bg: 'var(--color-card)', border: 'transparent' },
+        primary: { bg: 'var(--color-sidebar-bg)', border: 'transparent', text: 'var(--color-sidebar-text)' },   // sidebar brown for Domain
+        secondary: { bg: 'var(--color-sidebar-text)', border: 'transparent' },  // lighter beige for others
     };
     const vs = variantStyles[variant] || variantStyles.default;
 

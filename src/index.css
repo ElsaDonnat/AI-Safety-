@@ -407,7 +407,7 @@ input, textarea, [contenteditable] {
 }
 
 .sidebar-nav-item:focus-visible {
-  outline-offset: -2px;
+  outline: none;
 }
 
 .sidebar-nav-icon {
