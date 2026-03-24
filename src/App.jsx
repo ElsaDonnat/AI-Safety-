@@ -68,17 +68,23 @@ export default function App() {
 
   // ─── "Welcome Back" modal for returning users ─────
   // Show once per day, but NOT on first install (no lastActiveDate yet)
+  const WELCOME_SHOWN_KEY = 'aisafety-welcome-shown-date';
   const [welcomeBackData] = useState(() => {
     if (!state.lastActiveDate) return null;
     // Don't show during onboarding (fresh install)
     if (state.onboardingStep && state.onboardingStep !== 'complete') return null;
+    const todayStr = new Date().toISOString().slice(0, 10);
+    // Already shown today — don't show again
+    if (localStorage.getItem(WELCOME_SHOWN_KEY) === todayStr) return null;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const last = new Date(state.lastActiveDate);
     last.setHours(0, 0, 0, 0);
     const diffDays = Math.floor((today - last) / (1000 * 60 * 60 * 24));
-    // Show if at least 1 day has passed (i.e. new day)
-    return diffDays >= 1 ? diffDays : null;
+    if (diffDays < 1) return null;
+    // Mark as shown for today
+    localStorage.setItem(WELCOME_SHOWN_KEY, todayStr);
+    return diffDays;
   });
   const [showWelcomeBack, setShowWelcomeBack] = useState(welcomeBackData !== null);
   const daysAway = welcomeBackData || 0;
