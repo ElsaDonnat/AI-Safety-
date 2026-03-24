@@ -597,7 +597,8 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                             <div className="mt-3 space-y-2 animate-fade-in">
                                 {topic.chapters.map((chapter, chIdx) => {
                                     const chColor = chapter.color || topic.color;
-                                    const isChExpanded = expandedChapter === chapter.id;
+                                    const isSingleChapter = topic.chapters.length === 1;
+                                    const isChExpanded = isSingleChapter || expandedChapter === chapter.id;
                                     const chLessons = chapter.lessons;
                                     const chTotalCards = chLessons.reduce((s, l) => s + l.cardIds.length, 0);
                                     const chDoneCards = chLessons.reduce((s, l) =>
@@ -612,7 +613,8 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
 
                                     return (
                                         <div key={chapter.id}>
-                                            {/* Chapter row — clickable to expand/collapse */}
+                                            {/* Chapter row — hidden when topic has only one chapter */}
+                                            {!isSingleChapter && (
                                             <div
                                                 className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] cursor-pointer transition-colors duration-150"
                                                 style={{
@@ -646,11 +648,12 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                                                     style={{ transform: isChExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
                                                 />
                                             </div>
+                                            )}
 
                                             {/* Expanded chapter: lessons */}
                                             {isChExpanded && (
-                                                <div className="mt-1 ml-5 space-y-2 animate-fade-in"
-                                                    style={{ borderLeft: `2px solid ${chColor}25`, paddingLeft: '12px' }}>
+                                                <div className={`${isSingleChapter ? 'mt-0' : 'mt-1 ml-5'} space-y-2 animate-fade-in`}
+                                                    style={isSingleChapter ? {} : { borderLeft: `2px solid ${chColor}25`, paddingLeft: '12px' }}>
                                                     {chLessons.map((lesson, idx) => {
                                                         const isIntro = !!lesson.isCourseIntro;
                                                         const isCompleted = isIntro
