@@ -74,7 +74,8 @@ const defaultState = {
 
     // ─── Course Mode ───
     // null = general mode (no course), or { courseId, unlockedAt }
-    courseMode: null,
+    // Default to ML4G enabled so demo users get course mode immediately
+    courseMode: { courseId: 'ml4g', unlockedAt: new Date().toISOString() },
 
     // ─── Challenge Mode ───
     challenge: {
@@ -175,8 +176,8 @@ function migrateState(parsed) {
     }
     if (parsed.musicPromptDismissed === undefined) merged.musicPromptDismissed = false;
 
-    // Migration: course mode
-    if (parsed.courseMode === undefined) merged.courseMode = null;
+    // Migration: course mode — default to ML4G enabled for demo
+    if (parsed.courseMode === undefined) merged.courseMode = { courseId: 'ml4g', unlockedAt: new Date().toISOString() };
 
     // Migration: challenge mode
     if (!parsed.challenge) merged.challenge = {

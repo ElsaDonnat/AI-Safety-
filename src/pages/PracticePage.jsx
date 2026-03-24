@@ -3,11 +3,12 @@ import { useApp } from '../context/AppContext';
 import { ALL_CONCEPTS, getConceptById, CATEGORY_CONFIG } from '../data/concepts';
 import { resolveCard, resolveAllConcepts, getCourseCardIds } from '../data/courses/index';
 import { getCourseById } from '../data/courseConfig';
-import { LESSONS, TOPICS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
+import { LESSONS, TOPICS, DOMAINS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../data/lessons';
 import { generateWhatOptions, generateDescriptionOptions, generateWhyOptions, SCORE_COLORS, getScoreColor, getScoreLabel, shuffle } from '../data/quiz';
-import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, RefreshCw, BarChart3 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
+import { formatText } from '../utils/formatText';
 import Mascot from '../components/Mascot';
 import * as feedback from '../services/feedback';
 import { shareText, buildPracticeShareText } from '../services/share';
@@ -39,6 +40,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
     const [results, setResults] = useState([]);
     const [sessionMode, setSessionMode] = useState(null);
     const [selectedLessons, setSelectedLessons] = useState([]);
+    const [lessonPickerDomain, setLessonPickerDomain] = useState('all');
     const [collectionSort, setCollectionSort] = useState('success'); // success | times
     const [expandedCardId, setExpandedCardId] = useState(() => {
         if (window.AISAFETY_OPEN_CARD) {
@@ -564,6 +566,20 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
             !l.isFoundational && (DEV_UNLOCK_ALL || l.cardIds.some(id => (state.seenCards || []).includes(id)))
         );
 
+        // Build domain filter options from available lessons
+        const availableTopicIds = new Set(availableLessons.map(l => l.topic));
+        const availableDomainIds = new Set(
+            TOPICS.filter(t => availableTopicIds.has(t.id)).map(t => t.domain)
+        );
+        const visibleDomains = DOMAINS.filter(d =>
+            availableDomainIds.has(d.id) && (!d.courseOnly || (state.courseMode && state.courseMode.courseId === d.courseOnly))
+        );
+
+        // Filter topics by selected domain
+        const filteredTopics = lessonPickerDomain === 'all'
+            ? TOPICS
+            : TOPICS.filter(t => t.domain === lessonPickerDomain);
+
         const lessonsByTopic = {};
         availableLessons.forEach(l => {
             if (!lessonsByTopic[l.topic]) lessonsByTopic[l.topic] = [];
@@ -574,7 +590,7 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
             <div className="lesson-flow-container animate-fade-in">
                 <div className="flex-shrink-0 pt-4">
                     <div className="flex items-center justify-between mb-4">
-                        <button onClick={() => { setView(VIEW.HUB); setSelectedLessons([]); }}
+                        <button onClick={() => { setView(VIEW.HUB); setSelectedLessons([]); setLessonPickerDomain('all'); }}
                             className="text-sm flex items-center gap-1" style={{ color: 'var(--color-ink-muted)' }}>
                             <ChevronLeft size={16} strokeWidth={2} />
                             Back
@@ -588,16 +604,44 @@ export default function PracticePage({ onSessionChange, registerBackHandler }) {
                     <p className="text-xs mb-4" style={{ color: 'var(--color-ink-muted)' }}>
                         Select which lessons to practice. Cards from all selected lessons will be combined.
                     </p>
+
+                    {visibleDomains.length > 1 && (
+                        <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+                            <button
+                                onClick={() => setLessonPickerDomain('all')}
+                                className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors"
+                                style={{
+                                    backgroundColor: lessonPickerDomain === 'all' ? 'var(--color-primary)' : 'rgba(var(--color-ink-rgb), 0.06)',
+                                    color: lessonPickerDomain === 'all' ? 'white' : 'var(--color-ink-muted)',
+                                }}
+                            >
+                                All
+                            </button>
+                            {visibleDomains.map(domain => (
+                                <button
+                                    key={domain.id}
+                                    onClick={() => setLessonPickerDomain(domain.id)}
+                                    className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors"
+                                    style={{
+                                        backgroundColor: lessonPickerDomain === domain.id ? domain.color : 'rgba(var(--color-ink-rgb), 0.06)',
+                                        color: lessonPickerDomain === domain.id ? 'white' : 'var(--color-ink-muted)',
+                                    }}
+                                >
+                                    {domain.title}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto">
-                    {TOPICS.map(topic => {
+                    {filteredTopics.map(topic => {
                         const topicLessons = lessonsByTopic[topic.id] || [];
                         if (topicLessons.length === 0) return null;
                         return (
                             <div key={topic.id} className="mb-4">
                                 <h3 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: topic.color }}>
-                                    {topic.icon} {topic.title}
+                                    {topic.title}
                                 </h3>
                                 <div className="space-y-2">
                                     {topicLessons.map(lesson => {
@@ -743,7 +787,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                     <div className="flex items-start gap-3">
                         <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                             style={{ backgroundColor: 'rgba(45, 106, 79, 0.12)' }}>
-                            <Brain size={20} color="#2D6A4F" strokeWidth={2} />
+                            <RefreshCw size={20} color="#2D6A4F" strokeWidth={2} />
                         </div>
                         <div className="flex-1 min-w-0">
                             <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>{courseMeta.name} Cards</h3>
@@ -766,7 +810,7 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
                 <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(var(--color-ink-rgb), 0.1)' }}>
-                        <Brain size={20} color="var(--color-ink)" strokeWidth={2} />
+                        <RefreshCw size={20} color="var(--color-ink)" strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Spaced Review</h3>
@@ -964,6 +1008,9 @@ function HubView({ starredConcepts, weakConcepts, statusTiers, dueCount, state, 
 // COLLECTION VIEW — Card triage
 // ═══════════════════════════════════════════════════════
 function CollectionView({ statusTiers, collectionSort, setCollectionSort, expandedCardId, setExpandedCardId, state, dispatch, onStartSession }) {
+    const [collapsedTiers, setCollapsedTiers] = useState({});
+    const toggleTier = (key) => setCollapsedTiers(prev => ({ ...prev, [key]: !prev[key] }));
+
     const tierConfig = [
         {
             key: 'new',
@@ -1012,26 +1059,34 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                 />
             </div>
 
-            {tierConfig.map(tier => (
+            {tierConfig.map(tier => {
+                const isCollapsed = !!collapsedTiers[tier.key];
+                return (
                 <div key={tier.key} className="mb-5">
-                    <div className="flex items-center gap-2 mb-2">
+                    <button
+                        onClick={() => toggleTier(tier.key)}
+                        className="flex items-center gap-2 mb-2 w-full text-left"
+                    >
+                        <ChevronDown size={14} color={tier.color} strokeWidth={2.5}
+                            className="transition-transform duration-200 flex-shrink-0"
+                            style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }} />
                         <h3 className="text-sm font-bold" style={{ color: tier.color }}>{tier.label}</h3>
                         <span className="text-xs font-medium px-2 py-0.5 rounded-full"
                             style={{ backgroundColor: tier.bg, color: tier.color }}>
                             {tier.items.length}
                         </span>
                         {tier.items.length > 0 && tier.practiceLabel && (
-                            <button
-                                onClick={() => onStartSession(tier.items.map(i => i.concept))}
+                            <span
+                                onClick={(e) => { e.stopPropagation(); onStartSession(tier.items.map(i => i.concept)); }}
                                 className="ml-auto text-[10px] font-semibold px-2 py-1 rounded-[3px] transition-all"
                                 style={{ backgroundColor: tier.bg, color: tier.color }}
                             >
                                 {tier.practiceLabel} {'\u2192'}
-                            </button>
+                            </span>
                         )}
-                    </div>
+                    </button>
 
-                    {tier.items.length === 0 ? (
+                    {!isCollapsed && (tier.items.length === 0 ? (
                         <div className="text-center py-4 rounded-[3px]" style={{ backgroundColor: tier.bg }}>
                             <p className="text-xs" style={{ color: 'var(--color-ink-faint)' }}>
                                 {tier.key === 'new' ? 'All cards have been reviewed' :
@@ -1099,7 +1154,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     </span>
                                                 </div>
                                                 <ExpandableText lines={3} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>
-                                                    {concept.description}
+                                                    {formatText(concept.description)}
                                                 </ExpandableText>
                                                 <div className="flex items-center gap-4 mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                     <div className="text-[10px]">
@@ -1121,9 +1176,10 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                 );
                             })}
                         </div>
-                    )}
+                    ))}
                 </div>
-            ))}
+                );
+            })}
         </div>
     );
 }
