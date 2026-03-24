@@ -29,6 +29,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-intro',
                     title: 'Getting Started',
+                    icon: 'foundations',
+                    color: '#8CB564',
                     lessons: [
                         {
                             id: 'ml4g-L01',
@@ -58,6 +60,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-current',
                     title: 'Current Capabilities',
+                    icon: 'advanced-ai',
+                    color: '#3B82F6',
                     lessons: [
                         {
                             id: 'ml4g-L03',
@@ -92,6 +96,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-foundation',
                     title: 'Foundation Models',
+                    icon: 'layers',
+                    color: '#2BA89E',
                     lessons: [
                         {
                             id: 'ml4g-L07',
@@ -126,6 +132,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-agi',
                     title: 'Defining & Measuring AGI',
+                    icon: 'ai-concepts',
+                    color: '#8B5CF6',
                     lessons: [
                         {
                             id: 'ml4g-L11',
@@ -153,6 +161,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-scale',
                     title: 'Leveraging Scale',
+                    icon: 'ai-progress',
+                    color: '#D4A026',
                     lessons: [
                         {
                             id: 'ml4g-L14',
@@ -187,6 +197,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-forecasting',
                     title: 'Forecasting Timelines',
+                    icon: 'calendar',
+                    color: '#EC4899',
                     lessons: [
                         {
                             id: 'ml4g-L18',
@@ -214,6 +226,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-takeoff',
                     title: 'Takeoff',
+                    icon: 'zap',
+                    color: '#EF4444',
                     lessons: [
                         {
                             id: 'ml4g-L21',
@@ -243,6 +257,8 @@ export const ml4gCourse = {
                 {
                     id: 'ml4g-ch-alignment',
                     title: 'Core Alignment',
+                    icon: 'alignment',
+                    color: '#9333EA',
                     lessons: [
                         {
                             id: 'ml4g-L23',
