@@ -419,11 +419,12 @@ export function DailyQuizCompletedReview() {
             <Card
                 className="mb-4 cursor-pointer daily-quiz-completed-card"
                 onClick={() => setExpanded(true)}
+                style={{ opacity: 0.6 }}
             >
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
-                        style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}>
-                        <Check size={20} color="var(--color-success)" strokeWidth={1.8} />
+                        style={{ backgroundColor: 'var(--color-daily-soft)' }}>
+                        <Check size={20} color="var(--color-daily)" strokeWidth={1.8} />
                     </div>
                     <div className="flex-1">
                         <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
@@ -440,14 +441,14 @@ export function DailyQuizCompletedReview() {
     }
 
     return (
-        <Card className="mb-4 daily-quiz-completed-card">
+        <Card className="mb-4 daily-quiz-completed-card" style={{ opacity: 0.6 }}>
             <div
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => { setExpanded(false); setExpandedItem(null); }}
             >
                 <div className="w-10 h-10 rounded-[3px] flex items-center justify-center"
-                    style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}>
-                    <Check size={20} color="var(--color-success)" strokeWidth={1.8} />
+                    style={{ backgroundColor: 'var(--color-daily-soft)' }}>
+                    <Check size={20} color="var(--color-daily)" strokeWidth={1.8} />
                 </div>
                 <div className="flex-1">
                     <p className="text-sm font-semibold" style={{ color: 'var(--color-ink)' }}>
