@@ -7,6 +7,7 @@ import { calculateNextReview } from '../../data/spacedRepetition';
 import { Card, Button, CategoryTag, CategoryIcon, Divider, StarButton, ConfirmModal, ExpandableText, AnimatedCounter, CardConnections, MasteryDots } from '../shared';
 import { flyXPToStar } from '../../utils/xpAnimation';
 import Mascot from '../Mascot';
+import { formatText } from '../../utils/formatText';
 import { TOPICS, CHAPTERS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../../data/lessons';
 import { Bot, TrendingUp, Brain, Lightbulb, Landmark, ShieldCheck, ChevronLeft, ChevronDown, Zap, Share2 } from 'lucide-react';
 
@@ -598,7 +599,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                             <h2 className="text-xl font-bold mt-3 mb-2" style={{ fontFamily: 'var(--font-display)' }}>{concept.title}</h2>
                             {concept.summary && <p className="text-sm font-medium mb-3" style={{ color: 'var(--color-coral)' }}>{concept.summary}</p>}
                             <ExpandableText lines={3} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>
-                                {concept.description}
+                                {formatText(concept.description)}
                             </ExpandableText>
                         </Card>
                     </div>
@@ -743,7 +744,7 @@ export default function LessonFlow({ lesson, onComplete }) {
                                             onClick={() => dispatch({ type: 'TOGGLE_STAR', cardId: dotConcept.id })} />
                                     </div>
                                     <h2 className="text-xl font-bold leading-snug mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>{dotConcept.title}</h2>
-                                    <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>{dotConcept.description}</p>
+                                    <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>{formatText(dotConcept.description)}</p>
                                 </Card>
                             </div>
                         </div>

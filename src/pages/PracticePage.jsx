@@ -8,6 +8,7 @@ import { generateWhatOptions, generateDescriptionOptions, generateWhyOptions, SC
 import { ChevronLeft, ChevronRight, ChevronDown, Check, Share2, Star, BookOpen, Brain, BarChart3 } from 'lucide-react';
 import { calculateNextReview, getDueEvents, getCardStatus } from '../data/spacedRepetition';
 import { Card, Button, MasteryDots, ProgressBar, Divider, CategoryTag, StarButton, TabSelector, ConfirmModal, ExpandableText } from '../components/shared';
+import { formatText } from '../utils/formatText';
 import Mascot from '../components/Mascot';
 import * as feedback from '../services/feedback';
 import { shareText, buildPracticeShareText } from '../services/share';
@@ -1099,7 +1100,7 @@ function CollectionView({ statusTiers, collectionSort, setCollectionSort, expand
                                                     </span>
                                                 </div>
                                                 <ExpandableText lines={3} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--color-ink-secondary)' }}>
-                                                    {concept.description}
+                                                    {formatText(concept.description)}
                                                 </ExpandableText>
                                                 <div className="flex items-center gap-4 mt-3 pt-3" style={{ borderTop: '1px solid rgba(var(--color-ink-rgb), 0.06)' }}>
                                                     <div className="text-[10px]">

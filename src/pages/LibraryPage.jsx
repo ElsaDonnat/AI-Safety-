@@ -6,6 +6,7 @@ import { TOPICS, DOMAINS, DIFFICULTY_COLORS, DIFFICULTY_BG_COLORS } from '../dat
 import { Card, MasteryDots, CategoryTag, StarButton, CardConnections } from '../components/shared';
 import { Star, BookOpen, ChevronDown, X } from 'lucide-react';
 import { cardImage } from '../utils/images';
+import { formatText } from '../utils/formatText';
 import { DEV_UNLOCK_ALL } from '../config/devFlags';
 
 const DIFFICULTY_OPTIONS = [
@@ -398,7 +399,7 @@ export default function LibraryPage() {
                                         </div>
                                     )}
                                     <p className="text-sm leading-relaxed" style={{ color: 'var(--color-ink-secondary)' }}>
-                                        {concept.description}
+                                        {formatText(concept.description)}
                                     </p>
                                     {concept.tags.length > 0 && (
                                         <div className="flex flex-wrap gap-1.5 mt-3">
