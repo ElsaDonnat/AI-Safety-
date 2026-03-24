@@ -566,7 +566,7 @@ input, textarea, [contenteditable] {
 
 @media (max-width: 599px) {
   .main-content-inner {
-    padding: 16px max(16px, env(safe-area-inset-right, 0px)) 80px max(16px, env(safe-area-inset-left, 0px));
+    padding: 16px max(20px, env(safe-area-inset-right, 0px)) 80px max(20px, env(safe-area-inset-left, 0px));
   }
 }
 
@@ -1019,7 +1019,7 @@ input, textarea, [contenteditable] {
 /* Reduce padding when tab bar is hidden during sessions */
 @media (max-width: 899px) {
   .main-content-inner.in-session {
-    padding-bottom: 16px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
   }
 }
 .main-content-inner.in-session {
@@ -1466,6 +1466,29 @@ input, textarea, [contenteditable] {
     .daily-quiz-container {
       height: calc(100vh - 140px);
       max-height: calc(100vh - 140px);
+    }
+  }
+}
+/* In session mode, TopBar and BottomNav are hidden — subtract less */
+.main-content-inner.in-session .daily-quiz-container {
+  height: calc(100dvh - 48px);
+  max-height: calc(100dvh - 48px);
+}
+@supports not (height: 1dvh) {
+  .main-content-inner.in-session .daily-quiz-container {
+    height: calc(100vh - 48px);
+    max-height: calc(100vh - 48px);
+  }
+}
+@media (max-width: 599px) {
+  .main-content-inner.in-session .daily-quiz-container {
+    height: calc(100dvh - 36px);
+    max-height: calc(100dvh - 36px);
+  }
+  @supports not (height: 1dvh) {
+    .main-content-inner.in-session .daily-quiz-container {
+      height: calc(100vh - 36px);
+      max-height: calc(100vh - 36px);
     }
   }
 }
