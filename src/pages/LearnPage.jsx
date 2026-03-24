@@ -73,18 +73,6 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
     const [expandedModule, setExpandedModule] = useState(null);
     const mainRef = useRef(null);
 
-    // Auto-switch to course domain when course mode activates, or reset if deactivated
-    const activeCourseId = state.courseMode?.courseId || null;
-    useEffect(() => {
-        if (activeCourseId) {
-            // Find the course-only domain matching the active course
-            const courseDomain = DOMAINS.find(d => d.courseOnly === activeCourseId);
-            if (courseDomain) setActiveDomain(courseDomain.id);
-        } else if (DOMAINS.find(d => d.id === activeDomain)?.courseOnly) {
-            // Active domain is course-only but course is no longer active — reset
-            setActiveDomain('foundations');
-        }
-    }, [activeCourseId]); // eslint-disable-line react-hooks/exhaustive-deps
     // Course mode
     const courseMode = state.courseMode;
     const courseContent = useMemo(
@@ -175,11 +163,9 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
     const completedCount = Object.keys(state.completedLessons).length;
     const totalLessons = LESSONS.length;
 
-    // Filter domains: show course-only domains only when matching course mode is active
-    const visibleDomains = DOMAINS.filter(d => {
-        if (d.courseOnly) return d.courseOnly === activeCourseId;
-        return true;
-    });
+    // Filter domains: never show course-only domains in the general view
+    // (course content is accessed via the ML4G/General toggle at the top)
+    const visibleDomains = DOMAINS.filter(d => !d.courseOnly);
 
     const currentDomain = visibleDomains.find(d => d.id === activeDomain) || visibleDomains[0];
     const domainTopics = getTopicsByDomain(currentDomain?.id);
