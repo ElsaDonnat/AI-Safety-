@@ -86,7 +86,7 @@ const TierIcon = ({ tierId, size = 24, color = '#666' }) => {
 };
 
 // ─── Views ───────────────────────────────────────────────────
-const VIEW = { HUB: 'hub', SETUP_MULTI: 'setup_multi', GAME: 'game', PASS_PHONE: 'pass_phone', RESULTS: 'results', FUN_FACTS: 'fun_facts' };
+const VIEW = { HUB: 'hub', SETUP_MULTI: 'setup_multi', GAME: 'game', PASS_PHONE: 'pass_phone', RESULTS: 'results', FUN_FACTS: 'fun_facts', FUN_FACTS_INTRO: 'fun_facts_intro', SOLO_INTRO: 'solo_intro' };
 
 // ─── Sharp Heart SVG ─────────────────────────────────────────
 // Angular heart shape to match the site's sharp/editorial aesthetic
@@ -794,6 +794,10 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
                 setView(VIEW.HUB);
             } else if (view === VIEW.FUN_FACTS) {
                 setView(VIEW.HUB);
+            } else if (view === VIEW.FUN_FACTS_INTRO) {
+                setView(VIEW.HUB);
+            } else if (view === VIEW.SOLO_INTRO) {
+                setView(VIEW.HUB);
             }
         });
         return unregister;
@@ -850,6 +854,141 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
     if (view === VIEW.FUN_FACTS) {
         return <FunFactsFlow onExit={() => setView(VIEW.HUB)} />;
+    }
+
+    // ─── Fun Facts Intro ───
+    if (view === VIEW.FUN_FACTS_INTRO) {
+        return (
+            <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 120px)' }}>
+                <div className="flex-shrink-0">
+                    <button onClick={() => setView(VIEW.HUB)} className="flex items-center gap-1 text-sm"
+                        style={{ color: 'var(--color-ink-muted)' }}>
+                        <ChevronRight size={16} strokeWidth={2} style={{ transform: 'rotate(180deg)' }} />
+                        Back
+                    </button>
+                </div>
+                <div className="flex-1 min-h-0 flex flex-col justify-center overflow-y-auto">
+                    <div className="text-center py-4">
+                        <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-3"
+                            style={{ backgroundColor: 'var(--color-coral-soft)', border: '2px solid rgba(212, 114, 106, 0.2)' }}>
+                            <Lightbulb size={28} color="var(--color-coral)" strokeWidth={1.8} />
+                        </div>
+                        <h2 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                            Fun Facts Trivia
+                        </h2>
+                        <p className="text-sm" style={{ color: 'var(--color-ink-muted)', lineHeight: 1.5 }}>
+                            Test your knowledge with trivia questions about the history, people, and milestones of AI.
+                        </p>
+
+                        <div className="mt-5 text-left rounded-[3px] p-4"
+                            style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
+                            <p className="text-[10px] uppercase tracking-wider font-bold mb-3"
+                                style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)' }}>
+                                How It Works
+                            </p>
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3">
+                                    <span className="text-xs font-bold flex-shrink-0 mt-0.5" style={{ color: 'var(--color-coral)' }}>?</span>
+                                    <p className="text-sm" style={{ color: 'var(--color-ink)' }}>Answer multiple-choice trivia questions</p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="text-xs font-bold flex-shrink-0 mt-0.5" style={{ color: 'var(--color-coral)' }}>!</span>
+                                    <p className="text-sm" style={{ color: 'var(--color-ink)' }}>Learn fascinating facts about AI history after each answer</p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="text-xs font-bold flex-shrink-0 mt-0.5" style={{ color: 'var(--color-coral)' }}>{'\u2605'}</span>
+                                    <p className="text-sm" style={{ color: 'var(--color-ink)' }}>Try to get the highest score — every correct answer counts</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold"
+                            style={{ color: 'var(--color-coral)', backgroundColor: 'var(--color-coral-soft)' }}>
+                            <Lightbulb size={14} strokeWidth={2} />
+                            {seenFunFactCount} / {availableFunFacts.length} facts discovered
+                        </div>
+                    </div>
+                </div>
+                <div className="flex-shrink-0 pt-3 pb-2">
+                    <Button
+                        className="w-full"
+                        style={{ backgroundColor: 'var(--color-coral)', boxShadow: '0 2px 8px rgba(212, 114, 106, 0.35)' }}
+                        onClick={() => setView(VIEW.FUN_FACTS)}
+                    >
+                        Start Trivia
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    // ─── Solo Challenge Intro ───
+    if (view === VIEW.SOLO_INTRO) {
+        const bestScore = ch.soloHighScore || 0;
+        return (
+            <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 120px)' }}>
+                <div className="flex-shrink-0">
+                    <button onClick={() => setView(VIEW.HUB)} className="flex items-center gap-1 text-sm"
+                        style={{ color: 'var(--color-ink-muted)' }}>
+                        <ChevronRight size={16} strokeWidth={2} style={{ transform: 'rotate(180deg)' }} />
+                        Back
+                    </button>
+                </div>
+                <div className="flex-1 min-h-0 flex flex-col justify-center overflow-y-auto">
+                    <div className="text-center py-4">
+                        <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-3"
+                            style={{ backgroundColor: 'rgba(92, 81, 74, 0.08)', border: '2px solid rgba(92, 81, 74, 0.15)' }}>
+                            <Zap size={28} color="var(--color-ink-secondary)" strokeWidth={1.8} />
+                        </div>
+                        <h2 className="text-xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                            Solo Challenge
+                        </h2>
+                        <p className="text-sm" style={{ color: 'var(--color-ink-muted)', lineHeight: 1.5 }}>
+                            Test your AI safety knowledge across {TIER_DISPLAY.length} difficulty tiers, from beginner to visionary.
+                        </p>
+
+                        <div className="mt-5 text-left rounded-[3px] p-4"
+                            style={{ backgroundColor: 'var(--color-card)', boxShadow: 'var(--shadow-card)' }}>
+                            <p className="text-[10px] uppercase tracking-wider font-bold mb-3"
+                                style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)' }}>
+                                How It Works
+                            </p>
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3">
+                                    <span className="flex-shrink-0 mt-0.5"><Target size={14} color="var(--color-ink-secondary)" strokeWidth={2} /></span>
+                                    <p className="text-sm" style={{ color: 'var(--color-ink)' }}>Answer {TOTAL_CHALLENGE_QUESTIONS} questions across {TIER_DISPLAY.length} tiers of difficulty</p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="flex-shrink-0 mt-0.5"><SharpHeart size={14} filled /></span>
+                                    <p className="text-sm" style={{ color: 'var(--color-ink)' }}>You get {MAX_HEARTS} lives — wrong answers cost a heart</p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="flex-shrink-0 mt-0.5"><Trophy size={14} color="var(--color-ink-secondary)" strokeWidth={2} /></span>
+                                    <p className="text-sm" style={{ color: 'var(--color-ink)' }}>Progress through tiers — how far can you go?</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {bestScore > 0 && (
+                            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold"
+                                style={{ color: 'var(--color-ink-secondary)', backgroundColor: 'rgba(92, 81, 74, 0.08)' }}>
+                                <Star size={14} strokeWidth={2} />
+                                Best score: {bestScore}/{TOTAL_CHALLENGE_QUESTIONS}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="flex-shrink-0 pt-3 pb-2">
+                    <Button
+                        className="w-full"
+                        style={{ backgroundColor: 'var(--color-sidebar-bg)', boxShadow: '0 2px 8px rgba(92, 81, 74, 0.35)' }}
+                        onClick={startSoloGame}
+                    >
+                        Start Challenge
+                    </Button>
+                </div>
+            </div>
+        );
     }
 
     if (view === VIEW.HUB) {
@@ -957,7 +1096,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                 {/* ── Solo Challenge — hero CTA ── */}
                 <button
-                    onClick={startSoloGame}
+                    onClick={() => setView(VIEW.SOLO_INTRO)}
                     className="w-full text-left active:scale-[0.99] transition-all duration-150"
                     style={{
                         background: 'var(--color-sidebar-bg)',
@@ -1071,7 +1210,7 @@ export default function ChallengePage({ onSessionChange, registerBackHandler }) 
 
                     {/* Fun Facts — coral */}
                     <button
-                        onClick={availableFunFacts.length > 0 ? () => setView(VIEW.FUN_FACTS) : undefined}
+                        onClick={availableFunFacts.length > 0 ? () => setView(VIEW.FUN_FACTS_INTRO) : undefined}
                         className="flex-1 text-left active:scale-[0.99] transition-all duration-150"
                         style={{
                             background: 'var(--color-coral)',
