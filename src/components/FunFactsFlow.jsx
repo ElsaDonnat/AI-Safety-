@@ -6,7 +6,7 @@ import { Button, CategoryTag } from './shared';
 import * as feedback from '../services/feedback';
 import { ChevronLeft, Check, X as XIcon, Lightbulb, Trophy, RotateCcw, ArrowLeft, Sparkles } from 'lucide-react';
 
-const PHASE = { INTRO: 'intro', QUIZ: 'quiz', RESULTS: 'results' };
+const PHASE = { QUIZ: 'quiz', RESULTS: 'results' };
 
 function shuffleOptions(correct, wrongs) {
     const options = [
@@ -33,11 +33,6 @@ export default function FunFactsFlow({ onExit }) {
         () => getFunFactsForSeenCards(state.seenCards || []),
         [state.seenCards]
     );
-
-    const _SeenCount = useMemo(() => {
-        const availableIds = new Set(availableFacts.map(f => f.id));
-        return (state.seenFunFacts || []).filter(id => availableIds.has(id)).length;
-    }, [state.seenFunFacts, availableFacts]);
 
     // Pick questions for this round (memoized once per mount / phase reset)
     const [roundFacts, setRoundFacts] = useState(() =>
@@ -95,100 +90,12 @@ export default function FunFactsFlow({ onExit }) {
         setPhase(PHASE.QUIZ);
     }, [state.seenFunFacts, availableFacts.length]);
 
-    const handleStartQuiz = useCallback(() => {
-        const newFacts = pickFunFactsForRound(state.seenFunFacts, Math.min(FUN_FACTS_PER_ROUND, availableFacts.length));
-        setRoundFacts(newFacts);
-        setQuestionIndex(0);
-        setSelectedOption(null);
-        setAnswered(false);
-        setScore(0);
-        setRoundResults([]);
-        setPhase(PHASE.QUIZ);
-    }, [state.seenFunFacts, availableFacts.length]);
-
     // ─── Compute discovered count (including any newly seen this round) ───
     const discoveredCount = useMemo(() => {
         const allSeen = new Set(state.seenFunFacts || []);
         roundResults.forEach(r => allSeen.add(r.factId));
         return Math.min(allSeen.size, FUN_FACTS_TOTAL);
     }, [state.seenFunFacts, roundResults]);
-
-    // ─── INTRO SCREEN ───
-    if (phase === PHASE.INTRO) {
-        return (
-            <div className="px-4 py-6 max-w-2xl mx-auto animate-fade-in">
-                <div className="flex-shrink-0">
-                    <button onClick={onExit} className="flex items-center gap-1 text-sm"
-                        style={{ color: 'var(--color-ink-muted)' }}>
-                        <ChevronLeft size={16} strokeWidth={2} />
-                        Back
-                    </button>
-                </div>
-
-                <div className="text-center mt-10 mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-5"
-                        style={{ background: 'rgba(234, 179, 8, 0.12)', border: '2px solid rgba(234, 179, 8, 0.25)' }}>
-                        <Lightbulb size={30} strokeWidth={1.8} color="#92400E" />
-                    </div>
-                    <h2 className="text-xl font-bold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', letterSpacing: '-0.02em' }}>
-                        Fun Facts Trivia
-                    </h2>
-                    <p className="text-sm leading-relaxed mb-1" style={{ color: 'var(--color-ink-muted)', maxWidth: 320, margin: '0 auto' }}>
-                        Test your knowledge with {totalQuestions} trivia questions about the history, people, and milestones of AI.
-                    </p>
-                </div>
-
-                {/* How it works */}
-                <div className="mb-6" style={{
-                    background: 'var(--color-card)',
-                    boxShadow: 'var(--shadow-card)',
-                    borderRadius: '3px',
-                    padding: '16px 18px',
-                }}>
-                    <p style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '10px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.04em',
-                        color: 'var(--color-ink-muted)',
-                        marginBottom: 12,
-                    }}>How it works</p>
-                    <div className="space-y-3">
-                        {[
-                            { icon: '?', label: `Answer ${totalQuestions} multiple-choice trivia questions` },
-                            { icon: '!', label: 'Learn fascinating facts about AI history after each answer' },
-                            { icon: '\u2605', label: 'Try to get the highest score — every correct answer counts' },
-                        ].map((item, i) => (
-                            <div key={i} className="flex items-start gap-3">
-                                <div style={{
-                                    width: 24, height: 24, borderRadius: '50%',
-                                    background: 'rgba(234, 179, 8, 0.12)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '12px', fontWeight: 700, color: '#92400E', flexShrink: 0,
-                                }}>{item.icon}</div>
-                                <p className="text-sm" style={{ color: 'var(--color-ink)', lineHeight: 1.5 }}>{item.label}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Discovery progress */}
-                <div className="mb-6 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-                        style={{ background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.15)' }}>
-                        <Sparkles size={14} color="#92400E" strokeWidth={2} />
-                        <span className="text-sm font-medium" style={{ color: '#92400E' }}>
-                            {discoveredCount} / {FUN_FACTS_TOTAL} facts discovered
-                        </span>
-                    </div>
-                </div>
-
-                <Button className="w-full" onClick={handleStartQuiz}>
-                    Start Trivia
-                </Button>
-            </div>
-        );
-    }
 
     // ─── RESULTS SCREEN ───
     if (phase === PHASE.RESULTS) {
