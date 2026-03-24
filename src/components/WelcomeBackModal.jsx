@@ -2,9 +2,9 @@ import Mascot from './Mascot';
 import { Button } from './shared';
 
 function getMessage(days) {
-  if (days >= 7) return "It's been a while! I really missed you. Ready to pick up where we left off?";
-  if (days >= 4) return "I missed you! Let's learn something new together.";
-  return "I'm glad you're back, I was waiting for you.";
+  if (days >= 7) return "It's been a while! The world of AI safety keeps evolving — let's catch up together.";
+  if (days >= 3) return "Welcome back! AI doesn't take days off, and neither should our understanding of it.";
+  return "Great to see you again! Every session brings you closer to understanding AI safety.";
 }
 
 export default function WelcomeBackModal({ daysAway, onDismiss }) {
@@ -26,7 +26,7 @@ export default function WelcomeBackModal({ daysAway, onDismiss }) {
           className="text-xl font-bold mb-2"
           style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}
         >
-          Welcome!
+          Welcome back!
         </h2>
         <p
           className="text-sm mb-5"
