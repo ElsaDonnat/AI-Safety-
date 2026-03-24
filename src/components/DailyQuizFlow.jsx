@@ -206,7 +206,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             </span>
                         </div>
                     </div>
-                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="var(--color-coral)" />
+                    <ProgressBar value={quizIndex + 1} max={totalQuestions} color="var(--color-daily)" />
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-y-auto">
@@ -323,13 +323,13 @@ export default function DailyQuizFlow({ onComplete }) {
                         {xpEarned > 0 && (
                             <div className="daily-quiz-xp-result animate-pop-in">
                                 <span className="daily-quiz-bonus-pill mr-2">{'2\u00d7 BONUS'}</span>
-                                <span className="text-xl font-bold" style={{ color: 'var(--color-coral)' }}>+{xpEarned} XP</span>
+                                <span className="text-xl font-bold" style={{ color: 'var(--color-daily)' }}>+{xpEarned} XP</span>
                             </div>
                         )}
 
                         {/* Results list with expandable details */}
                         <div className="mt-6 text-left">
-                            <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: 'var(--color-coral)' }}>
+                            <h3 className="text-xs uppercase tracking-wider font-semibold mb-3 px-1" style={{ color: 'var(--color-daily)' }}>
                                 Today's Events
                             </h3>
                             <div className="space-y-2">
@@ -351,7 +351,7 @@ export default function DailyQuizFlow({ onComplete }) {
                                                 {results[i] === 'correct' ? '\u2713' : '\u2717'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-coral)' }}>
+                                                <p className="text-xs font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-daily)' }}>
                                                     {q.answer}
                                                 </p>
                                                 <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400 }}>
@@ -390,7 +390,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             if (result === 'copied') setShareToast(true);
                         }}
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[3px] text-sm font-medium transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-coral)', backgroundColor: 'var(--color-coral-soft)' }}
+                        style={{ color: 'var(--color-daily)', backgroundColor: 'var(--color-daily-soft)' }}
                     >
                         <Share2 size={16} strokeWidth={2} />
                         Share Result
@@ -500,7 +500,7 @@ export function DailyQuizCompletedReview() {
                                 {q.result === 'correct' ? '\u2713' : '\u2717'}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-coral)' }}>
+                                <p className="text-[11px] font-semibold" style={{ color: 'var(--color-daily)' }}>
                                     {q.answer}
                                 </p>
                                 <p className="text-xs mt-0.5" style={{ color: 'var(--color-ink)', fontWeight: 400, lineHeight: 1.4 }}>
