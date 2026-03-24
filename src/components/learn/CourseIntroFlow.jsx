@@ -3,6 +3,10 @@ import { useApp } from '../../context/AppContext';
 import { Brain, ChevronRight, ChevronLeft, Sparkles, BookOpen, Target, X } from 'lucide-react';
 import * as feedback from '../../services/feedback';
 
+// ML4G brand green
+const ML4G_GREEN = '#2D6A4F';
+const ML4G_LIGHT = '#52B788';
+
 const SCREENS = [
     {
         id: 'welcome',
@@ -76,7 +80,7 @@ export default function CourseIntroFlow({ lesson, onComplete, onExit }) {
             ref={containerRef}
             className="fixed inset-0 z-50 flex flex-col"
             style={{
-                background: 'linear-gradient(145deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)',
+                background: 'linear-gradient(145deg, #1a2e1a 0%, #1b3a2a 40%, #1a4035 100%)',
                 opacity: exiting ? 0 : 1,
                 transition: 'opacity 0.2s ease',
             }}
@@ -100,9 +104,9 @@ export default function CourseIntroFlow({ lesson, onComplete, onExit }) {
                                 width: i === screenIndex ? '24px' : '8px',
                                 height: '8px',
                                 backgroundColor: i === screenIndex
-                                    ? '#60a5fa'
+                                    ? ML4G_LIGHT
                                     : i < screenIndex
-                                        ? 'rgba(96,165,250,0.5)'
+                                        ? `${ML4G_LIGHT}80`
                                         : 'rgba(255,255,255,0.2)',
                             }}
                         />
@@ -124,12 +128,12 @@ export default function CourseIntroFlow({ lesson, onComplete, onExit }) {
                     <div
                         className="w-20 h-20 rounded-2xl flex items-center justify-center mb-8"
                         style={{
-                            background: 'linear-gradient(135deg, rgba(96,165,250,0.2) 0%, rgba(45,212,191,0.2) 100%)',
-                            border: '1px solid rgba(96,165,250,0.3)',
-                            boxShadow: '0 0 40px rgba(96,165,250,0.15)',
+                            background: `linear-gradient(135deg, ${ML4G_GREEN}40 0%, ${ML4G_LIGHT}30 100%)`,
+                            border: `1px solid ${ML4G_LIGHT}50`,
+                            boxShadow: `0 0 40px ${ML4G_GREEN}30`,
                         }}
                     >
-                        <IconComp size={36} color="#60a5fa" strokeWidth={1.5} />
+                        <IconComp size={36} color={ML4G_LIGHT} strokeWidth={1.5} />
                     </div>
 
                     {/* Title */}
@@ -147,7 +151,7 @@ export default function CourseIntroFlow({ lesson, onComplete, onExit }) {
                     {/* Subtitle */}
                     <p
                         className="text-sm mb-8"
-                        style={{ color: 'rgba(148,163,184,0.9)', fontWeight: 500 }}
+                        style={{ color: `${ML4G_LIGHT}CC`, fontWeight: 500 }}
                     >
                         {screen.subtitle}
                     </p>
@@ -191,9 +195,9 @@ export default function CourseIntroFlow({ lesson, onComplete, onExit }) {
                         onClick={handleNext}
                         className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold transition-all active:scale-[0.97]"
                         style={{
-                            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                            background: `linear-gradient(135deg, ${ML4G_GREEN} 0%, #1B4332 100%)`,
                             color: '#fff',
-                            boxShadow: '0 4px 15px rgba(59,130,246,0.3)',
+                            boxShadow: `0 4px 15px ${ML4G_GREEN}50`,
                         }}
                     >
                         {isLast ? (

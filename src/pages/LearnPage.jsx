@@ -204,9 +204,10 @@ export default function LearnPage({ onSessionChange, registerBackHandler }) {
                 <div className="mb-4">
                     <TabSelector
                         tabs={[
-                            { id: 'course', label: courseMeta?.name || 'Course' },
+                            { id: 'course', label: courseMeta?.name || 'Course', accent: true },
                             { id: 'general', label: 'General' },
                         ]}
+                        accentColor="#2D6A4F"
                         activeTab={learnView}
                         onChange={(view) => {
                             setLearnView(view);
@@ -492,7 +493,7 @@ function LessonRow({ lesson, idx, isCompleted, isUnlocked, isNext, accentColor, 
                     backgroundColor: isCompleted
                         ? 'var(--color-success)'
                         : isNext
-                            ? (lesson.isCourseIntro ? '#3b82f6' : accentColor)
+                            ? (lesson.isCourseIntro ? '#2D6A4F' : accentColor)
                             : 'rgba(var(--color-ink-rgb), 0.08)',
                     color: (isCompleted || isNext) ? '#fff' : 'var(--color-ink-faint)',
                 }}
