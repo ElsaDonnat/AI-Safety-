@@ -1435,20 +1435,25 @@ input, textarea, [contenteditable] {
 .daily-quiz-container {
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 120px);
+  height: calc(100dvh - 120px);
+  max-height: calc(100dvh - 120px);
+  overflow: hidden;
 }
-@supports not (min-height: 1dvh) {
+@supports not (height: 1dvh) {
   .daily-quiz-container {
-    min-height: calc(100vh - 120px);
+    height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
   }
 }
 @media (max-width: 599px) {
   .daily-quiz-container {
-    min-height: calc(100dvh - 140px);
+    height: calc(100dvh - 140px);
+    max-height: calc(100dvh - 140px);
   }
-  @supports not (min-height: 1dvh) {
+  @supports not (height: 1dvh) {
     .daily-quiz-container {
-      min-height: calc(100vh - 140px);
+      height: calc(100vh - 140px);
+      max-height: calc(100vh - 140px);
     }
   }
 }

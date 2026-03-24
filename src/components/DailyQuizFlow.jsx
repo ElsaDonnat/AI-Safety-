@@ -67,14 +67,14 @@ export default function DailyQuizFlow({ onComplete }) {
                         Back
                     </button>
                 </div>
-                <div className="flex-1 min-h-0 flex flex-col justify-center">
-                    <div className="py-4 text-center">
+                <div className="flex-1 min-h-0 flex flex-col justify-center overflow-y-auto">
+                    <div className="py-3 text-center">
                         <div className="daily-quiz-date-badge">
                             <Calendar size={16} strokeWidth={2} />
                             Daily Quiz
                         </div>
 
-                        <h2 className="text-2xl font-bold mt-3 mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
+                        <h2 className="text-xl font-bold mt-2 mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
                             AI Safety Dates
                         </h2>
                         <p className="text-sm mb-2" style={{ color: 'var(--color-ink-muted)' }}>
@@ -85,7 +85,7 @@ export default function DailyQuizFlow({ onComplete }) {
                             {'2\u00d7 XP BONUS'}
                         </div>
 
-                        <div className="mt-4 space-y-3 px-4">
+                        <div className="mt-3 space-y-2 px-4">
                             {questions.map((q, i) => (
                                 <div key={i} className="daily-quiz-year-card animate-fade-in-up" style={{ animationDelay: `${i * 150}ms` }}>
                                     <span className="daily-quiz-year" style={{ fontSize: '13px', fontWeight: 400 }}>{q.event.length > 80 ? q.event.slice(0, 77) + '...' : q.event}</span>
@@ -95,7 +95,7 @@ export default function DailyQuizFlow({ onComplete }) {
                     </div>
                 </div>
 
-                <div className="flex-shrink-0 pt-4 pb-2">
+                <div className="flex-shrink-0 pt-3 pb-2">
                     <Button className="w-full daily-quiz-btn" onClick={() => setPhase(PHASES.QUIZ)}>
                         Start Quiz
                     </Button>
