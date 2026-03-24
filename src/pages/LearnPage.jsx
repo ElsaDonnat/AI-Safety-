@@ -544,7 +544,7 @@ function LessonRow({ lesson, idx, isCompleted, isUnlocked, isNext, accentColor, 
 function CourseView({ courseContent, state, expandedModule, setExpandedModule, expandedChapter, setExpandedChapter, setActiveLesson }) {
     return (
         <div className="space-y-4">
-            {courseContent.topics.map(topic => {
+            {courseContent.topics.map((topic, topicIdx) => {
                 const isExpanded = expandedModule === topic.id;
                 const allLessons = topic.chapters.flatMap(ch => ch.lessons);
                 const totalCards = allLessons.reduce((sum, l) => sum + l.cardIds.length, 0);
@@ -571,7 +571,7 @@ function CourseView({ courseContent, state, expandedModule, setExpandedModule, e
                             </div>
                             <div className="flex-1 min-w-0">
                                 <h3 className="font-medium text-sm" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}>
-                                    {topic.title}
+                                    Chapter {topicIdx + 1}: {topic.title}
                                 </h3>
                                 <p className="text-xs" style={{ color: 'var(--color-ink-muted)' }}>
                                     {topic.subtitle}

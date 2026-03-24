@@ -53,7 +53,7 @@ export default function CourseIntroFlow({ lesson, onComplete, onExit }) {
         feedback.lightTap?.();
         if (isLast) {
             // Mark as completed without XP or streak
-            dispatch({ type: 'COMPLETE_LESSON', payload: { lessonId: lesson.id } });
+            dispatch({ type: 'COMPLETE_LESSON', lessonId: lesson.id });
             setExiting(true);
             setTimeout(() => onComplete(), 200);
             return;
