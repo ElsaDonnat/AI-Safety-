@@ -294,7 +294,7 @@ export default function FunFactsFlow({ onExit }) {
             {/* Question */}
             <div className="animate-slide-in-right" key={`q-${questionIndex}`}>
                 <div className="text-center mb-4 px-2">
-                    <h2 className="text-sm font-semibold leading-relaxed" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)', letterSpacing: '-0.01em' }}>
+                    <h2 className="text-sm font-semibold leading-relaxed" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-sidebar-bg)', letterSpacing: '-0.01em' }}>
                         {currentFact.question}
                     </h2>
                 </div>
